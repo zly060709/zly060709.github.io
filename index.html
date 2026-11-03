@@ -2302,8 +2302,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const avgIntake = logged.length ? Math.round(logged.reduce((s, k) => s + daily[k], 0) / logged.length) : 0;
     const avgProtein = logged.length ? Math.round(entries.filter(e => daily[e.date]).reduce((s, e) => s + (Number(e.p) || 0), 0) / logged.length) : 0;
     const gc = d.gender || ((typeof window !== 'undefined' && window.Gender) ? window.Gender.of(p.sex) : null);
-    const genderCycle = !!(gc && gc.cycleEnabled && d.cycle && d.cycle.enabled);
-    const ci = genderCycle ? cycleInfo(d.cycle, end) : null;
+    const genderCycle = !!(gc && gc.cycleEnabled);
+    const cycleOn = !!(genderCycle && d.cycle && d.cycle.enabled);
+    const ci = cycleOn ? cycleInfo(d.cycle, end) : null;
     const exercises = (d.exercises || []).filter(x => x.date >= start && x.date <= end);
     const exMinutes = exercises.reduce((s, x) => s + (Number(x.minutes) || 0), 0);
     const exNames = exercises.slice(-3).map(x => x.name + ' ' + (x.minutes || 0) + ' 分钟').join('、');
@@ -2311,7 +2312,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const symptomCounts = {};
     checkins.forEach(c => (c.symptoms || []).forEach(s => { symptomCounts[s] = (symptomCounts[s] || 0) + 1; }));
     const symptomText = Object.keys(symptomCounts).map(s => s + '×' + symptomCounts[s]).join('、') || '无记录';
-    const phaseRows = genderCycle ? keys.map(k => {
+    const phaseRows = cycleOn ? keys.map(k => {
       const ph = phaseForDate(k, d.cycle);
       return ph ? E.shortLabel(k) + ' ' + ph.phaseLabel : '';
     }).filter(Boolean) : [];
@@ -2363,7 +2364,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
           '<p>训练记录：' + (exercises.length ? exercises.length + ' 次 · 共 ' + exMinutes + ' 分钟' + (exNames ? '；最近：' + exNames : '') : '无记录') + '</p>' +
           '<p>症状记录：' + esc(symptomText) + '</p>') +
       '<h2>围度与补剂</h2><p>' + esc(measureText) + '</p><p>' + supplementText + '</p>' +
-      (genderCycle ? '<h2>周期相位（按日）</h2><p style="font-size:11px;color:#8a948b">' + esc(phaseRows.join('；')) + '</p>' : '') +
+      (genderCycle ? '<h2>周期相位（按日）</h2><p style="font-size:11px;color:#8a948b">' + esc(phaseRows.join('；') || '未开启周期记录') + '</p>' : '') +
       '<div class="note">数据由用户自行记录，热量与营养值为估算；本摘要不构成诊断或治疗建议。用药、补剂与症状请以医生意见为准。</div>' +
       '</div></body></html>';
   }
