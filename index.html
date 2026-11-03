@@ -946,6 +946,109 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
 
+/* ---------- v3.1 · 问账本 ---------- */
+.coach-card { margin-top: 12px; }
+.coach-entry {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 13px 15px; border-radius: 16px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  box-shadow: var(--shadow-sm);
+  transition: border-color .2s, transform .2s;
+}
+.coach-entry:hover { border-color: var(--green-line); transform: translateY(-1px); }
+.coach-ic {
+  width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0;
+  background: var(--green-soft); color: var(--green);
+  display: grid; place-items: center;
+}
+.coach-ic svg { width: 20px; height: 20px; }
+.coach-main { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.coach-main .t { font-family: var(--serif); font-size: 15px; font-weight: 600; }
+.coach-main .s { color: var(--ink-3); font-size: 12px; line-height: 1.5; }
+.coach-go { color: var(--ink-3); flex-shrink: 0; }
+.coach-go svg { width: 18px; height: 18px; }
+
+.coach-sheet { display: flex; flex-direction: column; gap: 10px; }
+.coach-ctx { display: flex; flex-wrap: wrap; gap: 6px; }
+.coach-ctx span {
+  font-size: 11.5px; padding: 4px 9px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-2);
+}
+.coach-msgs { display: flex; flex-direction: column; gap: 9px; padding: 2px 0; }
+.coach-msg {
+  max-width: 88%; padding: 10px 13px; border-radius: 14px;
+  font-size: 13.5px; line-height: 1.65; white-space: pre-wrap; word-break: break-word;
+}
+.coach-msg.ai { align-self: flex-start; background: var(--surface-2); border: 1px solid var(--line); border-bottom-left-radius: 5px; }
+.coach-msg.user { align-self: flex-end; background: var(--green); color: #F7F5EC; border-bottom-right-radius: 5px; }
+.coach-msg.pending { color: var(--ink-3); font-style: italic; }
+.coach-empty { padding: 12px 0; color: var(--ink-3); font-size: 12.5px; text-align: center; }
+.coach-input { display: flex; gap: 8px; align-items: flex-end; }
+.coach-input textarea { flex: 1; resize: none; min-height: 48px; max-height: 110px; }
+.coach-send {
+  flex-shrink: 0; height: 44px; padding: 0 16px; border-radius: 12px;
+  background: var(--green); color: #F7F5EC; font-size: 13px;
+}
+.coach-send:disabled { opacity: .5; }
+.coach-hint { font-size: 11.5px; color: var(--ink-3); line-height: 1.55; margin-top: 8px; }
+
+/* ---------- v3.1 · PIN 锁 ---------- */
+.lock-overlay {
+  position: fixed; inset: 0; z-index: 130;
+  display: grid; place-items: center; padding: 24px;
+  background:
+    radial-gradient(700px 500px at 50% 18%, rgba(255, 253, 245, .94), transparent 70%),
+    var(--paper);
+}
+[data-theme="dark"] .lock-overlay {
+  background:
+    radial-gradient(700px 500px at 50% 18%, rgba(26, 33, 29, .96), transparent 70%),
+    var(--paper);
+}
+.lock-box { width: 100%; max-width: 320px; text-align: center; }
+.lock-mark {
+  width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 14px;
+  background: var(--green); color: #F7F5EC;
+  display: grid; place-items: center;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12);
+}
+.lock-mark svg { width: 24px; height: 24px; }
+.lock-title { font-family: var(--serif); font-size: 20px; font-weight: 600; }
+.lock-sub { color: var(--ink-3); font-size: 12.5px; margin-top: 5px; line-height: 1.6; }
+.lock-input {
+  width: 100%; margin-top: 18px; text-align: center;
+  letter-spacing: .35em; font-size: 20px; padding: 12px;
+  border-radius: 12px; border: 1px solid var(--line-2); background: var(--field);
+}
+.lock-input:focus { outline: none; border-color: var(--green-line); }
+.lock-err { min-height: 18px; font-size: 12px; color: var(--red); margin-top: 6px; }
+.lock-box.shake { animation: lock-shake .32s; }
+@keyframes lock-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-3px); }
+}
+
+/* ---------- v3.1 · 安全护栏 ---------- */
+.guard-card { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.guard-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 11px 13px; border-radius: 14px;
+  border: 1px solid var(--line); background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.guard-item.red { border-color: rgba(166, 74, 60, .35); background: var(--red-soft); }
+.guard-item.amber { border-color: rgba(177, 119, 59, .35); background: var(--amber-soft); }
+.guard-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; background: var(--amber); }
+.guard-item.red .guard-dot { background: var(--red); }
+.guard-main { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.guard-main .t { font-size: 13px; font-weight: 600; }
+.guard-main .s { font-size: 11.5px; color: var(--ink-2); line-height: 1.55; }
+.guard-act { flex-shrink: 0; align-self: center; color: var(--green); }
+.coach-retry { display: block; margin-top: 6px; font-size: 11.5px; color: var(--green); text-decoration: underline; }
+
 </style>
 </head>
 <body>
@@ -979,6 +1082,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     <symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="18" cy="12" r="1.3" fill="currentColor"/></symbol>
     <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
     <symbol id="i-body" viewBox="0 0 24 24"><circle cx="12" cy="4.8" r="2.1" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.2v6.2M12 10.2l-3.4 3M12 10.2l3.4 3M9 20.5l3-7 3 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10L5 19v-4.5H6.5a2 2 0 0 1-2-2v-6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.5 8.5h7M8.5 11.5h4.5" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="15.2" r="1.2" fill="currentColor"/></symbol>
   </defs>
 </svg>
 
@@ -2104,9 +2209,18 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
   function nutrientTargets(profile) {
     const p = profile || {};
-    const female = p.sex === 'female';
     const age = Number(p.age) || 30;
     const older = age >= 50;
+    const gn = (typeof window !== 'undefined' && window.Gender) ? window.Gender.numbers(p.sex) : null;
+    if (gn) {
+      return {
+        iron: older ? gn.ironOlder : gn.iron,
+        calcium: older ? gn.calciumOlder : gn.calcium,
+        vd: older ? gn.vdOlder : gn.vd,
+        folate: gn.folate
+      };
+    }
+    const female = p.sex === 'female';
     return {
       iron: female ? (older ? 12 : 20) : 12,
       calcium: older ? 1000 : 800,
@@ -2187,15 +2301,20 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const logged = keys.filter(k => daily[k] > 0);
     const avgIntake = logged.length ? Math.round(logged.reduce((s, k) => s + daily[k], 0) / logged.length) : 0;
     const avgProtein = logged.length ? Math.round(entries.filter(e => daily[e.date]).reduce((s, e) => s + (Number(e.p) || 0), 0) / logged.length) : 0;
-    const ci = cycleInfo(d.cycle, end);
+    const gc = d.gender || ((typeof window !== 'undefined' && window.Gender) ? window.Gender.of(p.sex) : null);
+    const genderCycle = !!(gc && gc.cycleEnabled && d.cycle && d.cycle.enabled);
+    const ci = genderCycle ? cycleInfo(d.cycle, end) : null;
+    const exercises = (d.exercises || []).filter(x => x.date >= start && x.date <= end);
+    const exMinutes = exercises.reduce((s, x) => s + (Number(x.minutes) || 0), 0);
+    const exNames = exercises.slice(-3).map(x => x.name + ' ' + (x.minutes || 0) + ' 分钟').join('、');
     const latestMeasure = measures.length ? measures[measures.length - 1] : null;
     const symptomCounts = {};
     checkins.forEach(c => (c.symptoms || []).forEach(s => { symptomCounts[s] = (symptomCounts[s] || 0) + 1; }));
     const symptomText = Object.keys(symptomCounts).map(s => s + '×' + symptomCounts[s]).join('、') || '无记录';
-    const phaseRows = keys.map(k => {
+    const phaseRows = genderCycle ? keys.map(k => {
       const ph = phaseForDate(k, d.cycle);
       return ph ? E.shortLabel(k) + ' ' + ph.phaseLabel : '';
-    }).filter(Boolean);
+    }).filter(Boolean) : [];
 
     const rows = weights.map(w => '<tr><td>' + esc(w.date) + '</td><td>' + round1(w.kg) + '</td></tr>').join('');
     const cycleRows = (d.cycle && d.cycle.history || []).slice(-5).reverse().map(s => '<li>' + esc(s) + '</li>').join('');
@@ -2231,14 +2350,20 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         '<div><span class="k">平均摄入</span> <span class="v">' + fmt(avgIntake) + ' kcal</span></div>' +
         '<div><span class="k">平均蛋白质</span> <span class="v">' + fmt(avgProtein) + ' g</span></div>' +
         '<div><span class="k">记录天数</span> <span class="v">' + logged.length + ' / 56</span></div>' +
-        '<div><span class="k">当前周期</span> <span class="v">' + (ci ? ci.phaseLabel + ' 第 ' + ci.day + ' 天，距下次 ' + ci.daysToNext + ' 天' : '未记录') + '</span></div>' +
+        (genderCycle
+          ? '<div><span class="k">当前周期</span> <span class="v">' + (ci ? ci.phaseLabel + ' 第 ' + ci.day + ' 天，距下次 ' + ci.daysToNext + ' 天' : '未记录') + '</span></div>'
+          : '<div><span class="k">近 8 周训练</span> <span class="v">' + (exercises.length ? exercises.length + ' 次 · ' + exMinutes + ' 分钟' : '无记录') + '</span></div>') +
       '</div>' +
-      '<h2>周期与症状</h2>' +
-      '<p>最近经期开始：' + ((d.cycle && d.cycle.history || []).slice(-1)[0] || '—') + ' · 周期长度 ' + ((d.cycle && d.cycle.length) || '—') + ' 天</p>' +
-      (cycleRows ? '<ul>' + cycleRows + '</ul>' : '') +
-      '<p>症状记录：' + esc(symptomText) + '</p>' +
+      (genderCycle
+        ? '<h2>' + gc.report.cycleHeading + '</h2>' +
+          '<p>最近经期开始：' + ((d.cycle && d.cycle.history || []).slice(-1)[0] || '—') + ' · 周期长度 ' + ((d.cycle && d.cycle.length) || '—') + ' 天</p>' +
+          (cycleRows ? '<ul>' + cycleRows + '</ul>' : '') +
+          '<p>症状记录：' + esc(symptomText) + '</p>'
+        : '<h2>' + gc.report.cycleHeading + '</h2>' +
+          '<p>训练记录：' + (exercises.length ? exercises.length + ' 次 · 共 ' + exMinutes + ' 分钟' + (exNames ? '；最近：' + exNames : '') : '无记录') + '</p>' +
+          '<p>症状记录：' + esc(symptomText) + '</p>') +
       '<h2>围度与补剂</h2><p>' + esc(measureText) + '</p><p>' + supplementText + '</p>' +
-      '<h2>周期相位（按日）</h2><p style="font-size:11px;color:#8a948b">' + esc(phaseRows.join('；')) + '</p>' +
+      (genderCycle ? '<h2>周期相位（按日）</h2><p style="font-size:11px;color:#8a948b">' + esc(phaseRows.join('；')) + '</p>' : '') +
       '<div class="note">数据由用户自行记录，热量与营养值为估算；本摘要不构成诊断或治疗建议。用药、补剂与症状请以医生意见为准。</div>' +
       '</div></body></html>';
   }
@@ -2252,6 +2377,123 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
 </script>
 <script>
+/* assets/gender.js */
+/* 能量账本 · 性别配置（v3.1）
+   两套完整的文案与默认参数集中在这里，避免在业务代码里散落 if。
+   未选择性别时按女性版呈现（与 v3.0 行为一致），老用户不受影响。
+   女性版文案保持原样；男性版为对等的「训练 / 恢复 / 营养」表述，
+   不复用经期、黄体、乳房胀痛等女性专属内容。 */
+(function (global) {
+  'use strict';
+
+  const PROFILES = {
+    female: {
+      key: 'female',
+      label: '女生',
+      marker: '女',
+      avatar: '女',
+      cycleEnabled: true,
+      numbers: { iron: 20, ironOlder: 12, calcium: 800, calciumOlder: 1000, vd: 10, vdOlder: 15, folate: 400 },
+      body: {
+        sub: '周期、围度、状态与营养，只保存在本机',
+        disclaimer: '周期相位为估算，不用于避孕或诊断；营养目标为参考值。身体不适请咨询医生。',
+        measureHint: '体重不动时，围度可能已经在变。',
+        measureEmpty: '还没有围度记录。不需要每天量，两周一次就够。',
+        checkinNote: '这些记录只用于帮你看见模式：黄体期更馋、睡不好更想吃、压力大更想甜食。它们不是意志力问题。',
+        reportSub: '最近 8 周体重、摄入、周期、症状、围度与补剂。',
+        symptoms: ['腹痛', '腹胀', '头痛', '疲劳', '睡眠差', '情绪波动', '腰酸', '乳房胀痛']
+      },
+      cycle: {
+        title: '周期感知',
+        offSub: '可选。记录后，经期水分不会被误判成脂肪。',
+        offEmpty: '不记录也完全能用。开启后可以看见相位、经期窗口和更干净的体重趋势。',
+        offBtn: '开启周期记录',
+        missingCopy: '经期开始日期还没填，或日期在未来。',
+        currentLabel: '当前周期',
+        meta: function (ci) { return '周期 ' + ci.length + ' 天 · 距下次月经约 ' + ci.daysToNext + ' 天'; },
+        periodBtn: '今天来月经了',
+        adjustBtn: '调整周期',
+        excluded: function (n) { return '本次代谢校准已排除 ' + n + ' 次经期/黄体末期体重，避免水分干扰。'; },
+        todayLine: function (ci) { return '周期第 ' + ci.day + ' 天 · ' + ci.phaseLabel + ' · 距下次约 ' + ci.daysToNext + ' 天'; }
+      },
+      nutrients: {
+        iron: '经期失血会提高需求',
+        calcium: '骨骼与围绝经期',
+        vd: '与钙一起看',
+        folate: '绿叶菜与豆类'
+      },
+      coachSuggestions: ['今天还能吃什么？', '为什么体重这几天不动？', '晚饭怎么补够蛋白？', '经期前总是馋，怎么安排？'],
+      coachKeyHint: '今天还能吃什么 / 为什么体重不动 / 经期前馋',
+      coachContext: '当天摄入、7 天均值、体重趋势、周期相位、状态与营养缺口；不发送原始记录列表。',
+      settings: {
+        bodyGroupTitle: '身体与周期',
+        bodyGroupSub: '周期、围度、状态、营养，只保存在本机'
+      },
+      report: { cycleHeading: '周期与症状', symptomHeading: '症状记录' }
+    },
+    male: {
+      key: 'male',
+      label: '男生',
+      marker: '男',
+      avatar: '男',
+      cycleEnabled: false,
+      numbers: { iron: 12, ironOlder: 12, calcium: 800, calciumOlder: 1000, vd: 10, vdOlder: 15, folate: 400 },
+      body: {
+        sub: '训练、围度、状态与营养，只保存在本机',
+        disclaimer: '围度与体重会受训练、盐分与水分影响；营养目标为参考值。身体不适请咨询医生。',
+        measureHint: '体重不动时，围度或训练表现可能已经在变。',
+        measureEmpty: '还没有围度记录。两周量一次就够，训练日与休息日尽量固定时间。',
+        checkinNote: '这些记录只用于帮你看见模式：训练量大更饿、睡不好更想吃、压力大更想甜食。它们不是意志力问题。',
+        reportSub: '最近 8 周体重、摄入、训练、症状、围度与补剂。',
+        symptoms: ['肌肉酸痛', '疲劳', '睡眠差', '压力大', '腹胀', '头痛', '食欲增加', '训练状态差']
+      },
+      recovery: {
+        title: '训练与恢复',
+        sub: '体重会受训练、盐分与水分影响，不必把每次波动都当成脂肪。',
+        empty: '这里不做激素周期估算。记录训练、围度与状态，就能看见自己的恢复节奏。',
+        hint: '大重量训练后 1–2 天的体重上浮多为水分与糖原，不代表脂肪增加；账本会看 2–4 周的趋势。',
+        checkinBtn: '记录今天的状态',
+        measureBtn: '记录围度'
+      },
+      nutrients: {
+        iron: '日常需求；大量耐力训练会略增',
+        calcium: '骨骼与力量训练',
+        vd: '与钙一起看，室内训练更要注意',
+        folate: '绿叶菜与豆类'
+      },
+      coachSuggestions: ['今天还能吃什么？', '为什么体重这几天不动？', '训练后怎么补够蛋白？', '晚上有应酬怎么记？'],
+      coachKeyHint: '今天还能吃什么 / 为什么体重不动 / 训练后补蛋白',
+      coachContext: '当天摄入、7 天均值、体重趋势、训练与状态、营养缺口；不发送原始记录列表。',
+      settings: {
+        bodyGroupTitle: '身体与训练',
+        bodyGroupSub: '围度、状态、营养，只保存在本机'
+      },
+      report: { cycleHeading: '训练与症状', symptomHeading: '症状记录' }
+    }
+  };
+
+  function normalize(sex) {
+    return sex === 'male' ? 'male' : 'female';
+  }
+
+  function of(profileOrSex) {
+    const sex = typeof profileOrSex === 'string' ? profileOrSex : (profileOrSex && profileOrSex.sex);
+    return PROFILES[normalize(sex)];
+  }
+
+  function numbers(sex) {
+    return of(sex).numbers;
+  }
+
+  function label(sex) {
+    return of(sex).label;
+  }
+
+  global.Gender = { PROFILES, normalize, of, numbers, label };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
 /* assets/app.js */
 /* 能量账本 · 应用层
    本地优先：数据只写入当前设备的 localStorage。
@@ -2261,6 +2503,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
   const E = window.Engine;
   const W = window.Wellness;
+  const G = window.Gender;
   const DATA = window.LEDGER_DATA;
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
@@ -2294,6 +2537,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       ai: Object.assign({ key: '' }, AI_DEFAULT),
       demo: false,
       gentle: false,
+      pin: { on: false, hash: '' },
       prefs: { vegetarian: false, lactoseFree: false, glutenFree: false, halal: false }
     },
     entries: [],
@@ -2306,7 +2550,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     cycle: { enabled: false, lastStart: '', length: 28, periodLength: 5, history: [] },
     measures: [],
     checkins: [],
-    supplements: []
+    supplements: [],
+    stats: { aiCalls: 0, aiOk: 0, aiFail: 0, aiMs: 0 },
+    logs: []
   };
 
   function normalizeDB(raw) {
@@ -2314,13 +2560,17 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     db.settings = Object.assign({}, DEFAULT_DB.settings, db.settings || {});
     db.settings.ai = Object.assign({}, DEFAULT_DB.settings.ai, (db.settings || {}).ai || {});
     db.settings.prefs = Object.assign({}, DEFAULT_DB.settings.prefs, (db.settings || {}).prefs || {});
+    db.settings.pin = Object.assign({ on: false, hash: '' }, (db.settings || {}).pin || {});
     if (STATIC_MODE && !db.settings.ai.key && (!db.settings.ai.baseURL || db.settings.ai.baseURL === AI_GLM.baseURL)) {
       db.settings.ai.baseURL = AI_QWEN.baseURL;
       db.settings.ai.model = AI_QWEN.model;
     }
-    ['entries', 'weights', 'exercises', 'foods', 'combos', 'measures', 'checkins', 'supplements'].forEach(k => {
+    ['entries', 'weights', 'exercises', 'foods', 'combos', 'measures', 'checkins', 'supplements', 'logs'].forEach(k => {
       if (!Array.isArray(db[k])) db[k] = [];
     });
+    if (!db.stats || typeof db.stats !== 'object') db.stats = { aiCalls: 0, aiOk: 0, aiFail: 0, aiMs: 0 };
+    else db.stats = Object.assign({ aiCalls: 0, aiOk: 0, aiFail: 0, aiMs: 0 }, db.stats);
+    db.logs = db.logs.slice(0, 30);
     if (!db.water || typeof db.water !== 'object') db.water = {};
     if (!db.notes || typeof db.notes !== 'object') db.notes = {};
     if (!db.cycle || typeof db.cycle !== 'object') db.cycle = Object.assign({}, DEFAULT_DB.cycle);
@@ -2403,7 +2653,10 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     nextSeed: 0,
     ob: null,
     sheet: null,
-    sheetData: null
+    sheetData: null,
+    coach: null,
+    coachBusy: false,
+    coachLast: null
   };
 
   function setTab(tab) {
@@ -2450,7 +2703,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const t = targetsNow();
     if (!t) return null;
     const day = dateKey || E.todayKey();
-    const weightFeed = DB.cycle.enabled ? W.filterWeights(DB.weights, DB.cycle) : { weights: DB.weights, excluded: 0 };
+    const gp = G.of(DB.profile);
+    const cycleActive = !!(DB.cycle && DB.cycle.enabled && gp.cycleEnabled);
+    const weightFeed = cycleActive ? W.filterWeights(DB.weights, DB.cycle) : { weights: DB.weights, excluded: 0 };
     const ad = E.adaptive(DB.entries, weightFeed.weights, DB.profile, t, day);
     const budget = ad.budget;
     const sum = E.summary(DB.entries, day);
@@ -2468,6 +2723,93 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     }
     return out;
   }
+  /* ============================================================
+     v3.1 · 变更日志 / 撤销 / 运行统计 / 安全护栏
+     ============================================================ */
+  function logChange(text, undo) {
+    if (!Array.isArray(DB.logs)) DB.logs = [];
+    DB.logs.unshift({ id: uid(), at: Date.now(), text: text, undo: undo || null });
+    DB.logs = DB.logs.slice(0, 30);
+    saveDB(true);
+  }
+
+  function lastUndoable() {
+    return (DB.logs || []).filter(x => x.undo)[0] || null;
+  }
+
+  function logTime(at) {
+    const d = new Date(at || Date.now());
+    const p = n => (n < 10 ? '0' : '') + n;
+    return (d.getMonth() + 1) + '月' + d.getDate() + '日 ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  function undoLast() {
+    const item = lastUndoable();
+    if (!item) { toast('没有可撤销的操作'); return; }
+    const u = item.undo;
+    if (u.kind === 'entry') DB.entries.push(u.item);
+    else if (u.kind === 'exercise') DB.exercises.push(u.item);
+    else if (u.kind === 'supplement') DB.supplements.push(u.item);
+    else if (u.kind === 'measure') DB.measures.push(u.item);
+    else if (u.kind === 'food') DB.foods.push(u.item);
+    else if (u.kind === 'combo') DB.combos.push(u.item);
+    else { toast('这条操作无法撤销'); return; }
+    item.undo = null;
+    item.text = item.text + '（已撤销）';
+    saveDB();
+    renderActive();
+    toast('已撤销：' + item.text.replace('（已撤销）', ''));
+  }
+
+  function recordAI(ok, ms) {
+    if (!DB.stats) DB.stats = { aiCalls: 0, aiOk: 0, aiFail: 0, aiMs: 0 };
+    DB.stats.aiCalls += 1;
+    if (ok) DB.stats.aiOk += 1; else DB.stats.aiFail += 1;
+    DB.stats.aiMs += Math.max(0, ms || 0);
+    saveDB(true);
+  }
+
+  function safetyGuard(st) {
+    const today = E.todayKey();
+    const items = [];
+    if (!st || !st.t || !DB.profile) return items;
+    const t = st.t;
+    let lowStreak = 0;
+    for (let i = 0; i < 3; i++) {
+      const s = E.summary(DB.entries, E.addDays(today, -i));
+      if (s.count === 0) { lowStreak = 0; break; }
+      if (s.kcal < t.floor * 0.9) lowStreak += 1;
+      else break;
+    }
+    if (lowStreak >= 3) {
+      items.push({ tone: 'red', title: '连续 ' + lowStreak + ' 天低于安全下限', sub: '长期低于 ' + fmt(t.floor) + ' kcal 会影响恢复与代谢。如果是有意控制，请把下限当底线。' });
+    }
+    if (st.ad && Number(st.ad.slope) < -0.013 && (st.ad.weightDays || 0) >= 4) {
+      const weekly = round1(Number(st.ad.slope) * 7);
+      const pctW = DB.profile.weight ? Math.abs(weekly) / DB.profile.weight * 100 : 0;
+      if (pctW > 1.1) {
+        items.push({ tone: 'amber', title: '体重下降偏快', sub: '近 7 天约 ' + weekly + ' kg（约 ' + round1(pctW) + '% 体重），可能是水分，也可能是缺口过大。' });
+      }
+    }
+    const lw = E.latestWeight(DB.weights, DB.profile);
+    if (DB.entries.length && (!lw || E.daysBetween(lw.date, today) > 9)) {
+      items.push({ tone: 'amber', title: '超过 9 天没有称重', sub: '趋势校准需要体重样本；同一时间、空腹称一次就够。', act: 'open-weight' });
+    }
+    const from = E.addDays(today, -6);
+    const dayP = {};
+    DB.entries.forEach(e => {
+      if (e.date >= from && e.date <= today) dayP[e.date] = (dayP[e.date] || 0) + (Number(e.p) || 0);
+    });
+    const days = Object.keys(dayP);
+    if (days.length >= 4 && t.protein > 0) {
+      const avgP = days.reduce((s, k) => s + dayP[k], 0) / days.length;
+      if (avgP < t.protein * 0.65) {
+        items.push({ tone: 'amber', title: '蛋白质连续偏低', sub: '近 ' + days.length + ' 天平均 ' + Math.round(avgP) + 'g / 目标 ' + t.protein + 'g。蛋白质不足时，缺口更容易来自肌肉。' });
+      }
+    }
+    return items.slice(0, 3);
+  }
+
   function entryMacros(e) {
     if (e.per100 && e.grams) {
       const p = e.per100;
@@ -2542,7 +2884,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const calibSub = ad.status === 'prior'
       ? '需要至少 8 天完整摄入与 5 次体重，才能开始反推你的真实消耗'
       : '已用 ' + ad.validDays + ' 天摄入与 ' + ad.weightDays + ' 次体重反推 · 还需约 ' + ad.daysNeeded + ' 天更稳';
-    const ci = W.cycleInfo(DB.cycle, today);
+    const gp = G.of(DB.profile);
+    const ci = gp.cycleEnabled ? W.cycleInfo(DB.cycle, today) : null;
     const gentle = DB.settings.gentle;
     const statusWord = sum.count === 0 ? '还没开始' : over ? '略高' : remain < budget * 0.12 ? '接近上限' : '在范围内';
     const heroNumber = gentle ? statusWord : fmt(Math.abs(remain));
@@ -2562,6 +2905,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       ['open-exercise', 'run', '记运动'],
       ['open-weight', 'scale', '称重']
     ];
+    const aiReady = !!(DB.settings.ai && DB.settings.ai.key);
+    const guard = safetyGuard(st);
 
     view.innerHTML =
       '<div class="page-head">' +
@@ -2594,6 +2939,23 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '<section class="quick-card">' +
         quickActions.map(q => '<button class="quick" data-act="' + q[0] + '"><span class="q-ic">' + icon(q[1]) + '</span><span class="q-t">' + q[2] + '</span></button>').join('') +
       '</section>' +
+
+      '<section class="coach-card">' +
+        '<button class="coach-entry" data-act="open-coach">' +
+          '<span class="coach-ic">' + icon('chat') + '</span>' +
+          '<span class="coach-main"><span class="t">问账本</span><span class="s">' + (aiReady ? 'AI 教练只看你的记录，回答一句能做的事' : '配置 AI Key 后，可以直接问账本') + '</span></span>' +
+          '<span class="coach-go">' + icon('arrow-r') + '</span>' +
+        '</button>' +
+      '</section>' +
+
+      (guard.length ?
+      '<section class="guard-card">' +
+        guard.map(g => '<div class="guard-item ' + g.tone + '">' +
+          '<span class="guard-dot"></span>' +
+          '<span class="guard-main"><span class="t">' + g.title + '</span><span class="s">' + g.sub + '</span></span>' +
+          (g.act ? '<button class="btn-quiet tiny guard-act" data-act="' + g.act + '">处理</button>' : '') +
+        '</div>').join('') +
+      '</section>' : '') +
 
       (recent.length ?
       '<section class="recent-strip">' +
@@ -2786,7 +3148,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const { t, ad, budget } = st;
     const keys = E.rangeKeys(today, state.range);
     const ins = E.insights(DB.entries, DB.weights, DB.profile, t, ad, today, state.range);
-    const ci = W.cycleInfo(DB.cycle, today);
+    const gp = G.of(DB.profile);
+    const ci = gp.cycleEnabled ? W.cycleInfo(DB.cycle, today) : null;
     if (ci) {
       let extra = '按周期估算，你现在处于' + ci.phaseLabel + '第 ' + ci.day + ' 天。';
       if (ins.delta != null && ins.delta > 0 && (ci.phase === 'luteal' || ci.phase === 'menstrual')) {
@@ -2796,7 +3159,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       }
       ins.narrative.push(extra);
     }
-    const strip = W.cycleStrip(keys, DB.cycle);
+    const strip = gp.cycleEnabled ? W.cycleStrip(keys, DB.cycle) : [];
     const fore = E.forecast(DB.weights, DB.profile.targetWeight, today, Math.min(28, Math.max(state.range, 14)));
     const hasWeights = DB.weights.length > 0;
     const hasEntries = DB.entries.length > 0;
@@ -2977,7 +3340,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const st = snapshot(today);
     if (!st) { view.innerHTML = renderNeedsOnboard(); return; }
     const { t, ad, sum, cycleExcluded } = st;
-    const ci = W.cycleInfo(DB.cycle, today);
+    const gp = G.of(DB.profile);
+    const ci = gp.cycleEnabled ? W.cycleInfo(DB.cycle, today) : null;
     const nt = W.nutrientTargets(DB.profile);
     const todaySupp = DB.supplements.filter(s => s.date === today);
     const nut = W.nutrientTotals(sum.items, todaySupp);
@@ -2998,22 +3362,32 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     }).join('');
 
     let cycleHtml;
-    if (!DB.cycle.enabled) {
+    if (!gp.cycleEnabled) {
+      const rc = gp.recovery;
       cycleHtml = '<div class="card">' +
-        '<div class="row-between"><div><div class="body-card-title">周期感知</div><div class="tiny faint">可选。记录后，经期水分不会被误判成脂肪。</div></div>' +
+        '<div class="row-between"><div><div class="body-card-title">' + rc.title + '</div><div class="tiny faint">' + rc.sub + '</div></div>' +
+        '<span class="badge">训练视角</span></div>' +
+        '<div class="body-empty" style="margin-top:14px">' + rc.empty + '</div>' +
+        '<div class="body-note">' + rc.hint + '</div>' +
+        '<div class="cycle-actions"><button class="btn btn-ghost btn-sm" data-act="open-checkin">' + rc.checkinBtn + '</button><button class="btn btn-ghost btn-sm" data-act="open-measure">' + rc.measureBtn + '</button></div>' +
+      '</div>';
+    } else if (!DB.cycle.enabled) {
+      const cy = gp.cycle;
+      cycleHtml = '<div class="card">' +
+        '<div class="row-between"><div><div class="body-card-title">' + cy.title + '</div><div class="tiny faint">' + cy.offSub + '</div></div>' +
         '<span class="badge">未开启</span></div>' +
-        '<div class="body-empty" style="margin-top:14px">不记录也完全能用。开启后可以看见相位、经期窗口和更干净的体重趋势。<br><button class="btn btn-ghost btn-sm" style="margin-top:10px" data-act="open-cycle">开启周期记录</button></div>' +
+        '<div class="body-empty" style="margin-top:14px">' + cy.offEmpty + '<br><button class="btn btn-ghost btn-sm" style="margin-top:10px" data-act="open-cycle">' + cy.offBtn + '</button></div>' +
       '</div>';
     } else if (!ci) {
-      cycleHtml = '<div class="card"><div class="body-card-title">周期感知</div><div class="body-empty" style="margin-top:10px">经期开始日期还没填，或日期在未来。<button class="btn btn-ghost btn-sm" data-act="open-cycle" style="margin-top:10px;display:block">去设置</button></div></div>';
+      cycleHtml = '<div class="card"><div class="body-card-title">' + gp.cycle.title + '</div><div class="body-empty" style="margin-top:10px">' + gp.cycle.missingCopy + '<button class="btn btn-ghost btn-sm" data-act="open-cycle" style="margin-top:10px;display:block">去设置</button></div></div>';
     } else {
       cycleHtml = '<div class="card">' +
-        '<div class="cycle-main"><div><div class="eyebrow">当前周期</div><div class="cycle-phase-label">' + ci.phaseLabel + '<span>第 ' + ci.day + ' 天</span></div>' +
-          '<div class="cycle-meta">周期 ' + ci.length + ' 天 · 距下次月经约 ' + ci.daysToNext + ' 天</div></div>' +
+        '<div class="cycle-main"><div><div class="eyebrow">' + gp.cycle.currentLabel + '</div><div class="cycle-phase-label">' + ci.phaseLabel + '<span>第 ' + ci.day + ' 天</span></div>' +
+          '<div class="cycle-meta">' + gp.cycle.meta(ci) + '</div></div>' +
           '<div class="cycle-day"><div class="n">' + ci.day + '</div><div class="l">/ ' + ci.length + ' 天</div></div></div>' +
         '<div class="phase-track">' + phaseTrack + '</div>' +
-        '<div class="cycle-actions"><button class="btn btn-ghost btn-sm" data-act="cycle-today">今天来月经了</button><button class="btn btn-ghost btn-sm" data-act="open-cycle">调整周期</button></div>' +
-        (cycleExcluded ? '<div class="tiny faint" style="margin-top:8px">本次代谢校准已排除 ' + cycleExcluded + ' 次经期/黄体末期体重，避免水分干扰。</div>' : '') +
+        '<div class="cycle-actions"><button class="btn btn-ghost btn-sm" data-act="cycle-today">' + gp.cycle.periodBtn + '</button><button class="btn btn-ghost btn-sm" data-act="open-cycle">' + gp.cycle.adjustBtn + '</button></div>' +
+        (cycleExcluded ? '<div class="tiny faint" style="margin-top:8px">' + gp.cycle.excluded(cycleExcluded) + '</div>' : '') +
       '</div>';
     }
 
@@ -3030,7 +3404,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     '</div>';
 
     const measureHtml = '<div class="card">' +
-      '<div class="row-between"><div><div class="body-card-title">围度</div><div class="tiny faint">体重不动时，围度可能已经在变。</div></div><button class="btn btn-ghost btn-sm" data-act="open-measure">记录</button></div>' +
+      '<div class="row-between"><div><div class="body-card-title">围度</div><div class="tiny faint">' + gp.body.measureHint + '</div></div><button class="btn btn-ghost btn-sm" data-act="open-measure">记录</button></div>' +
       (lastM ?
         '<div class="measure-grid">' +
           '<div class="measure-item"><div class="k">腰围</div><div class="v">' + (lastM.waist || '—') + '<small>cm</small></div><div class="delta">' + (delta(lastM.waist, prevM && prevM.waist) == null ? '' : (delta(lastM.waist, prevM.waist) > 0 ? '+' : '') + delta(lastM.waist, prevM.waist)) + '</div></div>' +
@@ -3038,14 +3412,14 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
           '<div class="measure-item"><div class="k">大腿</div><div class="v">' + (lastM.thigh || '—') + '<small>cm</small></div><div class="delta">' + (delta(lastM.thigh, prevM && prevM.thigh) == null ? '' : (delta(lastM.thigh, prevM.thigh) > 0 ? '+' : '') + delta(lastM.thigh, prevM.thigh)) + '</div></div>' +
         '</div>' +
         '<div class="tiny faint" style="margin-top:8px">最近记录 ' + E.relativeDay(lastM.date, today) + (prevM ? ' · 上次 ' + E.relativeDay(prevM.date, today) : '') + ' · 单位 cm</div>'
-        : '<div class="body-empty" style="margin-top:10px">还没有围度记录。不需要每天量，两周一次就够。</div>') +
+        : '<div class="body-empty" style="margin-top:10px">' + gp.body.measureEmpty + '</div>') +
     '</div>';
 
     const nRows = [
-      ['铁', nut.iron, nt.iron, 'mg', '经期失血会提高需求'],
-      ['钙', nut.calcium, nt.calcium, 'mg', '骨骼与围绝经期'],
-      ['维生素 D', nut.vd, nt.vd, 'µg', '与钙一起看'],
-      ['叶酸', nut.folate, nt.folate, 'µg', '绿叶菜与豆类']
+      ['铁', nut.iron, nt.iron, 'mg', gp.nutrients.iron],
+      ['钙', nut.calcium, nt.calcium, 'mg', gp.nutrients.calcium],
+      ['维生素 D', nut.vd, nt.vd, 'µg', gp.nutrients.vd],
+      ['叶酸', nut.folate, nt.folate, 'µg', gp.nutrients.folate]
     ];
     const nutrientHtml = '<div class="card">' +
       '<div class="body-card-title">关键营养 · 今天</div>' +
@@ -3066,17 +3440,17 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     '</div>';
 
     const reportHtml = '<div class="card">' +
-      '<div class="row-between"><div><div class="body-card-title">就诊摘要</div><div class="tiny faint">最近 8 周体重、摄入、周期、症状、围度与补剂。</div></div>' +
+      '<div class="row-between"><div><div class="body-card-title">就诊摘要</div><div class="tiny faint">' + gp.body.reportSub + '</div></div>' +
       '<button class="btn btn-primary btn-sm" data-act="open-report">生成</button></div>' +
       '<div class="body-note">报告在本机生成，可打印或另存为 PDF；不会上传。</div>' +
     '</div>';
 
     view.innerHTML =
-      '<div class="page-head"><div><h1 class="page-title">身体</h1><div class="page-sub">周期、围度、状态与营养，只保存在本机</div></div>' +
+      '<div class="page-head"><div><h1 class="page-title">身体</h1><div class="page-sub">' + gp.body.sub + '</div></div>' +
       '<div class="tiny faint">' + (DB.settings.gentle ? '温和模式' : '完整数字') + '</div></div>' +
       cycleHtml +
       '<div class="section">' + checkinHtml + measureHtml + nutrientHtml + prefsHtml + reportHtml + '</div>' +
-      '<div class="disclaimer">周期相位为估算，不用于避孕或诊断；营养目标为参考值。身体不适请咨询医生。</div>';
+      '<div class="disclaimer">' + gp.body.disclaimer + '</div>';
   }
 
   /* ============================================================
@@ -3093,6 +3467,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const rateText = DB.profile.goal === 'maintain' ? '不设缺口' : (DB.profile.goal === 'gain' ? '+' : '−') + DB.profile.rate + ' kg/周';
     const lw = E.latestWeight(DB.weights, DB.profile);
     const themePref = DB.settings.theme || 'auto';
+    const gp = G.of(DB.profile);
+    const stt = DB.stats || {};
+    const aiRate = stt.aiCalls ? Math.round(stt.aiOk / stt.aiCalls * 100) : 0;
 
     view.innerHTML =
       '<div class="page-head"><div><h1 class="page-title">设置</h1><div class="page-sub">你的账本，只对你负责</div></div></div>' +
@@ -3128,8 +3505,15 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '</div>' +
 
       '<div class="setting-group">' +
-        '<div class="gh"><div class="t">身体与周期</div><div class="s">周期、围度、状态、营养，只保存在本机</div></div>' +
-        settingRow('周期感知', DB.cycle.enabled ? '已开启' : '未开启', DB.cycle.enabled ? '经期水分窗口会从代谢校准中排除' : '可选；不开启不影响任何功能', 'open-cycle', true) +
+        '<div class="gh"><div class="t">AI 教练</div><div class="s">只用你自己的数字回答，不上传整本账本</div></div>' +
+        settingRow('问账本', ai.key ? '可用' : '需要先配置 Key', gp.coachKeyHint, 'open-coach', true) +
+        '<div class="setting-row"><span class="l"><span class="t">发送内容</span><span class="s">' + gp.coachContext + '</span></span></div>' +
+        settingRow('AI 调用统计', stt.aiCalls ? stt.aiOk + ' 成功 · ' + stt.aiFail + ' 失败' : '尚无调用', stt.aiCalls ? '成功率 ' + aiRate + '% · 平均 ' + (stt.aiMs / stt.aiCalls / 1000).toFixed(1) + ' 秒 · 只记数量不记内容' : '识别与问账本都会计入本机统计') +
+      '</div>' +
+
+      '<div class="setting-group">' +
+        '<div class="gh"><div class="t">' + gp.settings.bodyGroupTitle + '</div><div class="s">' + gp.settings.bodyGroupSub + '</div></div>' +
+        (gp.cycleEnabled ? settingRow('周期感知', DB.cycle.enabled ? '已开启' : '未开启', DB.cycle.enabled ? '经期水分窗口会从代谢校准中排除' : '可选；不开启不影响任何功能', 'open-cycle', true) : settingRow('训练与恢复', '在身体页查看', '训练、盐分与水分都会影响体重', 'goto-body', true)) +
         settingRow('今天的状态', DB.checkins.some(c => c.date === E.todayKey()) ? '已记录' : '未记录', '饿、馋、情绪与症状', 'open-checkin', true) +
         settingRow('围度记录', DB.measures.length ? DB.measures.length + ' 条' : '未记录', '腰围 / 臀围 / 大腿，低频记录', 'open-measure', true) +
         settingRow('饮食偏好', W.prefsLabels(DB.settings.prefs).join(' · ') || '未设置', '素食、无乳糖、无麸质、清真', 'open-prefs', true) +
@@ -3138,9 +3522,25 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '</div>' +
 
       '<div class="setting-group">' +
+        '<div class="gh"><div class="t">隐私</div><div class="s">PIN 是遮挡，不是加密</div></div>' +
+        settingRow('PIN 锁', DB.settings.pin.on ? '已开启' : '未开启', DB.settings.pin.on ? '打开应用或离开 5 分钟后需要输入' : '给随手打开的人加一道门', 'open-pin', true) +
+        (DB.settings.pin.on ? '<button class="setting-row" data-act="lock-now"><span class="l"><span class="t">立即锁定</span><span class="s">现在遮住屏幕，回到 PIN 界面</span></span><span class="r">' + icon('lock') + '</span></button>' : '') +
+        '<div class="setting-row"><span class="l"><span class="t">说明</span><span class="s">PIN 只保存在本机，用于遮挡；它不是加密，清除浏览器数据会连同账本一起清除。</span></span></div>' +
+      '</div>' +
+
+      '<div class="setting-group">' +
+        '<div class="gh"><div class="t">最近操作</div><div class="s">删除可以在本机撤销；日志只保留最近 30 条</div></div>' +
+        (DB.logs.length ? DB.logs.slice(0, 5).map(x =>
+          '<div class="setting-row"><span class="l"><span class="t">' + esc(x.text) + '</span><span class="s">' + logTime(x.at) + '</span></span></div>').join('')
+          : '<div class="setting-row"><span class="l"><span class="t">还没有操作记录</span><span class="s">删除与撤销会记录在这里</span></span></div>') +
+        (lastUndoable() ? '<button class="setting-row" data-act="undo-last"><span class="l"><span class="t">撤销上一步删除</span><span class="s">' + esc(lastUndoable().text) + '</span></span><span class="r">' + icon('arrow-r') + '</span></button>' : '') +
+      '</div>' +
+
+      '<div class="setting-group">' +
         '<div class="gh"><div class="t">数据</div><div class="s">你的数据属于你。随时全量导出，或彻底删除</div></div>' +
         '<button class="setting-row" data-act="export-json"><span class="l"><span class="t">导出完整备份（JSON）</span><span class="s">包含记录、体重、运动、自定义食物与设置（不含 API Key）</span></span><span class="r">' + icon('download') + '</span></button>' +
         '<button class="setting-row" data-act="export-csv"><span class="l"><span class="t">导出明细（CSV）</span><span class="s">可用 Excel 打开或做自己的分析</span></span><span class="r">' + icon('download') + '</span></button>' +
+        '<button class="setting-row" data-act="export-health-csv"><span class="l"><span class="t">导出健康数据（CSV）</span><span class="s">体重、围度、状态、补剂、饮水、运动、饮食合成一张长表，可直接给医生或教练</span></span><span class="r">' + icon('download') + '</span></button>' +
         '<button class="setting-row" data-act="import-json"><span class="l"><span class="t">导入备份</span><span class="s">支持本应用备份，也兼容旧版「轻卡日记」的 JSON</span></span><span class="r">' + icon('upload') + '</span></button>' +
         '<button class="setting-row" data-act="load-demo"><span class="l"><span class="t">载入示例账本</span><span class="s">用 21 天假数据体验校准与复盘（会覆盖当前数据）</span></span><span class="r">' + icon('spark') + '</span></button>' +
         '<button class="setting-row danger" data-act="clear-data"><span class="l"><span class="t">清除本机全部数据</span><span class="s">不可恢复。建议先导出备份</span></span><span class="r">' + icon('trash') + '</span></button>' +
@@ -3156,7 +3556,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
       '<div class="setting-group">' +
         '<div class="gh"><div class="t">关于</div></div>' +
-        '<div class="setting-row"><span class="l"><span class="t">能量账本 v3.0</span><span class="s">本地优先 · 无账号 · 无云端 · 无社交</span></span><span class="r tiny faint">ENERGY LEDGER</span></div>' +
+        '<div class="setting-row"><span class="l"><span class="t">能量账本 v3.1</span><span class="s">本地优先 · 无账号 · 无云端 · 无社交</span></span><span class="r tiny faint">ENERGY LEDGER</span></div>' +
         settingRow('运行模式', STATIC_MODE ? '静态网页' : '本机服务', STATIC_MODE ? '可部署到任意静态主机，无后端依赖' : '带本机 AI 转发与离线缓存') +
         '<div class="setting-row"><span class="l"><span class="t">数据与免责声明</span><span class="s">所有数值均为估算，不构成医疗或营养处方。孕期、哺乳期、慢性病人群请咨询专业人士。</span></span></div>' +
         '<div class="setting-row"><span class="l"><span class="t">存储状态</span><span class="s">' + (storageOK ? 'localStorage 正常 · 数据只在此浏览器' : '本地存储受限，请导出备份') + '</span><span class="r tiny ' + (storageOK ? 'faint' : 'red') + '">' + (storageOK ? '正常' : '异常') + '</span></div>' +
@@ -3361,18 +3761,29 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   function saveMeal() {
     const sd = state.sheetData;
     if (!sd || !sd.cart.length) return;
-    let total = 0;
-    sd.cart.forEach(it => {
-      const cal = it.food.kcal * it.grams / 100;
-      total += cal;
-      const e = makeEntry(it.food, it.grams, sd.meal, sd.date, 'lib', 'med');
-      DB.entries.push(e);
-    });
-    saveDB();
-    const label = E.mealLabel(sd.meal) + ' · ' + Math.round(total) + ' kcal';
-    closeSheet();
-    renderActive();
-    toast('已记入' + label);
+    const doSave = () => {
+      let total = 0;
+      sd.cart.forEach(it => {
+        const cal = it.food.kcal * it.grams / 100;
+        total += cal;
+        const e = makeEntry(it.food, it.grams, sd.meal, sd.date, 'lib', 'med');
+        DB.entries.push(e);
+      });
+      saveDB();
+      const label = E.mealLabel(sd.meal) + ' · ' + Math.round(total) + ' kcal';
+      closeSheet();
+      renderActive();
+      toast('已记入' + label);
+    };
+    const dupNames = sd.cart.map(it => it.food.name).filter(n =>
+      DB.entries.some(e => e.date === sd.date && e.meal === sd.meal && e.name === n));
+    if (dupNames.length) {
+      confirmSheet('这一餐已有相同食物',
+        '「' + dupNames.slice(0, 3).join('、') + '」已经记在' + E.mealLabel(sd.meal) + '。再记一遍会变成两份。',
+        '仍然记入').then(ok => { if (ok) doSave(); });
+      return;
+    }
+    doSave();
   }
 
   function openManualSheet() {
@@ -3580,14 +3991,24 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!isFinite(kg) || kg < 25 || kg > 300) { toast('请输入 25–300 之间的体重'); return; }
     const rounded = Math.round(kg * 10) / 10;
     const idx = DB.weights.findIndex(w => w.date === sd.date);
-    if (idx > -1) DB.weights[idx].kg = rounded;
-    else DB.weights.push({ date: sd.date, kg: rounded });
-    const lw = E.latestWeight(DB.weights, DB.profile);
-    DB.profile.weight = lw ? lw.kg : rounded;
-    saveDB();
-    closeSheet();
-    renderActive();
-    toast('已记录 ' + rounded + ' kg · 趋势会吸收这次波动');
+    const apply = () => {
+      if (idx > -1) DB.weights[idx].kg = rounded;
+      else DB.weights.push({ date: sd.date, kg: rounded });
+      const lw = E.latestWeight(DB.weights, DB.profile);
+      DB.profile.weight = lw ? lw.kg : rounded;
+      saveDB();
+      closeSheet();
+      renderActive();
+      toast('已记录 ' + rounded + ' kg · 趋势会吸收这次波动');
+    };
+    if (idx > -1 && Math.abs(DB.weights[idx].kg - rounded) >= 0.1) {
+      const old = DB.weights[idx].kg;
+      confirmSheet('这一天已有体重记录',
+        '已有 <b>' + old + ' kg</b>，要替换成 <b>' + rounded + ' kg</b> 吗？',
+        '替换').then(ok => { if (ok) apply(); });
+      return;
+    }
+    apply();
   }
 
   /* ============================================================
@@ -3701,7 +4122,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     return cfg;
   }
 
-  async function callAI(opts) {
+  async function callAIRequest(opts) {
     const baseURL = String(opts.baseURL || '').replace(/\/+$/, '');
     if (STATIC_MODE) {
       const content = [{ type: 'text', text: opts.prompt }];
@@ -3738,6 +4159,18 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const raw = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(aiErrorMessage(raw, res.status));
     return raw;
+  }
+
+  async function callAI(opts) {
+    const t0 = Date.now();
+    try {
+      const raw = await callAIRequest(opts);
+      recordAI(true, Date.now() - t0);
+      return raw;
+    } catch (err) {
+      recordAI(false, Date.now() - t0);
+      throw err;
+    }
   }
 
   async function testAIConnection() {
@@ -3861,9 +4294,277 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   }
 
   /* ============================================================
+     v3.1 · 问账本（AI 教练）
+     ============================================================ */
+  function coachFacts() {
+    const today = E.todayKey();
+    const st = snapshot(today);
+    if (!st) return null;
+    const { t, ad, budget, sum, remain } = st;
+    const from = E.addDays(today, -6);
+    const dayMap = {};
+    let exMinutes = 0;
+    DB.exercises.forEach(x => {
+      if (x.date >= from && x.date <= today) exMinutes += Number(x.minutes) || 0;
+    });
+    DB.entries.forEach(e => {
+      if (e.date >= from && e.date <= today) dayMap[e.date] = (dayMap[e.date] || 0) + (Number(e.kcal) || 0);
+    });
+    const days = Object.keys(dayMap);
+    const avgIntake = days.length ? Math.round(days.reduce((s, k) => s + dayMap[k], 0) / days.length) : 0;
+    const wFrom = E.addDays(today, -7);
+    const wOld = DB.weights.filter(w => w.date >= wFrom && w.date <= today).sort((a, b) => (a.date < b.date ? -1 : 1))[0] || null;
+    const wNew = E.latestWeight(DB.weights, DB.profile);
+    const gp = G.of(DB.profile);
+    const ci = gp.cycleEnabled ? W.cycleInfo(DB.cycle, today) : null;
+    const check = DB.checkins.filter(c => c.date === today).pop() || null;
+    const todayEntries = DB.entries.filter(e => e.date === today);
+    const todaySupp = DB.supplements.filter(s => s.date === today);
+    const nut = W.nutrientTotals(todayEntries, todaySupp);
+    const nt = W.nutrientTargets(DB.profile);
+    return { today, t, ad, budget, sum, remain, avgIntake, days: days.length, wOld, wNew, ci, check, nut, nt, exMinutes };
+  }
+
+  function coachContextText(f) {
+    const lines = [];
+    lines.push('[今日] ' + f.today + ' 预算 ' + fmt(f.budget) + ' kcal；已摄入 ' + fmt(f.sum.kcal) + ' kcal；剩余 ' + fmt(f.remain) + ' kcal；蛋白 ' + Math.round(f.sum.p) + '/' + f.t.protein + 'g；纤维 ' + Math.round(f.sum.fib) + '/' + f.t.fiber + 'g');
+    lines.push('[近7天] 有记录 ' + f.days + ' 天，平均摄入 ' + fmt(f.avgIntake) + ' kcal；运动 ' + f.exMinutes + ' 分钟');
+    if (f.wOld && f.wNew) lines.push('[体重] ' + f.wOld.date + ' ' + f.wOld.kg + ' kg → 最近 ' + f.wNew.kg + ' kg；趋势值 ' + (f.ad.trendWeight != null ? f.ad.trendWeight : '—') + ' kg');
+    else if (f.wNew) lines.push('[体重] 最近 ' + f.wNew.kg + ' kg；趋势值 ' + (f.ad.trendWeight != null ? f.ad.trendWeight : '—') + ' kg');
+    lines.push('[代谢] 采用消耗 ' + fmt(f.ad.tdee) + ' ± ' + fmt(f.ad.band) + ' kcal，校准度 ' + f.ad.percent + '%');
+    if (f.ci) lines.push('[周期] ' + f.ci.phaseLabel + ' 第 ' + f.ci.day + ' 天，距下次约 ' + f.ci.daysToNext + ' 天');
+    if (f.check) lines.push('[状态] 饿 ' + f.check.hunger + '/5，馋 ' + f.check.craving + '/5，情绪 ' + f.check.mood + '/5' + (f.check.symptoms.length ? '，症状 ' + f.check.symptoms.join('、') : ''));
+    lines.push('[关键营养] 铁 ' + f.nut.iron + '/' + f.nt.iron + 'mg，钙 ' + f.nut.calcium + '/' + f.nt.calcium + 'mg，维D ' + f.nut.vd + '/' + f.nt.vd + 'μg，叶酸 ' + f.nut.folate + '/' + f.nt.folate + 'μg');
+    const meals = E.MEALS.map(m => {
+      const items = (f.sum.byMeal[m[0]] && f.sum.byMeal[m[0]].items) || [];
+      if (!items.length) return null;
+      return m[1] + ' ' + items.slice(0, 3).map(i => i.name + ' ' + Math.round(i.kcal) + 'kcal').join('、');
+    }).filter(Boolean);
+    if (meals.length) lines.push('[今天的餐] ' + meals.join('；'));
+    return lines.join('\n');
+  }
+
+  function coachPrompt(question) {
+    const f = coachFacts();
+    if (!f) return null;
+    return '你是「能量账本」里的私人饮食教练。用户只要一个能马上执行的建议。\n' +
+      '规则：1) 只能使用下面给出的数字，不要编造；2) 先给结论，再给一个具体到食物和份量的建议；3) 总共不超过 3 句话；4) 不做医疗诊断，不劝节食，不用羞辱性语气；5) 数据不足就直说；6) 只输出纯文本，不要 Markdown、不要列表符号。\n\n' +
+      coachContextText(f) + '\n\n[用户问题] ' + question;
+  }
+
+  function renderCoachMessages() {
+    const c = state.coach;
+    if (!c || !c.messages.length) return '<div class="coach-empty">还没有对话。挑一个问题，或自己写一句。</div>';
+    return c.messages.map(m =>
+      '<div class="coach-msg ' + (m.role === 'user' ? 'user' : 'ai') + (m.pending ? ' pending' : '') + '">' + esc(m.text) +
+      (m.retry ? '<button class="coach-retry" data-act="coach-retry">重试</button>' : '') +
+      '</div>'
+    ).join('');
+  }
+
+  function openCoachSheet() {
+    if (!state.coach) state.coach = { messages: [] };
+    const cfg = DB.settings.ai || {};
+    const gp = G.of(DB.profile);
+    const suggestions = gp.coachSuggestions;
+    const f = coachFacts();
+    const ctx = f ? '<div class="coach-ctx">' +
+      '<span>剩余 ' + fmt(f.remain) + ' kcal</span>' +
+      '<span>蛋白 ' + Math.round(f.sum.p) + '/' + f.t.protein + 'g</span>' +
+      '<span>7 天均 ' + fmt(f.avgIntake) + ' kcal</span>' +
+      (f.ci ? '<span>' + esc(f.ci.phaseLabel) + '</span>' : '') +
+      '</div>' : '';
+    if (!cfg.key) {
+      openSheet(
+        sheetHead('问账本', 'AI 教练 · 只看你自己的数字') +
+        '<div class="sheet-body">' + ctx +
+          '<div class="notebox">问账本需要一个 AI Key。它只会把下面这段数字摘要和你的问题发给你选择的模型；账本本身不上传记录。</div>' +
+          '<div class="row" style="margin-top:12px"><button class="btn btn-ghost" data-act="close-sheet">稍后</button><button class="btn btn-primary" style="flex:1" data-act="coach-config">去配置 AI</button></div>' +
+        '</div>',
+        'coach'
+      );
+      return;
+    }
+    openSheet(
+      sheetHead('问账本', 'AI 教练 · 只看你自己的数字', '<button class="btn-quiet tiny" data-act="coach-clear" style="margin-right:4px;color:var(--ink-3)">清空对话</button>') +
+      '<div class="sheet-body coach-sheet" id="coachBody">' + ctx +
+        '<div class="coach-msgs" id="coachMsgs">' + renderCoachMessages() + '</div>' +
+        '<div class="chip-row">' + suggestions.map(q =>
+          '<button class="chip" data-act="coach-suggest" data-q="' + esc(q) + '">' + esc(q) + '</button>').join('') + '</div>' +
+      '</div>' +
+      '<div class="sheet-foot" style="display:block"><div class="coach-input">' +
+        '<textarea class="input" id="coachInput" rows="2" maxlength="300" placeholder="问一句，例如：今晚吃什么能补够蛋白？"></textarea>' +
+        '<button class="coach-send" data-act="coach-send" id="coachSend">发送</button>' +
+      '</div><div class="coach-hint">问题与数字摘要会发送给你配置的模型服务商；回答是估算，不是医疗建议。</div></div>',
+      'coach'
+    );
+  }
+
+  function updateCoachView() {
+    const box = $('#coachMsgs');
+    if (!box) return;
+    box.innerHTML = renderCoachMessages();
+    const last = box.lastElementChild;
+    if (last && last.scrollIntoView) last.scrollIntoView({ block: 'nearest' });
+    const send = $('#coachSend');
+    if (send) send.disabled = !!state.coachBusy;
+  }
+
+  async function sendCoachQuestion(q) {
+    const input = $('#coachInput');
+    const text = String(q || (input && input.value) || '').trim();
+    if (!text) { toast('先写一句问题'); return; }
+    const cfg = DB.settings.ai || {};
+    if (!cfg.key) { toast('先配置 AI Key'); return; }
+    if (state.coachBusy) return;
+    if (!state.coach) state.coach = { messages: [] };
+    state.coachBusy = true;
+    state.coachLast = text;
+    state.coach.messages.push({ role: 'user', text: text });
+    state.coach.messages.push({ role: 'ai', text: '正在读你的账本…', pending: true });
+    if (input) input.value = '';
+    updateCoachView();
+    const prompt = coachPrompt(text) || text;
+    try {
+      const raw = await callAI({ baseURL: cfg.baseURL, key: cfg.key, model: cfg.model, prompt: prompt, image: null });
+      const content = raw.choices && raw.choices[0] && raw.choices[0].message && raw.choices[0].message.content;
+      state.coach.messages.pop();
+      state.coach.messages.push({ role: 'ai', text: String(content || '模型没有返回内容').trim().slice(0, 1200) });
+    } catch (err) {
+      state.coach.messages.pop();
+      state.coach.messages.push({ role: 'ai', text: '请求失败：' + (err.message || '网络异常'), retry: true });
+    } finally {
+      state.coachBusy = false;
+      updateCoachView();
+    }
+  }
+
+  /* ============================================================
+     v3.1 · PIN 锁 / 健康数据
+     ============================================================ */
+  function pinHash(pin) {
+    let h = 2166136261;
+    const s = 'energy-ledger:' + String(pin);
+    for (let i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0).toString(36);
+  }
+
+  function openPinSheet() {
+    const p = DB.settings.pin || {};
+    state.sheetData = { type: 'pin' };
+    const body = p.on
+      ? '<div class="sheet-body">' +
+          '<div class="field"><label>新的 PIN（4–8 位数字）</label><input class="input input-num" id="pinNew" inputmode="numeric" maxlength="8" placeholder="留空则不修改"></div>' +
+          '<div class="notebox">PIN 只用来遮挡随手打开的人，不是加密。清除浏览器数据或换设备都不会保留它。</div>' +
+          '<button class="btn btn-ghost btn-block" style="margin-top:12px;color:var(--ink-3)" data-act="pin-off">关闭 PIN 锁</button>' +
+        '</div>' +
+        '<div class="sheet-foot"><button class="btn btn-ghost" data-act="close-sheet">取消</button><button class="btn btn-primary" style="flex:1" data-act="pin-save">保存</button></div>'
+      : '<div class="sheet-body">' +
+          '<div class="field"><label>设置 PIN（4–8 位数字）</label><input class="input input-num" id="pinNew" inputmode="numeric" maxlength="8" placeholder="例如 2468"></div>' +
+          '<div class="notebox">PIN 只用来遮挡随手打开的人，不是加密。忘记 PIN 只能清除浏览器数据重置，账本也会一起丢失，建议先导出备份。</div>' +
+        '</div>' +
+        '<div class="sheet-foot"><button class="btn btn-ghost" data-act="close-sheet">取消</button><button class="btn btn-primary" style="flex:1" data-act="pin-save">开启 PIN 锁</button></div>';
+    openSheet(sheetHead('PIN 锁', '本机遮挡 · 不是加密') + body, 'pin');
+  }
+
+  function savePin() {
+    const input = $('#pinNew');
+    const val = input ? input.value.trim() : '';
+    if (DB.settings.pin.on && !val) { closeSheet(); toast('PIN 未修改'); return; }
+    if (!/^\d{4,8}$/.test(val)) { toast('PIN 需要 4–8 位数字'); return; }
+    DB.settings.pin = { on: true, hash: pinHash(val) };
+    saveDB();
+    closeSheet();
+    renderActive();
+    toast('PIN 锁已开启');
+  }
+
+  function disablePin() {
+    confirmSheet('关闭 PIN 锁？', '之后打开账本不再需要输入 PIN。', '关闭', true).then(ok => {
+      if (!ok) return;
+      DB.settings.pin = { on: false, hash: '' };
+      saveDB();
+      closeSheet();
+      renderActive();
+      toast('PIN 锁已关闭');
+    });
+  }
+
+  function showLock() {
+    if (!DB.settings.pin.on || !DB.settings.pin.hash) return;
+    if ($('#lockRoot')) return;
+    const el = document.createElement('div');
+    el.id = 'lockRoot';
+    el.innerHTML = '<div class="lock-overlay"><div class="lock-box" id="lockBox">' +
+      '<div class="lock-mark">' + icon('lock') + '</div>' +
+      '<div class="lock-title">能量账本</div>' +
+      '<div class="lock-sub">输入 PIN 解锁<br>数据仍只保存在这台设备</div>' +
+      '<input class="lock-input" id="lockPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="••••">' +
+      '<div class="lock-err" id="lockErr"></div>' +
+      '<button class="btn btn-primary btn-block" style="margin-top:6px" data-act="unlock">解锁</button>' +
+      '</div></div>';
+    document.body.appendChild(el);
+    document.documentElement.style.overflow = 'hidden';
+    const i = $('#lockPin');
+    if (i) i.focus();
+  }
+
+  function tryUnlock() {
+    const i = $('#lockPin');
+    const err = $('#lockErr');
+    const val = i ? i.value.trim() : '';
+    if (pinHash(val) === DB.settings.pin.hash) {
+      const root = $('#lockRoot');
+      if (root) root.remove();
+      document.documentElement.style.overflow = '';
+      renderActive();
+      return;
+    }
+    if (err) err.textContent = 'PIN 不正确';
+    const box = $('#lockBox');
+    if (box) { box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake'); }
+    if (i) { i.value = ''; i.focus(); }
+  }
+
+  function lockNow() {
+    if (!DB.settings.pin.on) { toast('还没有设置 PIN'); return; }
+    closeSheet();
+    showLock();
+  }
+
+  function exportHealthCSV() {
+    const rows = [['日期', '类型', '项目', '数值', '单位', '备注']];
+    const push = (d, t, k, v, u, n) => { if (d) rows.push([d, t, k, v, u || '', n || '']); };
+    DB.weights.forEach(w => push(w.date, '体重', '体重', w.kg, 'kg', ''));
+    DB.measures.forEach(m => {
+      if (m.waist) push(m.date, '围度', '腰围', m.waist, 'cm', m.note);
+      if (m.hip) push(m.date, '围度', '臀围', m.hip, 'cm', m.note);
+      if (m.thigh) push(m.date, '围度', '大腿', m.thigh, 'cm', m.note);
+    });
+    DB.checkins.forEach(c => {
+      push(c.date, '状态', '饥饿', c.hunger, '1-5', '');
+      push(c.date, '状态', '馋', c.craving, '1-5', c.symptoms.join('、'));
+      push(c.date, '状态', '情绪', c.mood, '1-5', c.note);
+    });
+    DB.supplements.forEach(s => push(s.date, '补剂', s.name, s.iron || s.calcium || 0, 'mg', s.note));
+    Object.keys(DB.water).forEach(k => push(k, '饮水', '饮水', DB.water[k], 'ml', ''));
+    DB.exercises.forEach(x => push(x.date, '运动', x.name, x.minutes, '分钟', Math.round(Number(x.kcal) || 0) + ' kcal'));
+    DB.entries.forEach(e => push(e.date, '饮食', e.name, Math.round(Number(e.kcal) || 0), 'kcal', (e.grams || '') + 'g'));
+    if (rows.length === 1) { toast('还没有可导出的数据'); return; }
+    rows.sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+    const csv = '\uFEFF' + rows.map(r => r.map(v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+    downloadFile('能量账本-健康数据-' + dateStamp() + '.csv', csv, 'text/csv;charset=utf-8');
+    toast('健康数据已导出');
+  }
+
+  /* ============================================================
      周期 / 围度 / 状态 / 补剂 / 偏好 / 报告
      ============================================================ */
   function openCycleSheet() {
+    if (!G.of(DB.profile).cycleEnabled) { toast('当前档案使用男性版，不做周期记录'); return; }
     const c = DB.cycle || {};
     state.sheetData = { type: 'cycle' };
     openSheet(
@@ -3969,10 +4670,11 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
   function openCheckinSheet() {
     const today = E.todayKey();
+    const gp = G.of(DB.profile);
     const existing = DB.checkins.find(c => c.date === today);
     const c = existing || { hunger: 3, craving: 3, mood: 3, symptoms: [], note: '' };
     state.sheetData = { type: 'checkin', symptoms: c.symptoms.slice() };
-    const symptoms = ['腹痛', '腹胀', '头痛', '疲劳', '睡眠差', '情绪波动', '腰酸', '乳房胀痛'];
+    const symptoms = gp.body.symptoms;
     openSheet(
       sheetHead('今天的状态', '30 秒；不给饿和馋贴好坏标签') +
       '<div class="sheet-body">' +
@@ -3982,7 +4684,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         '<div class="field" style="margin-top:16px"><label>身体感受（可多选）</label><div class="chip-row symptom-chips">' + symptoms.map(s =>
           '<button class="chip ' + (state.sheetData.symptoms.indexOf(s) > -1 ? 'on' : '') + '" data-act="toggle-symptom" data-v="' + s + '">' + s + '</button>').join('') + '</div></div>' +
         '<div class="field"><label>想补一句（可选）</label><textarea class="input" id="ckNote" rows="2" maxlength="80" placeholder="今天发生了什么？">' + esc(c.note || '') + '</textarea></div>' +
-        '<div class="notebox">这些记录只用于帮你看见模式：黄体期更馋、睡不好更想吃、压力大更想甜食。它们不是意志力问题。</div>' +
+        '<div class="notebox">' + gp.body.checkinNote + '</div>' +
       '</div>' +
       '<div class="sheet-foot"><button class="btn btn-ghost" data-act="close-sheet">取消</button><button class="btn btn-primary" style="flex:1" data-act="save-checkin">保存</button></div>',
       'checkin'
@@ -4038,10 +4740,12 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   }
 
   function deleteSupplement(id) {
+    const item = DB.supplements.find(s => s.id === id);
+    if (item) logChange('删除补剂「' + item.name + '」', { kind: 'supplement', item: item });
     DB.supplements = DB.supplements.filter(s => s.id !== id);
     saveDB();
     renderActive();
-    toast('已删除这条补剂');
+    toast('已删除这条补剂，可在设置里撤销');
   }
 
   function openPrefsSheet() {
@@ -4080,8 +4784,10 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!st) { toast('还没有足够数据'); return; }
     const html = W.reportHTML({
       profile: DB.profile,
+      gender: G.of(DB.profile),
       entries: DB.entries,
       weights: DB.weights,
+      exercises: DB.exercises,
       cycle: DB.cycle,
       measures: DB.measures,
       checkins: DB.checkins,
@@ -4408,11 +5114,12 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   function exportJSON() {
     if (!DB.profile) { toast('还没有可导出的数据'); return; }
     const payload = {
-      version: 2, app: 'energy-ledger', exportedAt: new Date().toISOString(),
+      version: 3, app: 'energy-ledger', exportedAt: new Date().toISOString(),
       profile: DB.profile,
-      settings: { theme: DB.settings.theme, ai: { baseURL: DB.settings.ai.baseURL, model: DB.settings.ai.model } },
+      settings: { theme: DB.settings.theme, gentle: DB.settings.gentle, prefs: DB.settings.prefs, ai: { baseURL: DB.settings.ai.baseURL, model: DB.settings.ai.model } },
       entries: DB.entries, weights: DB.weights, exercises: DB.exercises,
-      foods: DB.foods, combos: DB.combos, water: DB.water, notes: DB.notes
+      foods: DB.foods, combos: DB.combos, water: DB.water, notes: DB.notes,
+      cycle: DB.cycle, measures: DB.measures, checkins: DB.checkins, supplements: DB.supplements
     };
     downloadFile('能量账本-备份-' + dateStamp() + '.json', JSON.stringify(payload, null, 2), 'application/json');
     toast('备份已导出');
@@ -4494,6 +5201,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
             profile: data.profile, entries: data.entries, weights: data.weights || [],
             exercises: data.exercises || [], foods: data.foods || [], combos: data.combos || [],
             water: data.water || {}, notes: data.notes || {}, settings: data.settings || {},
+            cycle: data.cycle || null, measures: data.measures || [],
+            checkins: data.checkins || [], supplements: data.supplements || [],
             counts: { entries: data.entries.length, weights: (data.weights || []).length, exercises: (data.exercises || []).length }
           };
         } else {
@@ -4508,15 +5217,20 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         const keepKey = (DB.settings.ai && DB.settings.ai.key) || '';
         const backupSettings = payload.settings || {};
         DB = normalizeDB({
-          version: 2, createdAt: Date.now(), onboarded: true,
+          version: 3, createdAt: Date.now(), onboarded: true,
           profile: payload.profile,
           settings: {
             theme: backupSettings.theme || DB.settings.theme,
+            gentle: !!backupSettings.gentle,
+            prefs: backupSettings.prefs || DB.settings.prefs,
+            pin: DB.settings.pin,
             ai: Object.assign({}, DB.settings.ai, backupSettings.ai || {}, { key: keepKey }),
             demo: false
           },
           entries: payload.entries, weights: payload.weights, exercises: payload.exercises,
-          foods: payload.foods, combos: payload.combos, water: payload.water, notes: payload.notes
+          foods: payload.foods, combos: payload.combos, water: payload.water, notes: payload.notes,
+          cycle: payload.cycle || DB.cycle, measures: payload.measures,
+          checkins: payload.checkins, supplements: payload.supplements
         });
         saveDB();
         state.recordDate = E.todayKey();
@@ -4548,7 +5262,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
      引导
      ============================================================ */
   function startOnboarding() {
-    state.ob = { step: 1, sex: null, age: '', height: '', weight: '', targetWeight: '', activity: 'light', goal: 'lose', rate: 0.25 };
+    state.ob = { step: 1, sex: 'female', age: '', height: '', weight: '', targetWeight: '', activity: 'light', goal: 'lose', rate: 0.25 };
     renderOnboarding();
   }
   function renderOnboarding() {
@@ -4563,7 +5277,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         '<h1 class="ob-title">先认识你的身体</h1>' +
         '<p class="ob-sub">这不是体检，只需要四个数字。它们只用来给账本一个起点；两周后，你自己的体重变化会替代这些猜测。</p>' +
         '<div class="field"><label>性别</label><div class="seg">' + [['female', '女'], ['male', '男']].map(x =>
-          '<button data-ob="sex" data-v="' + x[0] + '" class="' + (ob.sex === x[0] ? 'on' : '') + '">' + x[1] + '</button>').join('') + '</div></div>' +
+          '<button data-ob="sex" data-v="' + x[0] + '" class="' + (ob.sex === x[0] ? 'on' : '') + '">' + x[1] + '</button>').join('') + '</div>' +
+          '<div class="tiny faint" style="margin-top:6px">默认女性版；切换后身体页、症状与营养提示会换成对应版本，之后可在设置里修改。</div></div>' +
         '<div class="form-grid-3">' +
           '<div class="field"><label>年龄</label><input class="input input-num" id="obAge" type="number" min="12" max="90" value="' + ob.age + '" placeholder="29"></div>' +
           '<div class="field"><label>身高 cm</label><input class="input input-num" id="obHeight" type="number" min="120" max="220" value="' + ob.height + '" placeholder="165"></div>' +
@@ -4692,6 +5407,23 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       case 'open-exercise': openExerciseSheet(); break;
       case 'open-weight': openWeightSheet(); break;
       case 'open-ai': openAISheet(); break;
+      case 'open-coach': openCoachSheet(); break;
+      case 'coach-send': sendCoachQuestion(); break;
+      case 'coach-suggest': sendCoachQuestion(el.dataset.q); break;
+      case 'coach-clear': {
+        if (state.coach) state.coach.messages = [];
+        updateCoachView();
+        break;
+      }
+      case 'coach-config': openAISheet(); break;
+      case 'coach-retry': if (state.coachLast) sendCoachQuestion(state.coachLast); break;
+      case 'open-pin': openPinSheet(); break;
+      case 'pin-save': savePin(); break;
+      case 'pin-off': disablePin(); break;
+      case 'unlock': tryUnlock(); break;
+      case 'lock-now': lockNow(); break;
+      case 'undo-last': undoLast(); break;
+      case 'export-health-csv': exportHealthCSV(); break;
       case 'open-profile': openProfileSheet(); break;
       case 'open-engine': openEngineSheet(); break;
       case 'open-library': openLibrarySheet(); break;
@@ -4896,6 +5628,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       }
       case 'save-exercise': saveExercise(); break;
       case 'del-exercise': {
+        const item = DB.exercises.find(x => x.id === el.dataset.id);
+        if (item) logChange('删除运动「' + item.name + '」', { kind: 'exercise', item: item });
         DB.exercises = DB.exercises.filter(x => x.id !== el.dataset.id);
         saveDB();
         renderExToday();
@@ -4923,6 +5657,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       case 'add-custom-food': addCustomFood(); break;
       case 'del-custom-food': confirmSheet('删除这个自定义食物？', '已经记录的账目不会受影响。', '删除', true).then(ok => {
         if (!ok) return;
+        const item = DB.foods.find(f => f.id === el.dataset.id);
+        if (item) logChange('删除自定义食物「' + item.name + '」', { kind: 'food', item: item });
         DB.foods = DB.foods.filter(f => f.id !== el.dataset.id);
         saveDB();
         renderLibrarySheet();
@@ -4930,6 +5666,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       }); break;
       case 'del-combo': confirmSheet('删除这个组合？', '组合只是快捷方式，不影响已经记录的账目。', '删除', true).then(ok => {
         if (!ok) return;
+        const item = DB.combos.find(c => c.id === el.dataset.id);
+        if (item) logChange('删除组合「' + item.name + '」', { kind: 'combo', item: item });
         DB.combos = DB.combos.filter(c => c.id !== el.dataset.id);
         saveDB();
         renderLibrarySheet();
@@ -4984,8 +5722,10 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   }
 
   function deleteEntry(id) {
-    confirmSheet('删除这一笔？', '这条食物记录会从账本中移除，无法撤销。', '删除', true).then(ok => {
+    confirmSheet('删除这一笔？', '这条食物记录会从账本中移除；之后可以在设置里撤销。', '删除', true).then(ok => {
       if (!ok) return;
+      const item = DB.entries.find(e => e.id === id);
+      if (item) logChange('删除记录「' + item.name + '」', { kind: 'entry', item: item });
       DB.entries = DB.entries.filter(e => e.id !== id);
       saveDB();
       closeSheet();
@@ -5160,6 +5900,16 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   });
 
   document.addEventListener('keydown', e => {
+    const t = e.target;
+    if (t && t.id === 'lockPin') {
+      if (e.key === 'Enter') { e.preventDefault(); tryUnlock(); }
+      return;
+    }
+    if (t && t.id === 'coachInput' && e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+      e.preventDefault();
+      sendCoachQuestion();
+      return;
+    }
     if (e.key === 'Escape') {
       if (miniState) { miniClose(false); return; }
       if ($('#sheetRoot') && $('#sheetRoot').innerHTML) { closeSheet(); }
@@ -5175,6 +5925,13 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     updateRail();
     renderActive();
     if (!DB.profile) startOnboarding();
+    if (DB.settings.pin.on && DB.settings.pin.hash) showLock();
+    let hiddenAt = 0;
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { hiddenAt = Date.now(); return; }
+      if (hiddenAt && DB.settings.pin.on && Date.now() - hiddenAt > 5 * 60 * 1000) showLock();
+      hiddenAt = 0;
+    });
     if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
       if (document.querySelector('meta[name="ledger-standalone"]')) {
         navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister())).catch(() => {});
