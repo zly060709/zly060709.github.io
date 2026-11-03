@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EFECE2">
+<meta name="ledger-mode" content="static">
+<meta name="description" content="能量账本：一本会自我校准的私人饮食账本。记录更少，知道更多。">
+<title>能量账本 · 记录得更少，知道得更多</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="assets/app.css?v=2.1.0">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-mark" viewBox="0 0 24 24"><path d="M5 19.5V6.2A2.2 2.2 0 0 1 7.2 4H19v13.2H7.4A2.4 2.4 0 0 0 5 19.5Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5 19.5c0 .9.8 1.5 1.8 1.5H19" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 8.5h6M9 12h4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4.5 10.5 12 4l7.5 6.5V20h-5v-5.5h-5V20h-5V10.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4.5 5.5A1.5 1.5 0 0 1 6 4h13.5v15H6A1.5 1.5 0 0 0 4.5 20.5v-15Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 18.5A1.5 1.5 0 0 1 6 17h13.5M8 8h8M8 11.5h5.5" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19.5h16" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6.5 16V11M11 16V6.5M15.5 16v-3.5M20 16V9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.8v2.1M12 18.1v2.1M3.8 12h2.1M18.1 12h2.1M6.2 6.2l1.5 1.5M16.3 16.3l1.5 1.5M17.8 6.2l-1.5 1.5M7.7 16.3l-1.5 1.5" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4.5 8.5h3l1.5-2h6l1.5 2h3v11h-15v-11Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="13.5" r="3.4" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="5.8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.2 15.2 4.3 4.3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 15.5a4 4 0 0 1 8 0" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 15.5 13.8 11" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-run" viewBox="0 0 24 24"><circle cx="14.5" cy="5.2" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12.8 8.2 10 11l-3.4 1M13.2 8.4l2.6 2.2 3.2.6M10 11l2.7 3.2-2.2 5M12.7 14.2l3 3.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 20.5c3.6 0 6-2.3 6-5.4 0-4-4-5.5-4.4-10.6-2.2 2-3.1 4-3 6.6-1-.5-1.6-1.4-1.9-2.6-1.4 1.8-2.7 4-2.7 6.6 0 3.1 2.4 5.4 6 5.4Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevron-l" viewBox="0 0 24 24"><path d="m14.5 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-chevron-r" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5.5 12.5 4.2 4.2 8.8-9.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M9 7V4.8h6V7M7.5 7l.8 12h7.4l.8-12M10 10.5v5M14 10.5v5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="m4.5 19.5 1-4.5L16.2 4.3l3.5 3.5-10.7 10.7-4.5 1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 4s5.5 5.6 5.5 9.2A5.5 5.5 0 0 1 6.5 13.2C6.5 9.6 12 4 12 4Z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5M12 8.2v.6" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 4.5 13.7 10 19 11.7 13.7 13.4 12 19l-1.7-5.6L5 11.7 10.3 10 12 4.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4.5M7.5 9 12 4.5 16.5 9M4.5 16v3.5h15V16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4.5V16M7.5 11.5 12 16l4.5-4.5M4.5 16v3.5h15V16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M5.8 5.8l1.4 1.4M16.8 16.8l1.4 1.4M18.2 5.8l-1.4 1.4M7.2 16.8l-1.4 1.4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="18" cy="12" r="1.3" fill="currentColor"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="app-shell">
+  <aside class="rail">
+    <div class="rail-brand">
+      <div class="mark"><svg><use href="#i-mark"/></svg></div>
+      <div>
+        <div class="brand-name">能量账本</div>
+        <div class="brand-en">ENERGY LEDGER</div>
+      </div>
+    </div>
+    <nav class="rail-nav">
+      <button data-tab="today" class="on"><span class="idx">01</span>今日<svg style="display:none"></svg><i></i></button>
+      <button data-tab="ledger"><span class="idx">02</span>账本<i></i></button>
+      <button data-tab="trend"><span class="idx">03</span>趋势<i></i></button>
+      <button data-tab="settings"><span class="idx">04</span>设置<i></i></button>
+    </nav>
+    <div class="rail-foot">
+      <div class="rail-streak">
+        <div class="k">连续记账</div>
+        <div class="v"><span id="railStreak">0</span> <small>天</small></div>
+      </div>
+      <p class="rail-note">所有数据只保存在这台设备。<br>没有账号，没有云端，也没有别人。</p>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="mobile-top">
+      <div class="brand">
+        <div class="mark"><svg><use href="#i-mark"/></svg></div>
+        <div class="brand-name">能量账本</div>
+      </div>
+      <div class="date"><b id="topDate">—</b><span id="topStreak">尚未开始</span></div>
+    </header>
+
+    <div class="page">
+      <section id="view-today" class="view" data-view="today"></section>
+      <section id="view-ledger" class="view" data-view="ledger" hidden></section>
+      <section id="view-trend" class="view" data-view="trend" hidden></section>
+      <section id="view-settings" class="view" data-view="settings" hidden></section>
+    </div>
+
+    <nav class="tabbar">
+      <button data-tab="today" class="on"><svg><use href="#i-home"/></svg><span>今日</span></button>
+      <button data-tab="ledger"><svg><use href="#i-book"/></svg><span>账本</span></button>
+      <button data-tab="trend"><svg><use href="#i-chart"/></svg><span>趋势</span></button>
+      <button data-tab="settings"><svg><use href="#i-settings"/></svg><span>设置</span></button>
+    </nav>
+  </div>
+</div>
+
+<div id="sheetRoot"></div>
+<div id="onboardRoot"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/data.js?v=2.1.0"></script>
+<script src="assets/engine.js?v=2.1.0"></script>
+<script src="assets/app.js?v=2.1.0"></script>
+</body>
+</html>

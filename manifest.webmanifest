@@ -1,0 +1,20 @@
+{
+  "name": "能量账本 · Energy Ledger",
+  "short_name": "能量账本",
+  "description": "一本会自我校准的私人饮食账本。记录得更少，知道得更多。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EFECE2",
+  "theme_color": "#EFECE2",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
