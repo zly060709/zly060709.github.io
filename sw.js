@@ -1,13 +1,16 @@
 /* 能量账本 · 离线缓存
    页面与静态资源优先走网络，失败时回退缓存；不缓存 API。
    首次成功打开后，即使断网也能启动账本。 */
-const CACHE = 'energy-ledger-v2.1.1';
+const CACHE = 'energy-ledger-v4.3.0';
 const ASSETS = [
   './',
   './index.html',
   './assets/app.css',
   './assets/data.js',
   './assets/engine.js',
+  './assets/wellness.js',
+  './assets/gender.js',
+  './assets/extras.js',
   './assets/app.js',
   './icon.svg',
   './manifest.webmanifest'
