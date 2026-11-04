@@ -501,6 +501,59 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .btn-sm { padding: 7px 12px; font-size: 12px; border-radius: 9px; }
 .btn[disabled] { opacity: .45; cursor: not-allowed; }
 
+/* ---------- 菜名估算 ---------- */
+.dish-launch {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  margin: 8px 0 10px; padding: 10px 12px; text-align: left;
+  border: 1px solid var(--green-line); background: var(--green-soft); border-radius: 12px;
+}
+.dl-ic {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  background: var(--surface); color: var(--green-deep); display: grid; place-items: center;
+}
+.dl-ic svg { width: 15px; height: 15px; }
+.dl-t { flex: 1; display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: var(--ink-3); }
+.dl-t b { font-size: 12.5px; color: var(--ink); }
+.dl-a { font-size: 10.5px; color: var(--green); flex-shrink: 0; }
+
+.dish-size-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.dish-size-row .lbl { font-size: 11px; color: var(--ink-3); }
+.dish-size-row .seg { flex: 0 0 auto; }
+.dish-rice.on { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+.dish-rice:disabled { opacity: .55; }
+
+.dish-result { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: var(--surface-2); }
+.dr-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.dr-name { font-family: var(--serif); font-size: 19px; line-height: 1.2; }
+.dr-total { display: flex; align-items: baseline; gap: 6px; margin-top: 10px; }
+.dr-total .big { font-family: var(--serif); font-size: 32px; color: var(--green-deep); line-height: 1; }
+.dr-total .u { font-size: 11px; color: var(--ink-3); }
+.dr-macros { font-size: 11px; color: var(--ink-2); margin-top: 3px; }
+.dr-control {
+  margin-top: 8px; padding: 7px 10px; border-radius: 8px;
+  background: var(--amber-soft); color: var(--amber); font-size: 11px; line-height: 1.5;
+}
+.dish-pick-list { margin-top: 4px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.dish-pick-row {
+  width: 100%; display: flex; align-items: center; gap: 8px;
+  padding: 9px 11px; background: var(--surface); border-bottom: 1px solid var(--line);
+  text-align: left; font-size: 12px;
+}
+.dish-pick-row:last-child { border-bottom: 0; }
+.dish-pick-row:hover { background: var(--surface-2); }
+.dish-pick-row .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dish-pick-row .c { font-size: 9.5px; color: var(--ink-3); border: 1px solid var(--line); border-radius: 8px; padding: 1px 5px; flex-shrink: 0; }
+.dish-pick-row .k { font-size: 10.5px; color: var(--ink-3); flex-shrink: 0; }
+.dish-pick-row .a { font-size: 10px; color: var(--green); flex-shrink: 0; }
+.dr-comps { margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 5px; }
+.dr-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 12px; border-bottom: 1px dotted var(--line); }
+.dr-row:last-child { border-bottom: 0; }
+.dr-row .n { flex: 1; }
+.dr-row .g { color: var(--ink-2); min-width: 42px; text-align: right; }
+.dr-row .k { color: var(--ink-3); min-width: 62px; text-align: right; }
+.dr-note { margin-top: 10px; font-size: 11px; line-height: 1.6; color: var(--ink-3); background: var(--surface); border-radius: 8px; padding: 8px 10px; }
+.entry-comps { margin-top: 8px; line-height: 1.7; }
+
 /* ---------- 存储告警 ---------- */
 .storage-banner {
   position: fixed; left: 50%; top: 10px; transform: translateX(-50%);
@@ -826,7 +879,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .page-head .range-tabs { margin-bottom: 2px; }
 
 .quick-card {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(5, 1fr);
   background: var(--surface); border: 1px solid var(--line);
   border-radius: var(--radius); margin-top: 12px;
   padding: 8px 6px; box-shadow: var(--shadow-sm);
@@ -857,6 +910,68 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 }
 .gap-foot svg { width: 12px; height: 12px; color: var(--amber); flex-shrink: 0; }
 .gap-foot b { color: var(--green); }
+
+/* ---------- 控糖 / 控油 / 控盐 ---------- */
+.control-card { margin-top: 12px; padding: 15px 18px; cursor: pointer; }
+.cc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.cc-title { font-family: var(--serif); font-size: 17px; margin-top: 1px; }
+.cc-bars { margin-top: 10px; display: flex; flex-direction: column; gap: 7px; }
+.cc-row { display: grid; grid-template-columns: 26px 1fr 92px; align-items: center; gap: 9px; font-size: 11px; }
+.cc-row .lbl { color: var(--ink-2); }
+.cc-row .v { text-align: right; color: var(--ink-3); font-size: 10.5px; }
+.cc-bar { height: 6px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+.cc-bar i { display: block; height: 100%; border-radius: 4px; }
+.cc-bar i.sugar { background: var(--amber); }
+.cc-bar i.oil { background: #9a8a4a; }
+.cc-bar i.salt { background: var(--red); }
+.cc-bar i.over { background: var(--red); }
+.cc-note { margin-top: 9px; font-size: 10.5px; color: var(--ink-3); line-height: 1.5; }
+
+.control-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.control-tab {
+  padding: 9px 6px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+  display: flex; flex-direction: column; gap: 2px; align-items: center; font-size: 13px; color: var(--ink-2);
+}
+.control-tab small { font-size: 9.5px; color: var(--ink-3); }
+.control-tab.on.sugar { border-color: var(--amber); background: var(--amber-soft); color: var(--amber); }
+.control-tab.on.oil { border-color: #9a8a4a; background: #f4f0df; color: #7d6f35; }
+.control-tab.on.salt { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+.control-hero {
+  padding: 14px 16px; border-radius: 14px; background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.control-hero.sugar { border-color: rgba(184, 138, 42, .35); }
+.control-hero.oil { border-color: rgba(125, 111, 53, .35); }
+.control-hero.salt { border-color: rgba(160, 60, 45, .3); }
+.ch-top { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-3); }
+.ch-val { font-family: var(--serif); font-size: 40px; line-height: 1.1; margin-top: 3px; }
+.ch-val small { font-size: 13px; color: var(--ink-3); margin-left: 2px; }
+.ch-val em { font-size: 12px; color: var(--ink-3); font-style: normal; margin-left: 7px; }
+.ch-bar { height: 8px; border-radius: 5px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; margin-top: 8px; }
+.ch-bar i { display: block; height: 100%; background: var(--amber); }
+.control-hero.oil .ch-bar i { background: #9a8a4a; }
+.control-hero.salt .ch-bar i { background: var(--red); }
+.ch-next { margin-top: 9px; font-size: 11.5px; color: var(--ink-2); line-height: 1.55; }
+.section-title-sm { margin: 18px 0 8px; font-size: 11px; color: var(--ink-3); letter-spacing: .08em; }
+.ctrl-src { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.ctrl-src-row { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 11.5px; }
+.ctrl-src-row:last-child { border-bottom: 0; }
+.ctrl-src-row .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ctrl-src-row .g { color: var(--ink-3); font-size: 10px; }
+.ctrl-src-row .v { color: var(--red); min-width: 40px; text-align: right; }
+.ctrl-radar { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.ctrl-radar-row { width: 100%; display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-bottom: 1px solid var(--line); background: var(--surface); text-align: left; font-size: 11.5px; }
+.ctrl-radar-row:last-child { border-bottom: 0; }
+.ctrl-radar-row .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ctrl-radar-row .v { color: var(--amber); font-weight: 600; }
+.ctrl-radar-row .a { color: var(--ink-3); font-size: 10px; }
+.ctrl-check { display: flex; flex-direction: column; gap: 6px; }
+.ctrl-check-row { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); text-align: left; font-size: 11.5px; color: var(--ink-2); }
+.ctrl-check-row .box { width: 18px; height: 18px; border-radius: 5px; border: 1px solid var(--line); display: grid; place-items: center; font-size: 11px; color: var(--green); flex-shrink: 0; }
+.ctrl-check-row.on { border-color: var(--green-line); background: var(--green-soft); color: var(--ink); }
+.ctrl-check-row.on .box { border-color: var(--green); background: var(--green); color: #fff; }
+.ctrl-tips { margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: var(--surface-2); }
+.ctrl-tips .tip { font-size: 11px; color: var(--ink-3); line-height: 1.7; }
 
 /* 体重拆解 / 训练容量 */
 .decomp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
@@ -3239,6 +3354,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     lifts: [],
     recipes: [],
     shopping: null,
+    controlChecks: {},
     wearable: {}
   };
 
@@ -3280,6 +3396,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     db.logs = db.logs.slice(0, 30);
     if (!db.water || typeof db.water !== 'object') db.water = {};
     if (!db.notes || typeof db.notes !== 'object') db.notes = {};
+    if (!db.controlChecks || typeof db.controlChecks !== 'object') db.controlChecks = {};
     if (!db.cycle || typeof db.cycle !== 'object') db.cycle = Object.assign({}, DEFAULT_DB.cycle);
     db.cycle = Object.assign({}, DEFAULT_DB.cycle, db.cycle);
     if (!Array.isArray(db.cycle.history)) db.cycle.history = [];
@@ -3504,6 +3621,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     else if (u.kind === 'food') DB.foods.push(u.item);
     else if (u.kind === 'combo') DB.combos.push(u.item);
     else if (u.kind === 'lift') DB.lifts.push(u.item);
+    else if (u.kind === 'entry-add') DB.entries = DB.entries.filter(e => e.id !== u.item.id);
     else if (u.kind === 'batch') {
       const ids = new Set(u.items.map(x => x.id));
       DB.entries = DB.entries.filter(e => !ids.has(e.id));
@@ -3657,6 +3775,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         : '今日还可摄入 · 估算区间 <span class="range">' + fmt(Math.max(0, budget - sum.high)) + '–' + fmt(Math.max(0, budget - sum.low)) + ' kcal</span>');
     const quickActions = [
       ['open-add', 'plus', '记一餐'],
+      ['open-dish', 'spark', '菜名估算'],
       ['open-ai', 'camera', '拍照识别'],
       ['open-exercise', 'run', '记运动'],
       ['open-weight', 'scale', '称重']
@@ -3697,6 +3816,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '</section>' +
 
       renderGapCard(gap) +
+      renderControlCard() +
 
       '<section class="coach-card">' +
         '<button class="coach-entry" data-act="open-coach">' +
@@ -3964,6 +4084,119 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '</section>' +
 
       '<div class="disclaimer">历史日的预算按「当时已有记录」的校准结果计算，所以回看某天时会与今天的预算不同。这是账本在学习，不是数据错误。</div>';
+  }
+
+  /* ---------- 创新：控糖 / 控油 / 控盐 ---------- */
+  const CONTROL_META = {
+    sugar: { key: 'sugar', label: '糖', full: '添加糖', unit: 'g', target: 25, cap: 50, color: 'sugar' },
+    oil: { key: 'oil', label: '油', full: '烹调油', unit: 'g', target: 30, cap: 35, color: 'oil' },
+    salt: { key: 'salt', label: '盐', full: '盐（当量）', unit: 'g', target: 5, cap: 5, color: 'salt' }
+  };
+
+  function controlTotals(date) {
+    const entries = DB.entries.filter(e => e.date === date);
+    const t = { sugar: 0, oil: 0, salt: 0, sodium: 0, counted: 0, total: entries.length };
+    entries.forEach(e => {
+      if (!e.control) return;
+      t.sugar += Number(e.control.sugar) || 0;
+      t.oil += Number(e.control.oil) || 0;
+      t.salt += Number(e.control.salt) || 0;
+      t.sodium += Number(e.control.sodium) || 0;
+      t.counted++;
+    });
+    t.sugar = round1(t.sugar); t.oil = round1(t.oil); t.salt = round1(t.salt); t.sodium = Math.round(t.sodium);
+    return t;
+  }
+
+  function controlSources(date, key) {
+    return DB.entries.filter(e => e.date === date && e.control && Number(e.control[key]) > 0)
+      .map(e => ({ name: e.name, grams: e.grams, amt: Number(e.control[key]) || 0, kcal: e.kcal }))
+      .sort((a, b) => b.amt - a.amt).slice(0, 4);
+  }
+
+  function renderControlCard() {
+    const c = controlTotals(E.todayKey());
+    const rows = Object.keys(CONTROL_META).map(k => {
+      const m = CONTROL_META[k];
+      const p = pct(c[k], m.target);
+      const over = c[k] > m.target;
+      return '<div class="cc-row"><span class="lbl">' + m.label + '</span><div class="cc-bar"><i class="' + m.color + (over ? ' over' : '') + '" style="width:' + p + '%"></i></div>' +
+        '<span class="v">' + c[k] + ' / ' + m.target + m.unit + '</span></div>';
+    }).join('');
+    return '<section class="card control-card" data-act="open-control" role="button" tabindex="0">' +
+      '<div class="cc-head"><div><div class="eyebrow">今日三控</div><div class="cc-title">糖 · 油 · 盐</div></div>' +
+      '<span class="badge ' + (c.sugar > 25 || c.oil > 30 || c.salt > 5 ? '' : 'high') + '">' + (c.counted ? '已拆解 ' + c.counted + ' 笔' : '待记录') + '</span></div>' +
+      '<div class="cc-bars">' + rows + '</div>' +
+      '<div class="cc-note">' + (c.counted ? '来自已拆解的菜名/零食记录 · 点开看主要来源和下一步' : '用「菜名估算」或记零食后，这里会自动统计糖油盐') + '</div>' +
+    '</section>';
+  }
+
+  function controlRadar(key, limit) {
+    const all = buildDishCatalog().filter(d => ['snack', 'drink', 'fast', 'staple', 'home'].indexOf(d.cat) >= 0 && d.control && d.control[key] > 0);
+    return all.sort((a, b) => (b.control[key] || 0) - (a.control[key] || 0)).slice(0, limit || 6);
+  }
+
+  function renderControlSheet() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'control') return;
+    const tab = sd.tab || 'sugar';
+    const m = CONTROL_META[tab];
+    const c = controlTotals(E.todayKey());
+    const val = c[tab];
+    const p = pct(val, m.target);
+    const over = val > m.target;
+    const sources = controlSources(E.todayKey(), tab);
+    const checks = (DB.controlChecks[E.todayKey()] || []);
+    const radar = controlRadar(tab, 6);
+    const tips = {
+      sugar: ['一瓶 500ml 可乐约 53g 糖，全糖奶茶常在 40–60g。', '看包装上的“糖”和碳水化合物，NRV% 超过 15% 算高。', '用无糖茶、气泡水、白水替代含糖饮料；水果不算添加糖。'],
+      oil: ['油炸、干锅、水煮、酥皮最吸油；一份中薯条约 15g 油。', '坚果和牛油果是食物脂肪，不计入“烹调油”，但热量要算。', '多用蒸、煮、炖、凉拌；不粘锅和喷雾油能明显减油。'],
+      salt: ['5g 盐 ≈ 2000mg 钠；10ml 酱油 ≈ 1.5g 盐。', '隐形盐：火腿肠、培根、泡面、辣条、话梅、面包、奶酪。', '用限盐勺，出锅前放盐；醋、柠檬、香料可以提味。']
+    }[tab];
+    const action = over
+      ? (tab === 'sugar' ? '下一杯选无糖，甜点今天到此为止。' : tab === 'oil' ? '下一餐改蒸煮/凉拌，不再煎炸。' : '下一餐少酱料，多喝白水，多吃高钾蔬果。')
+      : val > m.target * 0.75
+        ? (tab === 'sugar' ? '接近上限了，晚餐避开甜饮和甜点。' : tab === 'oil' ? '还有一点空间，下一餐尽量清淡。' : '接近上限了，酱油和加工肉先停一停。')
+        : '目前还有空间，保持现在的做法。';
+    const tabBar = Object.keys(CONTROL_META).map(k => {
+      const mm = CONTROL_META[k];
+      return '<button class="control-tab ' + (k === tab ? 'on ' + mm.color : '') + '" data-act="control-tab" data-v="' + k + '">' + mm.label + '<small>' + controlTotals(E.todayKey())[k] + '/' + mm.target + mm.unit + '</small></button>';
+    }).join('');
+    const list = sources.length ? sources.map(s =>
+      '<div class="ctrl-src-row"><span class="n">' + esc(s.name) + '</span><span class="g">' + s.grams + 'g</span><span class="v">' + round1(s.amt) + m.unit + '</span></div>').join('')
+      : '<div class="cart-empty">今天还没有可拆解的记录。用菜名估算或记一份零食后，这里会显示主要来源。</div>';
+    const radarList = radar.map(d =>
+      '<button class="ctrl-radar-row" data-act="control-radar" data-name="' + esc(d.n) + '"><span class="n">' + esc(d.n) + '</span>' +
+      '<span class="v">' + (tab === 'salt' ? round1(d.control.salt) + 'g 盐' : round1(d.control[tab]) + 'g') + '</span><span class="a">估算 →</span></button>').join('');
+    return '<div class="control-tabs">' + tabBar + '</div>' +
+      '<div class="control-hero ' + m.color + '">' +
+        '<div class="ch-top"><span>' + m.full + ' · 目标 ≤ ' + m.target + m.unit + '</span><span>' + (over ? '已超' : val > m.target * 0.75 ? '接近上限' : '还有空间') + '</span></div>' +
+        '<div class="ch-val">' + val + '<small>' + m.unit + '</small><em>/ ' + m.target + m.unit + '</em></div>' +
+        '<div class="ch-bar"><i style="width:' + p + '%"></i></div>' +
+        '<div class="ch-next">' + esc(action) + '</div>' +
+      '</div>' +
+      '<div class="section-title-sm">主要来源</div><div class="ctrl-src">' + list + '</div>' +
+      '<div class="section-title-sm">高' + m.label + '食物雷达</div><div class="ctrl-radar">' + radarList + '</div>' +
+      '<div class="section-title-sm">今日三控清单 · ' + checks.length + '/5</div>' +
+      '<div class="ctrl-check">' + [
+        '没有喝含糖饮料',
+        '烹调以蒸煮/凉拌为主',
+        '用了限盐勺或少放酱油',
+        '零食选原味、非油炸',
+        '看过一款包装的营养成分表'
+      ].map((x, i) => '<button class="ctrl-check-row ' + (checks.indexOf(i) >= 0 ? 'on' : '') + '" data-act="control-check" data-i="' + i + '"><span class="box">' + (checks.indexOf(i) >= 0 ? '✓' : '') + '</span>' + x + '</button>').join('') + '</div>' +
+      '<div class="ctrl-tips">' + tips.map(t => '<div class="tip">· ' + esc(t) + '</div>').join('') + '</div>' +
+      '<div class="notebox">依据《中国居民膳食指南（2022）》：添加糖 ≤25g/天（上限 50g）、烹调油 25–30g/天、盐 <5g/天（钠 <2000mg）。这里只统计已拆解的菜名/零食记录；普通食物条目未拆分油盐糖，不会假装精确。</div>';
+  }
+
+  function openControlSheet() {
+    state.sheetData = { type: 'control', tab: 'sugar' };
+    openSheet(
+      sheetHead('控糖 · 控油 · 控盐', '今日 ' + E.relativeDay(E.todayKey(), E.todayKey()) + ' · 参考膳食指南 · 只统计可拆解记录') +
+      '<div class="sheet-body" id="controlBody">' + renderControlSheet() + '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-primary" data-act="close-sheet">知道了</button></div>',
+      'control'
+    );
   }
 
   /* ---------- 创新：同上一餐一键复刻 ---------- */
@@ -4633,6 +4866,1257 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   }
 
   /* ============================================================
+     菜名估算（本地规则，不联网）
+     ============================================================ */
+  const DISH_ING = {
+    '米饭': { n: '米饭', kcal: 116, p: 2.6, c: 25.9, f: 0.3, fib: 0.3, type: 'staple', a: ['米饭', '白饭', '饭'] },
+    '面条': { n: '面条', kcal: 110, p: 3.5, c: 23, f: 0.5, fib: 1, type: 'staple', a: ['面条', '面'] },
+    '面粉': { n: '面粉', kcal: 350, p: 10, c: 75, f: 1, fib: 2.5, type: 'staple', a: ['面粉', '面皮', '饺子皮'] },
+    '米粉': { n: '米粉', kcal: 110, p: 2, c: 24, f: 0.2, fib: 0.5, type: 'staple', a: ['米粉', '河粉', '粉'] },
+    '鸡蛋': { n: '鸡蛋', kcal: 144, p: 13.3, c: 2.8, f: 8.8, fib: 0, type: 'protein', a: ['鸡蛋', '蛋'] },
+    '鸡胸': { n: '鸡胸肉', kcal: 165, p: 31, c: 0, f: 3.6, fib: 0, type: 'protein', a: ['鸡胸', '鸡胸肉'] },
+    '鸡腿肉': { n: '鸡腿肉', kcal: 181, p: 24, c: 0, f: 9, fib: 0, type: 'protein', a: ['鸡腿', '鸡肉', '鸡'] },
+    '猪里脊': { n: '猪里脊', kcal: 143, p: 20.2, c: 1, f: 3.5, fib: 0, type: 'protein', a: ['里脊', '肉丝', '肉片', '瘦猪肉', '猪肉', '肉'] },
+    '猪肉馅': { n: '猪肉馅', kcal: 250, p: 17, c: 0, f: 20, fib: 0, type: 'protein', a: ['肉馅', '猪肉馅'] },
+    '五花肉': { n: '五花肉', kcal: 568, p: 9.3, c: 0, f: 53, fib: 0, type: 'protein', a: ['五花肉', '五花'] },
+    '排骨': { n: '排骨', kcal: 278, p: 17, c: 0, f: 22, fib: 0, type: 'protein', a: ['排骨', '肋排'] },
+    '牛肉': { n: '牛肉', kcal: 125, p: 19.9, c: 2, f: 3, fib: 0, type: 'protein', a: ['牛肉', '牛'] },
+    '牛肉末': { n: '牛肉末', kcal: 190, p: 18, c: 0, f: 13, fib: 0, type: 'protein', a: ['牛肉末', '牛肉馅'] },
+    '鲈鱼': { n: '鲈鱼', kcal: 105, p: 18.6, c: 0, f: 3.4, fib: 0, type: 'protein', a: ['鲈鱼', '鱼'] },
+    '三文鱼': { n: '三文鱼', kcal: 208, p: 20, c: 0, f: 13, fib: 0, type: 'protein', a: ['三文鱼', '三文'] },
+    '虾仁': { n: '虾仁', kcal: 93, p: 18.6, c: 0, f: 1, fib: 0, type: 'protein', a: ['虾仁', '虾'] },
+    '豆腐': { n: '豆腐', kcal: 84, p: 8.1, c: 4.2, f: 3.7, fib: 0.4, type: 'protein', a: ['豆腐'] },
+    '豆浆': { n: '豆浆', kcal: 31, p: 3, c: 1.2, f: 1.6, fib: 0.5, type: 'protein', a: ['豆浆'] },
+    '牛奶': { n: '牛奶', kcal: 54, p: 3, c: 4.8, f: 3.2, fib: 0, type: 'protein', a: ['牛奶'] },
+    '酸奶': { n: '酸奶', kcal: 72, p: 3.5, c: 9, f: 2.5, fib: 0, type: 'protein', a: ['酸奶'] },
+    '皮蛋': { n: '皮蛋', kcal: 200, p: 14, c: 4, f: 15, fib: 0, type: 'protein', a: ['皮蛋'] },
+    '火腿': { n: '火腿', kcal: 330, p: 16, c: 2, f: 26, fib: 0, type: 'protein', a: ['火腿'] },
+    '芝士': { n: '芝士', kcal: 350, p: 20, c: 4, f: 28, fib: 0, type: 'protein', a: ['芝士', '奶酪'] },
+    '植物油': { n: '植物油', kcal: 900, p: 0, c: 0, f: 100, fib: 0, type: 'fat', a: ['植物油', '食用油', '油'] },
+    '白砂糖': { n: '白砂糖', kcal: 400, p: 0, c: 100, f: 0, fib: 0, type: 'sugar', a: ['白砂糖', '糖'] },
+    '花生': { n: '花生', kcal: 574, p: 24, c: 16, f: 49, fib: 5.5, type: 'fat', a: ['花生', '花生米'] },
+    '淀粉': { n: '淀粉', kcal: 350, p: 0, c: 85, f: 0, fib: 0, type: 'sugar', a: ['淀粉'] },
+    '番茄': { n: '番茄', kcal: 18, p: 0.9, c: 3.9, f: 0.2, fib: 1.2, type: 'veg', a: ['番茄', '西红柿'] },
+    '青椒': { n: '青椒', kcal: 22, p: 1, c: 5.4, f: 0.2, fib: 1.4, type: 'veg', a: ['青椒', '尖椒'] },
+    '土豆': { n: '土豆', kcal: 77, p: 2, c: 17.2, f: 0.2, fib: 2.2, type: 'veg', a: ['土豆', '马铃薯'] },
+    '西兰花': { n: '西兰花', kcal: 34, p: 2.8, c: 6.6, f: 0.4, fib: 2.6, type: 'veg', a: ['西兰花', '西蓝花'] },
+    '青菜': { n: '青菜', kcal: 15, p: 1.5, c: 2.7, f: 0.3, fib: 1.4, type: 'veg', a: ['青菜', '菠菜', '小白菜', '时蔬', '蔬菜'] },
+    '生菜': { n: '生菜', kcal: 15, p: 1.4, c: 2.9, f: 0.2, fib: 1.3, type: 'veg', a: ['生菜'] },
+    '黄瓜': { n: '黄瓜', kcal: 15, p: 0.7, c: 3.6, f: 0.1, fib: 0.5, type: 'veg', a: ['黄瓜'] },
+    '茄子': { n: '茄子', kcal: 23, p: 1.1, c: 4.9, f: 0.2, fib: 1.3, type: 'veg', a: ['茄子'] },
+    '胡萝卜': { n: '胡萝卜', kcal: 32, p: 0.7, c: 8.8, f: 0.2, fib: 2.8, type: 'veg', a: ['胡萝卜'] },
+    '洋葱': { n: '洋葱', kcal: 40, p: 1.1, c: 9, f: 0.1, fib: 1.7, type: 'veg', a: ['洋葱'] },
+    '豆角': { n: '豆角', kcal: 30, p: 1.8, c: 6.7, f: 0.2, fib: 2.1, type: 'veg', a: ['豆角', '四季豆'] },
+    '豆芽': { n: '豆芽', kcal: 18, p: 2.1, c: 2.9, f: 0.1, fib: 1.8, type: 'veg', a: ['豆芽'] },
+    '木耳': { n: '木耳', kcal: 27, p: 1.5, c: 6, f: 0.1, fib: 2.6, type: 'veg', a: ['木耳'] },
+    '白菜': { n: '白菜', kcal: 13, p: 1.5, c: 2.2, f: 0.2, fib: 0.8, type: 'veg', a: ['白菜'] },
+    '冬瓜': { n: '冬瓜', kcal: 12, p: 0.4, c: 2.4, f: 0.2, fib: 0.7, type: 'veg', a: ['冬瓜'] },
+    '玉米': { n: '玉米', kcal: 112, p: 4, c: 22.8, f: 1.2, fib: 2.9, type: 'veg', a: ['玉米'] },
+    '紫菜': { n: '紫菜', kcal: 250, p: 26, c: 44, f: 1.1, fib: 21, type: 'veg', a: ['紫菜'] },
+    '燕麦': { n: '燕麦', kcal: 389, p: 16.9, c: 66, f: 6.9, fib: 10.6, type: 'staple', a: ['燕麦'] },
+    '面包': { n: '面包', kcal: 280, p: 8, c: 50, f: 5, fib: 2, type: 'staple', a: ['面包', '汉堡胚'] },
+    '番茄酱': { n: '番茄酱', kcal: 100, p: 1, c: 22, f: 0, fib: 0, type: 'sugar', a: ['番茄酱'] },
+    '珍珠': { n: '珍珠', kcal: 330, p: 2, c: 75, f: 2, fib: 0, type: 'sugar', a: ['珍珠'] },
+    '可乐': { n: '可乐', kcal: 42, p: 0, c: 10.6, f: 0, fib: 0, type: 'sugar', a: ['可乐'] },
+    '咖喱块': { n: '咖喱块', kcal: 500, p: 6, c: 50, f: 30, fib: 0, type: 'fat', a: ['咖喱'] },
+    '红薯': { n: '红薯', kcal: 86, p: 1.6, c: 20.1, f: 0.1, fib: 3, type: 'staple', a: ['红薯', '地瓜'] },
+    '苹果': { n: '苹果', kcal: 52, p: 0.3, c: 13.8, f: 0.2, fib: 2.4, type: 'veg', a: ['苹果'] },
+    '香蕉': { n: '香蕉', kcal: 93, p: 1.4, c: 22, f: 0.2, fib: 1.2, type: 'veg', a: ['香蕉'] },
+    '白萝卜': { n: '白萝卜', kcal: 16, p: 0.7, c: 4, f: 0.1, fib: 1.6, type: 'veg', a: ['白萝卜', '萝卜'] },
+    '海带': { n: '海带', kcal: 13, p: 1.2, c: 2.1, f: 0.1, fib: 0.5, type: 'veg', a: ['海带'] },
+    '蒜苔': { n: '蒜苔', kcal: 61, p: 2, c: 15, f: 0.1, fib: 2.5, type: 'veg', a: ['蒜苔', '蒜薹'] },
+    '芹菜': { n: '芹菜', kcal: 16, p: 0.8, c: 3.9, f: 0.1, fib: 1.4, type: 'veg', a: ['芹菜', '西芹'] },
+    '苦瓜': { n: '苦瓜', kcal: 19, p: 1, c: 4.3, f: 0.1, fib: 2, type: 'veg', a: ['苦瓜'] },
+    '丝瓜': { n: '丝瓜', kcal: 20, p: 1, c: 4.2, f: 0.2, fib: 0.6, type: 'veg', a: ['丝瓜'] },
+    '山药': { n: '山药', kcal: 57, p: 1.9, c: 12.4, f: 0.2, fib: 0.8, type: 'veg', a: ['山药'] },
+    '莲藕': { n: '莲藕', kcal: 73, p: 1.9, c: 17.2, f: 0.2, fib: 4.9, type: 'veg', a: ['莲藕', '藕'] },
+    '南瓜': { n: '南瓜', kcal: 23, p: 0.7, c: 5.3, f: 0.1, fib: 0.8, type: 'veg', a: ['南瓜'] },
+    '蘑菇': { n: '蘑菇', kcal: 22, p: 3.1, c: 3.3, f: 0.3, fib: 1, type: 'veg', a: ['蘑菇', '香菇', '菌菇'] },
+    '花菜': { n: '花菜', kcal: 25, p: 2, c: 4.6, f: 0.2, fib: 1.6, type: 'veg', a: ['花菜', '菜花'] },
+    '紫甘蓝': { n: '紫甘蓝', kcal: 25, p: 1.2, c: 6.2, f: 0.2, fib: 2, type: 'veg', a: ['紫甘蓝'] },
+    '油麦菜': { n: '油麦菜', kcal: 15, p: 1.4, c: 2.8, f: 0.4, fib: 1.2, type: 'veg', a: ['油麦菜'] },
+    '空心菜': { n: '空心菜', kcal: 20, p: 2.2, c: 3.6, f: 0.3, fib: 1.4, type: 'veg', a: ['空心菜'] },
+    '荷兰豆': { n: '荷兰豆', kcal: 42, p: 2.7, c: 7.5, f: 0.2, fib: 2, type: 'veg', a: ['荷兰豆'] },
+    '芦笋': { n: '芦笋', kcal: 22, p: 2.2, c: 4.1, f: 0.1, fib: 2, type: 'veg', a: ['芦笋'] },
+    '秋葵': { n: '秋葵', kcal: 33, p: 1.9, c: 7.5, f: 0.2, fib: 3.2, type: 'veg', a: ['秋葵'] },
+    '西葫芦': { n: '西葫芦', kcal: 17, p: 1.2, c: 3.1, f: 0.2, fib: 1, type: 'veg', a: ['西葫芦'] },
+    '韭菜': { n: '韭菜', kcal: 26, p: 2.4, c: 4.6, f: 0.4, fib: 1.4, type: 'veg', a: ['韭菜'] },
+    '豆干': { n: '豆干', kcal: 140, p: 16, c: 6, f: 7, fib: 1, type: 'protein', a: ['豆干', '香干'] },
+    '盐': { n: '盐', kcal: 0, p: 0, c: 0, f: 0, fib: 0, type: 'seasoning', a: ['盐', '食盐'] },
+    '酱油': { n: '酱油', kcal: 60, p: 5, c: 8, f: 0, fib: 0, type: 'seasoning', a: ['酱油', '生抽', '老抽'] },
+    '蚝油': { n: '蚝油', kcal: 100, p: 2, c: 18, f: 0, fib: 0, type: 'seasoning', a: ['蚝油'] },
+    '豆瓣酱': { n: '豆瓣酱', kcal: 180, p: 6, c: 20, f: 6, fib: 2, type: 'seasoning', a: ['豆瓣酱', '豆酱'] },
+    '银耳': { n: '银耳', kcal: 26, p: 1.4, c: 6.6, f: 0.1, fib: 2.5, type: 'veg', a: ['银耳'] },
+    '莲子': { n: '莲子', kcal: 344, p: 17, c: 64, f: 2.5, fib: 3, type: 'staple', a: ['莲子'] },
+    '绿豆': { n: '绿豆', kcal: 329, p: 21.6, c: 62, f: 0.8, fib: 6.4, type: 'staple', a: ['绿豆'] },
+    '红豆': { n: '红豆', kcal: 324, p: 20, c: 63, f: 0.6, fib: 7.7, type: 'staple', a: ['红豆'] },
+    '薏米': { n: '薏米', kcal: 361, p: 12, c: 71, f: 3.4, fib: 2, type: 'staple', a: ['薏米'] },
+    '猪肝': { n: '猪肝', kcal: 129, p: 19.3, c: 5, f: 3.5, fib: 0, type: 'protein', a: ['猪肝'] },
+    '橘子': { n: '橘子', kcal: 44, p: 0.8, c: 11.5, f: 0.2, fib: 1.8, type: 'veg', a: ['橘子', '橙子'] },
+    '海苔': { n: '海苔', kcal: 177, p: 29, c: 38, f: 4, fib: 23, type: 'veg', a: ['海苔'] }
+  };
+
+  const ING_CONTROL = {
+    '白砂糖': { sug: 100 }, '可乐': { sug: 10.6, na: 5 }, '珍珠': { sug: 30, na: 10 },
+    '番茄酱': { sug: 20, na: 1100 }, '面包': { sug: 6, na: 400 }, '火腿': { sug: 1, na: 1200 },
+    '芝士': { sug: 1, na: 600 }, '猪肉馅': { na: 60 }, '豆腐': { na: 7 },
+    '咖喱块': { sug: 10, na: 3000 }, '盐': { na: 39300 }, '酱油': { sug: 5, na: 5500 },
+    '蚝油': { sug: 10, na: 4000 }, '豆瓣酱': { sug: 5, na: 6000 }, '豆干': { na: 700 },
+    '紫菜': { na: 710 }, '虾仁': { na: 150 }, '牛奶': { sug: 0 }, '酸奶': { sug: 6 }
+  };
+  Object.keys(ING_CONTROL).forEach(k => { if (DISH_ING[k]) Object.assign(DISH_ING[k], ING_CONTROL[k]); });
+
+  const DISH_DB = [
+    { n: '番茄炒蛋', a: ['西红柿炒鸡蛋', '番茄炒鸡蛋', '西红柿炒蛋'], c: [['番茄', 200], ['鸡蛋', 120], ['植物油', 12], ['白砂糖', 3]], note: '家常 2 个蛋 + 2 个番茄，油 12g' },
+    { n: '青椒肉丝', a: ['青椒炒肉丝', '尖椒肉丝'], c: [['青椒', 150], ['猪里脊', 120], ['植物油', 13], ['白砂糖', 2]], note: '一盘约 150g 青椒 + 120g 瘦肉' },
+    { n: '鱼香肉丝', a: ['鱼香猪肉丝'], c: [['猪里脊', 120], ['木耳', 30], ['胡萝卜', 50], ['青椒', 50], ['植物油', 15], ['白砂糖', 8]], note: '含糖醋汁，油和糖都不低' },
+    { n: '宫保鸡丁', a: ['宫爆鸡丁'], c: [['鸡胸', 140], ['花生', 30], ['黄瓜', 50], ['植物油', 12], ['白砂糖', 5]], note: '花生和油是主要热量来源' },
+    { n: '麻婆豆腐', a: ['麻辣豆腐'], c: [['豆腐', 250], ['牛肉末', 40], ['植物油', 15]], note: '豆腐 250g，肉末 40g' },
+    { n: '红烧肉', a: ['红烧五花肉'], c: [['五花肉', 150], ['植物油', 10], ['白砂糖', 8]], note: '五花肉按 150g 常规份，油脂很高' },
+    { n: '回锅肉', a: ['回锅五花肉'], c: [['五花肉', 120], ['青椒', 100], ['青菜', 30], ['植物油', 10]], note: '五花肉 120g，青椒 100g' },
+    { n: '糖醋里脊', a: ['糖醋肉'], c: [['猪里脊', 150], ['淀粉', 30], ['白砂糖', 15], ['植物油', 18]], note: '挂糊油炸 + 糖醋汁' },
+    { n: '红烧排骨', a: ['烧排骨'], c: [['排骨', 200], ['植物油', 8], ['白砂糖', 8]], note: '排骨 200g 常规份' },
+    { n: '清蒸鲈鱼', a: ['清蒸鱼', '蒸鱼'], c: [['鲈鱼', 250], ['植物油', 5]], note: '按半条鱼 250g 可食部估' },
+    { n: '红烧鱼', a: ['红烧鲈鱼'], c: [['鲈鱼', 250], ['植物油', 10], ['白砂糖', 5]], note: '鱼 250g + 红烧汁' },
+    { n: '水煮鱼', a: ['水煮鲈鱼'], c: [['鲈鱼', 200], ['豆芽', 100], ['植物油', 20]], note: '餐馆版油量按 20g 估' },
+    { n: '酸菜鱼', a: ['酸菜鲈鱼'], c: [['鲈鱼', 200], ['白菜', 100], ['植物油', 15]], note: '鱼 200g + 酸菜 100g' },
+    { n: '白灼虾', a: ['水煮虾', '清蒸虾'], c: [['虾仁', 200], ['植物油', 3]], note: '虾 200g 可食部' },
+    { n: '蒜蓉西兰花', a: ['清炒西兰花'], c: [['西兰花', 200], ['植物油', 8]], note: '西兰花 200g，油 8g' },
+    { n: '清炒时蔬', a: ['炒青菜', '清炒蔬菜', '炒菠菜'], c: [['青菜', 250], ['植物油', 8]], note: '一盘青菜 250g' },
+    { n: '地三鲜', a: ['地三鲜'], c: [['土豆', 150], ['茄子', 150], ['青椒', 50], ['植物油', 15]], note: '三种蔬菜先炸后炒，吸油' },
+    { n: '干煸豆角', a: ['干煸四季豆'], c: [['豆角', 200], ['植物油', 12]], note: '豆角 200g，油 12g' },
+    { n: '酸辣土豆丝', a: ['土豆丝', '炒土豆丝'], c: [['土豆', 200], ['植物油', 10]], note: '土豆 200g，油 10g' },
+    { n: '蛋炒饭', a: ['鸡蛋炒饭', '炒饭'], c: [['米饭', 250], ['鸡蛋', 100], ['植物油', 10]], note: '一碗饭 250g + 1 个蛋' },
+    { n: '扬州炒饭', a: ['什锦炒饭'], c: [['米饭', 250], ['鸡蛋', 80], ['虾仁', 40], ['火腿', 30], ['植物油', 10]], note: '含虾仁和火腿的什锦炒饭' },
+    { n: '牛肉面', a: ['红烧牛肉面'], c: [['面条', 250], ['牛肉', 80], ['植物油', 5]], note: '面 250g + 牛肉 80g' },
+    { n: '炸酱面', a: [], c: [['面条', 250], ['猪肉馅', 60], ['植物油', 10], ['白砂糖', 5]], note: '面 250g + 肉酱 60g' },
+    { n: '猪肉白菜饺子', a: ['饺子', '水饺'], c: [['面粉', 100], ['猪肉馅', 60], ['白菜', 80], ['植物油', 3]], note: '约 10 个饺子，总重 300g' },
+    { n: '小笼包', a: ['小笼汤包'], c: [['面粉', 80], ['猪肉馅', 60], ['植物油', 5]], note: '按 6 个小笼包估' },
+    { n: '猪肉包子', a: ['包子', '肉包'], c: [['面粉', 80], ['猪肉馅', 50], ['植物油', 3]], note: '按 1 个中等肉包估' },
+    { n: '白粥', a: ['大米粥', '稀饭'], c: [['米饭', 150]], note: '一碗稠粥约 150g 熟饭' },
+    { n: '皮蛋瘦肉粥', a: ['皮蛋粥'], c: [['米饭', 150], ['皮蛋', 30], ['猪里脊', 30], ['植物油', 2]], note: '一碗粥的常规配料' },
+    { n: '豆浆', a: [], c: [['豆浆', 300]], note: '一杯 300ml 无糖豆浆' },
+    { n: '牛奶', a: [], c: [['牛奶', 250]], note: '一盒 250ml 纯牛奶' },
+    { n: '拿铁', a: ['咖啡拿铁'], c: [['牛奶', 200], ['白砂糖', 5]], note: '中杯拿铁，按微糖估' },
+    { n: '奶茶', a: ['珍珠奶茶'], c: [['牛奶', 150], ['珍珠', 40], ['白砂糖', 20]], note: '中杯珍珠奶茶，全糖偏高' },
+    { n: '可乐', a: [], c: [['可乐', 330]], note: '一罐 330ml 可乐' },
+    { n: '牛肉汉堡', a: ['汉堡'], c: [['面包', 100], ['牛肉', 80], ['芝士', 20], ['番茄酱', 10], ['植物油', 5]], note: '一个常规牛肉汉堡' },
+    { n: '炸鸡', a: ['炸鸡腿'], c: [['鸡腿肉', 150], ['面粉', 30], ['植物油', 15]], note: '一个裹粉炸鸡腿' },
+    { n: '薯条', a: ['炸薯条'], c: [['土豆', 150], ['植物油', 15]], note: '一份中薯约 150g' },
+    { n: '披萨', a: ['芝士披萨'], c: [['面粉', 120], ['芝士', 50], ['番茄酱', 20], ['火腿', 30]], note: '按 2 片普通披萨估' },
+    { n: '鸡胸沙拉', a: ['沙拉', '鸡胸肉沙拉'], c: [['鸡胸', 100], ['生菜', 100], ['番茄', 100], ['植物油', 10]], note: '鸡胸 100g + 蔬菜 + 油醋汁' },
+    { n: '麻辣烫', a: ['麻辣烫'], c: [['青菜', 200], ['豆腐', 50], ['猪肉馅', 80], ['面条', 50], ['植物油', 10]], note: '按一碗混合麻辣烫估' },
+    { n: '火锅', a: ['小火锅'], c: [['牛肉', 150], ['青菜', 200], ['豆腐', 100], ['植物油', 10]], note: '一人份肉 + 菜 + 油碟' },
+    { n: '黄焖鸡米饭', a: ['黄焖鸡'], c: [['鸡腿肉', 180], ['米饭', 250], ['土豆', 100], ['植物油', 10]], note: '含一碗米饭的套餐' },
+    { n: '咖喱鸡饭', a: ['咖喱鸡'], c: [['鸡腿肉', 150], ['米饭', 250], ['土豆', 100], ['胡萝卜', 50], ['咖喱块', 30], ['植物油', 5]], note: '含米饭和咖喱块' },
+    { n: '牛肉盖饭', a: ['牛肉饭', '肥牛饭'], c: [['牛肉', 100], ['米饭', 250], ['洋葱', 50], ['植物油', 8]], note: '一碗牛肉盖饭' },
+    { n: '三文鱼饭', a: ['三文鱼盖饭'], c: [['三文鱼', 120], ['米饭', 250]], note: '三文鱼 120g + 米饭' },
+    { n: '紫菜蛋花汤', a: ['紫菜鸡蛋汤'], c: [['紫菜', 5], ['鸡蛋', 50], ['植物油', 2]], note: '一碗汤，紫菜按干重 5g' },
+    { n: '西红柿鸡蛋汤', a: ['番茄蛋汤', '西红柿蛋汤'], c: [['番茄', 100], ['鸡蛋', 50], ['植物油', 3]], note: '一碗家常蛋汤' },
+    { n: '烤红薯', a: ['红薯', '地瓜'], c: [['红薯', 200]], note: '一个中等烤红薯约 200g' },
+    { n: '玉米', a: ['煮玉米', '甜玉米'], c: [['玉米', 200]], note: '一根玉米可食部约 200g' },
+    { n: '燕麦粥', a: ['燕麦牛奶', '牛奶燕麦'], c: [['燕麦', 40], ['牛奶', 200]], note: '40g 燕麦 + 200ml 牛奶' },
+    { n: '酸奶', a: [], c: [['酸奶', 200]], note: '一杯 200g 酸奶' },
+    { n: '苹果', a: [], c: [['苹果', 200]], note: '一个中等苹果可食部约 200g' },
+    { n: '香蕉', a: [], c: [['香蕉', 120]], note: '一根中等香蕉可食部约 120g' }
+  ];
+
+  /* ============================================================
+     大目录：家常菜 / 主食 / 汤粥 / 零食 / 饮料
+     说明：常见菜用配料表；扩展条目按菜名、品类和做法估算。
+     ============================================================ */
+  let DISH_CATALOG = null;
+
+  function catOfDishName(n) {
+    if (/饭|面|粉|饺|馄饨|包|馒头|烧麦|粽子|寿司|饭团|粥/.test(n)) return 'staple';
+    if (/汤|羹/.test(n)) return 'soup';
+    if (/可乐|雪碧|牛奶|豆浆|拿铁|奶茶|咖啡|酸奶|果汁|茶|水|酒/.test(n)) return 'drink';
+    if (/冰淇淋|雪糕|蛋糕|饼干|巧克力|薯片|辣条|果干|坚果|肉干|布丁|果冻|软糖|硬糖|棒棒糖|牛轧糖|棉花糖|沙琪玛|桃酥|蛋挞|泡芙|甜甜圈|马卡龙|布朗尼/.test(n)) return 'snack';
+    if (/沙拉|轻食/.test(n)) return 'light';
+    if (/汉堡|炸鸡|披萨|薯条|三明治|热狗|蛋挞|鸡块|鸡翅|鸡米花/.test(n)) return 'fast';
+    if (/油条|包子|煎饼|烧饼|馒头|豆浆|豆腐脑|粥|蛋|吐司|面包|燕麦/.test(n)) return 'breakfast';
+    return 'home';
+  }
+
+  function compTotals(comps) {
+    const t = { grams: 0, kcal: 0, p: 0, c: 0, f: 0, fib: 0, sugar: 0, oil: 0, na: 0 };
+    (comps || []).forEach(p => {
+      const f = DISH_ING[p[0]];
+      if (!f) return;
+      const g = Number(p[1]) || 0;
+      t.grams += g;
+      t.kcal += f.kcal * g / 100;
+      t.p += f.p * g / 100;
+      t.c += f.c * g / 100;
+      t.f += f.f * g / 100;
+      t.fib += f.fib * g / 100;
+      t.sugar += (f.sug || 0) * g / 100;
+      t.na += (f.na || 0) * g / 100;
+      if (p[0] === '植物油') t.oil += g;
+    });
+    t.kcal = Math.round(t.kcal);
+    t.p = round1(t.p); t.c = round1(t.c); t.f = round1(t.f); t.fib = round1(t.fib);
+    t.control = { sugar: round1(t.sugar), oil: round1(t.oil), salt: round1(t.na / 400), sodium: Math.round(t.na) };
+    return t;
+  }
+
+  const SNACK_FLAVORS = {
+    chips: ['原味', '番茄', '烧烤', '香辣', '黄瓜', '海盐', '芝士', '黑胡椒'],
+    biscuit: ['原味', '巧克力', '黄油', '海盐', '抹茶', '黑芝麻', '芝士', '蔓越莓'],
+    candy: ['牛奶', '黑巧', '榛子', '杏仁', '焦糖', '草莓', '抹茶', '海盐'],
+    nut: ['原味', '盐焗', '蜂蜜', '奶油', '焦糖', '香辣', '蒜香', '海盐'],
+    fruit: ['原味', '蜂蜜', '酸奶', '玫瑰', '陈皮', '话梅', '低糖', '椰香'],
+    meat: ['原味', '香辣', '麻辣', '五香', '黑椒', '孜然', '蜜汁', '蒜香'],
+    spicy: ['原味', '香辣', '麻辣', '甜辣', '蒜香', '藤椒', '烧烤', '酱香'],
+    bakery: ['原味', '巧克力', '奶油', '芝士', '红豆', '肉松', '抹茶', '芋泥'],
+    ice: ['香草', '巧克力', '草莓', '芒果', '抹茶', '咖啡', '焦糖', '坚果'],
+    dessert: ['原味', '芒果', '草莓', '抹茶', '红豆', '椰香', '芋泥', '黑糖']
+  };
+
+  function SB(name, kcal, p, c, f, fib, serve, sug, oil, na, cat) {
+    return { n: name, kcal: kcal, p: p, c: c, f: f, fib: fib, serve: serve, sug: sug, oil: oil, na: na, cat: cat };
+  }
+
+  const SNACK_ALIAS = {
+    '薯片': ['乐事', '可比克', '品客'], '厚切薯片': ['乐事大波浪'], '夹心饼干': ['奥利奥'],
+    '苏打饼干': ['太平', '闲趣'], '曲奇': ['皇冠', '蓝罐'], '威化': ['雀巢'],
+    '巧克力棒': ['士力架'], '黑巧克力': ['德芙', '费列罗'], '牛奶巧克力': ['德芙', '好时'],
+    '软糖': ['旺仔', '徐福记'], '辣条': ['卫龙'], '豆干': ['良品铺子'],
+    '牛肉干': ['三只松鼠', '良品铺子', '百草味'], '猪肉脯': ['来伊份', '三只松鼠'],
+    '海苔': ['波力', '美好时光'], '冰淇淋': ['哈根达斯', '梦龙'], '雪糕': ['梦龙', '可爱多'],
+    '蛋挞': ['肯德基'], '花生': ['三只松鼠', '良品铺子'], '开心果': ['三只松鼠', '百草味']
+  };
+  const DRINK_ALIAS = {
+    '可乐': ['可口可乐', '百事可乐', '百事'], '雪碧': ['可口可乐'], '芬达': ['可口可乐'],
+    '气泡水': ['元气森林'], '苏打水': ['屈臣氏'], '无糖茶': ['东方树叶', '三得利'],
+    '冰红茶': ['康师傅', '统一'], '凉茶': ['王老吉', '加多宝'], '豆浆': ['永和'],
+    '酸奶': ['伊利', '蒙牛', '光明'], '纯牛奶': ['伊利', '蒙牛', '光明'],
+    '拿铁': ['瑞幸', '星巴克'], '美式咖啡': ['瑞幸', '星巴克'],
+    '珍珠奶茶': ['喜茶', '奈雪', '蜜雪冰城'], '黑糖珍珠奶茶': ['喜茶', '蜜雪冰城'],
+    '生椰拿铁': ['瑞幸'], '杨枝甘露': ['喜茶', '7分甜']
+  };
+  const INSTANT_ALIAS = {
+    '红烧牛肉面': ['康师傅', '统一'], '香辣牛肉面': ['康师傅'], '老坛酸菜面': ['统一', '康师傅'],
+    '番茄鸡蛋面': ['康师傅'], '鲜虾鱼板面': ['康师傅'], '香菇炖鸡面': ['康师傅'],
+    '火鸡面': ['三养'], '螺蛳粉': ['好欢螺', '李子柒'], '酸辣粉': ['白家'],
+    '热干面': ['蔡林记'], '油泼面': ['西贝']
+  };
+
+  const SNACK_BASES = [
+    SB('薯片', 536, 7, 53, 35, 4, 50, 2, 25, 600, 'chips'),
+    SB('厚切薯片', 520, 6, 55, 32, 4, 50, 2, 22, 550, 'chips'),
+    SB('薯条', 312, 4, 41, 15, 4, 80, 1, 12, 400, 'chips'),
+    SB('锅巴', 520, 7, 65, 25, 3, 40, 2, 18, 700, 'chips'),
+    SB('虾条', 480, 6, 60, 24, 2, 40, 3, 15, 800, 'chips'),
+    SB('玉米脆', 500, 6, 62, 25, 3, 40, 3, 18, 600, 'chips'),
+    SB('蔬菜脆', 450, 5, 55, 20, 5, 30, 4, 12, 500, 'chips'),
+    SB('米饼', 420, 5, 70, 12, 1, 30, 3, 8, 400, 'chips'),
+    SB('仙贝', 400, 6, 72, 10, 1, 30, 4, 7, 500, 'chips'),
+    SB('雪饼', 430, 5, 68, 15, 1, 30, 8, 10, 400, 'chips'),
+    SB('爆米花', 480, 7, 60, 24, 4, 50, 5, 20, 500, 'chips'),
+    SB('海苔', 300, 30, 40, 5, 30, 10, 5, 2, 1500, 'chips'),
+    SB('薯圈', 530, 6, 55, 33, 3, 40, 2, 24, 600, 'chips'),
+    SB('紫薯脆', 460, 4, 60, 22, 3, 30, 4, 14, 500, 'chips'),
+    SB('山药脆', 440, 5, 62, 18, 3, 30, 4, 12, 500, 'chips'),
+    SB('秋葵脆', 420, 8, 45, 18, 6, 25, 3, 10, 500, 'chips'),
+    SB('香菇脆', 430, 10, 45, 18, 6, 25, 2, 10, 600, 'chips'),
+    SB('冻干草莓', 350, 2, 75, 2, 6, 20, 60, 0, 20, 'chips'),
+    SB('冻干榴莲', 380, 3, 70, 8, 3, 20, 55, 2, 20, 'chips'),
+    SB('海苔脆', 330, 25, 45, 8, 20, 20, 8, 4, 1500, 'chips'),
+
+    SB('苏打饼干', 450, 9, 70, 15, 2, 30, 3, 10, 600, 'biscuit'),
+    SB('夹心饼干', 500, 6, 65, 25, 1, 30, 25, 15, 400, 'biscuit'),
+    SB('曲奇', 520, 6, 60, 28, 1, 30, 20, 18, 300, 'biscuit'),
+    SB('威化', 480, 6, 65, 22, 1, 30, 22, 14, 300, 'biscuit'),
+    SB('消化饼', 430, 8, 68, 14, 4, 30, 10, 8, 400, 'biscuit'),
+    SB('全麦饼', 380, 9, 65, 10, 5, 30, 5, 6, 350, 'biscuit'),
+    SB('蛋卷', 480, 7, 62, 22, 1, 30, 18, 15, 300, 'biscuit'),
+    SB('蛋黄派', 450, 6, 60, 20, 1, 40, 25, 12, 350, 'biscuit'),
+    SB('铜锣烧', 380, 7, 65, 10, 1, 50, 20, 6, 300, 'biscuit'),
+    SB('沙琪玛', 500, 6, 65, 24, 1, 40, 25, 15, 250, 'biscuit'),
+    SB('桃酥', 520, 6, 62, 26, 1, 40, 20, 18, 300, 'biscuit'),
+    SB('老婆饼', 450, 7, 60, 20, 2, 50, 18, 12, 300, 'biscuit'),
+
+    SB('黑巧克力', 600, 8, 45, 40, 10, 20, 20, 25, 50, 'candy'),
+    SB('牛奶巧克力', 535, 7, 58, 30, 3, 20, 50, 20, 80, 'candy'),
+    SB('白巧克力', 560, 6, 60, 32, 0, 20, 55, 22, 80, 'candy'),
+    SB('巧克力棒', 500, 8, 55, 25, 3, 30, 40, 15, 100, 'candy'),
+    SB('巧克力豆', 480, 5, 65, 20, 2, 30, 50, 12, 80, 'candy'),
+    SB('软糖', 350, 5, 85, 0, 0, 20, 55, 0, 50, 'candy'),
+    SB('硬糖', 400, 0, 98, 0, 0, 15, 75, 0, 30, 'candy'),
+    SB('棒棒糖', 380, 0, 95, 0, 0, 15, 75, 0, 30, 'candy'),
+    SB('牛轧糖', 450, 8, 65, 18, 1, 20, 45, 10, 100, 'candy'),
+    SB('棉花糖', 320, 2, 80, 0, 0, 15, 55, 0, 20, 'candy'),
+    SB('太妃糖', 430, 4, 70, 15, 0, 20, 50, 8, 100, 'candy'),
+    SB('花生糖', 480, 10, 60, 22, 2, 20, 35, 10, 150, 'candy'),
+
+    SB('海绵蛋糕', 350, 7, 55, 12, 1, 70, 30, 8, 200, 'dessert'),
+    SB('戚风蛋糕', 300, 7, 45, 12, 1, 70, 25, 8, 150, 'dessert'),
+    SB('奶油蛋糕', 380, 5, 45, 20, 1, 80, 35, 12, 200, 'dessert'),
+    SB('慕斯', 320, 6, 40, 18, 1, 80, 30, 10, 150, 'dessert'),
+    SB('芝士蛋糕', 340, 7, 35, 22, 1, 80, 25, 12, 200, 'dessert'),
+    SB('提拉米苏', 330, 6, 35, 20, 1, 80, 28, 12, 150, 'dessert'),
+    SB('蛋挞', 300, 5, 30, 16, 1, 60, 20, 10, 180, 'dessert'),
+    SB('泡芙', 280, 6, 25, 16, 1, 50, 15, 10, 150, 'dessert'),
+    SB('瑞士卷', 320, 6, 40, 16, 1, 60, 25, 10, 150, 'dessert'),
+    SB('甜甜圈', 380, 5, 50, 18, 1, 60, 30, 12, 250, 'dessert'),
+    SB('马卡龙', 400, 7, 60, 18, 1, 20, 50, 10, 100, 'dessert'),
+    SB('布朗尼', 420, 6, 50, 22, 2, 50, 35, 12, 150, 'dessert'),
+
+    SB('花生', 574, 24, 16, 49, 5.5, 25, 4, 0, 300, 'nut'),
+    SB('瓜子', 540, 25, 20, 45, 3, 25, 3, 0, 500, 'nut'),
+    SB('核桃', 654, 15, 14, 65, 6, 25, 2, 0, 20, 'nut'),
+    SB('腰果', 553, 18, 30, 44, 3, 25, 5, 0, 200, 'nut'),
+    SB('杏仁', 579, 21, 22, 50, 12, 25, 4, 0, 150, 'nut'),
+    SB('开心果', 560, 20, 28, 45, 10, 25, 4, 0, 300, 'nut'),
+    SB('夏威夷果', 700, 8, 14, 75, 8, 20, 4, 0, 150, 'nut'),
+    SB('巴旦木', 579, 21, 22, 50, 12, 25, 4, 0, 150, 'nut'),
+    SB('榛子', 628, 15, 17, 61, 10, 25, 3, 0, 100, 'nut'),
+    SB('碧根果', 690, 9, 14, 72, 6, 20, 3, 0, 100, 'nut'),
+    SB('松子', 673, 14, 13, 68, 4, 20, 2, 0, 100, 'nut'),
+    SB('南瓜子', 559, 30, 15, 45, 4, 25, 2, 0, 200, 'nut'),
+
+    SB('葡萄干', 341, 3, 79, 0.5, 3.7, 30, 60, 0, 50, 'fruit'),
+    SB('红枣', 276, 3, 70, 0.5, 3, 30, 55, 0, 20, 'fruit'),
+    SB('枸杞', 258, 13, 64, 1.5, 16, 20, 45, 0, 50, 'fruit'),
+    SB('芒果干', 320, 2, 78, 0.5, 2, 30, 55, 0, 100, 'fruit'),
+    SB('香蕉片', 519, 2, 58, 34, 2, 25, 35, 10, 100, 'fruit'),
+    SB('蔓越莓干', 308, 0, 82, 0.1, 5, 30, 60, 0, 20, 'fruit'),
+    SB('蓝莓干', 300, 1, 80, 0.5, 5, 30, 55, 0, 20, 'fruit'),
+    SB('桂圆干', 286, 5, 72, 0.5, 2, 25, 50, 0, 20, 'fruit'),
+    SB('话梅', 260, 3, 65, 1, 5, 20, 40, 0, 2000, 'fruit'),
+    SB('杏干', 250, 3, 63, 0.5, 4, 25, 45, 0, 50, 'fruit'),
+    SB('柿饼', 250, 2, 62, 0.3, 4, 30, 45, 0, 20, 'fruit'),
+    SB('山楂片', 350, 1, 85, 0.5, 2, 20, 65, 0, 100, 'fruit'),
+
+    SB('牛肉干', 550, 45, 20, 25, 1, 30, 8, 10, 1500, 'meat'),
+    SB('猪肉脯', 400, 25, 40, 15, 1, 30, 20, 8, 1200, 'meat'),
+    SB('鸡肉肠', 250, 15, 20, 15, 1, 40, 3, 10, 1000, 'meat'),
+    SB('鱿鱼丝', 300, 50, 20, 5, 1, 25, 5, 2, 1500, 'meat'),
+    SB('鱼片', 350, 45, 30, 8, 1, 25, 5, 5, 1500, 'meat'),
+    SB('鸭脖', 280, 25, 10, 18, 1, 50, 5, 10, 1800, 'meat'),
+    SB('鸭翅', 300, 22, 5, 22, 0, 50, 3, 12, 1700, 'meat'),
+    SB('卤鸡爪', 250, 20, 5, 18, 0, 50, 2, 10, 1500, 'meat'),
+    SB('泡椒凤爪', 250, 20, 5, 18, 0, 50, 2, 10, 1800, 'meat'),
+    SB('火腿肠', 260, 12, 15, 18, 0, 40, 2, 12, 1200, 'meat'),
+    SB('午餐肉', 310, 13, 10, 26, 0, 50, 1, 20, 1400, 'meat'),
+    SB('培根', 400, 15, 2, 35, 0, 30, 1, 25, 1600, 'meat'),
+
+    SB('辣条', 420, 12, 50, 22, 2, 30, 8, 15, 1600, 'spicy'),
+    SB('面筋', 200, 20, 25, 5, 2, 30, 3, 2, 1200, 'spicy'),
+    SB('豆干', 300, 25, 15, 18, 2, 30, 2, 10, 1200, 'spicy'),
+    SB('素肉', 350, 20, 30, 18, 3, 30, 5, 10, 1000, 'spicy'),
+    SB('魔芋爽', 150, 2, 20, 5, 5, 50, 3, 3, 1200, 'spicy'),
+    SB('海带结', 100, 5, 15, 1, 5, 50, 1, 1, 1500, 'spicy'),
+    SB('卤蛋', 160, 13, 5, 10, 0, 50, 1, 5, 800, 'spicy'),
+    SB('豆皮', 300, 25, 15, 18, 2, 30, 2, 8, 1000, 'spicy'),
+    SB('鱼豆腐', 250, 15, 20, 15, 1, 30, 3, 10, 1200, 'spicy'),
+    SB('蟹棒', 200, 10, 25, 8, 1, 30, 5, 4, 800, 'spicy'),
+
+    SB('吐司', 280, 8, 50, 5, 2, 50, 5, 4, 450, 'bakery'),
+    SB('全麦面包', 250, 9, 45, 4, 6, 50, 4, 3, 400, 'bakery'),
+    SB('可颂', 400, 8, 45, 22, 2, 50, 8, 15, 400, 'bakery'),
+    SB('丹麦面包', 380, 7, 48, 18, 1, 50, 12, 12, 350, 'bakery'),
+    SB('菠萝包', 350, 7, 50, 13, 1, 50, 15, 8, 300, 'bakery'),
+    SB('奶黄包', 280, 7, 48, 6, 1, 60, 15, 4, 250, 'bakery'),
+    SB('肉松卷', 350, 10, 45, 14, 1, 50, 10, 8, 350, 'bakery'),
+    SB('欧包', 260, 9, 50, 3, 4, 60, 3, 2, 350, 'bakery'),
+    SB('贝果', 280, 10, 52, 3, 3, 60, 4, 2, 300, 'bakery'),
+    SB('华夫饼', 350, 8, 50, 14, 2, 60, 15, 8, 250, 'bakery'),
+
+    SB('冰淇淋', 250, 4, 30, 12, 1, 80, 25, 10, 100, 'ice'),
+    SB('雪糕', 220, 3, 30, 10, 1, 70, 20, 8, 80, 'ice'),
+    SB('甜筒', 260, 4, 35, 11, 1, 80, 25, 9, 100, 'ice'),
+    SB('冰棒', 150, 1, 25, 3, 0, 70, 18, 0, 30, 'ice'),
+    SB('糯米糍', 300, 4, 50, 10, 1, 50, 25, 5, 50, 'ice'),
+    SB('布丁', 150, 4, 20, 5, 0, 100, 15, 3, 80, 'ice'),
+    SB('果冻', 70, 0, 17, 0, 0, 100, 15, 0, 20, 'ice'),
+    SB('双皮奶', 180, 5, 20, 8, 0, 150, 18, 5, 80, 'ice'),
+    SB('杨枝甘露', 180, 2, 30, 6, 1, 200, 20, 4, 50, 'ice'),
+    SB('芋圆', 200, 2, 40, 5, 1, 150, 15, 2, 20, 'ice'),
+    SB('豌豆脆', 380, 12, 55, 12, 6, 30, 3, 8, 600, 'chips'),
+    SB('鹰嘴豆脆', 400, 14, 50, 14, 8, 30, 3, 9, 500, 'chips'),
+    SB('藜麦脆', 420, 10, 60, 14, 5, 30, 3, 9, 400, 'chips'),
+    SB('海带脆', 280, 8, 40, 10, 10, 20, 4, 6, 1400, 'chips'),
+    SB('莲藕脆', 430, 7, 62, 17, 5, 30, 4, 10, 500, 'chips'),
+    SB('芋头脆', 450, 6, 62, 20, 4, 30, 5, 12, 400, 'chips'),
+    SB('红薯脆', 440, 5, 65, 18, 5, 30, 8, 11, 400, 'chips'),
+    SB('南瓜脆', 430, 6, 62, 18, 6, 30, 8, 10, 400, 'chips'),
+    SB('米果', 380, 6, 72, 8, 2, 30, 5, 5, 500, 'chips'),
+    SB('麦片脆', 420, 9, 60, 15, 7, 30, 10, 8, 300, 'chips'),
+    SB('奶酪脆', 500, 14, 45, 30, 2, 25, 5, 18, 800, 'chips'),
+    SB('谷物棒', 400, 8, 60, 14, 5, 40, 20, 8, 300, 'biscuit'),
+    SB('蛋白棒', 380, 25, 40, 12, 6, 50, 15, 6, 400, 'biscuit'),
+    SB('能量棒', 420, 12, 55, 16, 4, 50, 25, 8, 300, 'biscuit'),
+    SB('酸奶块', 380, 8, 60, 12, 1, 30, 40, 6, 200, 'dessert')
+  ];
+
+  function DR(name, kcal, p, c, f, fib, serve, na, cat, sugar) {
+    return { n: name, kcal: kcal, p: p, c: c, f: f, fib: fib, serve: serve, na: na, cat: cat, sugar: sugar };
+  }
+
+  const DRINK_BASES = [
+    DR('绿茶', 0, 0, 0, 0, 0, 500, 0, 'tea', 0),
+    DR('红茶', 0, 0, 0, 0, 0, 500, 0, 'tea', 0),
+    DR('乌龙茶', 0, 0, 0, 0, 0, 500, 0, 'tea', 0),
+    DR('普洱茶', 0, 0, 0, 0, 0, 500, 0, 'tea', 0),
+    DR('茉莉花茶', 0, 0, 0, 0, 0, 500, 0, 'tea', 0),
+    DR('菊花茶', 0, 0, 0, 0, 0, 500, 0, 'tea', 0),
+    DR('大麦茶', 2, 0, 0.5, 0, 0, 500, 0, 'tea', 0),
+    DR('荞麦茶', 2, 0, 0.5, 0, 0, 500, 0, 'tea', 0),
+    DR('柠檬茶', 1, 0, 0.2, 0, 0, 500, 10, 'tea', 0),
+    DR('蜂蜜柚子茶', 40, 0, 10, 0, 0, 500, 10, 'tea', 10),
+    DR('珍珠奶茶', 45, 1, 8, 1, 0, 500, 50, 'tea', 3),
+    DR('椰果奶茶', 40, 1, 7, 1, 0, 500, 50, 'tea', 3),
+    DR('芋泥奶茶', 55, 1, 10, 1.5, 0, 500, 60, 'tea', 4),
+    DR('抹茶拿铁', 50, 2, 7, 2, 0, 450, 60, 'tea', 4),
+    DR('红茶拿铁', 48, 2, 6.5, 2, 0, 450, 60, 'tea', 4),
+    DR('水果茶', 30, 0, 7, 0, 0, 500, 10, 'tea', 6),
+    DR('百香果茶', 32, 0, 8, 0, 0, 500, 10, 'tea', 6),
+    DR('草莓奶昔', 90, 2, 15, 3, 0, 400, 80, 'tea', 10),
+    DR('芒果冰沙', 80, 1, 18, 1, 1, 400, 30, 'tea', 12),
+    DR('酸梅汤', 35, 0, 9, 0, 0, 500, 20, 'tea', 8),
+    DR('美式咖啡', 2, 0.1, 0, 0, 0, 350, 5, 'coffee', 0),
+    DR('拿铁', 45, 2, 5, 2, 0, 350, 40, 'coffee', 0),
+    DR('卡布奇诺', 40, 2, 5, 2, 0, 300, 30, 'coffee', 0),
+    DR('摩卡', 60, 2, 8, 2.5, 0, 350, 40, 'coffee', 4),
+    DR('焦糖玛奇朵', 65, 2, 9, 3, 0, 350, 50, 'coffee', 6),
+    DR('馥芮白', 50, 2, 5, 2.5, 0, 300, 40, 'coffee', 0),
+    DR('冷萃咖啡', 2, 0.1, 0, 0, 0, 350, 5, 'coffee', 0),
+    DR('浓缩咖啡', 3, 0.2, 0, 0, 0, 60, 5, 'coffee', 0),
+    DR('澳白', 48, 2, 5, 2.5, 0, 300, 40, 'coffee', 0),
+    DR('冰美式', 2, 0.1, 0, 0, 0, 400, 5, 'coffee', 0),
+    DR('可乐', 42, 0, 10.6, 0, 0, 330, 5, 'soda', 10.6),
+    DR('雪碧', 40, 0, 10, 0, 0, 330, 5, 'soda', 10),
+    DR('芬达', 45, 0, 11, 0, 0, 330, 5, 'soda', 11),
+    DR('苏打水', 0, 0, 0, 0, 0, 500, 10, 'soda', 0),
+    DR('气泡水', 0, 0, 0, 0, 0, 500, 5, 'soda', 0),
+    DR('能量饮料', 45, 0, 11, 0, 0, 250, 100, 'soda', 10),
+    DR('运动饮料', 25, 0, 6, 0, 0, 500, 30, 'soda', 6),
+    DR('电解质水', 10, 0, 2.5, 0, 0, 500, 20, 'soda', 2),
+    DR('汤力水', 35, 0, 9, 0, 0, 330, 10, 'soda', 9),
+    DR('橙汁', 45, 0.7, 10, 0, 0, 350, 5, 'juice', 10),
+    DR('苹果汁', 46, 0.1, 11.3, 0, 0, 350, 5, 'juice', 11),
+    DR('葡萄汁', 60, 0.3, 15, 0, 0, 350, 5, 'juice', 15),
+    DR('西瓜汁', 30, 0.5, 7, 0, 0, 350, 5, 'juice', 7),
+    DR('芒果汁', 60, 0.4, 15, 0, 0, 350, 5, 'juice', 15),
+    DR('桃汁', 50, 0.3, 12, 0, 0, 350, 5, 'juice', 12),
+    DR('椰子水', 19, 0.2, 3.7, 0, 0, 350, 20, 'juice', 3),
+    DR('番茄汁', 20, 0.8, 4, 0, 0, 350, 30, 'juice', 4),
+    DR('混合果汁', 48, 0.4, 11.5, 0, 0, 350, 5, 'juice', 11),
+    DR('石榴汁', 55, 0.3, 13, 0, 0, 350, 5, 'juice', 13),
+    DR('蓝莓汁', 45, 0.3, 10, 0, 0, 350, 5, 'juice', 10),
+    DR('甘蔗汁', 60, 0.2, 15, 0, 0, 350, 5, 'juice', 15),
+    DR('纯牛奶', 54, 3, 4.8, 3.2, 0, 250, 50, 'milk', 4.8),
+    DR('低脂牛奶', 42, 3.4, 4.5, 1.5, 0, 250, 50, 'milk', 4.5),
+    DR('脱脂牛奶', 35, 3.4, 4.8, 0.2, 0, 250, 50, 'milk', 4.8),
+    DR('豆浆', 31, 3, 1.2, 1.6, 0.5, 300, 10, 'milk', 1.2),
+    DR('燕麦奶', 45, 1, 7, 1.5, 0, 250, 40, 'milk', 3),
+    DR('杏仁奶', 30, 1, 3, 2, 0, 250, 30, 'milk', 2),
+    DR('椰奶', 60, 1, 5, 5, 0, 250, 20, 'milk', 3),
+    DR('酸奶', 72, 3.5, 9, 2.5, 0, 200, 60, 'milk', 6),
+    DR('啤酒', 43, 0.5, 3.6, 0, 0, 500, 20, 'alcohol', 3),
+    DR('白酒', 230, 0, 0, 0, 0, 50, 5, 'alcohol', 0),
+    DR('红酒', 85, 0.1, 2.5, 0, 0, 150, 5, 'alcohol', 2),
+    DR('黄酒', 130, 1, 10, 0, 0, 150, 10, 'alcohol', 8),
+    DR('鸡尾酒', 120, 0.2, 15, 0, 0, 250, 10, 'alcohol', 10),
+    DR('果酒', 90, 0.2, 10, 0, 0, 200, 5, 'alcohol', 8),
+    DR('米酒', 100, 0.5, 12, 0, 0, 200, 5, 'alcohol', 10),
+    DR('威士忌', 240, 0, 0, 0, 0, 50, 2, 'alcohol', 0),
+    DR('白开水', 0, 0, 0, 0, 0, 500, 0, 'other', 0),
+    DR('柠檬水', 2, 0, 0.5, 0, 0, 500, 5, 'other', 0),
+    DR('蜂蜜水', 30, 0, 8, 0, 0, 500, 5, 'other', 8),
+    DR('无糖茶', 0, 0, 0, 0, 0, 500, 5, 'other', 0),
+    DR('冰红茶', 40, 0, 10, 0, 0, 500, 20, 'other', 10),
+    DR('凉茶', 30, 0, 7, 0, 0, 500, 10, 'other', 7),
+    DR('咖啡饮料', 45, 0.5, 10, 1, 0, 350, 30, 'other', 10),
+    DR('奶茶饮料', 50, 1, 11, 1, 0, 500, 50, 'other', 10),
+    DR('乳饮料', 55, 1, 10, 1, 0, 350, 50, 'other', 10),
+    DR('果蔬汁', 40, 0.5, 9, 0, 0.5, 350, 10, 'other', 9),
+    DR('龟苓膏饮品', 50, 1, 11, 0, 0, 300, 20, 'other', 10),
+    DR('运动电解质水', 10, 0, 2.5, 0, 0, 500, 30, 'other', 2),
+    DR('茉莉奶绿', 40, 1, 6, 1.5, 0, 500, 40, 'tea', 3),
+    DR('桂花乌龙', 20, 0, 5, 0, 0, 500, 10, 'tea', 2),
+    DR('生椰拿铁', 55, 1, 7, 3, 0, 450, 50, 'tea', 4),
+    DR('厚乳拿铁', 70, 2, 8, 4, 0, 450, 60, 'tea', 4),
+    DR('燕麦拿铁', 50, 1, 7, 2, 1, 450, 40, 'tea', 3),
+    DR('椰云拿铁', 65, 1, 8, 3.5, 0, 450, 50, 'tea', 4),
+    DR('黑糖珍珠奶茶', 60, 1, 11, 2, 0, 500, 60, 'tea', 5),
+    DR('芋泥波波奶茶', 65, 1, 12, 2, 0, 500, 60, 'tea', 5),
+    DR('多肉葡萄', 45, 0, 11, 0, 0.5, 500, 10, 'tea', 9),
+    DR('杨枝甘露', 55, 1, 12, 1.5, 0.5, 500, 40, 'tea', 8),
+    DR('满杯红柚', 40, 0, 10, 0, 0.5, 500, 10, 'tea', 8),
+    DR('芝士奶盖茶', 60, 1, 7, 3.5, 0, 500, 50, 'tea', 5),
+    DR('抹茶奶盖', 55, 1, 7, 3, 0, 500, 50, 'tea', 5),
+    DR('可可奶盖', 65, 1, 8, 3.5, 0, 500, 50, 'tea', 6),
+    DR('桂花酒酿奶茶', 60, 1, 10, 2, 0, 500, 40, 'tea', 6),
+    DR('姜茶', 20, 0, 5, 0, 0, 500, 10, 'tea', 3),
+    DR('红枣茶', 30, 0, 7, 0, 0, 500, 10, 'tea', 5),
+    DR('桂圆茶', 30, 0, 7, 0, 0, 500, 10, 'tea', 5),
+    DR('枸杞茶', 10, 0, 2, 0, 0, 500, 10, 'tea', 1),
+    DR('洛神花茶', 25, 0, 6, 0, 0, 500, 10, 'tea', 4)
+  ];
+
+  const INSTANT_BASES = [
+    ['红烧牛肉面', 470, 10, 60, 20, 2, 3, 18, 1800, 100],
+    ['香辣牛肉面', 480, 10, 60, 21, 2, 4, 19, 1900, 100],
+    ['老坛酸菜面', 450, 9, 58, 19, 2, 3, 17, 2000, 100],
+    ['番茄鸡蛋面', 440, 10, 58, 17, 2, 5, 15, 1500, 100],
+    ['鲜虾鱼板面', 430, 10, 57, 16, 2, 4, 14, 1700, 100],
+    ['香菇炖鸡面', 440, 11, 56, 17, 2, 3, 15, 1600, 100],
+    ['酸辣牛肉面', 470, 10, 59, 20, 2, 4, 18, 1900, 100],
+    ['藤椒牛肉面', 480, 10, 60, 21, 2, 3, 19, 1900, 100],
+    ['火鸡面', 500, 9, 60, 24, 2, 6, 22, 2000, 100],
+    ['炸酱面', 460, 10, 60, 19, 2, 6, 17, 1700, 100],
+    ['葱油拌面', 470, 9, 62, 20, 1, 5, 20, 1500, 100],
+    ['麻酱拌面', 480, 10, 58, 22, 2, 4, 21, 1400, 100],
+    ['螺蛳粉', 430, 9, 62, 16, 3, 3, 15, 2200, 100],
+    ['酸辣粉', 420, 6, 65, 15, 2, 3, 14, 2000, 100],
+    ['重庆小面', 450, 9, 60, 18, 2, 4, 16, 1800, 100],
+    ['牛肉米粉', 440, 10, 62, 16, 2, 3, 14, 1700, 100],
+    ['肥肠粉', 460, 10, 60, 19, 2, 3, 16, 1900, 100],
+    ['热干面', 480, 10, 62, 21, 2, 5, 19, 1600, 100],
+    ['油泼面', 470, 9, 65, 20, 2, 2, 19, 1500, 100],
+    ['咖喱面', 460, 9, 60, 19, 2, 3, 16, 1500, 100]
+  ];
+
+  const FROZEN_BASES = [
+    ['猪肉水饺', 220, 9, 28, 8, 1.5, 2, 5, 500, 100],
+    ['韭菜鸡蛋水饺', 180, 7, 25, 6, 1.5, 2, 4, 400, 100],
+    ['虾仁馄饨', 190, 9, 24, 7, 1, 2, 5, 500, 100],
+    ['小笼包', 220, 8, 26, 10, 1, 3, 6, 600, 100],
+    ['生煎包', 250, 8, 28, 13, 1, 4, 7, 700, 100],
+    ['锅贴', 230, 8, 27, 11, 1, 4, 6, 600, 100],
+    ['烧麦', 200, 7, 25, 8, 1, 3, 5, 500, 100],
+    ['糯米鸡', 220, 8, 30, 8, 1, 3, 5, 600, 100],
+    ['粽子', 210, 5, 35, 6, 1, 4, 4, 500, 100],
+    ['汤圆', 300, 5, 50, 8, 1, 8, 3, 200, 100],
+    ['春卷', 280, 6, 35, 12, 1, 6, 8, 600, 100],
+    ['蛋饺', 190, 10, 10, 10, 0, 3, 6, 500, 100],
+    ['鱼丸', 100, 12, 10, 2, 0, 2, 3, 600, 100],
+    ['牛肉丸', 180, 15, 10, 9, 0, 3, 5, 700, 100],
+    ['虾滑', 120, 15, 8, 2, 0, 2, 4, 600, 100],
+    ['鸡米花', 280, 15, 20, 15, 1, 4, 8, 700, 100],
+    ['鸡块', 250, 14, 20, 13, 1, 4, 7, 600, 100],
+    ['鸡翅', 230, 18, 8, 15, 0, 3, 6, 600, 100],
+    ['手抓饼', 320, 7, 40, 15, 1, 5, 8, 500, 100],
+    ['葱油饼', 300, 6, 42, 13, 1, 5, 8, 500, 100],
+    ['南瓜饼', 250, 4, 40, 10, 2, 10, 5, 300, 100],
+    ['紫薯球', 220, 3, 45, 5, 2, 13, 4, 200, 100],
+    ['鱼豆腐', 200, 12, 18, 10, 1, 6, 6, 700, 100],
+    ['蟹棒', 180, 10, 20, 7, 1, 5, 4, 600, 100],
+    ['油条', 390, 7, 50, 20, 1, 2, 10, 400, 100],
+    ['麻花', 450, 8, 55, 22, 1, 7, 12, 300, 100],
+    ['藕盒', 220, 7, 20, 12, 2, 5, 6, 400, 100],
+    ['茄盒', 210, 6, 18, 13, 2, 5, 7, 400, 100],
+    ['八宝饭', 300, 4, 55, 8, 2, 20, 5, 200, 100],
+    ['发糕', 230, 5, 48, 3, 2, 7, 3, 200, 100]
+  ];
+
+  const GEN_METHODS = {
+    '清炒': { oil: 8, salt: 1.2 },
+    '蒜蓉': { oil: 8, salt: 1.2 },
+    '蚝油': { oil: 8, salt: 1, soy: 5 },
+    '白灼': { oil: 2, salt: 1, soy: 2 },
+    '凉拌': { oil: 5, salt: 0.8, soy: 3 },
+    '上汤': { oil: 4, salt: 1.2 },
+    '红烧': { oil: 10, salt: 1.8, soy: 8, sugar: 6 },
+    '干煸': { oil: 12, salt: 1.5, soy: 2 },
+    '香辣': { oil: 12, salt: 1.5, soy: 3, sugar: 2 },
+    '孜然': { oil: 10, salt: 1.5, soy: 1 },
+    '烤': { oil: 5, salt: 1.2, soy: 3 },
+    '酸辣': { oil: 8, salt: 1.5, sugar: 2, soy: 2 },
+    '醋溜': { oil: 8, salt: 1.2, sugar: 3, soy: 2 },
+    '咖喱': { oil: 6, salt: 1.2, curry: 20 },
+    '番茄': { oil: 8, salt: 1.2, tomato: 100 },
+    '蒜香': { oil: 10, salt: 1.4, soy: 2 },
+    '黑椒': { oil: 8, salt: 1.3, soy: 4 },
+    '清蒸': { oil: 2, salt: 1.2, soy: 3 },
+    '香煎': { oil: 8, salt: 1.2, soy: 2 },
+    '椒盐': { oil: 12, salt: 2 },
+    '炖': { oil: 6, salt: 1.8, soy: 6 }
+  };
+
+  function methodComps(baseKey, grams, method, extra) {
+    const m = GEN_METHODS[method] || GEN_METHODS['清炒'];
+    const c = [[baseKey, grams], ['植物油', m.oil], ['盐', m.salt]];
+    if (m.soy) c.push(['酱油', m.soy]);
+    if (m.sugar) c.push(['白砂糖', m.sugar]);
+    if (m.curry) c.push(['咖喱块', m.curry]);
+    if (m.tomato) c.push(['番茄', m.tomato]);
+    return c.concat(extra || []);
+  }
+
+  const GEN_VEG_GROUPS = [
+    { m: ['清炒', '蒜蓉', '蚝油', '白灼', '凉拌', '上汤'], items: ['青菜', '菠菜', '生菜', '油麦菜', '空心菜', '白菜', '紫甘蓝', '韭菜', '芹菜', '蒜苔'], g: 250 },
+    { m: ['清炒', '红烧', '干煸', '香辣', '孜然', '凉拌', '烤'], items: ['土豆', '茄子', '豆角', '青椒', '胡萝卜', '冬瓜', '南瓜', '山药', '莲藕', '玉米', '西葫芦', '秋葵', '芦笋', '荷兰豆', '花菜', '西兰花', '白萝卜', '海带'], g: 200 },
+    { m: ['清炒', '蒜蓉', '凉拌', '烤'], items: ['黄瓜', '苦瓜', '丝瓜', '番茄', '洋葱'], g: 200 },
+    { m: ['清炒', '蚝油', '蒜蓉', '红烧', '干煸'], items: ['蘑菇', '木耳', '豆芽'], g: 200 },
+    { m: ['清炒', '蒜蓉', '酸辣', '醋溜', '咖喱', '凉拌'], items: ['土豆', '莲藕', '山药', '花菜', '西兰花', '豆角', '茄子', '蘑菇', '木耳', '豆芽', '西葫芦', '胡萝卜'], g: 200 }
+  ];
+
+  const GEN_PROTEINS = [
+    { k: '鸡胸', d: '鸡丁', g: 140, m: ['青椒炒', '洋葱炒', '红烧', '香辣', '孜然', '黑椒', '咖喱', '蒜香', '椒盐', '糖醋', '鱼香', '宫保', '水煮', '香煎', '烤'] },
+    { k: '鸡腿肉', d: '鸡块', g: 150, m: ['青椒炒', '洋葱炒', '红烧', '香辣', '孜然', '黑椒', '咖喱', '蒜香', '椒盐', '糖醋', '宫保', '水煮', '烤'] },
+    { k: '猪里脊', d: '肉丝', g: 120, m: ['青椒炒', '洋葱炒', '红烧', '香辣', '孜然', '黑椒', '咖喱', '蒜香', '椒盐', '糖醋', '鱼香', '水煮'] },
+    { k: '牛肉', d: '牛柳', g: 120, m: ['青椒炒', '洋葱炒', '红烧', '香辣', '孜然', '黑椒', '咖喱', '蒜香', '椒盐', '糖醋', '水煮', '香煎', '烤'] },
+    { k: '虾仁', d: '虾仁', g: 120, m: ['青椒炒', '洋葱炒', '红烧', '香辣', '孜然', '黑椒', '咖喱', '蒜香', '椒盐', '糖醋', '水煮', '清蒸'] },
+    { k: '鲈鱼', d: '鱼片', g: 150, m: ['红烧', '香辣', '咖喱', '蒜香', '椒盐', '糖醋', '水煮', '清蒸', '香煎', '烤'] },
+    { k: '豆腐', d: '豆腐', g: 200, m: ['青椒炒', '洋葱炒', '红烧', '香辣', '孜然', '黑椒', '咖喱', '蒜香', '椒盐', '糖醋', '鱼香', '宫保', '水煮', '清蒸', '香煎'] },
+    { k: '鸡蛋', d: '鸡蛋', g: 120, m: ['青椒炒', '洋葱炒', '番茄', '香辣', '咖喱', '蒜香', '椒盐', '糖醋', '鱼香'] },
+    { k: '五花肉', d: '五花肉', g: 120, m: ['青椒炒', '洋葱炒', '红烧', '香辣', '孜然', '黑椒', '蒜香', '椒盐', '糖醋', '烤'] },
+    { k: '排骨', d: '排骨', g: 180, m: ['红烧', '香辣', '孜然', '蒜香', '椒盐', '糖醋', '烤', '炖'] },
+    { k: '豆干', d: '豆干', g: 120, m: ['青椒炒', '洋葱炒', '红烧', '香辣', '孜然', '黑椒', '咖喱', '蒜香', '椒盐', '糖醋', '鱼香', '宫保'] }
+  ];
+
+  const GEN_PROTEIN_EXTRAS = {
+    '青椒炒': [['青椒', 100]],
+    '洋葱炒': [['洋葱', 80]],
+    '红烧': [['白砂糖', 5]],
+    '香辣': [['青椒', 50]],
+    '孜然': [['洋葱', 40]],
+    '黑椒': [['洋葱', 50]],
+    '咖喱': [['土豆', 80]],
+    '鱼香': [['木耳', 20], ['胡萝卜', 30]],
+    '宫保': [['花生', 25], ['黄瓜', 50]],
+    '水煮': [['豆芽', 100]],
+    '糖醋': [['淀粉', 20]]
+  };
+
+  const GEN_PAIR_VEGS = ['土豆', '茄子', '豆角', '青椒', '番茄', '洋葱', '胡萝卜', '冬瓜', '南瓜', '山药', '莲藕', '玉米', '西葫芦', '秋葵', '芦笋', '荷兰豆', '花菜', '西兰花', '白萝卜', '海带', '紫甘蓝', '蘑菇', '木耳', '豆芽', '黄瓜', '苦瓜', '丝瓜'];
+
+  const RICE_TOPPINGS = [
+    ['番茄鸡蛋', [['番茄', 150], ['鸡蛋', 100], ['植物油', 6]]],
+    ['青椒肉丝', [['青椒', 100], ['猪里脊', 90], ['植物油', 6]]],
+    ['鱼香肉丝', [['猪里脊', 90], ['木耳', 20], ['胡萝卜', 30], ['植物油', 8], ['白砂糖', 5]]],
+    ['宫保鸡丁', [['鸡胸', 100], ['花生', 20], ['黄瓜', 40], ['植物油', 8], ['白砂糖', 3]]],
+    ['红烧肉', [['五花肉', 100], ['植物油', 5], ['白砂糖', 4]]],
+    ['红烧牛肉', [['牛肉', 100], ['植物油', 6], ['白砂糖', 3]]],
+    ['土豆牛肉', [['牛肉', 90], ['土豆', 100], ['植物油', 6]]],
+    ['咖喱鸡', [['鸡腿肉', 100], ['土豆', 80], ['咖喱块', 20], ['植物油', 5]]],
+    ['黄焖鸡', [['鸡腿肉', 120], ['土豆', 80], ['植物油', 8]]],
+    ['香菇鸡', [['鸡腿肉', 100], ['蘑菇', 80], ['植物油', 6]]],
+    ['麻婆豆腐', [['豆腐', 150], ['牛肉末', 25], ['植物油', 8]]],
+    ['回锅肉', [['五花肉', 90], ['青椒', 80], ['植物油', 6]]],
+    ['鱼香茄子', [['茄子', 150], ['猪肉馅', 50], ['植物油', 10], ['白砂糖', 5]]],
+    ['肉末茄子', [['茄子', 150], ['猪肉馅', 60], ['植物油', 10]]],
+    ['虾仁滑蛋', [['虾仁', 80], ['鸡蛋', 100], ['植物油', 6]]],
+    ['照烧鸡', [['鸡腿肉', 120], ['酱油', 10], ['白砂糖', 8]]],
+    ['黑椒牛柳', [['牛肉', 100], ['洋葱', 50], ['植物油', 6]]],
+    ['番茄牛腩', [['牛肉', 100], ['番茄', 150], ['植物油', 6]]],
+    ['木须肉', [['猪里脊', 80], ['鸡蛋', 80], ['木耳', 30], ['黄瓜', 50], ['植物油', 8]]],
+    ['尖椒肉丝', [['青椒', 100], ['猪里脊', 90], ['植物油', 8]]]
+  ];
+
+  const RICE_STYLES = [
+    ['盖饭', 250, 1], ['拌饭', 250, 1], ['炒饭', 250, 0.8], ['烩饭', 250, 0.9],
+    ['煲仔饭', 250, 0.9], ['便当', 200, 1]
+  ];
+
+  const NOODLE_STYLES = [
+    ['汤面', 250, 1], ['拌面', 250, 1], ['炒面', 250, 0.8], ['盖面', 250, 1],
+    ['凉面', 250, 1], ['米线', 250, 1], ['河粉', 250, 1], ['乌冬面', 250, 1],
+    ['意面', 250, 1], ['烩面', 250, 1]
+  ];
+
+  const NOODLE_TOPPINGS = RICE_TOPPINGS.concat([
+    ['炸酱', [['猪肉馅', 60], ['植物油', 6], ['白砂糖', 3]]],
+    ['雪菜肉丝', [['青菜', 100], ['猪里脊', 80], ['植物油', 6]]],
+    ['大排', [['猪里脊', 120], ['植物油', 5]]],
+    ['三鲜', [['虾仁', 50], ['鸡蛋', 50], ['猪里脊', 50], ['植物油', 5]]],
+    ['鸡丝', [['鸡胸', 100], ['植物油', 4]]],
+    ['酸辣', [['青菜', 100], ['豆腐', 50], ['植物油', 6]]],
+    ['麻辣', [['牛肉', 80], ['豆芽', 80], ['植物油', 8]]],
+    ['葱油', [['青菜', 50], ['植物油', 10], ['酱油', 8]]],
+    ['麻酱', [['青菜', 50], ['植物油', 5], ['酱油', 5]]],
+    ['海鲜', [['虾仁', 60], ['鲈鱼', 60], ['植物油', 5]]]
+  ]);
+
+  const SOUP_ITEMS = [
+    ['番茄鸡蛋汤', [['番茄', 150], ['鸡蛋', 60], ['植物油', 3], ['盐', 1.5]]],
+    ['紫菜蛋花汤', [['紫菜', 5], ['鸡蛋', 50], ['植物油', 2], ['盐', 1.2]]],
+    ['冬瓜排骨汤', [['冬瓜', 200], ['排骨', 100], ['盐', 2], ['植物油', 2]]],
+    ['萝卜排骨汤', [['白萝卜', 150], ['排骨', 100], ['盐', 2], ['植物油', 2]]],
+    ['玉米排骨汤', [['玉米', 150], ['排骨', 100], ['盐', 2]]],
+    ['海带排骨汤', [['海带', 100], ['排骨', 100], ['盐', 2]]],
+    ['山药排骨汤', [['山药', 150], ['排骨', 100], ['盐', 2]]],
+    ['莲藕排骨汤', [['莲藕', 150], ['排骨', 100], ['盐', 2]]],
+    ['香菇鸡汤', [['蘑菇', 80], ['鸡腿肉', 120], ['盐', 2]]],
+    ['冬瓜丸子汤', [['冬瓜', 150], ['猪肉馅', 80], ['盐', 2]]],
+    ['白菜豆腐汤', [['白菜', 150], ['豆腐', 100], ['盐', 1.5]]],
+    ['鲫鱼豆腐汤', [['鲈鱼', 150], ['豆腐', 100], ['盐', 2], ['植物油', 3]]],
+    ['酸辣汤', [['豆腐', 80], ['木耳', 30], ['鸡蛋', 50], ['盐', 2]]],
+    ['番茄牛腩汤', [['番茄', 150], ['牛肉', 100], ['盐', 2]]],
+    ['罗宋汤', [['番茄', 150], ['牛肉', 80], ['土豆', 100], ['盐', 2]]],
+    ['南瓜浓汤', [['南瓜', 250], ['牛奶', 100], ['盐', 1]]],
+    ['玉米羹', [['玉米', 150], ['鸡蛋', 50], ['盐', 1.2]]],
+    ['西湖牛肉羹', [['牛肉', 60], ['豆腐', 80], ['鸡蛋', 40], ['盐', 1.5]]],
+    ['银耳莲子羹', [['银耳', 30], ['莲子', 30], ['白砂糖', 15]]],
+    ['绿豆汤', [['绿豆', 50], ['白砂糖', 15]]],
+    ['红豆汤', [['红豆', 50], ['白砂糖', 15]]],
+    ['冬瓜薏米汤', [['冬瓜', 200], ['薏米', 30], ['盐', 1]]],
+    ['丝瓜蛋汤', [['丝瓜', 200], ['鸡蛋', 50], ['盐', 1.5]]],
+    ['菠菜猪肝汤', [['菠菜', 150], ['猪肝', 50], ['盐', 1.5]]],
+    ['菌菇汤', [['蘑菇', 150], ['盐', 1.5]]],
+    ['味噌汤', [['豆腐', 80], ['海带', 30], ['盐', 2]]],
+    ['蛋花汤', [['鸡蛋', 60], ['盐', 1.2]]],
+    ['萝卜牛腩汤', [['白萝卜', 150], ['牛肉', 100], ['盐', 2]]],
+    ['莲藕花生汤', [['莲藕', 150], ['花生', 30], ['盐', 2]]],
+    ['山药鸡汤', [['山药', 150], ['鸡腿肉', 120], ['盐', 2]]]
+  ];
+
+  const EXTRA_DISH_NAMES = `回锅肉 鱼香肉丝 宫保鸡丁 麻婆豆腐 水煮牛肉 水煮肉片 辣子鸡 口水鸡 白切鸡 烧鹅 叉烧 虾饺 干蒸烧卖 肠粉 煲仔饭 佛跳墙 沙茶面 土笋冻 蚵仔煎 卤肉饭 台湾牛肉面 肉夹馍 羊肉泡馍 凉皮 螺蛳粉 老友粉 过桥米线 汽锅鸡 酸汤鱼 丝娃娃 烤全羊 大盘鸡 手抓饭 馕 锅包肉 溜肉段 猪肉炖粉条 小鸡炖蘑菇 杀猪菜 葱烧海参 九转大肠 糖醋鲤鱼 德州扒鸡 煎饼果子 驴肉火烧 狗不理包子 天津麻花 耳朵眼炸糕 北京烤鸭 京酱肉丝 炸酱面 卤煮火烧 炒肝 爆肚 豆汁 焦圈 涮羊肉 羊蝎子 香河肉饼 驴打滚 豌豆黄 艾窝窝 糖火烧 褡裢火烧 炒疙瘩 麻豆腐 芥末墩 乾隆白菜 宫保虾球 油焖大虾 糖醋排骨 可乐鸡翅 红烧鸡翅 黄焖鸡 三杯鸡 大盘鸡 辣子鸡丁 宫保鸡丁 鱼香茄子 肉末茄子 干煸豆角 干锅花菜 干锅土豆片 干锅千页豆腐 麻辣香锅 冒菜 钵钵鸡 串串香 冷锅串串 酸菜鱼 水煮鱼 烤鱼 纸包鱼 松鼠鳜鱼 清蒸鲈鱼 红烧带鱼 糖醋带鱼 干烧黄鱼 香煎黄花鱼 椒盐小黄鱼 剁椒鱼头 双椒鱼头 鱼头豆腐汤 酸汤肥牛 番茄牛腩 土豆烧牛肉 萝卜炖牛腩 咖喱牛肉 黑椒牛柳 蚝油牛肉 葱爆牛肉 孜然牛肉 水煮牛肉 小炒黄牛肉 芹菜炒牛肉 洋葱炒牛肉 青椒炒肉 农家小炒肉 辣椒炒肉 回锅肉 盐煎肉 蒜泥白肉 梅菜扣肉 粉蒸肉 东坡肉 红烧肉 把子肉 狮子头 四喜丸子 珍珠丸子 糯米丸子 糖醋里脊 锅包肉 溜肉段 京酱肉丝 鱼香肉丝 青椒肉丝 蒜苔肉丝 芹菜肉丝 榨菜肉丝 木耳肉片 木须肉 滑溜肉片 水煮肉片 咕咾肉 菠萝咕咾肉 糖醋排骨 红烧排骨 蒜香排骨 椒盐排骨 烤排骨 排骨炖豆角 排骨炖土豆 排骨炖玉米 排骨炖莲藕 排骨炖冬瓜 排骨炖萝卜 排骨炖海带 排骨炖山药 红烧猪蹄 黄豆炖猪蹄 卤猪蹄 酱猪蹄 卤猪耳 卤猪舌 卤肥肠 肥肠粉 肥肠面 干煸肥肠 爆炒肥肠 毛血旺 鸭血粉丝汤 盐水鸭 板鸭 酱鸭 啤酒鸭 老鸭汤 酸萝卜老鸭汤 虫草花鸡汤 花胶鸡汤 椰子鸡 猪肚鸡 白切鸡 盐焗鸡 豉油鸡 葱油鸡 手撕鸡 口水鸡 椒麻鸡 大盘鸡 新疆椒麻鸡 黄焖鸡米饭 三杯鸡 香菇滑鸡 滑蛋牛肉 番茄炒蛋 韭菜炒蛋 苦瓜炒蛋 青椒炒蛋 洋葱炒蛋 木耳炒蛋 虾仁滑蛋 蒸蛋羹 肉末蒸蛋 蛤蜊蒸蛋 茶叶蛋 卤蛋 虎皮蛋 溏心蛋 煎蛋 荷包蛋 炒鸡蛋 鸡蛋羹 蛋花汤 紫菜蛋花汤 番茄鸡蛋汤 丝瓜蛋汤 菠菜蛋汤 豆腐蛋汤 白菜豆腐汤 味噌汤 罗宋汤 奶油蘑菇汤 南瓜浓汤 玉米浓汤 土豆浓汤 花菜浓汤 番茄浓汤 海鲜汤 蛤蜊汤 虾仁豆腐汤 鱼头豆腐汤 鲫鱼豆腐汤 萝卜丝鲫鱼汤 冬瓜丸子汤 白菜丸子汤 番茄丸子汤 豆腐丸子汤 珍珠丸子 糯米丸子 四喜丸子 狮子头 红烧狮子头 清蒸狮子头 蟹粉狮子头 糖醋藕盒 炸藕盒 炸茄盒 炸春卷 炸丸子 炸酥肉 炸鸡翅 炸鸡腿 炸鸡排 炸猪排 炸虾 炸鱿鱼圈 炸蘑菇 炸茄盒 炸藕盒 炸豆腐 炸鲜奶 炸冰淇淋 炸串 烤串 羊肉串 牛肉串 鸡肉串 烤鸡翅 烤鸡腿 烤鸡爪 烤韭菜 烤茄子 烤蘑菇 烤玉米 烤红薯 烤土豆 烤鱼 烤肉 韩式烤肉 日式烤肉 铁板烧 章鱼小丸子 大阪烧 文字烧 鲷鱼烧 鸡蛋仔 华夫饼 可颂 甜甜圈 贝果 吐司 三明治 帕尼尼 汉堡 牛肉汉堡 鸡肉汉堡 鱼汉堡 素食汉堡 热狗 披萨 意面 通心粉 千层面 焗饭 焗意面 蛋包饭 咖喱饭 牛肉饭 照烧鸡饭 鳗鱼饭 天妇罗饭 寿司 刺身 饭团 茶泡饭 亲子丼 牛丼 猪排饭 鸡排饭 卤肉饭 肉燥饭 煲仔饭 腊味煲仔饭 排骨煲仔饭 滑鸡煲仔饭 黄鳝煲仔饭 田鸡煲仔饭 咸鱼鸡粒炒饭 扬州炒饭 蛋炒饭 酱油炒饭 咖喱炒饭 菠萝炒饭 虾仁炒饭 牛肉炒饭 腊肠炒饭 菜心炒饭 瑶柱蛋白炒饭 福建炒饭 印尼炒饭 泰式炒饭 韩式泡菜炒饭 石锅拌饭 韩式拌饭 紫菜包饭 辣白菜 韩式炸鸡 部队锅 年糕 炒年糕 辣炒年糕 冷面 韩式冷面 荞麦冷面 炸酱面 海鲜面 乌冬面 咖喱乌冬 天妇罗乌冬 味噌拉面 豚骨拉面 酱油拉面 盐味拉面 札幌拉面 博多拉面 担担面 重庆小面 宜宾燃面 甜水面 鸡丝凉面 麻酱凉面 葱油拌面 阳春面 大排面 焖肉面 爆鱼面 三虾面 蟹粉面 鳝丝面 雪菜肉丝面 大肉面 牛肉面 兰州拉面 河南烩面 山西刀削面 陕西油泼面 岐山臊子面 武汉热干面 桂林米粉 柳州螺蛳粉 云南过桥米线 小锅米线 贵州酸汤粉 遵义羊肉粉 花溪牛肉粉 南宁老友粉 广州肠粉 潮汕粿条 沙县拌面 沙县扁肉 福建鱼丸 福州鱼丸 温州瘦肉丸 宁波汤圆 上海小笼包 南翔小笼 生煎包 锅贴 烧麦 灌汤包 叉烧包 奶黄包 豆沙包 莲蓉包 菜包 肉包 花卷 馒头 红糖馒头 全麦馒头 玉米馒头 大饼 烧饼 芝麻烧饼 葱油饼 手抓饼 鸡蛋灌饼 煎饼果子 肉夹馍 驴肉火烧 牛肉饼 韭菜盒子 锅盔 馕 烤包子 生煎 小笼 蒸饺 水饺 煎饺 馄饨 抄手 云吞 龙抄手 钟水饺 红油抄手 酸汤水饺 冰花煎饺 锅贴 春卷 蛋饺 豆腐脑 油条 麻花 糖油粑粑 糖葫芦 炒栗子 煮玉米 烤红薯 米糕 发糕 马拉糕 萝卜糕 芋头糕 马蹄糕 绿豆糕 红豆糕 驴打滚 豌豆黄 芸豆卷 枣泥糕 桂花糕 重阳糕 月饼 广式月饼 苏式月饼 五仁月饼 蛋黄酥 凤梨酥 老婆饼 老公饼 桃酥 核桃酥 杏仁酥 花生酥 芝麻酥 蛋卷 沙琪玛 米花糖 芝麻糖 花生糖 牛轧糖 棉花糖 太妃糖 巧克力 黑巧克力 牛奶巧克力 白巧克力 棒棒糖 软糖 硬糖 果冻 布丁 双皮奶 龟苓膏 杨枝甘露 芋圆 烧仙草 芒果班戟 雪媚娘 麻薯 大福 泡芙 闪电泡芙 蛋挞 葡式蛋挞 芝士蛋糕 慕斯蛋糕 提拉米苏 黑森林蛋糕 红丝绒蛋糕 戚风蛋糕 海绵蛋糕 瑞士卷 肉松小贝 甜甜圈 马卡龙 布朗尼 华夫饼 铜锣烧 鲷鱼烧 车轮饼 红豆饼 绿豆饼 老婆饼 蛋黄派 巧克力派 瑞士卷 面包 吐司 全麦面包 欧包 法棍 可颂 丹麦面包 菠萝包 奶黄包 肉松卷 贝果 汉堡胚 三明治 热狗 披萨 薯条 薯片 薯饼 鸡块 鸡翅 鸡米花 鸡排 洋葱圈 蛋挞 可乐 雪碧 芬达 奶茶 珍珠奶茶 水果茶 柠檬茶 绿茶 红茶 乌龙茶 普洱 花茶 咖啡 美式 拿铁 卡布奇诺 摩卡 焦糖玛奇朵 澳白 冷萃 浓缩 豆奶 豆浆 牛奶 酸奶 燕麦奶 椰奶 杏仁奶 橙汁 苹果汁 葡萄汁 西瓜汁 椰子水 番茄汁 酸梅汤 凉茶 王老吉 加多宝 元气森林 气泡水 苏打水 矿泉水 纯净水 啤酒 白酒 红酒 黄酒 米酒 果酒 鸡尾酒 威士忌`.split(/\s+/);
+
+  function buildDishCatalog() {
+    if (DISH_CATALOG) return DISH_CATALOG;
+    const out = [];
+    const seen = new Set();
+    const add = (name, comps, cat, note, opts) => {
+      const key = normDish(name);
+      if (!key || seen.has(key)) return;
+      const t = compTotals(comps);
+      if (!t.grams) return;
+      out.push({ n: name, a: (opts && opts.a) || [], c: comps, grams: t.grams, k: t.kcal, cat: cat || 'home', note: note || '', pop: (opts && opts.pop) || 0, conf: (opts && opts.conf) || 'mid', control: t.control });
+      seen.add(key);
+    };
+    const addServe = (name, serve, cat, note, opts) => {
+      const key = normDish(name);
+      if (!key || seen.has(key)) return;
+      out.push({
+        n: name, a: (opts && opts.a) || [], serve: serve, grams: serve.grams, k: Math.round(serve.kcal), cat: cat || 'snack', note: note || '',
+        pop: (opts && opts.pop) || 0, conf: 'mid',
+        control: { sugar: round1(serve.sugar || 0), oil: round1(serve.oil || 0), salt: round1((serve.na || 0) / 400), sodium: Math.round(serve.na || 0) }
+      });
+      seen.add(key);
+    };
+
+    DISH_DB.forEach(d => {
+      let comps = d.c.slice();
+      if (!/酸奶|苹果|香蕉|牛奶|豆浆|可乐|奶茶|拿铁|白粥|烤红薯|玉米|燕麦粥|水果/.test(d.n) && !comps.some(x => x[0] === '盐')) {
+        comps.push(['盐', 1.5]);
+      }
+      add(d.n, comps, catOfDishName(d.n), d.note, { a: d.a, pop: 8, conf: 'high' });
+    });
+
+    GEN_VEG_GROUPS.forEach(g => {
+      g.items.forEach(item => {
+        g.m.forEach(method => {
+          const name = method + item;
+          add(name, methodComps(item, g.g, method), 'home', '家常' + method + '，按 200–250g 可食部估', { pop: 3, a: method === '清炒' && item === '土豆' ? ['土豆丝'] : [] });
+        });
+      });
+    });
+
+    GEN_PROTEINS.forEach(p => {
+      p.m.forEach(method => {
+        const extra = (GEN_PROTEIN_EXTRAS[method] || []).map(x => [x[0], x[1]]);
+        add(method + p.d, methodComps(p.k, p.g, method, extra), 'home', '按 ' + p.g + 'g ' + DISH_ING[p.k].n + ' + 家常' + method, { pop: 4 });
+      });
+    });
+
+    GEN_PAIR_VEGS.forEach(v => {
+      GEN_PROTEINS.forEach(p => {
+        if (['青菜', '菠菜', '生菜', '油麦菜', '空心菜', '白菜', '韭菜', '芹菜', '蒜苔'].indexOf(v) >= 0 && ['猪里脊', '鸡胸', '虾仁', '豆干'].indexOf(p.k) < 0) return;
+        add(v + '炒' + p.d, [[v, 120], [p.k, 100], ['植物油', 8], ['盐', 1.2], ['酱油', 3]], 'home', '家常小炒，按 ' + v + ' 120g + ' + p.d + ' 100g', { pop: 2 });
+        if (['土豆', '冬瓜', '南瓜', '山药', '莲藕', '玉米', '白萝卜', '海带', '茄子', '豆角', '胡萝卜', '蘑菇', '木耳'].indexOf(v) >= 0) {
+          add(v + '烧' + p.d, [[v, 150], [p.k, 100], ['植物油', 7], ['盐', 1.5], ['酱油', 5], ['白砂糖', 3]], 'home', '家常烧菜，按 ' + v + ' 150g + ' + p.d + ' 100g', { pop: 2 });
+          add(v + '炖' + p.d, [[v, 200], [p.k, 100], ['植物油', 3], ['盐', 1.8], ['酱油', 4]], 'home', '炖菜，按 ' + v + ' 200g + ' + p.d + ' 100g', { pop: 2 });
+        }
+      });
+    });
+
+    RICE_TOPPINGS.forEach(tp => {
+      RICE_STYLES.forEach(st => {
+        const comps = [['米饭', st[1]]].concat(tp[1].map(x => [x[0], Math.round(x[1] * st[2])]), [['盐', 1], ['酱油', 2]]);
+        add(tp[0] + st[0], comps, 'staple', st[0] + '，含米饭 ' + st[1] + 'g', { pop: 4 });
+      });
+    });
+
+    NOODLE_TOPPINGS.forEach(tp => {
+      NOODLE_STYLES.forEach(st => {
+        const base = st[0] === '米线' || st[0] === '河粉' ? '米粉' : '面条';
+        const comps = [[base, st[1]]].concat(tp[1].map(x => [x[0], Math.round(x[1] * st[2])]), [['盐', 1.2], ['酱油', 3]]);
+        add(tp[0] + st[0], comps, 'staple', st[0] + '，含' + base + ' ' + st[1] + 'g', { pop: 3 });
+      });
+    });
+
+    SOUP_ITEMS.forEach(s => add(s[0], s[1], 'soup', '一碗汤的常规配料', { pop: 3 }));
+
+    ['白粥', '小米粥', '南瓜粥', '红薯粥', '八宝粥', '绿豆粥', '红豆粥', '燕麦粥', '玉米粥', '紫米粥', '山药粥', '瘦肉粥', '皮蛋瘦肉粥', '海鲜粥', '蔬菜粥', '香菇鸡肉粥', '排骨粥', '鱼片粥', '虾仁粥', '红枣桂圆粥'].forEach((n, i) => {
+      const base = i < 10 ? 150 : 180;
+      const comps = [['米饭', base], ['盐', 0.5]];
+      add(n, comps, 'soup', '一碗粥约 ' + base + 'g 熟饭', { pop: 3 });
+    });
+
+    [['白米饭', [['米饭', 250]]], ['糙米饭', [['米饭', 250]]], ['杂粮饭', [['米饭', 250]]], ['藜麦饭', [['米饭', 250]]],
+      ['紫米饭', [['米饭', 250]]], ['红豆饭', [['米饭', 250], ['红豆', 20]]], ['绿豆饭', [['米饭', 250], ['绿豆', 20]]],
+      ['糯米饭', [['米饭', 250]]], ['寿司', [['米饭', 200], ['三文鱼', 40], ['海苔', 10]]], ['饭团', [['米饭', 200], ['海苔', 10]]],
+      ['蛋炒饭', [['米饭', 250], ['鸡蛋', 100], ['植物油', 10]]], ['扬州炒饭', [['米饭', 250], ['鸡蛋', 80], ['虾仁', 40], ['火腿', 30], ['植物油', 10]]],
+      ['酱油炒饭', [['米饭', 250], ['鸡蛋', 80], ['酱油', 10], ['植物油', 10]]], ['咖喱炒饭', [['米饭', 250], ['鸡蛋', 80], ['咖喱块', 20], ['植物油', 8]]],
+      ['菠萝炒饭', [['米饭', 250], ['鸡蛋', 80], ['虾仁', 40], ['植物油', 8]]], ['腊肠炒饭', [['米饭', 250], ['火腿', 40], ['鸡蛋', 60], ['植物油', 8]]],
+      ['牛肉炒饭', [['米饭', 250], ['牛肉', 80], ['鸡蛋', 60], ['植物油', 8]]], ['虾仁炒饭', [['米饭', 250], ['虾仁', 80], ['鸡蛋', 60], ['植物油', 8]]],
+      ['石锅拌饭', [['米饭', 250], ['牛肉', 80], ['鸡蛋', 60], ['青菜', 100], ['植物油', 8]]], ['韩式拌饭', [['米饭', 250], ['牛肉', 80], ['鸡蛋', 60], ['青菜', 100], ['植物油', 8]]],
+      ['卤肉饭', [['米饭', 250], ['五花肉', 100], ['酱油', 10], ['白砂糖', 5]]], ['肉燥饭', [['米饭', 250], ['猪肉馅', 80], ['酱油', 8]]],
+      ['牛肉盖饭', [['米饭', 250], ['牛肉', 100], ['洋葱', 50], ['植物油', 6]]], ['照烧鸡饭', [['米饭', 250], ['鸡腿肉', 120], ['酱油', 10], ['白砂糖', 6]]],
+      ['鳗鱼饭', [['米饭', 250], ['鲈鱼', 100], ['酱油', 8], ['白砂糖', 5]]], ['咖喱鸡饭', [['米饭', 250], ['鸡腿肉', 100], ['土豆', 80], ['咖喱块', 20]]],
+      ['黄焖鸡米饭', [['米饭', 250], ['鸡腿肉', 120], ['土豆', 80], ['植物油', 6]]], ['排骨煲仔饭', [['米饭', 250], ['排骨', 100], ['植物油', 5]]],
+      ['腊味煲仔饭', [['米饭', 250], ['火腿', 60], ['植物油', 5]]], ['滑鸡煲仔饭', [['米饭', 250], ['鸡腿肉', 100], ['植物油', 5]]]
+    ].forEach(d => add(d[0], d[1], 'staple', '常见主食', { pop: 5 }));
+
+    const dumplingFillings = [
+      ['猪肉白菜', [['猪肉馅', 60], ['白菜', 80]]], ['猪肉韭菜', [['猪肉馅', 60], ['韭菜', 60]]],
+      ['猪肉芹菜', [['猪肉馅', 60], ['芹菜', 60]]], ['猪肉香菇', [['猪肉馅', 60], ['蘑菇', 50]]],
+      ['牛肉大葱', [['牛肉', 60], ['洋葱', 40]]], ['羊肉胡萝卜', [['牛肉', 60], ['胡萝卜', 50]]],
+      ['三鲜', [['虾仁', 30], ['猪肉馅', 40], ['韭菜', 50]]], ['虾仁韭菜', [['虾仁', 50], ['韭菜', 60]]],
+      ['鸡肉香菇', [['鸡胸', 60], ['蘑菇', 50]]], ['素三鲜', [['鸡蛋', 50], ['韭菜', 60], ['豆腐', 40]]],
+      ['酸菜猪肉', [['猪肉馅', 60], ['白菜', 80]]], ['玉米猪肉', [['猪肉馅', 60], ['玉米', 50]]]
+    ];
+    const dumplingForms = ['水饺', '蒸饺', '煎饺', '馄饨', '锅贴'];
+    dumplingFillings.forEach(f => dumplingForms.forEach(form => {
+      add(f[0] + form, [['面粉', 100]].concat(f[1], [['植物油', form === '煎饺' || form === '锅贴' ? 6 : 2], ['盐', 1]]), 'staple', '约 10 个' + form, { pop: 4 });
+    }));
+    ['鲜肉包', '酱肉包', '菜包', '豆沙包', '奶黄包', '叉烧包', '小笼包', '生煎包', '灌汤包', '花卷', '馒头', '烧麦', '糯米鸡'].forEach(n => {
+      const comps = n.indexOf('豆沙') >= 0 || n.indexOf('奶黄') >= 0
+        ? [['面粉', 80], ['白砂糖', 20], ['植物油', 5]]
+        : [['面粉', 80], ['猪肉馅', 50], ['植物油', 3], ['盐', 1]];
+      add(n, comps, 'breakfast', '常见早餐面点', { pop: 3 });
+    });
+
+    ['油条', '煎饼果子', '手抓饼', '鸡蛋灌饼', '葱油饼', '烧饼', '鸡蛋饼', '茶叶蛋', '水煮蛋', '蒸蛋', '豆腐脑', '豆浆', '牛奶', '燕麦粥', '小米粥', '白粥', '皮蛋瘦肉粥', '胡辣汤', '小笼包', '生煎包', '锅贴', '馄饨', '肠粉', '热干面', '牛肉面', '三明治', '贝果', '吐司', '华夫饼', '煎蛋', '培根', '火腿', '酸奶', '水果燕麦', '牛奶燕麦'].forEach(n => {
+      const comps = n.indexOf('油条') >= 0 ? [['面粉', 60], ['植物油', 15]]
+        : n.indexOf('煎饼') >= 0 ? [['面粉', 80], ['鸡蛋', 50], ['植物油', 8]]
+          : n.indexOf('手抓饼') >= 0 ? [['面粉', 80], ['植物油', 10]]
+            : n.indexOf('蛋') >= 0 ? [['鸡蛋', 100], ['植物油', 3]]
+              : n.indexOf('豆浆') >= 0 ? [['豆浆', 300]]
+                : n.indexOf('牛奶') >= 0 ? [['牛奶', 250]]
+                  : n.indexOf('粥') >= 0 ? [['米饭', 150]]
+                    : [['面粉', 80], ['植物油', 5]];
+      add(n, comps, 'breakfast', '常见早餐，按常规份量估', { pop: 4 });
+    });
+
+    const saladItems = ['鸡胸沙拉', '牛肉沙拉', '虾仁沙拉', '金枪鱼沙拉', '鸡蛋沙拉', '豆腐沙拉', '藜麦沙拉', '蔬菜沙拉', '水果沙拉', '凯撒沙拉', '希腊沙拉', '土豆沙拉', '南瓜沙拉', '西兰花沙拉', '菠菜沙拉', '生菜沙拉', '紫甘蓝沙拉', '玉米沙拉', '鹰嘴豆沙拉', '混合豆沙拉'];
+    const dressings = [['油醋汁', [['植物油', 10]]], ['沙拉酱', [['植物油', 15], ['白砂糖', 3]]], ['酸奶酱', [['酸奶', 30]]], ['芝麻酱', [['植物油', 12], ['白砂糖', 2]]]];
+    saladItems.forEach(s => dressings.forEach(d => {
+      const main = s.indexOf('鸡胸') >= 0 ? [['鸡胸', 100]] : s.indexOf('牛肉') >= 0 ? [['牛肉', 100]] : s.indexOf('虾仁') >= 0 ? [['虾仁', 100]] : s.indexOf('金枪鱼') >= 0 ? [['鲈鱼', 100]] : s.indexOf('鸡蛋') >= 0 ? [['鸡蛋', 100]] : s.indexOf('豆腐') >= 0 ? [['豆腐', 150]] : [['生菜', 150]];
+      add(s + '（' + d[0] + '）', [['生菜', 100], ['番茄', 100]].concat(main, d[1]), 'light', '轻食沙拉，酱汁单独计', { pop: 3 });
+    }));
+
+    const fruits = [['苹果', 200], ['香蕉', 120], ['橙子', 200], ['梨', 200], ['桃', 200], ['葡萄', 150], ['西瓜', 300], ['哈密瓜', 250], ['草莓', 200], ['蓝莓', 150], ['芒果', 200], ['菠萝', 200], ['猕猴桃', 150], ['火龙果', 250], ['柚子', 250], ['樱桃', 150], ['李子', 150], ['杏', 150], ['石榴', 200], ['柿子', 200], ['荔枝', 150], ['龙眼', 150], ['枇杷', 150], ['杨梅', 150], ['柠檬', 100], ['牛油果', 150], ['椰子', 200], ['枣', 100], ['无花果', 150], ['百香果', 100]];
+    fruits.forEach(f => {
+      const ing = f[0] === '橙子' ? '橘子' : f[0] === '梨' ? '苹果' : f[0] === '桃' ? '苹果' : f[0] === '葡萄' ? '香蕉' : f[0] === '西瓜' ? '苹果' : f[0] === '草莓' ? '苹果' : f[0] === '蓝莓' ? '葡萄干' : f[0] === '芒果' ? '苹果' : f[0] === '菠萝' ? '苹果' : f[0] === '猕猴桃' ? '苹果' : f[0] === '火龙果' ? '苹果' : f[0] === '柚子' ? '苹果' : f[0] === '樱桃' ? '苹果' : f[0] === '李子' ? '苹果' : f[0] === '杏' ? '苹果' : f[0] === '石榴' ? '苹果' : f[0] === '柿子' ? '苹果' : f[0] === '荔枝' ? '苹果' : f[0] === '龙眼' ? '苹果' : f[0] === '枇杷' ? '苹果' : f[0] === '杨梅' ? '苹果' : f[0] === '柠檬' ? '苹果' : f[0] === '牛油果' ? '花生' : f[0] === '椰子' ? '花生' : f[0] === '枣' ? '红枣' : f[0] === '无花果' ? '苹果' : f[0] === '百香果' ? '苹果' : f[0];
+      if (!DISH_ING[ing]) return;
+      add(f[0], [[ing, f[1]]], 'fruit', '一份水果，按可食部 ' + f[1] + 'g 估', { pop: 3 });
+    });
+
+    ['汉堡', '牛肉汉堡', '鸡肉汉堡', '鱼汉堡', '素食汉堡', '热狗', '披萨', '薯条', '鸡块', '鸡翅', '鸡米花', '鸡排', '洋葱圈', '炸鸡', '三明治', '卷饼', '肉夹馍', '煎饼果子', '手抓饼', '鸡蛋灌饼', '烤冷面', '凉皮', '酸辣粉', '螺蛳粉', '麻辣烫', '关东煮', '烤肠', '炸串', '臭豆腐', '章鱼小丸子', '鸡蛋仔', '鲷鱼烧', '糖葫芦', '炒栗子', '烤红薯', '煮玉米'].forEach(n => {
+      const comps = n.indexOf('薯条') >= 0 ? [['土豆', 150], ['植物油', 15]]
+        : n.indexOf('鸡') >= 0 ? [['鸡腿肉', 120], ['植物油', 12], ['面粉', 20]]
+          : n.indexOf('汉堡') >= 0 || n.indexOf('三明治') >= 0 ? [['面包', 100], ['牛肉', 70], ['芝士', 20], ['植物油', 5]]
+            : n.indexOf('披萨') >= 0 ? [['面粉', 120], ['芝士', 50], ['植物油', 8]]
+              : n.indexOf('凉皮') >= 0 ? [['面粉', 100], ['植物油', 8]]
+                : n.indexOf('红薯') >= 0 ? [['红薯', 200]]
+                  : n.indexOf('玉米') >= 0 ? [['玉米', 200]]
+                    : [['面粉', 100], ['植物油', 10]];
+      add(n, comps, 'fast', '快餐/小吃，按常规份量粗估', { pop: 4 });
+    });
+
+    const snackNote = '包装零食，按品类与口味估，实际看包装营养成分表';
+    SNACK_BASES.forEach(b => {
+      addServe(b.n, {
+        grams: b.serve, kcal: b.kcal * b.serve / 100,
+        p: b.p * b.serve / 100, c: b.c * b.serve / 100, f: b.f * b.serve / 100, fib: b.fib * b.serve / 100,
+        sugar: b.sug * b.serve / 100, oil: b.oil * b.serve / 100, na: b.na * b.serve / 100
+      }, 'snack', snackNote, { pop: 3, a: SNACK_ALIAS[b.n] || [] });
+      const fl = SNACK_FLAVORS[b.cat] || SNACK_FLAVORS.chips;
+      fl.forEach(f => {
+        const nm = f === '原味' ? '原味' + b.n : f + '味' + b.n;
+        [['', 1], ['分享装', 2.2]].forEach(sz => {
+          const grams = Math.round(b.serve * sz[1]);
+          addServe((sz[0] ? sz[0] : '') + nm, {
+            grams: grams,
+            kcal: b.kcal * grams / 100,
+            p: b.p * grams / 100, c: b.c * grams / 100, f: b.f * grams / 100, fib: b.fib * grams / 100,
+            sugar: b.sug * grams / 100, oil: b.oil * grams / 100, na: b.na * grams / 100
+          }, 'snack', snackNote, { pop: 2, a: sz[1] === 1 ? [b.n] : [] });
+        });
+      });
+    });
+
+    DRINK_BASES.forEach(b => {
+      addServe(b.n, {
+        grams: b.serve, kcal: b.kcal * b.serve / 100,
+        p: b.p * b.serve / 100, c: b.c * b.serve / 100, f: b.f * b.serve / 100, fib: b.fib * b.serve / 100,
+        sugar: b.sugar * b.serve / 100, oil: 0, na: b.na * b.serve / 100
+      }, 'drink', '饮品，默认按基础配方估；可在列表里选甜度', { pop: 3, a: DRINK_ALIAS[b.n] || [] });
+      let variants;
+      if (b.cat === 'tea') variants = [['无糖', 0], ['三分糖', 3], ['半糖', 5], ['全糖', 8]];
+      else if (b.cat === 'coffee') variants = [['无糖', 0], ['加糖', 5]];
+      else if (b.cat === 'soda') variants = [['常规', b.sugar], ['无糖', 0]];
+      else if (b.cat === 'juice') variants = [['纯果汁', b.sugar], ['加糖', b.sugar + 5]];
+      else if (b.cat === 'milk') variants = [['原味', b.sugar], ['低糖', Math.max(0, b.sugar - 3)]];
+      else variants = [['常规', b.sugar]];
+      variants.forEach(v => {
+        const sugar = v[1];
+        const kcal = Math.max(0, b.kcal + (sugar - b.sugar) * 4);
+        [['单份', 1], ['大份', 1.4]].forEach(sz => {
+          const grams = Math.round(b.serve * sz[1]);
+          const nm = sz[0] + v[0] + b.n;
+          addServe(nm, {
+            grams: grams, kcal: kcal * grams / 100,
+            p: b.p * grams / 100, c: b.c * grams / 100, f: b.f * grams / 100, fib: b.fib * grams / 100,
+            sugar: sugar * grams / 100, oil: 0, na: b.na * grams / 100
+          }, 'drink', '饮品，糖量按甜度档位估；大份为 1.4 倍', { pop: 2, a: (sz[1] === 1 ? [b.n] : []).concat(sz[1] === 1 ? (DRINK_ALIAS[b.n] || []) : []) });
+        });
+      });
+    });
+
+    const instNote = '方便食品，按包装营养与常见口味估';
+    INSTANT_BASES.forEach(b => {
+      [['袋装', 1], ['杯面', 1]].forEach(sz => {
+        const grams = b[9];
+        addServe(sz[0] + b[0], {
+          grams: grams, kcal: b[1] * grams / 100, p: b[2] * grams / 100, c: b[3] * grams / 100,
+          f: b[4] * grams / 100, fib: b[5] * grams / 100, sugar: b[6] * grams / 100, oil: b[7] * grams / 100, na: b[8] * grams / 100
+        }, 'staple', instNote, { pop: 2, a: sz[0] === '袋装' ? (INSTANT_ALIAS[b[0]] || []) : [] });
+      });
+    });
+
+    const frozenFlavors = ['原味', '香辣', '鲜虾', '玉米'];
+    FROZEN_BASES.forEach(b => {
+      frozenFlavors.forEach(f => {
+        const grams = b[9];
+        const nm = (f === '原味' ? '' : f + '味') + b[0];
+        addServe(nm, {
+          grams: grams, kcal: b[1] * grams / 100, p: b[2] * grams / 100, c: b[3] * grams / 100,
+          f: b[4] * grams / 100, fib: b[5] * grams / 100, sugar: b[6] * grams / 100, oil: b[7] * grams / 100, na: b[8] * grams / 100
+        }, 'staple', '冷冻/半成品，按品类估', { pop: 1 });
+      });
+    });
+
+    EXTRA_DISH_NAMES.forEach(n => {
+      if (n.length < 2) return;
+      const parsed = parseDishName(n);
+      add(n, parsed.comps, catOfDishName(n), '地方菜/常见菜名，按菜名与品类粗估', { pop: 1, conf: parsed.conf === 'low' ? 'low' : 'mid' });
+    });
+
+    DISH_CATALOG = out;
+    return out;
+  }
+
+  function normDish(s) {
+    return String(s || '').toLowerCase().replace(/[\s，,。.、（）()\[\]【】]/g, '').replace(/(一份|大份|小份|半份|两人份|单人份|的)/g, '');
+  }
+
+  function dishKeysFromName(name) {
+    const text = normDish(name);
+    const aliases = [];
+    Object.keys(DISH_ING).forEach(k => DISH_ING[k].a.forEach(a => aliases.push({ a: a, k: k })));
+    aliases.sort((x, y) => y.a.length - x.a.length);
+    const used = new Array(text.length).fill(false);
+    const found = [];
+    aliases.forEach(it => {
+      let idx = text.indexOf(it.a);
+      while (idx >= 0) {
+        let free = true;
+        for (let j = idx; j < idx + it.a.length; j++) if (used[j]) free = false;
+        if (free) {
+          found.push(it.k);
+          for (let j = idx; j < idx + it.a.length; j++) used[j] = true;
+          break;
+        }
+        idx = text.indexOf(it.a, idx + 1);
+      }
+    });
+    return found.filter((k, i) => found.indexOf(k) === i);
+  }
+
+  function dishMethod(name) {
+    const s = String(name || '');
+    if (/炸|酥|脆|裹粉/.test(s)) return { oil: 18, sugar: 0, salt: 1.5, soy: 2, label: '油炸' };
+    if (/糖醋|红烧|干锅|干煸|回锅/.test(s)) return { oil: 12, sugar: 8, salt: 2, soy: 8, label: '红烧/糖醋' };
+    if (/煎|烤/.test(s)) return { oil: 8, sugar: 0, salt: 1.2, soy: 3, label: '煎烤' };
+    if (/炒|爆|溜|煸/.test(s)) return { oil: 10, sugar: 0, salt: 1.2, soy: 3, label: '炒' };
+    if (/蒸|煮|汤|羹|粥|炖|白灼/.test(s)) return { oil: 3, sugar: 0, salt: 1.5, soy: 2, label: '蒸煮' };
+    if (/凉拌|拌/.test(s)) return { oil: 6, sugar: 0, salt: 1, soy: 3, label: '凉拌' };
+    return { oil: 10, sugar: 0, salt: 1.2, soy: 3, label: '家常炒' };
+  }
+
+  function parseDishName(name) {
+    const keys = dishKeysFromName(name);
+    const comps = [];
+    const staples = keys.filter(k => DISH_ING[k].type === 'staple');
+    const proteins = keys.filter(k => DISH_ING[k].type === 'protein');
+    const vegs = keys.filter(k => DISH_ING[k].type === 'veg');
+    const method = dishMethod(name);
+    if (staples.length) {
+      staples.forEach(k => comps.push([k, k === '面粉' ? 100 : 250]));
+      if (proteins.length) proteins.forEach((k, i) => comps.push([k, Math.round(100 / proteins.length)]));
+      else if (/炒饭|盖饭|拌饭|煲仔饭|卤肉饭/.test(name)) comps.push(['鸡蛋', 80]);
+      vegs.slice(0, 2).forEach(k => comps.push([k, 100]));
+    } else {
+      if (proteins.length) {
+        proteins.forEach((k, i) => comps.push([k, Math.round(120 / proteins.length)]));
+        const rest = 200;
+        if (vegs.length) vegs.forEach((k, i) => comps.push([k, Math.round(rest / vegs.length)]));
+        else comps.push(['青菜', rest]);
+      } else if (vegs.length) {
+        vegs.forEach((k, i) => comps.push([k, Math.round(250 / vegs.length)]));
+      } else {
+        comps.push(['鸡胸', 100], ['青菜', 150]);
+      }
+    }
+    if (method.oil) comps.push(['植物油', method.oil]);
+    if (method.sugar) comps.push(['白砂糖', method.sugar]);
+    if (method.salt) comps.push(['盐', method.salt]);
+    if (method.soy) comps.push(['酱油', method.soy]);
+    return { comps: comps, conf: (keys.length >= 2 ? 'mid' : keys.length === 1 ? 'mid' : 'low'), method: method.label, keys: keys, salt: method.salt, soy: method.soy };
+  }
+
+  function matchDish(name) {
+    const q = normDish(name);
+    if (!q) return null;
+    const catalog = buildDishCatalog();
+    let hit = catalog.find(d => normDish(d.n) === q || d.a.some(x => normDish(x) === q));
+    if (hit) return hit;
+    let best = null, score = 0;
+    catalog.forEach(d => {
+      const names = [d.n].concat(d.a).map(normDish);
+      names.forEach(n => {
+        if (n.length >= 3 && q.length >= 3 && (q.indexOf(n) >= 0 || n.indexOf(q) >= 0)) {
+          const s = Math.min(n.length, q.length);
+          if (s > score) { score = s; best = d; }
+        }
+      });
+    });
+    return score >= 2 ? best : null;
+  }
+
+  function dishGrams(g, size) {
+    const raw = g * size;
+    return raw < 20 ? Math.max(1, Math.round(raw)) : Math.max(5, Math.round(raw / 5) * 5);
+  }
+
+  function estimateDish(name, size, withRice) {
+    const text = String(name || '').trim();
+    if (!text) return null;
+    const hit = matchDish(text);
+    if (hit && hit.serve) {
+      const scale = size;
+      const s = hit.serve;
+      const grams = Math.round(s.grams * scale);
+      const total = {
+        grams: grams,
+        kcal: Math.round(s.kcal * scale),
+        p: round1(s.p * scale), c: round1(s.c * scale), f: round1(s.f * scale), fib: round1(s.fib * scale)
+      };
+      const control = {
+        sugar: round1((hit.control.sugar || 0) * scale),
+        oil: round1((hit.control.oil || 0) * scale),
+        salt: round1((hit.control.salt || 0) * scale),
+        sodium: Math.round((hit.control.sodium || 0) * scale)
+      };
+      return {
+        name: hit.n, query: text, sub: '包装/品类估算' + (scale !== 1 ? ' · ' + (scale < 1 ? '小份' : '大份') : ''),
+        confidence: 'mid', range: 25,
+        components: [{ name: '整份', grams: grams, kcal: total.kcal, p: total.p }],
+        total: total, control: control, hasStaple: hit.cat === 'staple', cat: hit.cat,
+        note: hit.note + '。含糖/油/盐按品类估，实际以包装标签为准。', size: size, withRice: false
+      };
+    }
+    let comps, conf, sub, note;
+    if (hit) {
+      comps = hit.c.map(p => [p[0], dishGrams(p[1], size)]);
+      conf = hit.conf || 'mid';
+      sub = (conf === 'high' ? '常见菜谱匹配' : '扩展菜谱') + (normDish(text) !== normDish(hit.n) && text !== hit.n ? ' · 按「' + hit.n + '」估' : '');
+      note = hit.note + '。按家常做法估，用油和份量会浮动。';
+    } else {
+      const parsed = parseDishName(text);
+      comps = parsed.comps.map(p => [p[0], dishGrams(p[1], size)]);
+      conf = parsed.conf;
+      sub = conf === 'low' ? '没认出具体食材 · 按家常炒菜估' : '按菜名里的食材拆解 · ' + parsed.method;
+      note = conf === 'low'
+        ? '没认出具体食材，按一份家常炒菜（蛋白食材 100g + 蔬菜 150g + 油 10g）估。建议按实际份量改一改。'
+        : '从菜名里识别到：' + parsed.keys.map(k => DISH_ING[k].n).join('、') + '；按「' + parsed.method + '」补了油和盐。实际配料可能更多。';
+    }
+    const hasStaple = comps.some(p => DISH_ING[p[0]] && DISH_ING[p[0]].type === 'staple');
+    if (withRice && !hasStaple) comps.push(['米饭', 250]);
+    const t = compTotals(comps);
+    const components = comps.map(p => {
+      const f = DISH_ING[p[0]];
+      if (!f) return null;
+      return { name: f.n, grams: p[1], kcal: Math.round(f.kcal * p[1] / 100), p: round1(f.p * p[1] / 100) };
+    }).filter(Boolean);
+    return {
+      name: hit ? hit.n : text, query: text, sub: sub, confidence: conf,
+      range: conf === 'high' ? 15 : conf === 'mid' ? 20 : 30,
+      components: components, total: { grams: t.grams, kcal: t.kcal, p: t.p, c: t.c, f: t.f, fib: t.fib },
+      control: t.control, hasStaple: hasStaple, cat: hit ? hit.cat : catOfDishName(text),
+      note: note, size: size, withRice: withRice
+    };
+  }
+
+  function renderDishResult(res) {
+    if (!res) {
+      return '<div class="cart-empty">先输入菜名，再点底部「估算」。<br>例如：番茄炒蛋、青椒肉丝、牛肉面、麻辣烫。</div>';
+    }
+    const compRows = res.components.map(c =>
+      '<div class="dr-row"><span class="n">' + esc(c.name) + '</span><span class="g">' + c.grams + 'g</span><span class="k">' + fmt(c.kcal) + ' kcal</span></div>').join('');
+    return '<div class="dish-result">' +
+      '<div class="dr-head"><div><div class="dr-name">' + esc(res.name) + '</div><div class="tiny faint">' + esc(res.sub) + '</div></div>' +
+        '<span class="badge ' + (res.confidence === 'high' ? 'high' : '') + '">估算 ±' + res.range + '%</span></div>' +
+      '<div class="dr-total"><span class="big">' + fmt(res.total.kcal) + '</span><span class="u">kcal · 约 ' + res.total.grams + 'g</span></div>' +
+      '<div class="dr-macros">蛋白 ' + round1(res.total.p) + 'g · 碳水 ' + round1(res.total.c) + 'g · 脂肪 ' + round1(res.total.f) + 'g · 纤维 ' + round1(res.total.fib) + 'g</div>' +
+      (res.control ? '<div class="dr-control">三控估算 · 糖 ' + round1(res.control.sugar) + 'g · 油 ' + round1(res.control.oil) + 'g · 盐 ' + round1(res.control.salt) + 'g（钠 ' + Math.round(res.control.sodium) + 'mg）</div>' : '') +
+      '<div class="dr-comps">' + compRows + '</div>' +
+      '<div class="dr-note">' + esc(res.note) + (res.hasStaple && res.withRice ? ' 这份已含主食，没有额外加米饭。' : '') + '</div>' +
+    '</div>';
+  }
+
+  const DISH_CATS = [
+    ['all', '全部'], ['home', '家常菜'], ['staple', '主食'], ['soup', '汤粥'],
+    ['snack', '零食'], ['drink', '饮料'], ['breakfast', '早餐'], ['light', '轻食'],
+    ['fruit', '水果'], ['fast', '快餐']
+  ];
+  const DISH_CAT_LABEL = Object.fromEntries(DISH_CATS);
+
+  function dishSuggestions(q, cat, limit) {
+    const all = buildDishCatalog();
+    const query = normDish(q);
+    let list = cat && cat !== 'all' ? all.filter(d => d.cat === cat) : all;
+    if (!query) {
+      return list.slice().sort((a, b) => (b.pop - a.pop) || (a.n.length - b.n.length)).slice(0, limit || 10);
+    }
+    const scored = [];
+    list.forEach(d => {
+      const names = [d.n].concat(d.a || []).map(normDish);
+      let s = 0;
+      names.forEach(n => {
+        if (n === query) s = Math.max(s, 1000);
+        else if (n.indexOf(query) === 0) s = Math.max(s, 600);
+        else if (n.indexOf(query) >= 0) s = Math.max(s, 420 - n.length);
+      });
+      if (s > 0) scored.push({ d: d, s: s + (d.pop || 0) * 6 - d.n.length });
+    });
+    scored.sort((a, b) => b.s - a.s);
+    return scored.slice(0, limit || 12).map(x => x.d);
+  }
+
+  function refreshDishSuggestions() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'dish') return;
+    const cats = $('#dishCats');
+    if (cats) {
+      cats.innerHTML = DISH_CATS.map(c =>
+        '<button class="chip" data-act="dish-cat" data-v="' + c[0] + '" style="' + (sd.cat === c[0] ? 'border-color:var(--green);background:var(--green-soft);color:var(--green)' : '') + '">' + c[1] + '</button>').join('');
+    }
+    const box = $('#dishSuggest');
+    if (!box) return;
+    const q = ($('#dishName') || {}).value || '';
+    const cat = sd.cat || 'all';
+    const all = buildDishCatalog();
+    const filtered = cat === 'all' ? all : all.filter(d => d.cat === cat);
+    const items = dishSuggestions(q, cat, 12);
+    const total = q ? filtered.filter(d => [d.n].concat(d.a || []).some(n => normDish(n).indexOf(normDish(q)) >= 0)).length : filtered.length;
+    box.innerHTML = '<div class="search-caption"><span class="k">' + (q ? '匹配结果' : '推荐与常用') + '</span><span class="tiny faint">共 ' + fmt(filtered.length) + ' 条' + (q ? ' · 匹配 ' + fmt(total) : '') + '</span></div>' +
+      '<div class="dish-pick-list">' + items.map(d =>
+        '<button class="dish-pick-row" data-act="dish-pick" data-name="' + esc(d.n) + '"><span class="n">' + esc(d.n) + '</span>' +
+        '<span class="c">' + (DISH_CAT_LABEL[d.cat] || '') + '</span><span class="k">约 ' + fmt(d.k) + ' kcal</span><span class="a">估算 →</span></button>').join('') + '</div>' +
+      (items.length ? '' : '<div class="cart-empty">没有匹配。可以换个关键词，或直接点底部「估算」按菜名拆解。</div>');
+  }
+
+  function refreshDishResult() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'dish') return;
+    const name = ($('#dishName') || {}).value || '';
+    sd.query = name;
+    sd.result = name ? estimateDish(name, sd.size, sd.rice) : null;
+    const box = $('#dishResultBox');
+    if (box) box.innerHTML = renderDishResult(sd.result);
+    const btn = $('#dishSaveBtn');
+    if (btn) {
+      btn.disabled = !sd.result;
+      btn.textContent = sd.result ? '记入' + E.mealLabel(sd.meal) + ' · ' + fmt(sd.result.total.kcal) + ' kcal' : '记入这餐';
+    }
+    const riceBtn = $('#dishRice');
+    if (riceBtn) {
+      const noRice = !!(sd.result && (sd.result.cat === 'snack' || sd.result.cat === 'drink'));
+      riceBtn.style.display = noRice ? 'none' : '';
+      riceBtn.classList.toggle('on', !!sd.rice);
+      riceBtn.textContent = sd.result && sd.result.hasStaple ? '已含主食' : '配一碗米饭';
+      riceBtn.disabled = !!(sd.result && sd.result.hasStaple);
+    }
+  }
+
+  function openDishSheet(opts) {
+    const o = opts || {};
+    const date = o.date || (state.tab === 'ledger' ? state.recordDate : E.todayKey());
+    const meal = o.meal || E.guessMeal();
+    const catalog = buildDishCatalog();
+    state.sheetData = { type: 'dish', date: date, meal: meal, size: 1, rice: false, result: null, cat: 'all' };
+    const mealSeg = '<div class="seg meal-seg">' + E.MEALS.map(m =>
+      '<button data-act="set-meal" data-v="' + m[0] + '" class="' + (m[0] === meal ? 'on' : '') + '">' + m[1] + '</button>').join('') + '</div>';
+    openSheet(
+      sheetHead('菜名估算', E.relativeDay(date, E.todayKey()) + ' · 收录 ' + fmt(catalog.length) + ' 道菜与零食 · 不联网') +
+      '<div class="sheet-body">' +
+        mealSeg +
+        '<div id="dishCats" class="chip-row" style="margin-top:10px"></div>' +
+        '<div class="search-box" style="margin-top:8px">' + icon('search') + '<input class="input" id="dishName" placeholder="输入菜名，如 番茄炒蛋 / 薯片 / 珍珠奶茶" autocomplete="off"></div>' +
+        '<div id="dishSuggest" style="margin-top:4px"></div>' +
+        '<div class="dish-size-row"><span class="lbl">份量</span><div class="seg dish-size">' +
+          [['0.75', '小份'], ['1', '常规'], ['1.3', '大份']].map(p =>
+            '<button data-act="dish-size" data-v="' + p[0] + '" class="' + (p[0] === '1' ? 'on' : '') + '">' + p[1] + '</button>').join('') +
+        '</div><button class="chip dish-rice" id="dishRice" data-act="dish-rice">配一碗米饭</button></div>' +
+        '<div id="dishResultBox" style="margin-top:10px">' + renderDishResult(null) + '</div>' +
+        '<div class="notebox">常见菜用配料表；扩展菜名按食材和做法估；零食饮料按品类/口味估。实际用油、份量和包装标签会浮动，记入后仍可改份量或删除。</div>' +
+      '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-ghost" data-act="dish-calc">估算</button><button class="btn btn-primary" id="dishSaveBtn" data-act="save-dish" disabled>记入这餐</button></div>',
+      'dish'
+    );
+    refreshDishSuggestions();
+    if (o.query) {
+      const i = $('#dishName');
+      if (i) i.value = o.query;
+      refreshDishResult();
+    } else {
+      setTimeout(() => { const i = $('#dishName'); if (i) i.focus(); }, 60);
+    }
+  }
+
+  function saveDish() {
+    const sd = state.sheetData;
+    const res = sd && sd.result;
+    if (!res) { toast('先估算一份再记入'); return; }
+    if (res.total.grams < 1 || res.total.grams > 3000) { toast('估算总量需要在 1–3000g，请调小份量或换菜名'); return; }
+    const before = DB.entries.length;
+    const entry = {
+      id: uid(), date: sd.date, meal: sd.meal, name: res.name,
+      grams: res.total.grams,
+      per100: {
+        kcal: res.total.kcal / res.total.grams * 100,
+        p: res.total.p / res.total.grams * 100,
+        c: res.total.c / res.total.grams * 100,
+        f: res.total.f / res.total.grams * 100,
+        fib: res.total.fib / res.total.grams * 100
+      },
+      kcal: res.total.kcal, p: res.total.p, c: res.total.c, f: res.total.f, fib: res.total.fib,
+      conf: res.confidence === 'high' ? 'med' : 'low', source: 'dish', estimate: true,
+      control: res.control || { sugar: 0, oil: 0, salt: 0, sodium: 0 },
+      sugar: res.control ? res.control.sugar : 0,
+      oil: res.control ? res.control.oil : 0,
+      salt: res.control ? res.control.salt : 0,
+      sodium: res.control ? res.control.sodium : 0,
+      components: res.components.map(c => ({ name: c.name, grams: c.grams, kcal: c.kcal, p: c.p })),
+      createdAt: Date.now()
+    };
+    DB.entries.push(entry);
+    if (!commit(() => { DB.entries.length = before; })) return;
+    logChange('估算记入「' + res.name + '」· ' + res.total.grams + 'g / ' + res.total.kcal + ' kcal', { kind: 'entry-add', item: entry });
+    closeSheet();
+    renderActive();
+    toast('已估算记入' + E.mealLabel(sd.meal) + ' · ' + res.name + ' ' + res.total.grams + 'g / ' + fmt(res.total.kcal) + ' kcal');
+  }
+
+  /* ============================================================
      添加食物
      ============================================================ */
   function openFoodSheet(opts) {
@@ -4653,6 +6137,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       sheetHead('记一餐', E.relativeDay(date, E.todayKey()) + ' · 从 ' + (E.FOODS.length + DB.foods.length) + ' 种食物里选', '<button class="btn-quiet tiny" data-act="open-manual" style="margin-right:4px;color:var(--green)">手动热量</button>') +
       '<div class="sheet-body">' +
         mealSeg +
+        '<button class="dish-launch" data-act="open-dish"><span class="dl-ic">' + icon('spark') + '</span><span class="dl-t"><b>只知道菜名？</b><em>输入「番茄炒蛋」，自动估食材、克数和热量</em></span><span class="dl-a">估算 →</span></button>' +
         '<div class="search-box">' + icon('search') + '<input class="input" id="foodSearch" placeholder="搜索食物，如 米饭 / 鸡胸 / 燕麦" autocomplete="off"></div>' +
         comboBox + recentBox +
         '<div id="pickBox" style="margin-top:8px"></div>' +
@@ -4682,7 +6167,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         (f.custom ? '<span class="c">自定义</span>' : '') +
         '<span class="k">' + fmt(f.kcal) + ' <span class="tiny faint">/100g</span></span>' +
         '<span class="add-i">' + icon('plus') + '</span></button>'
-      ).join('') + '</div>' : '<div class="cart-empty">没有找到。可以换个关键词，或点右上角「手动热量」。</div>') +
+      ).join('') + '</div>' : '<div class="cart-empty">没有找到。可以换个关键词、点右上角「手动热量」，或直接说菜名让它估一份。</div>') +
       '<div class="tiny faint" style="margin-top:8px">营养值为每 100g 参考值；份量可以随时改。</div>';
   }
 
@@ -4838,7 +6323,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const hasPer100 = !!e.per100;
     const grams = e.grams || 100;
     state.sheetData = { type: 'entry', id: id, meal: e.meal, conf: E.confOf(e) };
-    const srcLabel = { lib: '食物库', manual: '手动', ai: 'AI 识别', combo: '组合', legacy: '旧版导入', custom: '自定义' }[e.source] || '记录';
+    const srcLabel = { lib: '食物库', manual: '手动', ai: 'AI 识别', combo: '组合', dish: '菜名估算', legacy: '旧版导入', custom: '自定义' }[e.source] || '记录';
     openSheet(
       sheetHead('这一笔', E.relativeDay(e.date, E.todayKey()) + ' · 从' + srcLabel + '添加') +
       '<div class="sheet-body">' +
@@ -4852,7 +6337,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
             '</div></div>' +
           '<div class="field"><label>热量（自动）</label><div class="input input-num" style="display:flex;align-items:center;justify-content:center" id="eKcalView">' + fmt(e.kcal) + ' kcal</div></div></div>' +
           '<div class="portion-chips">' + [50, 100, 150, 200, 250].map(g => '<button data-act="entry-grams" data-v="' + g + '">' + g + 'g</button>').join('') + '</div>' +
-          '<div class="notebox">每 100g：' + Math.round(e.per100.kcal) + ' kcal · 蛋白 ' + round1(e.per100.p) + 'g · 碳水 ' + round1(e.per100.c) + 'g · 脂肪 ' + round1(e.per100.f) + 'g</div>'
+          '<div class="notebox">每 100g：' + Math.round(e.per100.kcal) + ' kcal · 蛋白 ' + round1(e.per100.p) + 'g · 碳水 ' + round1(e.per100.c) + 'g · 脂肪 ' + round1(e.per100.f) + 'g</div>' +
+          (e.components && e.components.length ? '<div class="notebox entry-comps">估算构成：' + e.components.map(c => esc(c.name) + ' ' + c.grams + 'g').join(' · ') + '<br>这是按菜名拆出的配料，改份量会按比例换算。</div>' : '') +
+          (e.control ? '<div class="notebox entry-comps">三控估算：添加糖 ' + round1(e.control.sugar) + 'g · 烹调油 ' + round1(e.control.oil) + 'g · 盐 ' + round1(e.control.salt) + 'g（钠 ' + Math.round(e.control.sodium) + 'mg）</div>' : '')
           :
           '<div class="form-grid"><div class="field"><label>热量 kcal</label><input class="input input-num" id="eKcal" type="number" min="0" value="' + Math.round(e.kcal) + '"></div>' +
           '<div class="field"><label>蛋白质 g</label><input class="input input-num" id="eP" type="number" min="0" value="' + (e.p || 0) + '"></div></div>'
@@ -6902,6 +8389,45 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         break;
       }
       case 'open-manual': openManualSheet(); break;
+      case 'open-dish': {
+        const prev = state.sheetData;
+        const date = (prev && prev.date) || (state.tab === 'ledger' ? state.recordDate : E.todayKey());
+        const meal = (prev && prev.meal) || E.guessMeal();
+        openDishSheet({ date: date, meal: meal });
+        break;
+      }
+      case 'dish-pick': {
+        const i = $('#dishName');
+        if (i) i.value = el.dataset.name || '';
+        refreshDishSuggestions();
+        refreshDishResult();
+        break;
+      }
+      case 'dish-calc': refreshDishResult(); break;
+      case 'dish-cat': {
+        if (!sd) break;
+        sd.cat = el.dataset.v || 'all';
+        const di = $('#dishName');
+        if (di) di.value = '';
+        sd.query = '';
+        refreshDishSuggestions();
+        break;
+      }
+      case 'dish-size': {
+        if (!sd) break;
+        sd.size = Number(el.dataset.v) || 1;
+        const seg = el.closest('.seg');
+        if (seg) $$('button', seg).forEach(b => b.classList.toggle('on', b === el));
+        refreshDishResult();
+        break;
+      }
+      case 'dish-rice': {
+        if (!sd) break;
+        sd.rice = !sd.rice;
+        refreshDishResult();
+        break;
+      }
+      case 'save-dish': saveDish(); break;
       case 'open-exercise': openExerciseSheet(); break;
       case 'open-weight': openWeightSheet(); break;
       case 'open-ai': openAISheet(); break;
@@ -7063,6 +8589,31 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       case 'next-shuffle': state.nextSeed++; renderToday(); break;
       case 'next-log': logNextBite(); break;
       case 'repeat-meal': repeatMeal(el.dataset.meal); break;
+      case 'open-control': openControlSheet(); break;
+      case 'control-tab': {
+        if (!sd) break;
+        sd.tab = el.dataset.v || 'sugar';
+        const box = $('#controlBody');
+        if (box) box.innerHTML = renderControlSheet();
+        break;
+      }
+      case 'control-check': {
+        const today = E.todayKey();
+        const list = (DB.controlChecks[today] || []).slice();
+        const i = Number(el.dataset.i);
+        const idx = list.indexOf(i);
+        if (idx >= 0) list.splice(idx, 1); else list.push(i);
+        const before = DB.controlChecks[today];
+        DB.controlChecks[today] = list;
+        if (!commit(() => { if (before == null) delete DB.controlChecks[today]; else DB.controlChecks[today] = before; })) break;
+        const box = $('#controlBody');
+        if (box) box.innerHTML = renderControlSheet();
+        break;
+      }
+      case 'control-radar': {
+        openDishSheet({ date: E.todayKey(), meal: E.guessMeal(), query: el.dataset.name });
+        break;
+      }
       case 'gap-add': {
         const f = allFoods().find(x => x.id === el.dataset.food);
         const grams = Number(el.dataset.grams) || 100;
@@ -7074,7 +8625,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         const entry = makeEntry(f, grams, meal, today, 'lib', 'med');
         DB.entries.push(entry);
         if (!commit(() => { DB.entries.length = before; })) break;
-        logChange('补记「' + f.name + '」' + grams + 'g', { kind: 'entry', item: entry });
+        logChange('补记「' + f.name + '」' + grams + 'g', { kind: 'entry-add', item: entry });
         renderToday();
         toast('已加 ' + f.name + ' ' + grams + 'g · 蛋白 +' + round1(f.p * grams / 100) + 'g');
         break;
@@ -7292,6 +8843,19 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       e.c = round1(e.per100.c * g / 100);
       e.f = round1(e.per100.f * g / 100);
       e.fib = round1(e.per100.fib * g / 100);
+      if (before.components && before.grams) {
+        const ratio = g / before.grams;
+        e.components = before.components.map(c => ({
+          name: c.name, grams: Math.max(1, Math.round(c.grams * ratio)), kcal: Math.round(c.kcal * ratio), p: round1((c.p || 0) * ratio)
+        }));
+        if (before.control) {
+          e.control = {
+            sugar: round1(before.control.sugar * ratio), oil: round1(before.control.oil * ratio),
+            salt: round1(before.control.salt * ratio), sodium: Math.round(before.control.sodium * ratio)
+          };
+          e.sugar = e.control.sugar; e.oil = e.control.oil; e.salt = e.control.salt; e.sodium = e.control.sodium;
+        }
+      }
     } else {
       e.kcal = Math.round(nextKcal);
       e.p = Number($('#eP') && $('#eP').value) || 0;
@@ -7417,6 +8981,13 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       }
       return;
     }
+    if (t.id === 'dishName') {
+      if (state.sheetData && state.sheetData.type === 'dish') {
+        state.sheetData.query = t.value;
+        refreshDishSuggestions();
+      }
+      return;
+    }
     if (t.dataset && t.dataset.cartGrams != null) {
       const sd = state.sheetData;
       if (!sd || !sd.cart) return;
@@ -7537,6 +9108,11 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (t && t.id === 'coachInput' && e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
       e.preventDefault();
       sendCoachQuestion();
+      return;
+    }
+    if (t && t.id === 'dishName' && e.key === 'Enter' && !e.isComposing) {
+      e.preventDefault();
+      refreshDishResult();
       return;
     }
     if (e.key === 'Escape') {
