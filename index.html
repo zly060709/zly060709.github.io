@@ -911,6 +911,109 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .gap-foot svg { width: 12px; height: 12px; color: var(--amber); flex-shrink: 0; }
 .gap-foot b { color: var(--green); }
 
+/* ---------- 智能工具 ---------- */
+.tools-card { margin-top: 12px; padding: 15px 18px; }
+.tool-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+.tool-tile {
+  display: flex; align-items: center; gap: 8px; padding: 9px 10px; text-align: left;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+}
+.tool-tile:hover { background: var(--surface-2); }
+.t-ic { width: 28px; height: 28px; border-radius: 50%; background: var(--green-soft); color: var(--green-deep); display: grid; place-items: center; flex-shrink: 0; }
+.t-ic svg { width: 14px; height: 14px; }
+.t-t { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.t-t b { font-size: 11.5px; }
+.t-t em { font-size: 9.5px; color: var(--ink-3); font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.t-a { font-size: 10px; color: var(--ink-3); }
+
+/* ---------- 一日三餐 / 配餐 ---------- */
+.planner-hero, .plan-hero { padding: 14px 16px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-2); }
+.planner-big, .plan-big { font-family: var(--serif); font-size: 36px; line-height: 1.1; margin-top: 2px; }
+.plan-big small, .planner-big small { font-size: 12px; color: var(--ink-3); }
+.plan-macros { font-size: 11px; color: var(--ink-2); margin-top: 3px; }
+.plan-hero .ph-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-2); }
+.plan-meal { margin-top: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.pm-head { display: flex; align-items: center; gap: 8px; }
+.pm-name { font-size: 13px; font-weight: 600; flex: 1; }
+.pm-k { font-size: 10px; color: var(--ink-3); }
+.pm-items { margin-top: 6px; }
+.pm-row { display: flex; align-items: center; gap: 9px; padding: 4px 0; font-size: 11.5px; border-bottom: 1px dotted var(--line); }
+.pm-row:last-child { border-bottom: 0; }
+.pm-row .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pm-row .g { color: var(--ink-3); font-size: 10px; }
+.pm-row .k { color: var(--ink-2); font-size: 10.5px; min-width: 54px; text-align: right; }
+.planner-styles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 10px 0; }
+.planner-styles button { padding: 7px 2px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); font-size: 10.5px; color: var(--ink-2); }
+.planner-styles button.on { border-color: var(--green); background: var(--green-soft); color: var(--green-deep); }
+.combo-card { margin-top: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.combo-head { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.combo-name { font-size: 12.5px; font-weight: 600; }
+.combo-items { margin-top: 6px; }
+.combo-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.combo-foot span { font-size: 9.5px; color: var(--ink-3); }
+
+/* ---------- 外卖 / 聚餐 ---------- */
+.dine-total { font-family: var(--serif); font-size: 34px; line-height: 1.1; }
+.dine-total small { font-size: 11px; color: var(--ink-3); }
+.dine-burden { font-size: 11px; color: var(--ink-2); margin-top: 3px; }
+.dine-warn { margin-top: 10px; padding: 8px 10px; border-radius: 9px; background: var(--amber-soft); color: var(--amber); font-size: 10.5px; line-height: 1.7; }
+.dine-swaps { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.dine-swaps button { padding: 6px 9px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); font-size: 10px; color: var(--ink-2); }
+
+/* ---------- 冰箱 ---------- */
+.pantry-picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.pantry-picks .chip.on { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+
+/* ---------- 一周复盘 ---------- */
+.weekly-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.weekly-tile { padding: 11px 12px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
+.weekly-tile .k { font-size: 10px; color: var(--ink-3); }
+.weekly-tile .v { font-family: var(--serif); font-size: 24px; line-height: 1.2; }
+.weekly-tile .v small { font-size: 10px; color: var(--ink-3); margin-left: 2px; }
+.weekly-tile .s { font-size: 9.5px; color: var(--ink-3); }
+.weekly-control { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 11px; }
+.weekly-control .row-between { display: flex; justify-content: space-between; font-size: 11.5px; }
+.weekly-days { display: flex; gap: 6px; margin-top: 8px; }
+.weekly-days .wd { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; background: var(--surface-2); color: var(--ink-3); }
+.weekly-days .wd.ok { background: var(--green-soft); color: var(--green-deep); }
+.weekly-days .wd.warn { background: var(--amber-soft); color: var(--amber); }
+.weekly-advice { display: flex; gap: 8px; align-items: flex-start; margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: var(--green-soft); font-size: 11.5px; line-height: 1.6; }
+.weekly-advice svg { width: 14px; height: 14px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
+
+/* ---------- 三控日历 ---------- */
+.cal-summary { display: flex; gap: 22px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface-2); }
+.cal-summary b { font-family: var(--serif); font-size: 28px; }
+.cal-summary small { font-size: 10px; color: var(--ink-3); }
+.cal-legend { display: flex; gap: 10px; margin-top: 10px; font-size: 9.5px; color: var(--ink-3); }
+.cal-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.cal-legend span::before { content: ''; width: 10px; height: 10px; border-radius: 3px; display: inline-block; background: var(--surface-2); }
+.cal-legend .good::before { background: var(--green-soft); border: 1px solid var(--green-line); }
+.cal-legend .warn::before { background: var(--amber-soft); border: 1px solid var(--amber); }
+.cal-legend .bad::before { background: var(--red-soft); border: 1px solid var(--red); }
+.cal-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 12px; font-size: 9.5px; color: var(--ink-3); text-align: center; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 4px; }
+.cal-cell { min-height: 42px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
+.cal-cell .d { font-size: 10px; }
+.cal-cell .m { font-size: 7.5px; color: var(--ink-3); }
+.cal-cell.good { background: var(--green-soft); border-color: var(--green-line); }
+.cal-cell.warn { background: var(--amber-soft); border-color: var(--amber); }
+.cal-cell.bad { background: var(--red-soft); border-color: var(--red); }
+
+/* ---------- 一句话快记 ---------- */
+.quick-examples { display: flex; flex-wrap: wrap; gap: 6px; }
+.quick-examples button { padding: 6px 9px; border: 1px dashed var(--green-line); border-radius: 9px; background: var(--surface); font-size: 10px; color: var(--green-deep); }
+.quick-actions-row { margin-top: 8px; display: flex; gap: 8px; }
+.quick-total { margin-top: 8px; font-size: 12px; font-weight: 600; }
+
+/* ---------- 代谢实验室 ---------- */
+.meta-hero { padding: 14px 16px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-2); }
+.meta-big { font-family: var(--serif); font-size: 38px; line-height: 1.1; }
+.meta-big small { font-size: 12px; color: var(--ink-3); }
+.meta-rows { margin-top: 12px; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; }
+.meta-row { display: flex; justify-content: space-between; gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--line); font-size: 11.5px; }
+.meta-row:last-child { border-bottom: 0; }
+.meta-row span { color: var(--ink-3); }
+
 /* ---------- 份量参照 ---------- */
 .portion-hint {
   width: 100%; display: flex; align-items: center; gap: 10px; margin-top: 10px;
@@ -3858,6 +3961,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
       renderGapCard(gap) +
       renderControlCard() +
+      renderToolsCard() +
 
       '<section class="coach-card">' +
         '<button class="coach-entry" data-act="open-coach">' +
@@ -4387,6 +4491,596 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     }
     const seen = new Set();
     return out.filter(x => x.grams > 0 && !seen.has(x.grams) && seen.add(x.grams)).slice(0, 6);
+  }
+
+  /* ---------- 智能工具：共享 ---------- */
+  const TOOL_ITEMS = [
+    ['open-planner', 'spark', '配这一餐', '按剩余预算组合'],
+    ['open-daily', 'book', '一日三餐', '早中晚 + 购物清单'],
+    ['open-dining', 'camera', '外卖 / 聚餐', '点单前后都能估'],
+    ['open-pantry', 'plus', '冰箱有什么', '按现有食材找菜'],
+    ['open-weekly', 'check', '一周复盘', '7 天趋势与建议'],
+    ['open-control-cal', 'flame', '三控日历', '30 天达标热力图'],
+    ['open-quicklog', 'chat', '一句话快记', '“两个鸡蛋一杯牛奶”'],
+    ['open-metabolism', 'info', '代谢实验室', '预算是怎么算的']
+  ];
+
+  function renderToolsCard() {
+    return '<section class="card tools-card"><div class="cc-head"><div><div class="eyebrow">智能工具</div><div class="cc-title">计划、复盘与快记</div></div><span class="badge">全本地</span></div>' +
+      '<div class="tool-grid">' + TOOL_ITEMS.map(t =>
+        '<button class="tool-tile" data-act="' + t[0] + '"><span class="t-ic">' + icon(t[1]) + '</span><span class="t-t"><b>' + t[2] + '</b><em>' + t[3] + '</em></span><span class="t-a">→</span></button>').join('') + '</div></section>';
+  }
+
+  function exactCatalog(name) {
+    const q = normDish(name);
+    return buildDishCatalog().find(d => normDish(d.n) === q || (d.a || []).some(a => normDish(a) === q)) || null;
+  }
+
+  function itemFromCatalog(d, grams) {
+    const g = grams || d.grams;
+    const scale = g / d.grams;
+    if (d.serve) {
+      const s = d.serve;
+      return {
+        d: d, grams: g, name: d.n, meal: null,
+        kcal: Math.round(s.kcal * scale), p: s.p * scale, c: s.c * scale, f: s.f * scale, fib: s.fib * scale,
+        control: {
+          sugar: round1((d.control.sugar || 0) * scale), oil: round1((d.control.oil || 0) * scale),
+          salt: round1((d.control.salt || 0) * scale), sodium: Math.round((d.control.sodium || 0) * scale)
+        }
+      };
+    }
+    const comps = d.c.map(p => [p[0], p[1] * scale]);
+    const t = compTotals(comps);
+    return {
+      d: d, grams: t.grams, name: d.n, meal: null,
+      kcal: t.kcal, p: t.p, c: t.c, f: t.f, fib: t.fib, control: t.control, comps: comps
+    };
+  }
+
+  function entryFromItem(it, date, meal) {
+    const g = it.grams;
+    return {
+      id: uid(), date: date, meal: meal, name: it.name, grams: g,
+      per100: { kcal: it.kcal / g * 100, p: it.p / g * 100, c: it.c / g * 100, f: it.f / g * 100, fib: it.fib / g * 100 },
+      kcal: it.kcal, p: round1(it.p), c: round1(it.c), f: round1(it.f), fib: round1(it.fib),
+      conf: it.d && it.d.conf === 'high' ? 'med' : 'low', source: 'dish', estimate: true,
+      control: it.control,
+      sugar: it.control.sugar, oil: it.control.oil, salt: it.control.salt, sodium: it.control.sodium,
+      components: it.comps ? it.comps.map(p => {
+        const f = DISH_ING[p[0]];
+        return f ? { name: f.n, grams: Math.round(p[1]), kcal: Math.round(f.kcal * p[1] / 100), p: round1(f.p * p[1] / 100) } : null;
+      }).filter(Boolean) : [{ name: '整份', grams: g, kcal: it.kcal, p: round1(it.p) }],
+      createdAt: Date.now()
+    };
+  }
+
+  function addItemsToMeals(items, date, defaultMeal, label) {
+    const before = DB.entries.length;
+    const clones = items.map(it => entryFromItem(it, date, it.meal || defaultMeal));
+    DB.entries.push.apply(DB.entries, clones);
+    if (!commit(() => { DB.entries.length = before; })) return 0;
+    logChange(label + ' · ' + clones.length + ' 项', { kind: 'batch', items: clones });
+    closeSheet();
+    renderActive();
+    return clones.length;
+  }
+
+  function mealTotals(items) {
+    return items.reduce((s, it) => {
+      s.kcal += it.kcal; s.p += it.p; s.c += it.c; s.f += it.f; s.fib += it.fib;
+      s.sugar += it.control.sugar; s.oil += it.control.oil; s.salt += it.control.salt;
+      return s;
+    }, { kcal: 0, p: 0, c: 0, f: 0, fib: 0, sugar: 0, oil: 0, salt: 0 });
+  }
+
+  function fitStaple(items, target) {
+    const total = mealTotals(items).kcal;
+    if (total <= target * 1.05) return items;
+    const idx = items.findIndex(it => /米饭|杂粮饭|糙米饭|面条|汤面|拌面|炒面|盖面|凉面|米线|河粉|米粉|红薯|玉米/.test(it.name) && it.grams >= 120);
+    if (idx < 0) return items;
+    const it = items[idx];
+    const perG = it.kcal / it.grams;
+    const cut = Math.min(it.grams - 100, Math.ceil((total - target) / perG / 10) * 10);
+    if (cut <= 0) return items;
+    const repl = itemFromCatalog(it.d, it.grams - cut);
+    repl.meal = it.meal;
+    items[idx] = repl;
+    return items;
+  }
+
+  /* ---------- 一日三餐 ---------- */
+  const DAILY_TEMPLATES = {
+    breakfast: [
+      [['豆浆', 300], ['油条']],
+      [['牛奶', 250], ['全麦面包', 50], ['水煮蛋', 100]],
+      [['白粥', 150], ['水煮蛋', 100], ['清炒时蔬', 250]],
+      [['酸奶', 200], ['全麦面包', 50], ['香蕉', 120]]
+    ],
+    lunch: [
+      [['白米饭', 200], ['番茄炒蛋'], ['清炒时蔬', 250]],
+      [['番茄鸡蛋汤面'], ['凉拌黄瓜', 200]],
+      [['黄焖鸡米饭'], ['蒜蓉西兰花', 200]],
+      [['白米饭', 200], ['清蒸鲈鱼'], ['蒜蓉西兰花', 200]],
+      [['牛肉面'], ['凉拌黄瓜', 200]]
+    ],
+    dinner: [
+      [['白米饭', 150], ['宫保鸡丁'], ['清炒时蔬', 250]],
+      [['杂粮饭', 150], ['白灼虾'], ['蒜蓉西兰花', 200]],
+      [['麻婆豆腐'], ['白米饭', 150], ['清炒时蔬', 250]],
+      [['番茄鸡蛋汤面'], ['凉拌黄瓜', 200]],
+      [['烤红薯'], ['清蒸鲈鱼'], ['凉拌黄瓜', 200]]
+    ]
+  };
+
+  const MEAL_LABELS = { breakfast: '早餐', lunch: '午餐', dinner: '晚餐' };
+
+  function resolveTemplate(tpl, meal) {
+    const items = tpl.map(p => {
+      const d = exactCatalog(p[0]);
+      return d ? itemFromCatalog(d, p[1] || d.grams) : null;
+    }).filter(Boolean);
+    items.forEach(it => { it.meal = meal; });
+    return items;
+  }
+
+  function pickMealPlan(meal, target, seed) {
+    const cands = DAILY_TEMPLATES[meal].map(tpl => {
+      const items = resolveTemplate(tpl, meal);
+      return { items: items, kcal: mealTotals(items).kcal };
+    }).filter(x => x.items.length);
+    cands.sort((a, b) => Math.abs(a.kcal - target) - Math.abs(b.kcal - target));
+    const pick = cands[(seed + (meal === 'lunch' ? 1 : meal === 'dinner' ? 2 : 0)) % Math.min(3, cands.length)] || cands[0];
+    return fitStaple(pick.items.slice(), target);
+  }
+
+  function buildDailyPlan(seed) {
+    const st = snapshot(E.todayKey());
+    const budget = (st && st.budget) || 1600;
+    const proteinTarget = st ? st.t.protein : 70;
+    const plan = {
+      breakfast: pickMealPlan('breakfast', budget * 0.26, seed),
+      lunch: pickMealPlan('lunch', budget * 0.4, seed),
+      dinner: pickMealPlan('dinner', budget * 0.32, seed)
+    };
+    return { budget: budget, proteinTarget: proteinTarget, meals: plan, total: mealTotals(plan.breakfast.concat(plan.lunch, plan.dinner)) };
+  }
+
+  function planMealHtml(meal, items, budget) {
+    const t = mealTotals(items);
+    return '<div class="plan-meal"><div class="pm-head"><span class="pm-name">' + MEAL_LABELS[meal] + '</span><span class="pm-k">' + fmt(t.kcal) + ' kcal · 蛋白 ' + round1(t.p) + 'g</span>' +
+      '<button class="btn-quiet tiny" data-act="plan-meal-shuffle" data-meal="' + meal + '">换一换</button></div>' +
+      '<div class="pm-items">' + items.map(it =>
+        '<div class="pm-row"><span class="n">' + esc(it.name) + '</span><span class="g">' + Math.round(it.grams) + 'g</span><span class="k">' + fmt(it.kcal) + ' kcal</span></div>').join('') + '</div></div>';
+  }
+
+  function renderDailyPlan() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'daily') return '';
+    const plan = sd.plan;
+    const total = plan.total;
+    const over = total.kcal > plan.budget;
+    const saltHigh = total.salt > 5;
+    return '<div class="plan-hero"><div class="ph-row"><span>全天计划</span><span class="badge ' + (over ? '' : 'high') + '">' + (over ? '略超预算' : '在预算内') + '</span></div>' +
+      '<div class="plan-big">' + fmt(total.kcal) + '<small> / ' + fmt(plan.budget) + ' kcal</small></div>' +
+      '<div class="plan-macros">蛋白 ' + round1(total.p) + 'g / ' + round1(plan.proteinTarget) + 'g · 纤维 ' + round1(total.fib) + 'g</div>' +
+      '<div class="plan-macros">三控：糖 ' + round1(total.sugar) + 'g · 油 ' + round1(total.oil) + 'g · 盐 ' + round1(total.salt) + 'g' + (saltHigh ? ' · 盐偏高，少酱汁' : '') + '</div></div>' +
+      planMealHtml('breakfast', plan.meals.breakfast, plan.budget) +
+      planMealHtml('lunch', plan.meals.lunch, plan.budget) +
+      planMealHtml('dinner', plan.meals.dinner, plan.budget) +
+      '<div class="notebox">按今日预算自动搭配，默认份量可以直接记入。每餐可单独换一换；总热量偏高时会自动减主食。食材估算为参考值。</div>';
+  }
+
+  function openDailyPlan() {
+    state.sheetData = { type: 'daily', seed: 0 };
+    state.sheetData.plan = buildDailyPlan(0);
+    openSheet(
+      sheetHead('一日三餐', '按今日预算搭配 · 可换一换 · 可生成购物清单') +
+      '<div class="sheet-body" id="dailyBody">' + renderDailyPlan() + '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-ghost" data-act="daily-shuffle">换一天</button><button class="btn btn-ghost" data-act="daily-shop">购物清单</button><button class="btn btn-primary" data-act="daily-log">记入三餐</button></div>',
+      'daily'
+    );
+  }
+
+  function dailyShopList() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'daily') return [];
+    const all = sd.plan.meals.breakfast.concat(sd.plan.meals.lunch, sd.plan.meals.dinner);
+    const merged = {};
+    all.forEach(it => {
+      if (it.comps && it.comps.length) {
+        it.comps.forEach(p => {
+          if (['盐', '酱油', '植物油', '白砂糖', '蚝油', '豆瓣酱'].indexOf(p[0]) >= 0) return;
+          const f = DISH_ING[p[0]];
+          if (!f) return;
+          const key = f.n;
+          merged[key] = (merged[key] || 0) + p[1];
+        });
+      } else merged[it.name] = (merged[it.name] || 0) + it.grams;
+    });
+    return Object.keys(merged).map(k => ({ name: k, grams: Math.round(merged[k]), checked: false }))
+      .sort((a, b) => a.name < b.name ? -1 : 1);
+  }
+
+  /* ---------- 配这一餐 ---------- */
+  const PLANNER_PROTEINS = ['番茄炒蛋', '青椒肉丝', '宫保鸡丁', '麻婆豆腐', '白灼虾', '清蒸鲈鱼', '香煎鸡丁', '红烧牛肉', '香菇鸡块', '番茄牛腩', '青椒炒鸡丁', '洋葱炒牛肉'];
+  const PLANNER_VEGS = ['清炒时蔬', '蒜蓉西兰花', '凉拌黄瓜', '清炒西兰花', '清炒豆芽', '蒜蓉菠菜', '清炒土豆'];
+  const PLANNER_STAPLES = [['白米饭', 150], ['杂粮饭', 150], ['烤红薯', 200], ['玉米', 200]];
+
+  function buildMealCombos(remain, proteinGap, style, seed) {
+    const out = [];
+    PLANNER_PROTEINS.forEach((pn, i) => {
+      const d = exactCatalog(pn);
+      if (!d || !d.c) return;
+      const it = itemFromCatalog(d, Math.round(d.grams * (remain < 500 ? 0.65 : 0.8)));
+      const vd = exactCatalog(PLANNER_VEGS[(i + seed) % PLANNER_VEGS.length]);
+      if (!vd) return;
+      const vit = itemFromCatalog(vd);
+      const items = [it, vit];
+      if (remain >= 520) {
+        const st = PLANNER_STAPLES[(i + seed) % PLANNER_STAPLES.length];
+        const sd = exactCatalog(st[0]);
+        if (sd) items.push(itemFromCatalog(sd, st[1]));
+      }
+      const t = mealTotals(items);
+      if (t.kcal <= remain * 1.25 || items.length <= 2) {
+        out.push({ items: items, t: t, name: it.name + ' + ' + vit.name });
+      }
+    });
+    if (style === 'protein') out.sort((a, b) => b.t.p - a.t.p || Math.abs(a.t.kcal - remain) - Math.abs(b.t.kcal - remain));
+    else if (style === 'light') out.sort((a, b) => a.t.oil - b.t.oil || a.t.salt - b.t.salt);
+    else if (style === 'sugar') out.sort((a, b) => a.t.sugar - b.t.sugar || Math.abs(a.t.kcal - remain) - Math.abs(b.t.kcal - remain));
+    else out.sort((a, b) => Math.abs(a.t.kcal - remain) - Math.abs(b.t.kcal - remain));
+    const picked = [];
+    const seen = new Set();
+    for (const c of out) {
+      if (seen.has(c.name)) continue;
+      seen.add(c.name);
+      picked.push(c);
+      if (picked.length >= 3) break;
+    }
+    return picked;
+  }
+
+  function comboHtml(combo, i, remain) {
+    const t = combo.t;
+    const fit = t.kcal <= remain ? '在剩余内' : '略超剩余';
+    return '<div class="combo-card"><div class="combo-head"><div><div class="combo-name">方案 ' + (i + 1) + ' · ' + esc(combo.name) + '</div><div class="tiny faint">' + fit + ' · 蛋白 ' + round1(t.p) + 'g</div></div>' +
+      '<span class="badge ' + (t.kcal <= remain ? 'high' : '') + '">' + fmt(t.kcal) + ' kcal</span></div>' +
+      '<div class="combo-items">' + combo.items.map(it => '<div class="pm-row"><span class="n">' + esc(it.name) + '</span><span class="g">' + Math.round(it.grams) + 'g</span><span class="k">' + fmt(it.kcal) + ' kcal</span></div>').join('') + '</div>' +
+      '<div class="combo-foot"><span>糖 ' + round1(t.sugar) + 'g · 油 ' + round1(t.oil) + 'g · 盐 ' + round1(t.salt) + 'g</span><button class="btn btn-primary btn-sm" data-act="planner-log" data-i="' + i + '">记入这一餐</button></div></div>';
+  }
+
+  function renderPlanner() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'planner') return '';
+    const st = snapshot(E.todayKey());
+    const remain = Math.max(250, (st ? st.budget - st.sum.kcal : 600));
+    const combos = sd.combos || [];
+    return '<div class="planner-hero"><div class="tiny faint">今日剩余约</div><div class="planner-big">' + fmt(remain) + '<small> kcal</small></div>' +
+      '<div class="plan-macros">蛋白还差约 ' + round1(Math.max(0, (st ? st.t.protein : 70) - (st ? st.sum.p : 0))) + 'g · 已记 ' + (st ? st.sum.count : 0) + ' 笔</div></div>' +
+      '<div class="planner-styles"><button data-act="planner-style" data-v="balanced" class="' + (sd.style === 'balanced' ? 'on' : '') + '">均衡</button>' +
+      '<button data-act="planner-style" data-v="protein" class="' + (sd.style === 'protein' ? 'on' : '') + '">蛋白优先</button>' +
+      '<button data-act="planner-style" data-v="light" class="' + (sd.style === 'light' ? 'on' : '') + '">清淡少油</button>' +
+      '<button data-act="planner-style" data-v="sugar" class="' + (sd.style === 'sugar' ? 'on' : '') + '">低糖</button></div>' +
+      (combos.length ? combos.map((c, i) => comboHtml(c, i, remain)).join('') : '<div class="cart-empty">今天记录太少，先记一餐再配；或直接用「一日三餐」。</div>');
+  }
+
+  function openMealBuilder() {
+    const st = snapshot(E.todayKey());
+    const remain = Math.max(250, (st ? st.budget - st.sum.kcal : 600));
+    const gap = Math.max(0, (st ? st.t.protein : 70) - (st ? st.sum.p : 0));
+    state.sheetData = {
+      type: 'planner', style: 'balanced', meal: E.guessMeal(), date: E.todayKey(),
+      combos: buildMealCombos(remain, gap, 'balanced', 0)
+    };
+    openSheet(
+      sheetHead('帮我配这一餐', '按剩余预算组合 · 可换一批 · 可整餐记入') +
+      '<div class="sheet-body" id="plannerBody">' + renderPlanner() + '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-ghost" data-act="planner-shuffle">换一批</button><button class="btn btn-ghost" data-act="open-daily">一日三餐</button></div>',
+      'planner'
+    );
+  }
+
+  /* ---------- 外卖 / 聚餐 ---------- */
+  function renderDining() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'dining') return '';
+    const items = sd.items || [];
+    const t = mealTotals(items);
+    const q = sd.query || '';
+    const picks = dishSuggestions(q, 'all', 8);
+    const warnings = [];
+    if (t.oil > 30) warnings.push('油已偏高，主食减半或换清蒸/白灼');
+    if (t.salt > 5) warnings.push('盐已偏高，少蘸酱、少喝汤');
+    if (t.sugar > 25) warnings.push('糖已偏高，饮料换无糖');
+    if (!warnings.length) warnings.push('目前负担不高，按这个记即可');
+    return '<div class="dine-total">' + fmt(t.kcal) + '<small> kcal · 蛋白 ' + round1(t.p) + 'g</small></div>' +
+      '<div class="dine-burden">糖 ' + round1(t.sugar) + 'g · 油 ' + round1(t.oil) + 'g · 盐 ' + round1(t.salt) + 'g</div>' +
+      '<div class="dine-warn">' + warnings.map(w => '<div>· ' + esc(w) + '</div>').join('') + '</div>' +
+      (items.length ? '<div class="section-title-sm">这顿点了</div><div class="portion-list">' + items.map((it, i) =>
+        '<div class="portion-row"><span class="n">' + esc(it.name) + '</span><span class="g">' + Math.round(it.grams) + 'g</span><span class="k">' + fmt(it.kcal) + ' kcal</span><button class="x" data-act="dine-remove" data-i="' + i + '" aria-label="移除">' + icon('close') + '</button></div>').join('') + '</div>' : '') +
+      '<div class="dine-swaps"><button data-act="dine-swap-staple">主食减半</button><button data-act="dine-swap-drink">饮料换无糖</button><button data-act="dine-swap-light">最高油的一道减量 30%</button></div>' +
+      '<div class="section-title-sm">加一道菜 / 饮料</div>' +
+      '<div class="dish-pick-list">' + picks.map(d => '<button class="dish-pick-row" data-act="dine-pick" data-name="' + esc(d.n) + '"><span class="n">' + esc(d.n) + '</span><span class="c">' + (DISH_CAT_LABEL[d.cat] || '') + '</span><span class="k">约 ' + fmt(d.k) + ' kcal</span><span class="a">加入</span></button>').join('') + '</div>';
+  }
+
+  function openDining() {
+    state.sheetData = { type: 'dining', items: [], query: '', meal: E.guessMeal(), date: E.todayKey() };
+    openSheet(
+      sheetHead('外卖 / 聚餐', '点单前后估负担 · 可替换 · 可整餐记入') +
+      '<div class="sheet-body"><div class="search-box">' + icon('search') + '<input class="input" id="dineSearch" placeholder="搜索这顿想吃的，如 水煮鱼 / 汉堡 / 奶茶" autocomplete="off"></div>' +
+        '<div id="dineBody" style="margin-top:10px">' + renderDining() + '</div></div>' +
+      '<div class="sheet-foot"><button class="btn btn-ghost" data-act="close-sheet">取消</button><button class="btn btn-primary" data-act="dine-log">记入这餐</button></div>',
+      'dining'
+    );
+  }
+
+  /* ---------- 冰箱有什么 ---------- */
+  const PANTRY_KEYS = ['鸡蛋', '鸡胸', '鸡腿肉', '猪里脊', '牛肉', '虾仁', '鲈鱼', '豆腐', '豆干', '番茄', '青椒', '土豆', '西兰花', '青菜', '黄瓜', '茄子', '豆角', '胡萝卜', '洋葱', '蘑菇', '木耳', '白菜', '冬瓜', '南瓜', '山药', '莲藕', '玉米', '豆芽', '海带', '白萝卜', '韭菜', '芹菜', '蒜苔', '花菜', '西葫芦', '苦瓜', '丝瓜', '芦笋', '秋葵', '荷兰豆'];
+  const PANTRY_EXCLUDE = ['盐', '酱油', '植物油', '白砂糖', '蚝油', '豆瓣酱', '淀粉'];
+
+  function renderPantry() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'pantry') return '';
+    const sel = sd.selected || [];
+    const results = [];
+    if (sel.length) {
+      buildDishCatalog().forEach(d => {
+        if (!d.c) return;
+        const mains = d.c.map(p => p[0]).filter(k => PANTRY_EXCLUDE.indexOf(k) < 0);
+        const uniq = mains.filter((k, i) => mains.indexOf(k) === i);
+        if (!uniq.length) return;
+        const have = uniq.filter(k => sel.indexOf(k) >= 0);
+        if (have.length < 2 || have.length / uniq.length < 0.6) return;
+        results.push({ d: d, have: have, need: uniq.filter(k => have.indexOf(k) < 0) });
+      });
+      results.sort((a, b) => (b.have.length / b.need.concat(b.have).length) - (a.have.length / a.need.concat(a.have).length) || b.d.pop - a.d.pop);
+    }
+    return '<div class="pantry-picks">' + PANTRY_KEYS.map(k => {
+      const f = DISH_ING[k];
+      return '<button class="chip ' + (sel.indexOf(k) >= 0 ? 'on' : '') + '" data-act="pantry-toggle" data-v="' + k + '">' + esc(f ? f.n : k) + '</button>';
+    }).join('') + '</div>' +
+      '<div class="notebox">至少选 2 样。会找“已有食材覆盖 60% 以上”的菜，缺的会标出来。</div>' +
+      '<div class="section-title-sm">能做 ' + results.length + ' 道</div>' +
+      '<div class="portion-list">' + results.slice(0, 12).map(r => {
+        const p = portionForCatalog(r.d);
+        return '<button class="portion-row catalog" data-act="pantry-dish" data-name="' + esc(r.d.n) + '"><span class="n">' + esc(r.d.n) + '</span><span class="u">有 ' + r.have.length + '/' + (r.have.length + r.need.length) + '</span><span class="g">' + fmt(p.kcal) + ' kcal</span><span class="a">' + (r.need.length ? '缺 ' + r.need.map(k => DISH_ING[k].n).slice(0, 2).join('/') + ' →' : '刚好 →') + '</span></button>';
+      }).join('') + (results.length ? '' : '<div class="cart-empty">先选几样你有的食材。</div>') + '</div>';
+  }
+
+  function openPantry() {
+    state.sheetData = { type: 'pantry', selected: [] };
+    openSheet(
+      sheetHead('冰箱有什么', '选现有食材 · 找覆盖度高的菜') +
+      '<div class="sheet-body" id="pantryBody">' + renderPantry() + '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-primary" data-act="close-sheet">知道了</button></div>',
+      'pantry'
+    );
+  }
+
+  /* ---------- 一周复盘 ---------- */
+  function weeklyStats() {
+    const today = E.todayKey();
+    const days = E.rangeKeys(today, 7);
+    const st = snapshot(today);
+    const budget = st ? st.budget : 1600;
+    const sections = days.map(d => ({ date: d, sum: E.summary(DB.entries, d), ctl: controlTotals(d) }));
+    const logged = sections.filter(s => s.sum.count > 0);
+    const avg = logged.length ? logged.reduce((s, x) => s + x.sum.kcal, 0) / logged.length : 0;
+    const controlDays = sections.filter(s => s.ctl.counted > 0 && s.ctl.sugar <= 25 && s.ctl.oil <= 30 && s.ctl.salt <= 5).length;
+    const wpts = DB.weights.filter(w => days.indexOf(w.date) >= 0).sort((a, b) => a.date < b.date ? -1 : 1);
+    const wDelta = wpts.length >= 2 ? round1(wpts[wpts.length - 1].kg - wpts[0].kg) : null;
+    const volume = DB.lifts.filter(l => days.indexOf(l.date) >= 0).reduce((s, l) => s + (l.weight || 0) * (l.reps || 0) * (l.sets || 0), 0);
+    const avgProtein = logged.length ? logged.reduce((s, x) => s + x.sum.p, 0) / logged.length : 0;
+    const suggestion = logged.length === 0 ? '这一周还没有完整记录，先从今天的一餐开始。'
+      : logged.length < 3 ? '记录天数偏少，先保证每天记一餐，再谈达标。'
+        : avg > budget + 120 ? '平均摄入高于预算，先把晚餐主食减 1/4。'
+          : controlDays < 3 ? '三控达标天数偏少，这周先盯住含糖饮料和油炸。'
+            : avgProtein < (st ? st.t.protein * 0.8 : 60) ? '蛋白偏低，早餐加一个蛋或一杯奶。'
+              : '这一周节奏不错，保持记录密度。';
+    return { days: days, sections: sections, logged: logged.length, avg: avg, budget: budget, controlDays: controlDays, wDelta: wDelta, volume: volume, avgProtein: avgProtein, suggestion: suggestion };
+  }
+
+  function renderWeekly() {
+    const w = weeklyStats();
+    return '<div class="weekly-grid">' +
+      '<div class="weekly-tile"><div class="k">记录天数</div><div class="v">' + w.logged + '<small>/7</small></div></div>' +
+      '<div class="weekly-tile"><div class="k">平均摄入</div><div class="v">' + fmt(w.avg) + '<small>kcal</small></div><div class="s">预算 ' + fmt(w.budget) + '</div></div>' +
+      '<div class="weekly-tile"><div class="k">体重变化</div><div class="v">' + (w.wDelta == null ? '—' : (w.wDelta > 0 ? '+' : '') + w.wDelta) + '<small>kg</small></div><div class="s">近 7 天称重</div></div>' +
+      '<div class="weekly-tile"><div class="k">训练容量</div><div class="v">' + fmt(w.volume) + '<small>kg</small></div><div class="s">7 天总和</div></div>' +
+      '</div>' +
+      '<div class="weekly-control"><div class="row-between"><span>三控达标天数</span><b>' + w.controlDays + ' / 7</b></div><div class="weekly-days">' + w.days.map(d => {
+        const s = w.sections.find(x => x.date === d);
+        const ok = s.ctl.counted > 0 && s.ctl.sugar <= 25 && s.ctl.oil <= 30 && s.ctl.salt <= 5;
+        return '<span class="wd ' + (ok ? 'ok' : s.ctl.counted ? 'warn' : 'none') + '">' + E.weekday(d) + '</span>';
+      }).join('') + '</div></div>' +
+      '<div class="weekly-advice">' + icon('spark') + '<span>' + esc(w.suggestion) + '</span></div>' +
+      '<button class="btn btn-ghost btn-block" data-act="weekly-copy">复制复盘文字</button>' +
+      '<div class="notebox">复盘只统计本机记录；体重看趋势，不看单日。三控达标要求当天有拆解记录且糖、油、盐都在目标内。</div>';
+  }
+
+  function openWeekly() {
+    state.sheetData = { type: 'weekly' };
+    openSheet(
+      sheetHead('一周复盘', '近 7 天 · 记录、体重、训练、三控') +
+      '<div class="sheet-body">' + renderWeekly() + '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-primary" data-act="close-sheet">知道了</button></div>',
+      'weekly'
+    );
+  }
+
+  function weeklyText() {
+    const w = weeklyStats();
+    return '能量账本 · 一周复盘\n记录 ' + w.logged + '/7 天，平均摄入 ' + Math.round(w.avg) + ' kcal（预算 ' + w.budget + '）。\n体重变化 ' + (w.wDelta == null ? '—' : w.wDelta + 'kg') + '，训练容量 ' + w.volume + 'kg，三控达标 ' + w.controlDays + '/7 天。\n建议：' + w.suggestion;
+  }
+
+  /* ---------- 三控日历 ---------- */
+  function renderControlCalendar() {
+    const today = E.todayKey();
+    const days = E.rangeKeys(today, 30);
+    const cells = days.map(d => {
+      const c = controlTotals(d);
+      let status = 'none';
+      if (c.counted > 0) {
+        const over = (c.sugar > 25 ? 1 : 0) + (c.oil > 30 ? 1 : 0) + (c.salt > 5 ? 1 : 0);
+        status = over === 0 ? 'good' : over === 1 ? 'warn' : 'bad';
+      }
+      return '<button class="cal-cell ' + status + '" data-act="control-day" data-date="' + d + '"><span class="d">' + Number(d.slice(8)) + '</span><span class="m">' + (c.counted ? c.sugar + '/' + c.oil + '/' + c.salt : '—') + '</span></button>';
+    }).join('');
+    const good = days.filter(d => {
+      const c = controlTotals(d);
+      return c.counted > 0 && c.sugar <= 25 && c.oil <= 30 && c.salt <= 5;
+    }).length;
+    const checks = Object.keys(DB.controlChecks || {}).filter(d => (DB.controlChecks[d] || []).length >= 3).length;
+    return '<div class="cal-summary"><div><b>' + good + '</b><small> 天三控达标</small></div><div><b>' + checks + '</b><small> 天清单 ≥3 项</small></div></div>' +
+      '<div class="cal-legend"><span class="good">达标</span><span class="warn">1 项超</span><span class="bad">2 项超</span><span class="none">无拆解</span></div>' +
+      '<div class="cal-week">' + ['日', '一', '二', '三', '四', '五', '六'].map(x => '<span>' + x + '</span>').join('') + '</div>' +
+      '<div class="cal-grid">' + '<span></span>'.repeat(E.dateOf(days[0]).getDay()) + cells + '</div>' +
+      '<div class="notebox">格子里是「糖/油/盐」的当天克数；灰色是没有可拆解记录。点格子看当天明细。</div>';
+  }
+
+  function openControlCalendar() {
+    state.sheetData = { type: 'controlcal' };
+    openSheet(
+      sheetHead('三控日历', '近 30 天 · 糖 / 油 / 盐') +
+      '<div class="sheet-body">' + renderControlCalendar() + '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-primary" data-act="close-sheet">知道了</button></div>',
+      'controlcal'
+    );
+  }
+
+  /* ---------- 一句话快记 ---------- */
+  const QUICK_MEAL_WORDS = [['早餐', 'breakfast'], ['早饭', 'breakfast'], ['午餐', 'lunch'], ['午饭', 'lunch'], ['晚餐', 'dinner'], ['晚饭', 'dinner'], ['加餐', 'snack'], ['夜宵', 'snack']];
+  const CN_NUM = { 一: 1, 两: 2, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10, 半: 0.5 };
+
+  function quickNames() {
+    const set = new Set(PORTION_UNITS.map(u => u.n).filter(n => n.length >= 2));
+    ['番茄炒蛋', '宫保鸡丁', '麻婆豆腐', '牛肉面', '黄焖鸡米饭', '薯片', '水煮蛋', '油条', '全麦面包', '白粥', '酸奶', '香蕉', '苹果', '玉米', '烤红薯', '清蒸鲈鱼', '白灼虾', '凉拌黄瓜', '蒜蓉西兰花', '清炒时蔬', '奶茶', '可乐', '牛奶', '豆浆', '米饭', '面条', '鸡蛋', '鸡胸', '鸡腿', '豆腐', '番茄', '黄瓜', '土豆'].forEach(n => set.add(n));
+    return Array.from(set).sort((a, b) => b.length - a.length);
+  }
+
+  function quickQty(s) {
+    if (s == null) return 1;
+    if (CN_NUM[s] != null) return CN_NUM[s];
+    const n = Number(s);
+    return isFinite(n) ? n : 1;
+  }
+
+  function itemFromIngredient(k, grams) {
+    const f = DISH_ING[k];
+    if (!f) return null;
+    const g = grams;
+    const scale = g / 100;
+    return {
+      d: { n: f.n, conf: 'mid' }, name: f.n, grams: g,
+      kcal: Math.round(f.kcal * scale), p: f.p * scale, c: f.c * scale, f: f.f * scale, fib: f.fib * scale,
+      control: { sugar: round1((f.sug || 0) * scale), oil: k === '植物油' ? g : 0, salt: round1((f.na || 0) * scale / 400), sodium: Math.round((f.na || 0) * scale) },
+      comps: [[k, g]]
+    };
+  }
+
+  function parseQuickText(text) {
+    let work = String(text || '').trim();
+    let meal = E.guessMeal();
+    QUICK_MEAL_WORDS.forEach(w => { if (work.indexOf(w[0]) >= 0) { meal = w[1]; work = work.replace(w[0], ' '); } });
+    const used = new Array(work.length).fill(false);
+    const items = [];
+    quickNames().forEach(name => {
+      let idx = work.indexOf(name);
+      while (idx >= 0) {
+        let overlap = false;
+        for (let j = idx; j < idx + name.length; j++) if (used[j]) overlap = true;
+        if (!overlap) {
+          const prefix = work.slice(Math.max(0, idx - 8), idx);
+          const m = prefix.match(/([0-9]+(?:\.[0-9]+)?|[一二两三四五六七八九十半])\s*(个|杯|碗|盒|包|片|根|块|把|勺|颗|只|条|份|罐|瓶|两|斤|克|g|ml|毫升)?\s*$/);
+          const qty = m ? quickQty(m[1]) : 1;
+          const unit = m ? (m[2] || '') : '';
+          const d = exactCatalog(name);
+          let grams = null;
+          if (d) grams = d.grams * (qty || 1);
+          else {
+            const f = DISH_ING[name];
+            if (f) {
+              const urow = PORTION_UNITS.find(u => u.n === name && (unit === '' || u.unit.indexOf(unit) >= 0 || unit.indexOf(u.unit) >= 0));
+              const ug = urow ? urow.g : (unit === '克' || unit === 'g' ? 1 : 100);
+              grams = ug * (qty || 1);
+            }
+          }
+          if (grams && grams > 0) {
+            const it = d ? itemFromCatalog(d, grams) : itemFromIngredient(name, grams);
+            if (it) { it.meal = meal; items.push(it); }
+          }
+          for (let j = idx; j < idx + name.length; j++) used[j] = true;
+        }
+        idx = work.indexOf(name, idx + 1);
+      }
+    });
+    return { meal: meal, items: items };
+  }
+
+  function renderQuickLog() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'quicklog') return '';
+    const items = sd.items || [];
+    const t = mealTotals(items);
+    return '<div class="quick-examples"><button data-act="quicklog-example" data-v="早餐两个鸡蛋一杯牛奶">早餐两个鸡蛋一杯牛奶</button><button data-act="quicklog-example" data-v="午餐一碗米饭一份番茄炒蛋">午餐一碗米饭一份番茄炒蛋</button><button data-act="quicklog-example" data-v="下午一杯全糖珍珠奶茶">下午一杯全糖珍珠奶茶</button></div>' +
+      (items.length ? '<div class="section-title-sm">识别到 · ' + (MEAL_LABELS[sd.meal] || '加餐') + '</div><div class="portion-list">' + items.map((it, i) =>
+        '<div class="portion-row"><span class="n">' + esc(it.name) + '</span><span class="g">' + Math.round(it.grams) + 'g</span><span class="k">' + fmt(it.kcal) + ' kcal</span><button class="x" data-act="quicklog-remove" data-i="' + i + '">' + icon('close') + '</button></div>').join('') + '</div>' +
+        '<div class="quick-total">合计 ' + fmt(t.kcal) + ' kcal · 蛋白 ' + round1(t.p) + 'g</div>' +
+        '<button class="btn btn-primary btn-block" data-act="quicklog-log">记入' + (MEAL_LABELS[sd.meal] || '加餐') + '</button>'
+        : '<div class="cart-empty">输入一句话，或点上面的例子。例如“早餐两个鸡蛋一杯牛奶”。</div>') +
+      '<div class="notebox">支持常见单位：个 / 杯 / 碗 / 盒 / 包 / 片 / 根 / 块 / 把 / 勺 / 颗 / 只 / 条 / 份。识别不到的菜，建议用「菜名估算」。</div>';
+  }
+
+  function openQuickLog() {
+    state.sheetData = { type: 'quicklog', items: [], meal: E.guessMeal(), text: '' };
+    openSheet(
+      sheetHead('一句话快记', '说或输一句 · 本地解析份量 · 确认后记入') +
+      '<div class="sheet-body">' +
+        '<div class="search-box">' + icon('chat') + '<input class="input" id="quickText" placeholder="早餐两个鸡蛋一杯牛奶" autocomplete="off">' +
+        '<button class="btn-quiet tiny" data-act="quicklog-mic" style="margin-left:6px">语音</button></div>' +
+        '<div class="quick-actions-row"><button class="btn btn-primary btn-sm" data-act="quicklog-parse">解析</button></div>' +
+        '<div id="quickBody" style="margin-top:10px">' + renderQuickLog() + '</div>' +
+      '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-primary" data-act="close-sheet">关闭</button></div>',
+      'quicklog'
+    );
+  }
+
+  /* ---------- 代谢实验室 ---------- */
+  function renderMetabolism() {
+    const st = snapshot(E.todayKey());
+    if (!st) return '<div class="body-empty">先完成建档。</div>';
+    const ad = st.ad;
+    const status = { prior: '公式先验', calibrating: '校准中', calibrated: '已校准' }[ad.status];
+    const diff = ad.observed == null ? null : ad.observed - ad.prior;
+    return '<div class="meta-hero"><div class="tiny faint">当前实测 TDEE</div><div class="meta-big">' + fmt(ad.tdee) + '<small> kcal/天</small></div>' +
+      '<div class="plan-macros">预算 ' + fmt(st.budget) + ' kcal · ' + status + ' · 权重 ' + ad.percent + '%</div></div>' +
+      '<div class="meta-rows">' +
+        '<div class="meta-row"><span>公式先验</span><b>' + fmt(ad.prior) + ' kcal</b></div>' +
+        '<div class="meta-row"><span>实测反推</span><b>' + (ad.observed == null ? '数据不足' : fmt(ad.observed) + ' kcal') + '</b></div>' +
+        '<div class="meta-row"><span>与公式差</span><b>' + (diff == null ? '—' : (diff > 0 ? '+' : '') + fmt(diff) + ' kcal') + '</b></div>' +
+        '<div class="meta-row"><span>有效摄入天数</span><b>' + ad.validDays + ' 天</b></div>' +
+        '<div class="meta-row"><span>体重记录</span><b>' + ad.weightDays + ' 次 / ' + ad.spanDays + ' 天</b></div>' +
+        '<div class="meta-row"><span>平均摄入</span><b>' + fmt(ad.meanIntake) + ' kcal</b></div>' +
+        '<div class="meta-row"><span>趋势体重</span><b>' + (ad.trendWeight == null ? '—' : ad.trendWeight + ' kg') + '</b></div>' +
+        '<div class="meta-row"><span>近 28 天斜率</span><b>' + round1(ad.slope * 7 * 100) / 100 + ' kg/周</b></div>' +
+      '</div>' +
+      '<div class="notebox">' + (ad.status === 'prior'
+        ? '现在预算主要来自公式先验。再记 8 天以上完整摄入、5 次体重，才会开始用你的真实数据反推。'
+        : '已用 ' + ad.validDays + ' 天摄入、' + ad.weightDays + ' 次体重和 ' + ad.spanDays + ' 天跨度反推。' + (ad.daysNeeded ? '还需约 ' + ad.daysNeeded + ' 天会更稳。' : '数据已经比较稳。') + '体重波动会明显影响结果，看趋势不看单日。') + '</div>' +
+      '<button class="btn btn-ghost btn-block" data-act="open-weight">去记一次体重</button>';
+  }
+
+  function openMetabolism() {
+    state.sheetData = { type: 'meta' };
+    openSheet(
+      sheetHead('代谢实验室', 'TDEE 怎么来的 · 数据够不够') +
+      '<div class="sheet-body">' + renderMetabolism() + '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-primary" data-act="close-sheet">知道了</button></div>',
+      'meta'
+    );
   }
 
   /* ---------- 创新：同上一餐一键复刻 ---------- */
@@ -7803,7 +8497,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       sheetHead('购物清单', esc(shop.recipeName || '手动') + ' · ' + shop.items.filter(i => i.checked).length + '/' + shop.items.length + ' 已勾选', '<button class="btn-quiet tiny" data-act="close-sheet">关闭</button>') +
       '<div class="sheet-body"><div class="shop-list">' + shop.items.map((i, idx) => '<button class="shop-row' + (i.checked ? ' on' : '') + '" data-act="shop-toggle" data-i="' + idx + '"><span class="box">' + (i.checked ? icon('check') : '') + '</span><span class="n">' + esc(i.name) + '</span><span class="q">' + i.grams + ' g</span></button>').join('') + '</div>' +
       '<div class="body-note">勾选状态只保存在本机。同名食材已按克数合并。</div></div>' +
-      '<div class="sheet-foot"><button class="btn btn-ghost" data-act="shop-clear">清空清单</button><button class="btn btn-primary" style="flex:1" data-act="open-recipes">返回菜谱</button></div>',
+      '<div class="sheet-foot"><button class="btn btn-ghost" data-act="shop-clear">清空清单</button>' + (shop.recipeId ? '<button class="btn btn-primary" style="flex:1" data-act="open-recipes">返回菜谱</button>' : '<button class="btn btn-primary" style="flex:1" data-act="close-sheet">关闭</button>') + '</div>',
       'shopping'
     );
   }
@@ -8784,6 +9478,204 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       case 'repeat-meal': repeatMeal(el.dataset.meal); break;
       case 'open-control': openControlSheet(); break;
       case 'open-portion': openPortionSheet(); break;
+      case 'open-planner': openMealBuilder(); break;
+      case 'planner-style': {
+        if (!sd || sd.type !== 'planner') break;
+        sd.style = el.dataset.v || 'balanced';
+        sd.seed = 0;
+        const st = snapshot(E.todayKey());
+        const remain = Math.max(250, st ? st.budget - st.sum.kcal : 600);
+        const gap = Math.max(0, st ? st.t.protein - st.sum.p : 40);
+        sd.combos = buildMealCombos(remain, gap, sd.style, 0);
+        const box = $('#plannerBody');
+        if (box) box.innerHTML = renderPlanner();
+        break;
+      }
+      case 'planner-shuffle': {
+        if (!sd || sd.type !== 'planner') break;
+        sd.seed = (sd.seed || 0) + 1;
+        const st = snapshot(E.todayKey());
+        const remain = Math.max(250, st ? st.budget - st.sum.kcal : 600);
+        const gap = Math.max(0, st ? st.t.protein - st.sum.p : 40);
+        sd.combos = buildMealCombos(remain, gap, sd.style, sd.seed);
+        const box = $('#plannerBody');
+        if (box) box.innerHTML = renderPlanner();
+        break;
+      }
+      case 'planner-log': {
+        if (!sd || sd.type !== 'planner') break;
+        const combo = sd.combos[Number(el.dataset.i)];
+        if (!combo) break;
+        const n = addItemsToMeals(combo.items, sd.date, sd.meal, '配餐记入');
+        if (n) toast('已记入 ' + n + ' 项 · ' + fmt(combo.t.kcal) + ' kcal');
+        break;
+      }
+      case 'open-daily': openDailyPlan(); break;
+      case 'daily-shuffle': {
+        if (!sd || sd.type !== 'daily') break;
+        sd.seed = (sd.seed || 0) + 1;
+        sd.plan = buildDailyPlan(sd.seed);
+        const box = $('#dailyBody');
+        if (box) box.innerHTML = renderDailyPlan();
+        break;
+      }
+      case 'plan-meal-shuffle': {
+        if (!sd || sd.type !== 'daily') break;
+        sd.seed = (sd.seed || 0) + 1;
+        const meal = el.dataset.meal;
+        const share = meal === 'lunch' ? 0.4 : meal === 'dinner' ? 0.32 : 0.26;
+        sd.plan.meals[meal] = pickMealPlan(meal, sd.plan.budget * share, sd.seed);
+        sd.plan.total = mealTotals(sd.plan.meals.breakfast.concat(sd.plan.meals.lunch, sd.plan.meals.dinner));
+        const box = $('#dailyBody');
+        if (box) box.innerHTML = renderDailyPlan();
+        break;
+      }
+      case 'daily-log': {
+        if (!sd || sd.type !== 'daily') break;
+        const all = sd.plan.meals.breakfast.concat(sd.plan.meals.lunch, sd.plan.meals.dinner);
+        const n = addItemsToMeals(all, E.todayKey(), 'lunch', '一日三餐计划记入');
+        if (n) toast('已按计划记入 ' + n + ' 项');
+        break;
+      }
+      case 'daily-shop': {
+        if (!sd || sd.type !== 'daily') break;
+        const items = dailyShopList();
+        const before = DB.shopping;
+        DB.shopping = { recipeId: '', recipeName: '一日三餐计划', at: Date.now(), items: items };
+        if (!commit(() => { DB.shopping = before; })) break;
+        openShoppingSheet();
+        break;
+      }
+      case 'open-dining': openDining(); break;
+      case 'dine-pick': {
+        if (!sd || sd.type !== 'dining') break;
+        const d = exactCatalog(el.dataset.name);
+        if (!d) break;
+        sd.items.push(itemFromCatalog(d));
+        const box = $('#dineBody');
+        if (box) box.innerHTML = renderDining();
+        break;
+      }
+      case 'dine-remove': {
+        if (!sd || sd.type !== 'dining') break;
+        sd.items.splice(Number(el.dataset.i), 1);
+        const box = $('#dineBody');
+        if (box) box.innerHTML = renderDining();
+        break;
+      }
+      case 'dine-swap-staple': {
+        if (!sd || sd.type !== 'dining') break;
+        sd.items = sd.items.map(it => (/米饭|面|粉|粥|红薯|玉米/.test(it.name) && it.grams > 100 ? itemFromCatalog(it.d, Math.round(it.grams / 2)) : it));
+        const box = $('#dineBody');
+        if (box) box.innerHTML = renderDining();
+        toast('主食已减半');
+        break;
+      }
+      case 'dine-swap-drink': {
+        if (!sd || sd.type !== 'dining') break;
+        const tea = exactCatalog('无糖茶');
+        if (!tea) break;
+        let changed = false;
+        sd.items = sd.items.map(it => {
+          if (it.d && it.d.cat === 'drink') { changed = true; return itemFromCatalog(tea); }
+          return it;
+        });
+        const box = $('#dineBody');
+        if (box) box.innerHTML = renderDining();
+        toast(changed ? '饮料已换无糖茶' : '这顿没有饮料');
+        break;
+      }
+      case 'dine-swap-light': {
+        if (!sd || sd.type !== 'dining' || !sd.items.length) break;
+        let idx = 0;
+        sd.items.forEach((it, i) => { if (it.control.oil > sd.items[idx].control.oil) idx = i; });
+        sd.items[idx] = itemFromCatalog(sd.items[idx].d, Math.round(sd.items[idx].grams * 0.7));
+        const box = $('#dineBody');
+        if (box) box.innerHTML = renderDining();
+        toast('最高油的一道已减量 30%');
+        break;
+      }
+      case 'dine-log': {
+        if (!sd || sd.type !== 'dining' || !sd.items.length) { toast('先加一道菜'); break; }
+        const n = addItemsToMeals(sd.items, sd.date, sd.meal, '外卖/聚餐记入');
+        if (n) toast('已记入 ' + n + ' 项');
+        break;
+      }
+      case 'open-pantry': openPantry(); break;
+      case 'pantry-toggle': {
+        if (!sd || sd.type !== 'pantry') break;
+        const k = el.dataset.v;
+        const i = sd.selected.indexOf(k);
+        if (i >= 0) sd.selected.splice(i, 1); else sd.selected.push(k);
+        const box = $('#pantryBody');
+        if (box) box.innerHTML = renderPantry();
+        break;
+      }
+      case 'pantry-dish': openDishSheet({ date: E.todayKey(), meal: E.guessMeal(), query: el.dataset.name }); break;
+      case 'open-weekly': openWeekly(); break;
+      case 'weekly-copy': {
+        const txt = weeklyText();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(() => toast('复盘已复制'), () => toast('复制失败，请手动选中'));
+        } else toast('当前浏览器不支持复制');
+        break;
+      }
+      case 'open-control-cal': openControlCalendar(); break;
+      case 'control-day': {
+        const d = el.dataset.date;
+        const c = controlTotals(d);
+        toast(d + ' · 糖 ' + c.sugar + 'g / 油 ' + c.oil + 'g / 盐 ' + c.salt + 'g' + (c.counted ? '' : '（无拆解）'));
+        break;
+      }
+      case 'open-quicklog': openQuickLog(); break;
+      case 'quicklog-parse':
+      case 'quicklog-example': {
+        if (!sd || sd.type !== 'quicklog') break;
+        if (el.dataset.v) { const i = $('#quickText'); if (i) i.value = el.dataset.v; }
+        const text = ($('#quickText') || {}).value || '';
+        const parsed = parseQuickText(text);
+        sd.items = parsed.items;
+        sd.meal = parsed.meal;
+        const box = $('#quickBody');
+        if (box) box.innerHTML = renderQuickLog();
+        if (!parsed.items.length) toast('没认出来，换种说法或用品名估算');
+        break;
+      }
+      case 'quicklog-remove': {
+        if (!sd || sd.type !== 'quicklog') break;
+        sd.items.splice(Number(el.dataset.i), 1);
+        const box = $('#quickBody');
+        if (box) box.innerHTML = renderQuickLog();
+        break;
+      }
+      case 'quicklog-log': {
+        if (!sd || sd.type !== 'quicklog' || !sd.items.length) { toast('先解析一句话'); break; }
+        const n = addItemsToMeals(sd.items, E.todayKey(), sd.meal, '一句话快记');
+        if (n) toast('已记入 ' + n + ' 项');
+        break;
+      }
+      case 'quicklog-mic': {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) { toast('这个浏览器不支持语音，直接输入文字即可'); break; }
+        const rec = new SR();
+        rec.lang = 'zh-CN';
+        rec.onresult = ev => {
+          const text = ev.results[0][0].transcript;
+          const i = $('#quickText');
+          if (i) i.value = text;
+          const parsed = parseQuickText(text);
+          if (sd && sd.type === 'quicklog') {
+            sd.items = parsed.items; sd.meal = parsed.meal;
+            const box = $('#quickBody');
+            if (box) box.innerHTML = renderQuickLog();
+          }
+        };
+        rec.onerror = () => toast('没听清，再试一次或直接输入');
+        rec.start();
+        toast('正在听…');
+        break;
+      }
+      case 'open-metabolism': openMetabolism(); break;
       case 'portion-tab': setPortionTab(el.dataset.v || 'hand'); break;
       case 'portion-dish': openDishSheet({ date: E.todayKey(), meal: E.guessMeal(), query: el.dataset.name }); break;
       case 'entry-portion': {
@@ -9200,6 +10092,14 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       }
       return;
     }
+    if (t.id === 'dineSearch') {
+      if (state.sheetData && state.sheetData.type === 'dining') {
+        state.sheetData.query = t.value;
+        const body = $('#dineBody');
+        if (body) body.innerHTML = renderDining();
+      }
+      return;
+    }
     if (t.dataset && t.dataset.cartGrams != null) {
       const sd = state.sheetData;
       if (!sd || !sd.cart) return;
@@ -9325,6 +10225,12 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (t && t.id === 'dishName' && e.key === 'Enter' && !e.isComposing) {
       e.preventDefault();
       refreshDishResult();
+      return;
+    }
+    if (t && t.id === 'quickText' && e.key === 'Enter' && !e.isComposing) {
+      e.preventDefault();
+      const b = document.querySelector('[data-act="quicklog-parse"]');
+      if (b) b.click();
       return;
     }
     if (e.key === 'Escape') {
