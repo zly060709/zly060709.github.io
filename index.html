@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="ledger-mode" content="static">
 <meta name="ledger-standalone" content="1">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#EFECE2">
 <meta name="description" content="能量账本：一本会自我校准的私人饮食账本。记录更少，知道更多。">
 <title>能量账本 · 记录得更少，知道得更多</title>
@@ -376,6 +376,11 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .meal-head .add { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: var(--ink-2); flex-shrink: 0; }
 .meal-head .add:hover { background: var(--green-soft); color: var(--green); border-color: var(--green-line); }
 .meal-head .add svg { width: 12px; height: 12px; }
+.meal-head .repeat {
+  height: 26px; padding: 0 8px; border-radius: 13px; border: 1px solid var(--line);
+  font-size: 10.5px; color: var(--ink-2); background: var(--surface-2); flex-shrink: 0;
+}
+.meal-head .repeat:hover { color: var(--green); border-color: var(--green-line); background: var(--green-soft); }
 .entry { display: flex; align-items: center; gap: 8px; padding: 9px 0 9px 2px; border-bottom: 1px dotted var(--line); font-size: 13px; }
 .entry:last-child { border-bottom: 0; }
 .entry .n { flex-shrink: 0; max-width: 58%; }
@@ -496,6 +501,18 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .btn-sm { padding: 7px 12px; font-size: 12px; border-radius: 9px; }
 .btn[disabled] { opacity: .45; cursor: not-allowed; }
 
+/* ---------- 存储告警 ---------- */
+.storage-banner {
+  position: fixed; left: 50%; top: 10px; transform: translateX(-50%);
+  z-index: 96; width: min(560px, calc(100% - 20px));
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: 10px;
+  background: var(--red-soft); border: 1px solid rgba(160, 60, 45, .3);
+  color: var(--red); font-size: 11.5px; line-height: 1.5;
+  box-shadow: var(--shadow-sm);
+}
+.storage-banner span { flex: 1; }
+
 /* ---------- 浮层 ---------- */
 .sheet-wrap {
   position: fixed; inset: 0; z-index: 80;
@@ -579,11 +596,17 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .cart-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px dotted var(--line); }
 .cart-row .n { flex: 1; font-size: 12.5px; min-width: 0; }
 .cart-row .n small { display: block; color: var(--ink-3); font-size: 9.5px; }
-.cart-row .g { width: 66px; }
-.cart-row .k { font-family: var(--serif); font-size: 13px; width: 56px; text-align: right; }
-.cart-row .x { color: var(--ink-3); width: 22px; display: grid; place-items: center; }
+.cart-row .g { width: 54px; text-align: center; padding-left: 4px; padding-right: 4px; }
+.cart-row .k { font-family: var(--serif); font-size: 13px; width: 48px; text-align: right; }
+.cart-row .x { color: var(--ink-3); width: 26px; min-height: 38px; display: grid; place-items: center; }
 .cart-row .x:hover { color: var(--red); }
-.cart-row .x svg { width: 11px; height: 11px; }
+.cart-row .x svg { width: 13px; height: 13px; }
+.step { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.step-btn { width: 38px; height: 38px; flex-shrink: 0; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--ink-2); font-size: 17px; line-height: 1; display: grid; place-items: center; }
+.step-btn:hover { border-color: var(--green-line); color: var(--green); }
+.step-btn:active { background: var(--green-soft); }
+.step .input { text-align: center; }
+.form-grid .step .input { width: 92px; }
 .cart-empty { font-size: 11.5px; color: var(--ink-3); padding: 12px 0; }
 .cart-total { display: flex; align-items: baseline; justify-content: space-between; margin-top: 10px; }
 .cart-total .k { font-size: 11px; color: var(--ink-3); }
@@ -813,6 +836,50 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .q-ic { width: 34px; height: 34px; border-radius: 50%; background: var(--green-soft); color: var(--green-deep); display: grid; place-items: center; }
 .q-ic svg { width: 16px; height: 16px; }
 .q-t { font-size: 10.5px; color: var(--ink-2); }
+
+/* 今日还差什么 */
+.gap-card { margin-top: 12px; padding: 16px 18px; }
+.gap-main { display: flex; gap: 12px; align-items: flex-start; }
+.gap-ic {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  display: grid; place-items: center; background: var(--green-soft); color: var(--green-deep);
+}
+.gap-ic svg { width: 16px; height: 16px; }
+.gap-done .gap-ic { background: var(--green); color: #fff; }
+.gap-over .gap-ic { background: var(--amber-soft); color: var(--amber); }
+.gap-title { font-family: var(--serif); font-size: 17px; line-height: 1.25; margin-top: 2px; }
+.gap-sub { font-size: 11.5px; color: var(--ink-3); margin-top: 4px; line-height: 1.55; }
+.gap-act { margin-top: 12px; display: flex; }
+.gap-act .btn { width: 100%; }
+.gap-foot {
+  display: flex; align-items: center; gap: 6px; margin-top: 11px; padding-top: 10px;
+  border-top: 1px dashed var(--line); font-size: 11px; color: var(--ink-3);
+}
+.gap-foot svg { width: 12px; height: 12px; color: var(--amber); flex-shrink: 0; }
+.gap-foot b { color: var(--green); }
+
+/* 体重拆解 / 训练容量 */
+.decomp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+.decomp-item { padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+.decomp-item .k { font-size: 10.5px; color: var(--ink-3); }
+.decomp-item .v { font-family: var(--serif); font-size: 18px; margin-top: 2px; }
+.decomp-item .v small { font-size: 10px; color: var(--ink-3); }
+.decomp-item .s { font-size: 10px; color: var(--ink-3); margin-top: 3px; line-height: 1.4; }
+.decomp-note {
+  margin-top: 12px; padding: 9px 12px; border-radius: 10px;
+  background: var(--amber-soft); color: var(--amber); font-size: 11.5px; line-height: 1.6;
+}
+.vol-total { margin-top: 14px; display: flex; align-items: baseline; gap: 6px; }
+.vol-total .serif { font-size: 30px; }
+.vol-total small { color: var(--ink-3); font-size: 11px; }
+.vol-list { margin-top: 10px; border-top: 1px dashed var(--line); }
+.vol-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px dotted var(--line); font-size: 12px; }
+.vol-row:last-child { border-bottom: 0; }
+.vol-row .n { flex: 1; }
+.vol-row .v { color: var(--ink-2); }
+.vol-row .d { font-size: 10.5px; color: var(--ink-3); min-width: 42px; text-align: right; }
+.vol-row .d.up { color: var(--green); }
+.vol-row .d.down { color: var(--amber); }
 
 .recent-strip { margin-top: 20px; }
 .recent-strip .search-caption { margin-top: 0; }
@@ -3245,16 +3312,53 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       return normalizeDB({});
     }
   }
+  function probeStorage() {
+    try {
+      localStorage.setItem(KEY + '.probe', '1');
+      localStorage.removeItem(KEY + '.probe');
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+  function paintStorageBanner() {
+    let el = document.getElementById('storageBanner');
+    if (storageOK) {
+      if (el) el.remove();
+      return;
+    }
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'storageBanner';
+      el.className = 'storage-banner';
+      el.setAttribute('role', 'alert');
+      document.body.appendChild(el);
+    }
+    el.innerHTML = '<span>本地存储写入失败：新记录可能不会保存。请先在设置里导出备份，再清理浏览器空间。</span>' +
+      '<button class="btn-quiet tiny" data-act="open-settings">去设置</button>';
+  }
   function saveDB(silent) {
     try {
       localStorage.setItem(KEY, JSON.stringify(DB));
       storageOK = true;
+      paintStorageBanner();
+      return true;
     } catch (err) {
       storageOK = false;
+      paintStorageBanner();
       if (!silent) toast('保存失败：本地存储空间不足或被浏览器限制');
+      return false;
     }
   }
+  function commit(revert) {
+    if (saveDB(true)) return true;
+    if (revert) revert();
+    toast('保存失败：新记录没有写入。请先导出备份，清理空间后再试');
+    return false;
+  }
   DB = loadDB();
+  storageOK = storageOK && probeStorage();
+  paintStorageBanner();
 
   /* ============================================================
      主题
@@ -3390,12 +3494,20 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!item) { toast('没有可撤销的操作'); return; }
     const u = item.undo;
     if (u.kind === 'entry') DB.entries.push(u.item);
+    else if (u.kind === 'entry-edit') {
+      const idx = DB.entries.findIndex(x => x.id === u.item.id);
+      if (idx > -1) DB.entries[idx] = u.item; else DB.entries.push(u.item);
+    }
     else if (u.kind === 'exercise') DB.exercises.push(u.item);
     else if (u.kind === 'supplement') DB.supplements.push(u.item);
     else if (u.kind === 'measure') DB.measures.push(u.item);
     else if (u.kind === 'food') DB.foods.push(u.item);
     else if (u.kind === 'combo') DB.combos.push(u.item);
     else if (u.kind === 'lift') DB.lifts.push(u.item);
+    else if (u.kind === 'batch') {
+      const ids = new Set(u.items.map(x => x.id));
+      DB.entries = DB.entries.filter(e => !ids.has(e.id));
+    }
     else { toast('这条操作无法撤销'); return; }
     item.undo = null;
     item.text = item.text + '（已撤销）';
@@ -3516,6 +3628,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const nb = E.nextBite({ remaining: remain, proteinGap: t.protein - sum.p, meal: E.guessMeal(), foods: allFoods(), seed: state.nextSeed });
     const recent = recents(6);
     const water = Number(DB.water[today] || 0);
+    const gap = gapNext(st, water);
     const weightToday = DB.weights.find(w => w.date === today) || null;
     const lastWeight = E.latestWeight(DB.weights, DB.profile);
 
@@ -3582,6 +3695,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '<section class="quick-card">' +
         quickActions.map(q => '<button class="quick" data-act="' + q[0] + '"><span class="q-ic">' + icon(q[1]) + '</span><span class="q-t">' + q[2] + '</span></button>').join('') +
       '</section>' +
+
+      renderGapCard(gap) +
 
       '<section class="coach-card">' +
         '<button class="coach-entry" data-act="open-coach">' +
@@ -3692,6 +3807,79 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     return '';
   }
 
+  /* ---------- 创新：今日还差什么 ---------- */
+  function adherenceStreak(budget, t) {
+    let d = E.summary(DB.entries, E.todayKey()).count ? E.todayKey() : E.addDays(E.todayKey(), -1);
+    let n = 0;
+    while (n < 365) {
+      const s = E.summary(DB.entries, d);
+      if (!s.count) break;
+      if (s.kcal > budget * 1.05 || s.kcal < budget * 0.85) break;
+      n++;
+      d = E.addDays(d, -1);
+    }
+    const next = [3, 7, 14, 30, 60, 100].find(m => m > n) || null;
+    return { n: n, next: next, toNext: next ? next - n : 0 };
+  }
+
+  function gapNext(st, water) {
+    const today = E.todayKey();
+    const push = adherenceStreak(st.budget, st.t);
+    const base = { streak: push };
+    if (st.sum.count === 0) {
+      return Object.assign(base, { kind: 'start', title: '先记下第一餐', sub: '有了第一笔，账本才会开始校准你的预算。', act: 'open-add', label: '记一餐' });
+    }
+    if (st.remain <= 0) {
+      return Object.assign(base, { kind: 'over', title: '今天预算已用完', sub: '不必补偿，散散步或早点休息就好。', act: 'open-exercise', label: '记运动' });
+    }
+    const pGap = Math.max(0, st.t.protein - st.sum.p);
+    const fiberGap = Math.max(0, st.t.fiber - st.sum.fib);
+    const wGap = Math.max(0, st.t.water - water);
+    if (pGap >= 8) {
+      const cands = allFoods().filter(f => f.p >= 12 && f.kcal <= 260 && !/零食|薯片|蛋糕|可乐/.test(f.name))
+        .filter(f => f.kcal * 1.5 <= st.remain && f.kcal * 0.5 <= st.remain);
+      cands.sort((a, b) => (b.p / Math.max(1, b.kcal)) - (a.p / Math.max(1, a.kcal)));
+      if (cands.length) {
+        const f = cands[0];
+        const g = f.kcal * 1.5 <= st.remain ? 150 : 100;
+        return Object.assign(base, { kind: 'protein', title: '蛋白质还差 ' + Math.round(pGap) + 'g', sub: '一份 ' + f.name + ' ' + g + 'g 约补 ' + round1(f.p * g / 100) + 'g，热量也在今天剩余内。', act: 'gap-add', food: f.id, grams: g, label: '加 ' + g + 'g ' + f.name, pGap: pGap });
+      }
+    }
+    if (wGap >= 250) {
+      const ml = wGap >= 500 ? 500 : 250;
+      return Object.assign(base, { kind: 'water', title: '饮水还差 ' + round1(wGap / 1000) + 'L', sub: '一次 ' + ml + 'ml，分几次喝完比一次灌更舒服。', act: 'quick-water', ml: ml, label: '+' + ml + 'ml 水' });
+    }
+    if (fiberGap >= 5) {
+      const cands = allFoods().filter(f => f.fib >= 2.5 && f.kcal <= st.remain + 50)
+        .sort((a, b) => (b.fib / Math.max(1, b.kcal)) - (a.fib / Math.max(1, a.kcal)));
+      if (cands.length) {
+        const f = cands[0];
+        return Object.assign(base, { kind: 'fiber', title: '膳食纤维还差 ' + Math.round(fiberGap) + 'g', sub: '一份 ' + f.name + ' 150g 约补 ' + round1(f.fib * 1.5) + 'g。', act: 'gap-add', food: f.id, grams: 150, label: '加 150g ' + f.name });
+      }
+    }
+    return Object.assign(base, { kind: 'done', title: '今天的关键项都够了', sub: push.n ? '已达标的连续天数：' + push.n + ' 天' + (push.next ? '，距 ' + push.next + ' 天里程碑还差 ' + push.toNext + ' 天' : '') : '蛋白质、纤维和饮水都在目标附近。' });
+  }
+
+  function renderGapCard(gap) {
+    const ic = gap.kind === 'done' ? icon('check') : gap.kind === 'over' ? icon('info') : icon('plus');
+    let btn = '';
+    if (gap.act === 'gap-add') {
+      btn = '<button class="btn btn-primary btn-sm" data-act="gap-add" data-food="' + gap.food + '" data-grams="' + gap.grams + '">' + esc(gap.label) + '</button>';
+    } else if (gap.act === 'quick-water') {
+      btn = '<button class="btn btn-primary btn-sm" data-act="quick-water" data-ml="' + gap.ml + '">' + esc(gap.label) + '</button>';
+    } else if (gap.act) {
+      btn = '<button class="btn btn-primary btn-sm" data-act="' + gap.act + '">' + esc(gap.label) + '</button>';
+    }
+    const st = gap.streak || { n: 0, next: 3, toNext: 3 };
+    return '<section class="card gap-card gap-' + gap.kind + '">' +
+      '<div class="gap-main"><span class="gap-ic">' + ic + '</span>' +
+        '<div><div class="eyebrow">今天还差什么</div><div class="gap-title">' + esc(gap.title) + '</div><div class="gap-sub">' + esc(gap.sub) + '</div></div>' +
+      '</div>' +
+      (btn ? '<div class="gap-act">' + btn + '</div>' : '') +
+      '<div class="gap-foot">' + icon('flame') + '<span>' + (st.n ? '连续达标 <b>' + st.n + ' 天</b>' + (st.next ? ' · 还差 ' + st.toNext + ' 天到 ' + st.next + ' 天里程碑' : ' · 已到最长里程碑') : '连续达标从今天开始 · 吃在预算内并记下来就算一天') + '</span></div>' +
+    '</section>';
+  }
+
   function renderNextBite(nb, extra) {
     if (!nb || nb.type !== 'plan') {
       return '<div class="card card-tight"><div class="next-head"><div><div class="tiny faint">' + esc(nb ? nb.text : '') + '</div>' + (extra ? '<div class="tiny faint" style="margin-top:4px">' + esc(extra) + '</div>' : '') + '</div></div></div>';
@@ -3778,9 +3966,38 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '<div class="disclaimer">历史日的预算按「当时已有记录」的校准结果计算，所以回看某天时会与今天的预算不同。这是账本在学习，不是数据错误。</div>';
   }
 
+  /* ---------- 创新：同上一餐一键复刻 ---------- */
+  function repeatMeal(meal) {
+    const target = state.tab === 'ledger' ? state.recordDate : E.todayKey();
+    const priorDates = Array.from(new Set(DB.entries.filter(e => e.meal === meal && e.date < target).map(e => e.date))).sort().reverse();
+    let src = null, list = [];
+    for (const d of priorDates) {
+      const items = DB.entries.filter(e => e.meal === meal && e.date === d);
+      if (items.length) { src = d; list = items; break; }
+    }
+    if (!list.length) {
+      toast('还没有可复刻的' + E.mealLabel(meal) + '，先完整记一餐吧');
+      return;
+    }
+    const existing = DB.entries.filter(e => e.meal === meal && e.date === target).length;
+    const doIt = () => {
+      const before = DB.entries.length;
+      const clones = list.map(e => Object.assign({}, e, { id: uid(), date: target, source: 'repeat', createdAt: Date.now() }));
+      DB.entries.push.apply(DB.entries, clones);
+      if (!commit(() => { DB.entries.length = before; })) return;
+      logChange('复刻' + E.mealLabel(meal) + '「来自 ' + E.dateLabel(src) + '」· ' + clones.length + ' 项', { kind: 'batch', items: clones });
+      renderActive();
+      toast('已复刻 ' + clones.length + ' 项到' + E.mealLabel(meal) + ' · ' + fmt(clones.reduce((s, x) => s + x.kcal, 0)) + ' kcal');
+    };
+    if (existing) {
+      confirmSheet('复刻上一餐？', '这一餐已有 ' + existing + ' 项，会再加 ' + list.length + ' 项。', '继续复刻', false).then(ok => { if (ok) doIt(); });
+    } else doIt();
+  }
+
   function renderMealBlock(m, day) {
     return '<div class="meal-block">' +
       '<div class="meal-head"><span class="name">' + m.label + '</span><span class="k">' + m.items.length + ' 项</span><span class="kcal">' + (m.items.length ? fmt(m.kcal) + ' kcal' : '') + '</span>' +
+        '<button class="repeat" data-act="repeat-meal" data-meal="' + m.key + '" title="把上一餐同样的食物复制到这一餐">复刻</button>' +
         '<button class="add" data-act="open-add" data-meal="' + m.key + '" title="添加食物">' + icon('plus') + '</button></div>' +
       (m.items.length ? m.items.map(e => {
         const conf = E.confOf(e);
@@ -3800,6 +4017,40 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   /* ============================================================
      趋势
      ============================================================ */
+  /* ---------- 创新：真实瘦 vs 水波动 ---------- */
+  function weightDecomp() {
+    const today = E.todayKey();
+    const series = E.trendSeries(DB.weights, E.addDays(today, -27), today).filter(x => x.raw != null);
+    if (series.length < 3) return null;
+    const first = series[0], last = series[series.length - 1];
+    const span = Math.max(1, (E.dateOf(last.date) - E.dateOf(first.date)) / 86400000);
+    const weekly = (last.tw - first.tw) / span * 7;
+    const residuals = series.map(x => x.raw - x.tw);
+    const mean = residuals.reduce((a, b) => a + b, 0) / residuals.length;
+    const sd = Math.sqrt(residuals.reduce((a, b) => a + (b - mean) * (b - mean), 0) / residuals.length);
+    const jump = series.length > 1 ? series[series.length - 1].raw - series[series.length - 2].raw : null;
+    return { weekly: round1(weekly), noise: round1(sd * 1.96), jump: jump == null ? null : round1(jump), days: Math.round(span) };
+  }
+
+  function renderDecompCard() {
+    const d = weightDecomp();
+    if (!d) {
+      return '<section class="card decomp-card" style="margin-top:14px"><div class="chart-title">真实瘦 vs 水波动</div>' +
+        '<div class="body-empty" style="margin-top:8px">至少称 3 次体重（可间隔几天），这里会把趋势方向和水分波动拆开显示。</div></section>';
+    }
+    const jumpText = d.jump == null ? '—' : (d.jump > 0 ? '+' : '') + d.jump + ' <small>kg</small>';
+    const jumpWarn = d.jump != null && Math.abs(d.jump) >= 2;
+    return '<section class="card decomp-card" style="margin-top:14px">' +
+      '<div class="chart-head"><div><div class="chart-title">真实瘦 vs 水波动</div><div class="chart-sub">趋势值是平滑后的方向，短期数字不必当真</div></div><span class="badge">近 ' + d.days + ' 天</span></div>' +
+      '<div class="decomp-grid">' +
+        '<div class="decomp-item"><div class="k">趋势变化</div><div class="v ' + (d.weekly < 0 ? 'green' : d.weekly > 0 ? 'amber' : '') + '">' + (d.weekly > 0 ? '+' : '') + d.weekly + ' <small>kg/周</small></div><div class="s">平滑后的真实方向</div></div>' +
+        '<div class="decomp-item"><div class="k">水分波动带</div><div class="v">±' + d.noise + ' <small>kg</small></div><div class="s">单日偏离趋势的典型幅度</div></div>' +
+        '<div class="decomp-item"><div class="k">最近一次变化</div><div class="v ' + (jumpWarn ? 'amber' : '') + '">' + jumpText + '</div><div class="s">' + (jumpWarn ? '单日 ≥2kg，多为水分/盐分' : '与前一次称重相比') + '</div></div>' +
+      '</div>' +
+      (jumpWarn ? '<div class="decomp-note">最近一次单日变化 ' + (d.jump > 0 ? '+' : '') + d.jump + ' kg，超出日常水分波动范围。建议同一时间、空腹复称一次；趋势值未被这一天带偏。</div>' : '') +
+    '</section>';
+  }
+
   function renderTrend() {
     const view = $('#view-trend');
     if (!DB.profile) { view.innerHTML = renderNeedsOnboard(); return; }
@@ -3849,6 +4100,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
           '<div class="fc-item"><div class="k">到达目标</div><div class="v">' + (fore.etaDays ? '约 ' + Math.ceil(fore.etaDays / 7) + ' <small>周</small>' : '—') + '</div></div>' +
         '</div>' : '') +
       '</section>' +
+
+      renderDecompCard() +
 
       '<section class="card chart-card" style="margin-top:14px">' +
         '<div class="chart-head"><div><div class="chart-title">摄入与预算</div><div class="chart-sub">每根柱子是一天 · 虚线是当前预算</div></div>' +
@@ -3994,6 +4247,41 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   /* ============================================================
      身体 / 周期
      ============================================================ */
+  /* ---------- 创新：训练容量周环比 ---------- */
+  function volumeWindow(offset) {
+    const today = E.todayKey();
+    const end = E.addDays(today, -7 * offset);
+    const start = E.addDays(end, -6);
+    const by = {};
+    let total = 0;
+    DB.lifts.filter(x => x.date >= start && x.date <= end).forEach(x => {
+      const v = (Number(x.weight) || 0) * (Number(x.reps) || 0) * (Number(x.sets) || 0);
+      total += v;
+      by[x.exercise] = (by[x.exercise] || 0) + v;
+    });
+    return { total: total, by: by, start: start, end: end };
+  }
+
+  function renderVolumeCard() {
+    const cur = volumeWindow(0), prev = volumeWindow(1);
+    if (!DB.lifts.length) {
+      return '<div class="card"><div class="body-card-title">训练容量 · 周环比</div>' +
+        '<div class="body-empty" style="margin-top:10px">记下力量训练后，这里会算出近 7 天总容量，并和上一个 7 天对比。</div></div>';
+    }
+    const pct = prev.total > 0 ? Math.round((cur.total - prev.total) / prev.total * 100) : null;
+    const items = Object.keys(cur.by).sort((a, b) => cur.by[b] - cur.by[a]).slice(0, 3);
+    return '<div class="card volume-card">' +
+      '<div class="row-between"><div><div class="body-card-title">训练容量 · 近 7 天</div><div class="tiny faint">重量 × 次数 × 组数 · 对比前 7 天</div></div>' +
+      '<span class="badge ' + (pct != null && pct > 0 ? 'high' : '') + '">' + (pct == null ? '首个周期' : (pct > 0 ? '+' : '') + pct + '%') + '</span></div>' +
+      '<div class="vol-total"><span class="serif">' + fmt(cur.total) + '</span><small> kg 总容量</small></div>' +
+      (items.length ? '<div class="vol-list">' + items.map(k => {
+        const d = prev.by[k] ? Math.round((cur.by[k] - prev.by[k]) / prev.by[k] * 100) : null;
+        return '<div class="vol-row"><span class="n">' + esc(k) + '</span><span class="v">' + fmt(cur.by[k]) + ' kg</span><span class="d ' + (d != null && d > 0 ? 'up' : d != null && d < 0 ? 'down' : '') + '">' + (d == null ? '新增' : (d > 0 ? '+' : '') + d + '%') + '</span></div>';
+      }).join('') + '</div>' : '<div class="body-empty" style="margin-top:10px">这 7 天还没有力量训练。</div>') +
+      '<div class="body-note">上周 ' + fmt(prev.total) + ' kg · 按训练日期滚动 7 天，不是自然周。</div>' +
+    '</div>';
+  }
+
   function renderBody() {
     const view = $('#view-body');
     if (!DB.profile) { view.innerHTML = renderNeedsOnboard(); return; }
@@ -4130,7 +4418,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '<div class="page-head"><div><h1 class="page-title">身体</h1><div class="page-sub">' + gp.body.sub + '</div></div>' +
       '<div class="tiny faint">' + (DB.settings.gentle ? '温和模式' : '完整数字') + '</div></div>' +
       cycleHtml +
-      '<div class="section">' + checkinHtml + measureHtml + liftHtml + photoHtml + nutrientHtml + prefsHtml + reportHtml + '</div>' +
+      '<div class="section">' + checkinHtml + measureHtml + liftHtml + renderVolumeCard() + photoHtml + nutrientHtml + prefsHtml + reportHtml + '</div>' +
       '<div class="disclaimer">' + gp.body.disclaimer + '</div>';
   }
 
@@ -4419,13 +4707,31 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '<div class="cart-head"><span class="t">这一餐</span><span class="s">' + sd.cart.length + ' 项 · 蛋白 ' + round1(totals.p) + 'g</span></div>' +
       sd.cart.map((it, i) =>
         '<div class="cart-row"><div class="n">' + esc(it.food.name) + '<small>' + Math.round(it.food.kcal) + ' kcal/100g · 蛋白 ' + round1(it.food.p) + 'g</small></div>' +
-        '<input class="input input-num g" type="number" min="1" step="5" value="' + it.grams + '" data-cart-grams="' + i + '" aria-label="克数">' +
+        '<div class="step">' +
+          '<button class="step-btn" data-act="cart-step" data-i="' + i + '" data-d="-5" aria-label="减少 5 克">−</button>' +
+          '<input class="input input-num g" type="number" min="0" max="3000" step="5" value="' + it.grams + '" data-cart-grams="' + i + '" aria-label="克数">' +
+          '<button class="step-btn" data-act="cart-step" data-i="' + i + '" data-d="5" aria-label="增加 5 克">＋</button>' +
+        '</div>' +
         '<div class="k" id="cartKcal' + i + '">' + Math.round(it.food.kcal * it.grams / 100) + '</div>' +
         '<button class="x" data-act="cart-remove" data-i="' + i + '" aria-label="移除">' + icon('close') + '</button></div>'
       ).join('') +
       '<div class="cart-total"><span class="k">合计 · 约</span><span class="v" id="cartTotal">' + Math.round(totals.kcal) + ' <small>kcal</small></span></div>' +
       '</div>';
     if (btn) { btn.disabled = false; btn.textContent = '记入 · ' + Math.round(totals.kcal) + ' kcal'; }
+  }
+
+  function paintCartTotals() {
+    const sd = state.sheetData;
+    if (!sd || !sd.cart) return;
+    sd.cart.forEach((it, i) => {
+      const k = $('#cartKcal' + i);
+      if (k) k.textContent = Math.round(it.food.kcal * it.grams / 100);
+    });
+    const total = sd.cart.reduce((s, it) => s + it.food.kcal * it.grams / 100, 0);
+    const tot = $('#cartTotal');
+    if (tot) tot.innerHTML = Math.round(total) + ' <small>kcal</small>';
+    const btn = $('#saveMealBtn');
+    if (btn && !btn.disabled) btn.textContent = '记入 · ' + Math.round(total) + ' kcal';
   }
 
   function addToCart(food, grams) {
@@ -4447,6 +4753,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const sd = state.sheetData;
     if (!sd || !sd.cart.length) return;
     const doSave = () => {
+      const before = DB.entries.length;
       let total = 0;
       sd.cart.forEach(it => {
         const cal = it.food.kcal * it.grams / 100;
@@ -4454,7 +4761,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         const e = makeEntry(it.food, it.grams, sd.meal, sd.date, 'lib', 'med');
         DB.entries.push(e);
       });
-      saveDB();
+      if (!commit(() => { DB.entries.length = before; })) return;
       const label = E.mealLabel(sd.meal) + ' · ' + Math.round(total) + ' kcal';
       closeSheet();
       renderActive();
@@ -4507,13 +4814,16 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const fib = Number($('#mFib') && $('#mFib').value) || 0;
     if (!name) { toast('先写个名字'); return; }
     if (!kcal || kcal <= 0) { toast('热量要大于 0'); return; }
+    if (kcal > 5000) { toast('单笔热量别超过 5000 kcal，请检查是否填错'); return; }
+    if (grams && (grams < 1 || grams > 3000)) { toast('份量要填 1–3000g，或留空'); return; }
     const per100 = grams > 0 ? { kcal: kcal / grams * 100, p: p / grams * 100, c: 0, f: 0, fib: fib / grams * 100 } : null;
+    const before = DB.entries.length;
     DB.entries.push({
       id: uid(), date: sd.date, meal: sd.meal, name: name,
       grams: grams || 100, per100: per100, kcal: Math.round(kcal), p: p, c: 0, f: 0, fib: fib,
       conf: 'high', source: 'manual', createdAt: Date.now()
     });
-    saveDB();
+    if (!commit(() => { DB.entries.length = before; })) return;
     closeSheet();
     renderActive();
     toast('已记入 ' + E.mealLabel(sd.meal));
@@ -4534,7 +4844,12 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '<div class="sheet-body">' +
         '<div class="field"><label>食物</label><input class="input" id="eName" value="' + esc(e.name) + '" maxlength="30"></div>' +
         (hasPer100 ?
-          '<div class="form-grid"><div class="field"><label>份量 g</label><input class="input input-num" id="eGrams" type="number" min="1" value="' + grams + '"></div>' +
+          '<div class="form-grid"><div class="field"><label>份量 g</label>' +
+            '<div class="step">' +
+              '<button class="step-btn" data-act="entry-step" data-d="-5" aria-label="减少 5 克">−</button>' +
+              '<input class="input input-num" id="eGrams" type="number" min="1" max="3000" value="' + grams + '">' +
+              '<button class="step-btn" data-act="entry-step" data-d="5" aria-label="增加 5 克">＋</button>' +
+            '</div></div>' +
           '<div class="field"><label>热量（自动）</label><div class="input input-num" style="display:flex;align-items:center;justify-content:center" id="eKcalView">' + fmt(e.kcal) + ' kcal</div></div></div>' +
           '<div class="portion-chips">' + [50, 100, 150, 200, 250].map(g => '<button data-act="entry-grams" data-v="' + g + '">' + g + 'g</button>').join('') + '</div>' +
           '<div class="notebox">每 100g：' + Math.round(e.per100.kcal) + ' kcal · 蛋白 ' + round1(e.per100.p) + 'g · 碳水 ' + round1(e.per100.c) + 'g · 脂肪 ' + round1(e.per100.f) + 'g</div>'
@@ -4627,11 +4942,12 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const ex = E.EXERCISES.find(x => x.id === sd.selected);
     if (!ex) return;
     const minutes = clamp(Number(sd.minutes) || 30, 1, 600);
+    const before = DB.exercises.length;
     DB.exercises.push({
       id: uid(), date: sd.date, name: ex.name, mets: ex.mets, minutes: minutes,
       kcal: E.burn(ex.mets, currentWeight(), minutes), createdAt: Date.now()
     });
-    saveDB();
+    if (!commit(() => { DB.exercises.length = before; })) return;
     closeSheet();
     renderActive();
     toast('已记录 ' + ex.name + ' ' + minutes + ' 分钟');
@@ -4677,11 +4993,13 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const rounded = Math.round(kg * 10) / 10;
     const idx = DB.weights.findIndex(w => w.date === sd.date);
     const apply = () => {
+      const wBefore = DB.weights.map(w => ({ ...w }));
+      const pw = DB.profile.weight;
       if (idx > -1) DB.weights[idx].kg = rounded;
       else DB.weights.push({ date: sd.date, kg: rounded });
       const lw = E.latestWeight(DB.weights, DB.profile);
       DB.profile.weight = lw ? lw.kg : rounded;
-      saveDB();
+      if (!commit(() => { DB.weights = wBefore; DB.profile.weight = pw; })) return;
       closeSheet();
       renderActive();
       toast('已记录 ' + rounded + ' kg · 趋势会吸收这次波动');
@@ -4962,6 +5280,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   function saveAIResults() {
     const sd = state.sheetData;
     if (!sd || !sd.items.length) return;
+    const before = DB.entries.length;
     let total = 0;
     sd.items.forEach(it => {
       const food = {
@@ -4972,7 +5291,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       DB.entries.push(e);
       total += e.kcal;
     });
-    saveDB();
+    if (!commit(() => { DB.entries.length = before; })) return;
     closeSheet();
     renderActive();
     toast('已记入 ' + E.mealLabel(sd.meal) + ' · ' + total + ' kcal');
@@ -5276,8 +5595,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const history = (DB.cycle.history || []).slice();
     if (history.indexOf(start) < 0) history.push(start);
     history.sort();
+    const before = JSON.parse(JSON.stringify(DB.cycle || {}));
     DB.cycle = { enabled: true, lastStart: start, length: length, periodLength: period, history: history.slice(-12) };
-    saveDB();
+    if (!commit(() => { DB.cycle = before; })) return;
     closeSheet();
     renderActive();
     toast('周期记录已更新');
@@ -5287,6 +5607,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const today = E.todayKey();
     const history = (DB.cycle.history || []).slice();
     if (history.indexOf(today) < 0) history.push(today);
+    const before = JSON.parse(JSON.stringify(DB.cycle || {}));
     DB.cycle = {
       enabled: true,
       lastStart: today,
@@ -5294,15 +5615,16 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       periodLength: DB.cycle.periodLength || 5,
       history: history.sort().slice(-12)
     };
-    saveDB();
+    if (!commit(() => { DB.cycle = before; })) return;
     closeSheet();
     renderActive();
     toast('已记录：今天开始，注意休息');
   }
 
   function stopCycle() {
+    const before = DB.cycle.enabled;
     DB.cycle.enabled = false;
-    saveDB();
+    if (!commit(() => { DB.cycle.enabled = before; })) return;
     closeSheet();
     renderActive();
     toast('周期记录已关闭，历史仍保留');
@@ -5339,9 +5661,10 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const note = ($('#meaNote') && $('#meaNote').value.trim()) || '';
     const idx = DB.measures.findIndex(m => m.date === date);
     const item = { id: idx > -1 ? DB.measures[idx].id : uid(), date: date, waist: round1(waist), hip: round1(hip), thigh: round1(thigh), note: note };
+    const before = DB.measures.map(m => ({ ...m }));
     if (idx > -1) DB.measures[idx] = item; else DB.measures.push(item);
     DB.measures.sort((a, b) => a.date < b.date ? -1 : 1);
-    saveDB();
+    if (!commit(() => { DB.measures = before; })) return;
     closeSheet();
     renderActive();
     toast('围度已记录');
@@ -5385,8 +5708,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const symptoms = (state.sheetData && state.sheetData.symptoms) || [];
     const idx = DB.checkins.findIndex(c => c.date === today);
     const item = { id: idx > -1 ? DB.checkins[idx].id : uid(), date: today, hunger: hunger, craving: craving, mood: mood, symptoms: symptoms, note: note };
+    const before = DB.checkins.map(c => ({ ...c }));
     if (idx > -1) DB.checkins[idx] = item; else DB.checkins.push(item);
-    saveDB();
+    if (!commit(() => { DB.checkins = before; })) return;
     closeSheet();
     renderActive();
     toast('今天的状态已记录');
@@ -5417,8 +5741,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const iron = Number($('#supIron') && $('#supIron').value) || 0;
     const calcium = Number($('#supCalcium') && $('#supCalcium').value) || 0;
     const note = ($('#supNote') && $('#supNote').value.trim()) || '';
+    const before = DB.supplements.length;
     DB.supplements.push({ id: uid(), date: E.todayKey(), name: name, iron: iron, calcium: calcium, note: note });
-    saveDB();
+    if (!commit(() => { DB.supplements.length = before; })) return;
     closeSheet();
     renderActive();
     toast('补剂已记录');
@@ -5426,9 +5751,10 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
   function deleteSupplement(id) {
     const item = DB.supplements.find(s => s.id === id);
-    if (item) logChange('删除补剂「' + item.name + '」', { kind: 'supplement', item: item });
+    const before = DB.supplements.slice();
     DB.supplements = DB.supplements.filter(s => s.id !== id);
-    saveDB();
+    if (!commit(() => { DB.supplements = before; })) return;
+    if (item) logChange('删除补剂「' + item.name + '」', { kind: 'supplement', item: item });
     renderActive();
     toast('已删除这条补剂，可在设置里撤销');
   }
@@ -5456,8 +5782,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   }
 
   function savePrefs() {
+    const before = Object.assign({}, DB.settings.prefs);
     DB.settings.prefs = Object.assign({}, state.sheetData.prefs);
-    saveDB();
+    if (!commit(() => { DB.settings.prefs = before; })) return;
     closeSheet();
     renderActive();
     toast('饮食偏好已更新');
@@ -5676,14 +6003,14 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (date > E.todayKey()) { toast('日期不能在未来'); return; }
     const sd = state.sheetData;
     const item = sd && sd.id ? DB.lifts.find(x => x.id === sd.id) : null;
+    const before = DB.lifts.map(x => ({ ...x }));
     if (item) {
       Object.assign(item, { exercise: name, sets: sets, weight: weight, reps: reps, date: date });
-      toast('已更新力量记录');
     } else {
       DB.lifts.push({ id: uid(), date: date, exercise: name, sets: sets, weight: weight, reps: reps, note: '', createdAt: Date.now() });
-      toast('已记录 ' + name + ' · ' + weight + 'kg × ' + reps + ' × ' + sets + ' 组');
     }
-    saveDB();
+    if (!commit(() => { DB.lifts = before; })) return;
+    toast(item ? '已更新力量记录' : '已记录 ' + name + ' · ' + weight + 'kg × ' + reps + ' × ' + sets + ' 组');
     closeSheet();
     renderActive();
   }
@@ -5693,9 +6020,10 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!item) { toast('记录已不存在'); return; }
     confirmSheet('删除这条力量记录？', '只删除这一组，PR 会按剩余记录重新计算；删除后可在「最近操作」撤销。', '删除', true).then(ok => {
       if (!ok) return;
+      const before = DB.lifts.slice();
       DB.lifts = DB.lifts.filter(x => x.id !== id);
+      if (!commit(() => { DB.lifts = before; })) return;
       logChange('删除力量记录：' + item.exercise + ' ' + item.weight + 'kg × ' + item.reps + ' × ' + item.sets + ' 组', { kind: 'lift', item: item });
-      saveDB();
       renderActive();
       toast('已删除，可在最近操作撤销');
     });
@@ -5713,6 +6041,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!sd || !sd.cart || !sd.cart.length) { toast('先选几样食物'); return; }
     askName('给这份菜谱起个名字', '例如：鸡胸藜麦沙拉', '我的菜谱').then(name => {
       if (!name) return;
+      const before = DB.recipes.length;
       DB.recipes.push({
         id: uid(), name: name, at: Date.now(),
         items: sd.cart.map(it => ({
@@ -5720,7 +6049,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
           per100: { kcal: Number(it.food.kcal) || 0, p: Number(it.food.p) || 0, c: Number(it.food.c) || 0, f: Number(it.food.f) || 0, fib: Number(it.food.fib) || 0 }
         }))
       });
-      saveDB();
+      if (!commit(() => { DB.recipes.length = before; })) return;
       toast('菜谱「' + name + '」已保存 · ' + sd.cart.length + ' 项');
     });
   }
@@ -5749,11 +6078,12 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!r) { toast('菜谱不存在'); return; }
     const meal = E.guessMeal();
     const today = E.todayKey();
+    const before = DB.entries.length;
     r.items.forEach(it => {
       const food = { name: it.name, kcal: it.per100.kcal, p: it.per100.p, c: it.per100.c, f: it.per100.f, fib: it.per100.fib, cat: 0, catName: '菜谱', unitG: 0, custom: true };
       DB.entries.push(makeEntry(food, it.grams, meal, today, 'recipe', 'med'));
     });
-    saveDB();
+    if (!commit(() => { DB.entries.length = before; })) return;
     closeSheet();
     renderActive();
     toast('菜谱「' + r.name + '」已加入今日' + E.mealLabel(meal));
@@ -5765,8 +6095,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const items = X.shoppingFromRecipe(r);
     const merged = r.items.length - items.length;
     const doMake = () => {
+      const before = DB.shopping;
       DB.shopping = { recipeId: r.id, recipeName: r.name, at: Date.now(), items: items };
-      saveDB();
+      if (!commit(() => { DB.shopping = before; })) return;
       openShoppingSheet();
       toast('购物清单已生成 · ' + items.length + ' 项' + (merged > 0 ? '（合并 ' + merged + ' 项同名食材）' : ''));
     };
@@ -5800,16 +6131,18 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   function toggleShopping(idx) {
     const shop = DB.shopping;
     if (!shop || !shop.items[idx]) return;
+    const before = shop.items[idx].checked;
     shop.items[idx].checked = !shop.items[idx].checked;
-    saveDB();
+    if (!commit(() => { shop.items[idx].checked = before; })) return;
     if (state.sheet === 'shopping') openShoppingSheet();
     else if (state.sheet === 'recipes') openRecipesSheet();
     else renderToday();
   }
 
   function clearShopping() {
+    const before = DB.shopping;
     DB.shopping = null;
-    saveDB();
+    if (!commit(() => { DB.shopping = before; })) return;
     closeSheet();
     renderActive();
     toast('购物清单已清空');
@@ -5819,8 +6152,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const r = DB.recipes.find(x => x.id === id);
     confirmSheet('删除这个菜谱？', '删除「' + esc(r ? r.name : '') + '」不会影响已经记入账本的食物。', '删除', true).then(ok => {
       if (!ok) return;
+      const before = DB.recipes.slice();
       DB.recipes = DB.recipes.filter(x => x.id !== id);
-      saveDB();
+      if (!commit(() => { DB.recipes = before; })) return;
       openRecipesSheet();
       toast('菜谱已删除');
     });
@@ -5964,8 +6298,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   function applyWearableImport() {
     const sd = state.sheetData;
     if (!sd || sd.type !== 'wearable') return;
+    const dbBefore = JSON.stringify(DB);
     const stats = X.applyImport(sd.parsed, DB, sd.decisions);
-    saveDB();
+    if (!commit(() => { DB = JSON.parse(dbBefore); })) return;
     closeSheet();
     renderActive();
     const skipped = stats.weightSkipped + stats.stepsSkipped + stats.sleepSkipped;
@@ -6045,6 +6380,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!p.weight || p.weight < 25 || p.weight > 300) { toast('体重请填 25–300 kg'); return; }
     if (!p.targetWeight || p.targetWeight < 25 || p.targetWeight > 300) { toast('请填写目标体重'); return; }
     const old = DB.profile || {};
+    const before = { profile: DB.profile, weights: DB.weights.map(w => ({ ...w })), onboarded: DB.onboarded };
     DB.profile = {
       sex: p.sex, age: p.age, height: p.height, weight: p.weight,
       targetWeight: p.targetWeight, activity: p.activity, goal: p.goal, rate: p.rate,
@@ -6058,7 +6394,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       else DB.weights.push({ date: E.todayKey(), kg: p.weight });
     }
     DB.onboarded = true;
-    saveDB();
+    if (!commit(() => { DB.profile = before.profile; DB.weights = before.weights; DB.onboarded = before.onboarded; })) return;
     closeSheet();
     renderActive();
     toast('档案已更新 · 预算会随数据继续校准');
@@ -6154,8 +6490,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       fib: Number($('#libFib') && $('#libFib').value) || 0,
       unitG: Number($('#libUnitG') && $('#libUnitG').value) || 0
     });
+    const before = DB.foods.length;
     DB.foods.push(f);
-    saveDB();
+    if (!commit(() => { DB.foods.length = before; })) return;
     renderLibrarySheet();
     toast('已加入食物库');
   }
@@ -6373,6 +6710,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         if (!ok) return;
         const keepKey = (DB.settings.ai && DB.settings.ai.key) || '';
         const backupSettings = payload.settings || {};
+        const dbBefore = DB;
         DB = normalizeDB({
           version: 3, createdAt: Date.now(), onboarded: true,
           profile: payload.profile,
@@ -6390,7 +6728,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
           checkins: payload.checkins, supplements: payload.supplements,
           lifts: payload.lifts, recipes: payload.recipes, shopping: payload.shopping, wearable: payload.wearable
         });
-        saveDB();
+        if (!commit(() => { DB = dbBefore; })) return;
         state.recordDate = E.todayKey();
         closeSheet();
         renderActive();
@@ -6512,9 +6850,10 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       proteinFactor: p.goal === 'lose' ? 1.6 : p.goal === 'gain' ? 1.8 : 1.4,
       createdAt: Date.now()
     };
+    const before = { profile: DB.profile, weights: DB.weights, onboarded: DB.onboarded };
     DB.weights = [{ date: E.todayKey(), kg: p.weight }];
     DB.onboarded = true;
-    saveDB();
+    if (!commit(() => { DB.profile = before.profile; DB.weights = before.weights; DB.onboarded = before.onboarded; })) return;
     $('#onboardRoot').innerHTML = '';
     state.ob = null;
     state.tab = 'today';
@@ -6556,6 +6895,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const sd = state.sheetData;
     switch (act) {
       case 'close-sheet': closeSheet(); break;
+      case 'open-settings': closeSheet(); setTab('settings'); break;
       case 'open-add': {
         const date = state.tab === 'ledger' ? state.recordDate : E.todayKey();
         openFoodSheet({ date: date, meal: el.dataset.meal });
@@ -6609,6 +6949,22 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         updateCart();
         break;
       }
+      case 'cart-step': {
+        if (!sd || !sd.cart) break;
+        const i = Number(el.dataset.i);
+        const item = sd.cart[i];
+        if (!item) break;
+        const g = Math.round(Number(item.grams) || 0) + Number(el.dataset.d);
+        if (g <= 0) {
+          sd.cart.splice(i, 1);
+          updateCart();
+          break;
+        }
+        if (g > 3000) { toast('单项份量别超过 3000g'); break; }
+        item.grams = g;
+        updateCart();
+        break;
+      }
       case 'save-meal': saveMeal(); break;
       case 'cart-recent': {
         const e = DB.entries.find(x => x.id === el.dataset.id);
@@ -6633,6 +6989,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         if (!sd || !sd.cart.length) { toast('先选几样食物'); break; }
         askName('给这组食物起个名字', '例如：工作日早餐', '我的常吃组合').then(name => {
           if (!name) return;
+          const before = DB.combos.length;
           DB.combos.push({
             id: uid(), name: name, createdAt: Date.now(),
             items: sd.cart.map(it => ({
@@ -6642,7 +6999,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
               per100: { kcal: it.food.kcal, p: it.food.p, c: it.food.c, f: it.food.f, fib: it.food.fib }
             }))
           });
-          saveDB();
+          if (!commit(() => { DB.combos.length = before; })) return;
           toast('组合「' + name + '」已保存');
         });
         break;
@@ -6675,6 +7032,16 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         updateEntryGramsView();
         break;
       }
+      case 'entry-step': {
+        const g = $('#eGrams');
+        if (!g) break;
+        const v = Math.round(Number(g.value) || 0) + Number(el.dataset.d);
+        if (v < 1) { toast('份量至少 1g；要删掉这一笔请点「删除」'); break; }
+        if (v > 3000) { toast('单项份量别超过 3000g'); break; }
+        g.value = v;
+        updateEntryGramsView();
+        break;
+      }
       case 'set-conf': {
         if (!sd) break;
         sd.conf = el.dataset.v;
@@ -6695,11 +7062,29 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       case 'goto-meal': openFoodSheet({ date: E.todayKey(), meal: el.dataset.meal }); break;
       case 'next-shuffle': state.nextSeed++; renderToday(); break;
       case 'next-log': logNextBite(); break;
+      case 'repeat-meal': repeatMeal(el.dataset.meal); break;
+      case 'gap-add': {
+        const f = allFoods().find(x => x.id === el.dataset.food);
+        const grams = Number(el.dataset.grams) || 100;
+        if (!f) { toast('这个食物不在当前食物库里'); break; }
+        if (grams < 1 || grams > 3000) { toast('份量需要在 1–3000g'); break; }
+        const meal = E.guessMeal();
+        const today = E.todayKey();
+        const before = DB.entries.length;
+        const entry = makeEntry(f, grams, meal, today, 'lib', 'med');
+        DB.entries.push(entry);
+        if (!commit(() => { DB.entries.length = before; })) break;
+        logChange('补记「' + f.name + '」' + grams + 'g', { kind: 'entry', item: entry });
+        renderToday();
+        toast('已加 ' + f.name + ' ' + grams + 'g · 蛋白 +' + round1(f.p * grams / 100) + 'g');
+        break;
+      }
       case 'recent-add': addRecent(el.dataset.id); break;
       case 'quick-water': {
         const today = E.todayKey();
+        const before = DB.water[today];
         DB.water[today] = (Number(DB.water[today]) || 0) + Number(el.dataset.ml || 250);
-        saveDB();
+        if (!commit(() => { if (before == null) delete DB.water[today]; else DB.water[today] = before; })) break;
         renderToday();
         break;
       }
@@ -6751,8 +7136,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         break;
       }
       case 'toggle-gentle': {
+        const before = DB.settings.gentle;
         DB.settings.gentle = !DB.settings.gentle;
-        saveDB();
+        if (!commit(() => { DB.settings.gentle = before; })) break;
         applyTheme();
         renderActive();
         toast(DB.settings.gentle ? '温和模式已开启' : '已恢复精确数字');
@@ -6760,8 +7146,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       }
       case 'goto-body': setTab('body'); break;
       case 'set-theme': {
+        const before = DB.settings.theme;
         DB.settings.theme = el.dataset.v;
-        saveDB();
+        if (!commit(() => { DB.settings.theme = before; })) break;
         applyTheme();
         renderSettings();
         break;
@@ -6807,9 +7194,10 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       case 'save-exercise': saveExercise(); break;
       case 'del-exercise': {
         const item = DB.exercises.find(x => x.id === el.dataset.id);
-        if (item) logChange('删除运动「' + item.name + '」', { kind: 'exercise', item: item });
+        const before = DB.exercises.slice();
         DB.exercises = DB.exercises.filter(x => x.id !== el.dataset.id);
-        saveDB();
+        if (!commit(() => { DB.exercises = before; })) break;
+        if (item) logChange('删除运动「' + item.name + '」', { kind: 'exercise', item: item });
         renderExToday();
         renderActive();
         toast('已删除这条运动');
@@ -6836,18 +7224,20 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       case 'del-custom-food': confirmSheet('删除这个自定义食物？', '已经记录的账目不会受影响。', '删除', true).then(ok => {
         if (!ok) return;
         const item = DB.foods.find(f => f.id === el.dataset.id);
-        if (item) logChange('删除自定义食物「' + item.name + '」', { kind: 'food', item: item });
+        const before = DB.foods.slice();
         DB.foods = DB.foods.filter(f => f.id !== el.dataset.id);
-        saveDB();
+        if (!commit(() => { DB.foods = before; })) return;
+        if (item) logChange('删除自定义食物「' + item.name + '」', { kind: 'food', item: item });
         renderLibrarySheet();
         toast('已删除');
       }); break;
       case 'del-combo': confirmSheet('删除这个组合？', '组合只是快捷方式，不影响已经记录的账目。', '删除', true).then(ok => {
         if (!ok) return;
         const item = DB.combos.find(c => c.id === el.dataset.id);
-        if (item) logChange('删除组合「' + item.name + '」', { kind: 'combo', item: item });
+        const before = DB.combos.slice();
         DB.combos = DB.combos.filter(c => c.id !== el.dataset.id);
-        saveDB();
+        if (!commit(() => { DB.combos = before; })) return;
+        if (item) logChange('删除组合「' + item.name + '」', { kind: 'combo', item: item });
         renderLibrarySheet();
         toast('已删除');
       }); break;
@@ -6874,12 +7264,28 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!sd || sd.type !== 'entry') return;
     const e = DB.entries.find(x => x.id === sd.id);
     if (!e) return;
+    const idx = DB.entries.findIndex(x => x.id === sd.id);
+    const before = Object.assign({}, e);
+    let nextGrams = null;
+    let nextKcal = null;
+    if (e.per100) {
+      const raw = $('#eGrams') ? $('#eGrams').value : '';
+      const g = Number(raw);
+      if (raw === '' || !isFinite(g) || g < 1 || g > 3000) { toast('份量要填 1–3000g 之间的数字'); return; }
+      nextGrams = g;
+    } else {
+      const raw = $('#eKcal') ? $('#eKcal').value : '';
+      const kcal = Number(raw);
+      if (raw === '' || !isFinite(kcal) || kcal <= 0) { toast('热量要填大于 0 的数字'); return; }
+      if (kcal > 5000) { toast('单笔热量别超过 5000 kcal，请检查是否填错'); return; }
+      nextKcal = kcal;
+    }
     const name = ($('#eName') && $('#eName').value.trim()) || e.name;
     e.name = name;
     e.meal = sd.meal || e.meal;
     e.conf = sd.conf || E.confOf(e);
     if (e.per100) {
-      const g = clamp(Number($('#eGrams') && $('#eGrams').value) || 1, 1, 5000);
+      const g = nextGrams;
       e.grams = g;
       e.kcal = Math.round(e.per100.kcal * g / 100);
       e.p = round1(e.per100.p * g / 100);
@@ -6887,25 +7293,26 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       e.f = round1(e.per100.f * g / 100);
       e.fib = round1(e.per100.fib * g / 100);
     } else {
-      const kcal = Number($('#eKcal') && $('#eKcal').value);
-      if (!kcal || kcal <= 0) { toast('热量要大于 0'); return; }
-      e.kcal = Math.round(kcal);
+      e.kcal = Math.round(nextKcal);
       e.p = Number($('#eP') && $('#eP').value) || 0;
       e.per100 = null;
     }
-    saveDB();
+    const changed = before.name !== e.name || before.kcal !== e.kcal || before.grams !== e.grams || before.meal !== e.meal || before.conf !== e.conf;
+    if (!commit(() => { DB.entries[idx] = before; })) return;
+    if (changed) logChange('修改记录「' + e.name + '」：' + Math.round(before.kcal) + ' → ' + Math.round(e.kcal) + ' kcal', { kind: 'entry-edit', item: before });
     closeSheet();
     renderActive();
-    toast('已更新这一笔');
+    toast(changed ? '已更新这一笔，可在设置里撤销' : '这一笔没有变化');
   }
 
   function deleteEntry(id) {
     confirmSheet('删除这一笔？', '这条食物记录会从账本中移除；之后可以在设置里撤销。', '删除', true).then(ok => {
       if (!ok) return;
       const item = DB.entries.find(e => e.id === id);
-      if (item) logChange('删除记录「' + item.name + '」', { kind: 'entry', item: item });
+      const before = DB.entries.slice();
       DB.entries = DB.entries.filter(e => e.id !== id);
-      saveDB();
+      if (!commit(() => { DB.entries = before; })) return;
+      if (item) logChange('删除记录「' + item.name + '」', { kind: 'entry', item: item });
       closeSheet();
       renderActive();
       toast('已删除');
@@ -6918,10 +7325,11 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const list = DB.entries.filter(e => e.date === source);
     if (!list.length) { toast('昨天没有记录可以复制'); return; }
     const doCopy = () => {
+      const before = DB.entries.length;
       list.forEach(e => {
         DB.entries.push(Object.assign({}, e, { id: uid(), date: target, createdAt: Date.now() }));
       });
-      saveDB();
+      if (!commit(() => { DB.entries.length = before; })) return;
       renderLedger();
       renderActive();
       toast('已把 ' + list.length + ' 笔记录复制到' + E.relativeDay(target, E.todayKey()));
@@ -6938,8 +7346,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const today = E.todayKey();
     const copy = Object.assign({}, e, { id: uid(), date: today, createdAt: Date.now() });
     if (!copy.meal) copy.meal = E.guessMeal();
+    const before = DB.entries.length;
     DB.entries.push(copy);
-    saveDB();
+    if (!commit(() => { DB.entries.length = before; })) return;
     renderActive();
     toast('已记入 ' + E.mealLabel(copy.meal) + ' · ' + copy.kcal + ' kcal');
   }
@@ -6950,12 +7359,13 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!st) return;
     const nb = E.nextBite({ remaining: st.remain, proteinGap: st.t.protein - st.sum.p, meal: E.guessMeal(), foods: allFoods(), seed: state.nextSeed });
     if (nb.type !== 'plan' || !nb.items.length) { toast('这一餐没有可记录的内容'); return; }
+    const before = DB.entries.length;
     nb.items.forEach(it => {
       const food = { name: it.name, kcal: it.per100 || it.kcal / it.grams * 100, p: it.p100 || it.p / it.grams * 100, c: it.c100 || 0, f: it.f100 || 0, fib: it.fib100 || 0, cat: 0, catName: it.cat, unitG: 0 };
       const entry = makeEntry(food, it.grams, E.guessMeal(), today, 'combo', 'med');
       DB.entries.push(entry);
     });
-    saveDB();
+    if (!commit(() => { DB.entries.length = before; })) return;
     renderToday();
     toast('已记下这一餐 · ' + nb.totals.kcal + ' kcal');
   }
@@ -6967,6 +7377,20 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     }
     generateDemo();
   }
+
+  /* ---------- 跨午夜自动翻篇 ---------- */
+  let liveDay = E.todayKey();
+  function checkDayRollover() {
+    const t = E.todayKey();
+    if (t === liveDay) return;
+    const prev = liveDay;
+    liveDay = t;
+    if (state.recordDate === prev) state.recordDate = t;
+    if (!state.sheet && !document.querySelector('#sheetWrap')) renderActive();
+    toast('已进入新的一天 · ' + E.dateLabel(t));
+  }
+  setInterval(checkDayRollover, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkDayRollover(); });
 
   document.addEventListener('click', e => {
     const tabBtn = e.target.closest('[data-tab]');
@@ -6999,14 +7423,11 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       const i = Number(t.dataset.cartGrams);
       const item = sd.cart[i];
       if (!item) return;
-      item.grams = Math.max(1, Number(t.value) || 1);
-      const k = $('#cartKcal' + i);
-      if (k) k.textContent = Math.round(item.food.kcal * item.grams / 100);
-      const total = sd.cart.reduce((s, it) => s + it.food.kcal * it.grams / 100, 0);
-      const tot = $('#cartTotal');
-      if (tot) tot.innerHTML = Math.round(total) + ' <small>kcal</small>';
-      const btn = $('#saveMealBtn');
-      if (btn && !btn.disabled) btn.textContent = '记入 · ' + Math.round(total) + ' kcal';
+      if (t.value === '') return;
+      const v = Number(t.value);
+      if (!isFinite(v) || v <= 0 || v > 3000) return; // 非法值等 change 时统一提示
+      item.grams = v;
+      paintCartTotals();
       return;
     }
     if (t.dataset && t.dataset.aiGrams != null) {
@@ -7061,6 +7482,21 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     const t = e.target;
     if (t.id === 'photoFile') {
       handlePhotoFiles(t.files);
+      return;
+    }
+    if (t.dataset && t.dataset.cartGrams != null) {
+      const sd = state.sheetData;
+      if (!sd || !sd.cart) return;
+      const i = Number(t.dataset.cartGrams);
+      const item = sd.cart[i];
+      if (!item) return;
+      const raw = t.value;
+      const v = Number(raw);
+      if (raw === '' || !isFinite(v) || v < 0) { t.value = item.grams; toast('份量要填 0–3000g 之间的数字'); return; }
+      if (v > 3000) { t.value = item.grams; toast('单项份量别超过 3000g'); return; }
+      if (v === 0) { sd.cart.splice(i, 1); updateCart(); return; }
+      item.grams = v;
+      paintCartTotals();
       return;
     }
     if (t.id === 'wearableFile') {
