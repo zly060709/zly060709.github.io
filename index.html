@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#EFECE2">
 <meta name="description" content="能量账本：一本会自我校准的私人饮食账本。记录更少，知道更多。">
 <title>能量账本 · 记录得更少，知道得更多</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232F6B4F'/%3E%3Cpath d='M11 8v13.2c0 .9.8 1.5 1.8 1.5H22' fill='none' stroke='%23EFECE2' stroke-width='2'/%3E%3Cpath d='M15 12h5' stroke='%23EFECE2' stroke-width='2'/%3E%3C/svg%3E" type="image/svg+xml">
 <style>
 /* 能量账本 · 视觉层
    设计语言：纸本账簿。暖纸底、墨绿字、细分割线、衬线数字。
@@ -3394,6 +3395,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     else if (u.kind === 'measure') DB.measures.push(u.item);
     else if (u.kind === 'food') DB.foods.push(u.item);
     else if (u.kind === 'combo') DB.combos.push(u.item);
+    else if (u.kind === 'lift') DB.lifts.push(u.item);
     else { toast('这条操作无法撤销'); return; }
     item.undo = null;
     item.text = item.text + '（已撤销）';
@@ -4024,7 +4026,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       (prs.length ?
         '<div class="pr-grid">' + prs.slice(0, 4).map(p => '<div class="pr-item"><div class="k">' + esc(p.exercise) + '</div><div class="v">' + p.bestWeight + '<small>kg × ' + p.bestReps + '</small></div><div class="s">1RM ≈ ' + p.bestE1rm + 'kg · ' + p.sets + ' 组</div></div>').join('') + '</div>'
         : '<div class="body-empty" style="margin-top:10px">还没有力量记录。先从深蹲、卧推或硬拉的一组成绩开始。</div>') +
-      (recentLifts.length ? '<div class="lift-recent">' + recentLifts.map(x => '<div class="lift-row"><span class="d">' + E.shortLabel(x.date) + '</span><span class="n">' + esc(x.exercise) + '</span><span class="v">' + x.weight + 'kg × ' + x.reps + ' × ' + x.sets + '组</span></div>').join('') + '</div>' : '') +
+      (recentLifts.length ? '<div class="lift-recent">' + recentLifts.map(x => '<div class="lift-row"><span class="d">' + E.shortLabel(x.date) + '</span><span class="n">' + esc(x.exercise) + '</span><span class="v">' + x.weight + 'kg × ' + x.reps + ' × ' + x.sets + '组</span>' +
+        '<button class="icon-mini danger" data-act="delete-lift" data-id="' + x.id + '" aria-label="删除这条力量记录">' + icon('trash') + '</button></div>').join('') + '</div>' : '') +
       '<div class="body-note">1RM 为估算值（Epley），只用于比较同一动作的进步；不要用来测试极限重量。</div>' +
     '</div>';
 
@@ -5686,12 +5689,15 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   }
 
   function deleteLift(id) {
-    confirmSheet('删除这条力量记录？', '只删除这一组，PR 会按剩余记录重新计算。', '删除', true).then(ok => {
+    const item = DB.lifts.find(x => x.id === id);
+    if (!item) { toast('记录已不存在'); return; }
+    confirmSheet('删除这条力量记录？', '只删除这一组，PR 会按剩余记录重新计算；删除后可在「最近操作」撤销。', '删除', true).then(ok => {
       if (!ok) return;
       DB.lifts = DB.lifts.filter(x => x.id !== id);
+      logChange('删除力量记录：' + item.exercise + ' ' + item.weight + 'kg × ' + item.reps + ' × ' + item.sets + ' 组', { kind: 'lift', item: item });
       saveDB();
       renderActive();
-      toast('已删除');
+      toast('已删除，可在最近操作撤销');
     });
   }
 
@@ -5728,7 +5734,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
         '<div class="ra"><button class="btn btn-primary btn-sm" data-act="recipe-add" data-id="' + r.id + '">加入' + E.mealLabel(E.guessMeal()) + '</button><button class="btn btn-ghost btn-sm" data-act="recipe-shop" data-id="' + r.id + '">购物清单</button><button class="icon-mini danger" data-act="recipe-del" data-id="' + r.id + '" aria-label="删除菜谱">' + icon('trash') + '</button></div></div>';
     }).join('') : '<div class="body-empty">还没有菜谱。回到「记录一餐」选好食物后，点底部的「存为菜谱」。</div>';
     const shopHtml = shop && shop.items.length ? '<div class="shop-block"><div class="row-between"><div><div class="body-card-title">购物清单</div><div class="tiny faint">' + esc(shop.recipeName || '手动') + ' · ' + shop.items.filter(i => i.checked).length + '/' + shop.items.length + ' 已勾选</div></div><button class="btn btn-ghost btn-sm" data-act="shop-clear">清空</button></div>' +
-      '<div class="shop-list">' + shop.items.map((i, idx) => '<button class="shop-row' + (i.checked ? ' on' : '') + '" data-act="shop-toggle" data-i="' + idx + '"><span class="box">' + (i.checked ? icon('check') : '') + '</span><span class="n">' + esc(i.name) + '</span><span class="q">' + i.grams + ' g</span></button>').join('') + '</div></div>' : '<div class="shop-block"><div class="tiny faint">还没有购物清单。在上方菜谱上点「购物清单」，同名食材会合并数量。</div></div>';
+      '<div class="shop-list">' + shop.items.map((i, idx) => '<button class="shop-row' + (i.checked ? ' on' : '') + '" data-act="shop-toggle" data-i="' + idx + '"><span class="box">' + (i.checked ? icon('check') : '') + '</span><span class="n">' + esc(i.name) + '</span><span class="q">' + i.grams + ' g</span></button>').join('') + '</div></div>' : '<div class="shop-block"><div class="row-between"><div class="body-card-title">购物清单</div><button class="btn btn-ghost btn-sm" data-act="open-shopping">打开</button></div><div class="tiny faint" style="margin-top:6px">还没有购物清单，去菜谱里点「加入购物清单」。</div></div>';
     state.sheet = 'recipes';
     openSheet(
       sheetHead('菜谱与购物清单', '菜谱 = 多个食物条目；加入今日某餐时不改变原记录') +
@@ -5771,7 +5777,16 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
   function openShoppingSheet() {
     const shop = DB.shopping;
-    if (!shop || !shop.items.length) { toast('还没有购物清单'); return; }
+    if (!shop || !shop.items.length) {
+      state.sheet = 'shopping';
+      openSheet(
+        sheetHead('购物清单', '还没有内容') +
+        '<div class="sheet-body"><div class="body-empty">还没有购物清单，去菜谱里点「加入购物清单」。</div><div class="body-note">在「菜谱」浮层里对某份菜谱点「购物清单」，同名食材会按克数合并。</div></div>' +
+        '<div class="sheet-foot"><button class="btn btn-primary" style="flex:1" data-act="open-recipes">去菜谱</button><button class="btn btn-ghost" data-act="close-sheet">关闭</button></div>',
+        'shopping'
+      );
+      return;
+    }
     state.sheet = 'shopping';
     openSheet(
       sheetHead('购物清单', esc(shop.recipeName || '手动') + ' · ' + shop.items.filter(i => i.checked).length + '/' + shop.items.length + ' 已勾选', '<button class="btn-quiet tiny" data-act="close-sheet">关闭</button>') +
