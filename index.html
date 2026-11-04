@@ -1893,6 +1893,64 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 [data-fx="off"] .scratch-chip { display: none; }
 [data-fx="off"] .scratch-actions.wait { animation: none; opacity: 1; }
 
+/* ---- v4.4 五张连刮 / 券包空态 ---- */
+.scratch-actions { flex-wrap: wrap; }
+.scratch-actions .btn { flex: 1 1 42%; }
+.batch-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.batch-card {
+  position: relative; height: 112px; border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--line-2); background: var(--surface);
+}
+.bc-face {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(80% 70% at 50% 0%, rgba(214, 163, 107, .16), transparent 70%), var(--surface);
+}
+.bc-face .sp-lock { gap: 4px; font-size: 10.5px; }
+.bc-face .sp-lock svg { width: 18px; height: 18px; }
+.batch-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  touch-action: none; cursor: crosshair; z-index: 2;
+}
+.bc-no { position: absolute; left: 7px; top: 5px; z-index: 3; font-size: 9px; color: var(--ink-3); }
+.batch-progress {
+  height: 4px; margin-top: 8px; border-radius: 2px; overflow: hidden;
+  background: rgba(0, 0, 0, .06);
+}
+.batch-progress span { display: block; height: 100%; width: 0; background: var(--green); transition: width .12s linear; }
+.batch-results { display: flex; flex-direction: column; gap: 6px; }
+.br-row {
+  display: flex; align-items: flex-start; gap: 8px; padding: 8px 9px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2);
+}
+.br-row .hr-main { display: flex; flex-direction: column; min-width: 0; }
+.br-row .hr-main b { font-size: 12px; }
+.br-row .hr-main em { font-size: 10.5px; color: var(--ink-2); font-style: normal; line-height: 1.5; }
+.batch-results.anim .br-row { animation: batchIn .32s var(--ease) both; animation-delay: calc(var(--i) * .09s); }
+@keyframes batchIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.batch-sum {
+  margin: 10px 0 2px; padding: 9px 10px; border-radius: 10px;
+  border: 1px solid var(--line-2); background: var(--surface-2);
+}
+.batch-sum b { display: block; font-size: 13px; }
+.batch-sum em { font-style: normal; font-size: 10.5px; color: var(--ink-2); }
+.ticket-help {
+  margin-top: 10px; padding: 10px 11px; border: 1px dashed var(--line-2);
+  border-radius: 10px; background: var(--surface-2);
+}
+.th-head { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+.th-row { display: flex; gap: 8px; font-size: 11px; line-height: 1.6; color: var(--ink-2); margin-bottom: 3px; }
+.th-row b { flex: 0 0 46px; color: var(--ink); font-weight: 600; }
+.th-row span { min-width: 0; }
+.th-actions { display: flex; gap: 8px; margin-top: 8px; }
+.th-actions .btn { flex: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .batch-results.anim .br-row { animation: none !important; }
+}
+[data-fx="off"] .batch-results.anim .br-row { animation: none !important; }
+
 /* ---- 钱包 ---- */
 .wallet-sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
 .ws-cell { padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); }
@@ -2432,7 +2490,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
 
 
-/* v4.3 · 20 套普通皮肤 + 5 套顶级动漫皮肤 + 外观收藏 + 图鉴 / 开发者模式 UI */
+/* v4.3 · 20 套普通皮肤 + 5 套顶级动漫皮肤 + 外观收藏 + 图鉴 / 维护入口 UI */
 /* 自动生成，勿手改；生成脚本见 make_skin_css.py */
 /* greyblue · 灰蓝·表格 */
 [data-skin="greyblue"] {
@@ -3088,18 +3146,6 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .hr-main b { font-size: 11px; font-weight: 500; }
 .hr-main em { font-style: normal; font-size: 9px; color: var(--ink-3); flex: 0 0 auto; }
 
-/* 开发者模式 */
-body.dev-mode .app-shell { padding-top: 36px; }
-#devBanner { position: fixed; top: 0; left: 0; right: 0; z-index: 2000; height: 36px; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: #1C2A22; color: #E8E2CF; font-size: 11px; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
-.db-tag { font-weight: 700; letter-spacing: .08em; color: #C9A45C; border: 1px solid #C9A45C; border-radius: 4px; padding: 1px 6px; }
-.db-sub { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: .8; }
-.db-exit { border: 1px solid #6D7C70; background: transparent; color: #E8E2CF; border-radius: 999px; font-size: 10px; padding: 3px 10px; cursor: pointer; }
-.dev-on-head { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
-.dev-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px dashed var(--line); font-size: 11px; }
-.dev-stat b { font-size: 13px; }
-.dev-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
-.dev-input { width: 100%; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--field); color: var(--ink); font-size: 14px; margin: 10px 0; }
-.dev-sim { margin-top: 10px; font-size: 11px; color: var(--ink-2); }
 .sim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
 .sim-grid > div { background: var(--surface-2); border-radius: 9px; padding: 8px; display: flex; flex-direction: column; gap: 2px; }
 .sim-grid b { font-size: 16px; }
@@ -5547,13 +5593,12 @@ window.SKIN_ART = {
     return db;
   }
 
-  const DEV_KEY = 'energy-ledger.dev';
   let DB;
-  let DEV_MODE = false;
+  let MAINT_MODE = false;
   let REAL_DB = null;
-  let DEV_ATTEMPTS = 0;
   let storageOK = true;
-  function activeKey() { return DEV_MODE ? DEV_KEY : KEY; }
+  function maintOn() { return !!(MAINT_MODE && window.Maintenance); }
+  function activeKey() { return maintOn() ? window.Maintenance.key : KEY; }
   function loadDBFrom(key) {
     try {
       const raw = localStorage.getItem(key);
@@ -5621,6 +5666,26 @@ window.SKIN_ART = {
     toast('保存失败：新记录没有写入。请先导出备份，清理空间后再试');
     return false;
   }
+  /* 可选维护模块的宿主桥：公开构建不加载维护模块，桥本身不含任何口令或密钥 */
+  window.__ledgerHost = {
+    db: function () { return DB; },
+    loadFrom: loadDBFrom,
+    save: function () { return saveDB(true); },
+    enterMaint: function (nextDB) { REAL_DB = DB; MAINT_MODE = true; DB = nextDB; },
+    exitMaint: function () {
+      saveDB(true);
+      MAINT_MODE = false;
+      DB = REAL_DB || loadDBFrom(KEY);
+      REAL_DB = null;
+    },
+    isMaint: maintOn,
+    repaint: function () { applySkins(); renderActive(); },
+    toast: toast,
+    openSheet: openSheet,
+    closeSheet: closeSheet,
+    sheetHead: sheetHead,
+    today: function () { return E.todayKey(); }
+  };
   DB = loadDB();
   storageOK = storageOK && probeStorage();
   paintStorageBanner();
@@ -5667,7 +5732,8 @@ window.SKIN_ART = {
     coachBusy: false,
     coachLast: null,
     photos: null,
-    weekCard: null
+    weekCard: null,
+    batch: null
   };
 
   function setTab(tab) {
@@ -7508,14 +7574,10 @@ window.SKIN_ART = {
   ];
 
   function scratchEligible(st) {
-    if (!st || st.sum.count === 0) return false;
-    const today = E.todayKey();
-    const hasBody = DB.weights.some(w => w.date === today) || DB.exercises.some(x => x.date === today);
-    const inBand = st.sum.kcal >= st.budget * 0.85 && st.sum.kcal <= st.budget * 1.05;
-    return hasBody || inBand;
+    return !!(st && st.sum && st.sum.count > 0);
   }
 
-  const TICKET_SRC = { daily: '每日打卡', m3: '连续 3 天', m7: '连续 7 天', m14: '连续 14 天', m30: '连续 30 天', dev: '开发者模式' };
+  const TICKET_SRC = { daily: '每日打卡', m3: '连续 3 天', m7: '连续 7 天', m14: '连续 14 天', m30: '连续 30 天', maint: '维护' };
   const TICKET_MILESTONES = [
     { id: 'm3', days: 3, n: 1 }, { id: 'm7', days: 7, n: 2 },
     { id: 'm14', days: 14, n: 3 }, { id: 'm30', days: 30, n: 4 }
@@ -7525,7 +7587,7 @@ window.SKIN_ART = {
     const d = date || E.todayKey();
     let added = 0, overflow = 0;
     for (let i = 0; i < count; i++) {
-      if (!DEV_MODE && DB.scratch.tickets.length >= 10) { overflow++; continue; }
+      if (!maintOn() && DB.scratch.tickets.length >= 10) { overflow++; continue; }
       DB.scratch.tickets.push({ id: uid(), source: source, date: d, at: Date.now() });
       added++;
     }
@@ -7770,7 +7832,7 @@ window.SKIN_ART = {
     return items[items.length - 1];
   }
   function creditCapGrant(kcal, label, from) {
-    if (DEV_MODE) { addCredit(kcal, 'day', E.todayKey(), label, from); return kcal; }
+    if (maintOn()) { addCredit(kcal, 'day', E.todayKey(), label, from); return kcal; }
     const wk = weekId();
     const used = Number(DB.scratch.weeklyKcal[wk]) || 0;
     if (used + kcal > 300) return null;
@@ -8022,7 +8084,7 @@ window.SKIN_ART = {
   function drawTicket() {
     if (DB.scratch.card && !DB.scratch.card.revealed) { toast('先刮开手里这张'); return null; }
     const t = DB.scratch.tickets.shift();
-    if (!t) { toast(DEV_MODE ? '开发者券已用完' : '还没有抽奖券，先去完成今天的记账'); return null; }
+    if (!t) { toast('还没有抽奖券，先去完成今天的记账'); return null; }
     DB.scratch.card = {
       date: t.date, id: uid(), revealed: false, tier: null, reward: null,
       earnedAt: Date.now(), source: t.source, ticketId: t.id
@@ -8092,9 +8154,52 @@ window.SKIN_ART = {
       (rows.length ? '<div class="hist-list">' + rows.map(r => {
         const d = new Date(r.at || Date.now());
         const hh = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
-        return '<div class="hist-row"><span class="hr-tier ' + r.tier + '">' + SCRATCH_TIER[r.tier].label + '</span>' +
+        const chip = r.batch ? ((r.subs ? r.subs.length : 5) + '连') : SCRATCH_TIER[r.tier].label;
+        return '<div class="hist-row"><span class="hr-tier ' + r.tier + '">' + chip + '</span>' +
           '<span class="hr-main"><b>' + esc(r.label) + '</b><em>' + esc((r.date || '') + ' ' + hh) + '</em></span></div>';
       }).join('') + '</div>' : '<div class="wallet-empty">还没有抽奖记录。</div>');
+  }
+
+  function batchLabel(tk) {
+    if (tk >= 5) return '一次刮 5 张';
+    if (tk >= 2) return '刮剩下的 ' + tk + ' 张';
+    if (tk === 1) return '刮剩下的 1 张';
+    return '一次刮 5 张';
+  }
+  function ticketHelpHtml(open) {
+    const today = E.todayKey();
+    const st = snapshot(today);
+    const logged = st && st.sum && st.sum.count > 0;
+    const claimed = DB.scratch.lastEarnedDate === today;
+    const streak = streakNow();
+    const next = nextMilestone(streak);
+    const tk = DB.scratch.tickets.length;
+    const full = !maintOn() && tk >= 10;
+    const daily = claimed ? '今日已领（+1 张）' : (logged ? '今天已记餐，可领 1 张' : '记一餐可拿 1 张（今天还没记账）');
+    const ms = next
+      ? '连续达标 ' + streak + ' 天；距 ' + next.days + ' 天还差 ' + (next.days - streak) + ' 天，可得 ' + next.n + ' 张'
+      : '连续达标 ' + streak + ' 天；3/7/14/30 天里程碑已全部领取';
+    return '<div class="ticket-help" id="ticketHelp"' + (open ? '' : ' hidden') + '>' +
+      '<div class="th-head">怎么拿券</div>' +
+      '<div class="th-row"><b>每日</b><span>' + daily + '</span></div>' +
+      '<div class="th-row"><b>里程碑</b><span>' + ms + '</span></div>' +
+      '<div class="th-row"><b>券袋</b><span>' + tk + '/10' + (full ? ' · 已满，新获得的券会作废，先用存量' : ' · 券可存，无过期') + '</span></div>' +
+      '<div class="th-actions"><button class="btn btn-primary btn-sm" data-act="open-add">去记一餐</button>' +
+      '<button class="btn btn-ghost btn-sm" data-act="goto-trend">看连续进度</button></div>' +
+      '</div>';
+  }
+  function scratchEntryActions(tk, revealed) {
+    let html = '<div class="scratch-actions' + (revealed ? ' wait' : '') + '">';
+    if (revealed) html += '<button class="btn btn-primary btn-sm" data-act="open-wallet">存进钱包</button>';
+    if (tk > 0) {
+      html += '<button class="btn ' + (revealed ? 'btn-ghost' : 'btn-primary') + ' btn-sm" data-act="scratch-draw">再刮一张（剩 ' + tk + '）</button>';
+    } else {
+      html += '<button class="btn btn-primary btn-sm" data-act="ticket-help">券用完了 · 怎么拿券</button>';
+    }
+    html += '<button class="btn btn-ghost btn-sm" data-act="scratch-batch"' + (tk ? '' : ' disabled') + '>' + batchLabel(tk) + '</button>';
+    if (revealed) html += '<button class="btn btn-ghost btn-sm" data-act="close-sheet">回今天</button>';
+    html += '</div><div id="ticketHelpSlot">' + ticketHelpHtml(false) + '</div>';
+    return html;
   }
 
   function openScratchSheet() {
@@ -8109,29 +8214,25 @@ window.SKIN_ART = {
       body = '<div class="scratch-meta"><span class="tiny faint">' + card.date + ' · 来源：' + src + '</span>' +
         '<span class="tiny faint">剩余券 ' + tk + ' 张 · 连续普通 ' + DB.scratch.miss + '/7 · 保底稀有</span></div>' +
         scratchCardHtml(card) +
-        (card.revealed
-          ? '<div class="scratch-actions"><button class="btn btn-primary btn-sm" data-act="open-wallet">去钱包使用</button>' +
-            (tk ? '<button class="btn btn-ghost btn-sm" data-act="scratch-draw">再刮一张（剩 ' + tk + '）</button>' : '') +
-            '<button class="btn btn-ghost btn-sm" data-act="close-sheet">回今天</button></div>'
-          : '');
+        (card.revealed ? scratchEntryActions(tk, true) : '');
     } else if (tk) {
       const first = DB.scratch.tickets[0];
       body = '<div class="scratch-empty"><div class="se-ic">' + icon('spark') + '</div>' +
         '<div class="se-t">券袋里有 ' + tk + ' 张抽奖券</div>' +
-        '<div class="se-s">最早一张：' + esc(TICKET_SRC[first.source] || first.source) + ' · ' + esc(first.date) + ' 获得。刮开即消耗 1 张。</div>' +
-        '<button class="btn btn-primary btn-sm" data-act="scratch-draw">刮一张</button></div>';
+        '<div class="se-s">最早一张：' + esc(TICKET_SRC[first.source] || first.source) + ' · ' + esc(first.date) + ' 获得。刮开即消耗 1 张。</div></div>' +
+        scratchEntryActions(tk, false);
     } else {
       const st = snapshot(E.todayKey());
       const ok = scratchEligible(st);
       body = '<div class="scratch-empty"><div class="se-ic">' + icon('spark') + '</div>' +
-        '<div class="se-t">' + (ok ? '今天已达标，明日可再领 1 张' : '今天还没有抽奖券') + '</div>' +
-        '<div class="se-s">获得条件：当天至少 1 条记账，并且有体重或训练记录，或日摄入在预算 85–105%。每日 1 张；连续 3/7/14/30 天另有里程碑券。券可存，上限 10 张。</div>' +
-        '<button class="btn btn-primary btn-sm" data-act="open-add">先去记一餐</button></div>';
+        '<div class="se-t">' + (ok ? '今天已记餐，明日再记可再领 1 张' : '今天还没有抽奖券') + '</div>' +
+        '<div class="se-s">获得条件：当天至少 1 条记账即得 1 张；连续 3/7/14/30 天另有里程碑券。券可存，上限 10 张。</div></div>' +
+        scratchEntryActions(0, false);
     }
     openSheet(
       sheetHead('抽奖券', '每日基础卡 + 连续里程碑 · 无付费、无真钱、无外部奖品', '') +
       '<div class="sheet-body" id="scratchBody">' +
-        '<div class="scratch-meta"><span class="tiny faint">券袋 ' + tk + (DEV_MODE ? ' 张（开发者不封顶）' : '/10') + ' · 本周热量额度 ' + (Number(DB.scratch.weeklyKcal[weekId()]) || 0) + '/300 kcal</span><span class="tiny faint">抽奖券无过期</span></div>' +
+        '<div class="scratch-meta"><span class="tiny faint">券袋 ' + tk + (maintOn() ? ' 张（不封顶）' : '/10') + ' · 本周热量额度 ' + (Number(DB.scratch.weeklyKcal[weekId()]) || 0) + '/300 kcal</span><span class="tiny faint">抽奖券无过期</span></div>' +
         body +
         renderTicketList() +
         renderMilestoneProgress(streak) +
@@ -8144,10 +8245,247 @@ window.SKIN_ART = {
     if (card && !card.revealed) initScratchCanvas();
   }
 
+  /* ---------- 五张连刮 ---------- */
+  function startBatch(n) {
+    const tk = DB.scratch.tickets.length;
+    if (!tk) { toast('券袋是空的，先看看怎么拿券'); return false; }
+    if (DB.scratch.card && !DB.scratch.card.revealed) { toast('先刮开手里这张'); return false; }
+    const count = Math.min(Number(n) || 5, tk, 5);
+    if (count === 1) return drawTicket();
+    const cards = [];
+    for (let i = 0; i < count; i++) {
+      const t = DB.scratch.tickets.shift();
+      cards.push({ date: t.date, source: t.source, ticketId: t.id, revealed: false, tier: null, reward: null });
+    }
+    DB.scratch.card = null;
+    state.batch = { cards: cards, count: count, done: false, results: null, counts: null };
+    saveDB(true);
+    openBatchSheet();
+    return true;
+  }
+
+  function openBatchSheet() {
+    const b = state.batch;
+    if (!b) return;
+    expireCredits(true);
+    state.sheetData = { type: 'scratch-batch' };
+    const tk = DB.scratch.tickets.length;
+    openSheet(
+      sheetHead('五张连刮', '一次划过，全部同开 · 每张独立结算', '') +
+      '<div class="sheet-body" id="batchBody">' +
+        '<div class="scratch-meta"><span class="tiny faint">本次 ' + b.count + ' 张 · 券袋剩余 ' + tk + ' 张</span><span class="tiny faint">五张共用一条擦除轨迹</span></div>' +
+        '<div class="batch-grid" id="batchGrid">' + b.cards.map((c, i) =>
+          '<div class="batch-card" data-i="' + i + '">' +
+          '<div class="bc-face"><span class="sp-lock">' + icon('spark') + '<span>刮开<br>才知道</span></span></div>' +
+          '<canvas class="batch-canvas" aria-label="第 ' + (i + 1) + ' 张"></canvas>' +
+          '<span class="bc-no">' + (i + 1) + '</span></div>').join('') +
+        '</div>' +
+        '<div class="batch-progress"><span id="batchProgress"></span></div>' +
+        '<div class="batch-foot" id="batchFoot"></div>' +
+        '<div id="ticketHelpSlot">' + ticketHelpHtml(false) + '</div>' +
+        '<div class="scratch-tools" id="batchTools"><button class="btn btn-ghost btn-sm" data-act="batch-reveal">直接揭晓</button></div>' +
+      '</div>' +
+      '<div class="sheet-foot"><span class="tiny faint">五张共用一条擦除轨迹；每张按普通 80% / 稀有 17% / 传说 3% 独立结算，连续 7 张未出稀有则保底。</span></div>',
+      'scratch-batch'
+    );
+    initBatchCanvases();
+  }
+
+  function batchCoat(ctx, w, h) {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const coat = {
+      cloth: ['#cfd4d0', '#e9ebe6', '#b9c1bb', '#dfe3dc'],
+      petal: ['#f3d6df', '#fbebf0', '#e7b9c9', '#f8e2e9'],
+      star: ['#4a5a7a', '#8d9cbe', '#35405c', '#6b7897'],
+      neon: ['#4a2b68', '#8a4fb0', '#2e1c44', '#6f3d93'],
+      ink: ['#c9c4b8', '#e6e2d8', '#a9a396', '#d9d4c8'],
+      fire: ['#7a3a2a', '#b06a3a', '#5a2a1e', '#9a5530']
+    }[DB.skins.scratchArt] || ['#cfd4d0', '#e9ebe6', '#b9c1bb', '#dfe3dc'];
+    const g = ctx.createLinearGradient(0, 0, w, h);
+    g.addColorStop(0, coat[0]); g.addColorStop(0.35, coat[1]);
+    g.addColorStop(0.6, coat[2]); g.addColorStop(1, coat[3]);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+    let seed = 20261104;
+    for (let i = 0; i < 260; i++) {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+      const nx = (seed % w), ny = ((seed >> 8) % h);
+      ctx.fillStyle = 'rgba(255,255,255,' + (0.04 + (seed % 7) / 100) + ')';
+      ctx.fillRect(nx, ny, 1.2 * dpr, 1.2 * dpr);
+    }
+    const dark = ['star', 'neon', 'fire'].indexOf(DB.skins.scratchArt) >= 0;
+    ctx.fillStyle = dark ? 'rgba(255,255,255,.7)' : 'rgba(70,80,72,.45)';
+    ctx.textAlign = 'center';
+    ctx.font = Math.round(11 * dpr) + 'px system-ui, sans-serif';
+    ctx.fillText('刮', w / 2, h / 2 + 4 * dpr);
+  }
+
+  function initBatchCanvases() {
+    const grid = $('#batchGrid');
+    if (!grid) return;
+    const b = state.batch;
+    if (!b) return;
+    const cards = $$('.batch-card', grid);
+    const cvs = cards.map(c => $('canvas', c)).filter(Boolean);
+    if (!cvs.length) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const ctxs = cvs.map(function (cv) {
+      const r = cv.getBoundingClientRect();
+      cv.width = Math.max(1, Math.round(r.width * dpr));
+      cv.height = Math.max(1, Math.round(r.height * dpr));
+      const ctx = cv.getContext('2d');
+      batchCoat(ctx, cv.width, cv.height);
+      ctx.globalCompositeOperation = 'destination-out';
+      return { cv: cv, ctx: ctx };
+    });
+    const BRUSH = Math.max(12, 18 * dpr);
+    let anchor = null, last = null, drawing = false, tick = 0;
+    function rel(e) {
+      const r = (anchor || cvs[0]).getBoundingClientRect();
+      return {
+        x: Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)),
+        y: Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))
+      };
+    }
+    function erase(x, y) {
+      ctxs.forEach(function (o) {
+        o.ctx.beginPath();
+        o.ctx.arc(o.cv.width * x, o.cv.height * y, BRUSH, 0, Math.PI * 2);
+        o.ctx.fill();
+      });
+    }
+    function line(a, z) {
+      const steps = Math.min(24, Math.max(1, Math.round(Math.hypot((z.x - a.x) * 120, (z.y - a.y) * 100))));
+      for (let i = 0; i <= steps; i++) erase(a.x + (z.x - a.x) * i / steps, a.y + (z.y - a.y) * i / steps);
+    }
+    function ratio() {
+      const list = [];
+      ctxs.forEach(function (o) {
+        try {
+          const img = o.ctx.getImageData(0, 0, o.cv.width, o.cv.height).data;
+          let clear = 0, total = 0;
+          for (let i = 3; i < img.length; i += 48) { total++; if (img[i] < 40) clear++; }
+          list.push(total ? clear / total : 0);
+        } catch (e) { list.push(0); }
+      });
+      return { list: list, avg: list.length ? list.reduce(function (a, z) { return a + z; }, 0) / list.length : 0 };
+    }
+    function progress() {
+      const r = ratio();
+      b.covered = r.avg;
+      b.ratios = r.list;
+      const bar = $('#batchProgress');
+      if (bar) bar.style.width = Math.round(r.avg * 100) + '%';
+      if (r.avg >= 0.6 && !b.done) settleBatch();
+    }
+    grid.addEventListener('pointerdown', function (e) {
+      if (b.done) return;
+      const card = e.target.closest ? e.target.closest('.batch-card') : null;
+      const cv = card ? $('canvas', card) : null;
+      if (!cv) return;
+      anchor = cv;
+      drawing = true;
+      if (grid.setPointerCapture) grid.setPointerCapture(e.pointerId);
+      last = rel(e);
+      erase(last.x, last.y);
+      e.preventDefault();
+    });
+    grid.addEventListener('pointermove', function (e) {
+      if (!drawing || b.done) return;
+      const p = rel(e);
+      line(last, p);
+      last = p;
+      if (++tick % 6 === 0) progress();
+      e.preventDefault();
+    });
+    function end(e) {
+      if (!drawing) return;
+      drawing = false;
+      anchor = null;
+      progress();
+    }
+    grid.addEventListener('pointerup', end);
+    grid.addEventListener('pointercancel', end);
+    grid.addEventListener('pointerleave', function () { if (drawing) end(); });
+  }
+
+  function settleBatch() {
+    const b = state.batch;
+    if (!b || b.done) return null;
+    b.done = true;
+    const subs = [];
+    b.cards.forEach(function (c) {
+      const tier = scratchTier(DB.scratch.miss);
+      const reward = applyScratchReward(tier);
+      c.revealed = true;
+      c.tier = tier;
+      c.reward = reward;
+      DB.scratch.miss = tier === 'common' ? DB.scratch.miss + 1 : 0;
+      DB.scratch.count = (DB.scratch.count || 0) + 1;
+      subs.push({ tier: tier, label: reward.label, detail: reward.detail || '' });
+    });
+    const counts = { common: 0, rare: 0, legend: 0 };
+    subs.forEach(function (s) { counts[s.tier]++; });
+    const order = { legend: 3, rare: 2, common: 1 };
+    const sorted = subs.slice().sort(function (a, z) { return order[z.tier] - order[a.tier]; });
+    const summary = ['legend', 'rare', 'common'].filter(function (t) { return counts[t]; })
+      .map(function (t) { return counts[t] + ' ' + SCRATCH_TIER[t].label; }).join(' / ');
+    const top = sorted[0] ? sorted[0].tier : 'common';
+    b.results = sorted;
+    b.counts = counts;
+    b.summary = summary;
+    DB.scratch.last = { tier: top, label: '连刮 ' + b.count + ' 张 · ' + summary, detail: subs.map(function (s) { return s.label; }).join('；'), at: Date.now(), date: E.todayKey(), batch: true };
+    DB.scratch.log.unshift({
+      id: uid(), date: E.todayKey(), at: Date.now(), source: 'batch', batch: true, tier: top,
+      label: '刮 ' + b.count + ' 张 · ' + summary,
+      subs: subs.map(function (s) { return { tier: s.tier, label: s.label }; })
+    });
+    DB.scratch.log = DB.scratch.log.slice(0, 60);
+    saveDB(true);
+    paintBatchResults();
+    toast('连刮 ' + b.count + ' 张：' + summary);
+    if (state.tab === 'today') renderToday();
+    return { results: sorted, counts: counts, summary: summary };
+  }
+
+  function paintBatchResults() {
+    const b = state.batch;
+    if (!b || !b.results) return;
+    const grid = $('#batchGrid');
+    const prog = $('.batch-progress');
+    if (prog) prog.hidden = true;
+    if (grid) {
+      const noAnim = prefersReduced() || DB.settings.fx === false;
+      grid.className = 'batch-results' + (noAnim ? ' no-anim' : ' anim');
+      grid.innerHTML = b.results.map(function (s, i) {
+        return '<div class="br-row tier-' + s.tier + '" style="--i:' + i + '">' +
+          '<span class="hr-tier ' + SCRATCH_TIER[s.tier].color + '">' + SCRATCH_TIER[s.tier].label + '</span>' +
+          '<span class="hr-main"><b>' + esc(s.label) + '</b><em>' + esc(s.detail || '') + '</em></span></div>';
+      }).join('');
+    }
+    const tk = DB.scratch.tickets.length;
+    const foot = $('#batchFoot');
+    if (foot) {
+      const noAnim = prefersReduced() || DB.settings.fx === false;
+      foot.innerHTML = '<div class="batch-sum"><b>共得 ' + b.summary + '</b><em>' + b.count + ' 张已各自入账，抽奖历史记为 1 条</em></div>' +
+        '<div class="scratch-actions">' +
+        (tk > 0
+          ? '<button class="btn btn-primary btn-sm" data-act="scratch-draw">再刮一张（剩 ' + tk + '）</button>'
+          : '<button class="btn btn-primary btn-sm" data-act="ticket-help">券用完了 · 怎么拿券</button>') +
+        '<button class="btn btn-ghost btn-sm" data-act="scratch-batch"' + (tk ? '' : ' disabled') + '>' + batchLabel(tk) + '</button>' +
+        '<button class="btn btn-ghost btn-sm" data-act="close-sheet">回今天</button>' +
+        '</div>' + (noAnim ? '' : '<div class="scratch-tools"><button class="btn btn-ghost btn-sm" data-act="batch-skip">跳过动画</button></div>');
+    }
+    const tools = $('#batchTools');
+    if (tools) tools.hidden = true;
+  }
+
   function exportScratchLog() {
     const rows = (DB.scratch.log || []).slice(0, 20).map(r => ({
       date: r.date, time: new Date(r.at || Date.now()).toLocaleString('zh-CN'),
-      tier: r.tier, tierLabel: SCRATCH_TIER[r.tier].label, prize: r.label
+      tier: r.tier, tierLabel: SCRATCH_TIER[r.tier].label, prize: r.label,
+      batch: !!r.batch,
+      subs: r.batch && Array.isArray(r.subs) ? r.subs.map(s => ({ tier: s.tier, tierLabel: SCRATCH_TIER[s.tier].label, prize: s.label })) : undefined
     }));
     const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
@@ -8561,82 +8899,6 @@ window.SKIN_ART = {
     );
   }
 
-  /* ---------- v4.3 开发者模式 ---------- */
-  function devAttempts() {
-    try { return Number(localStorage.getItem(DEV_KEY + '.attempts')) || 0; } catch (e) { return DEV_ATTEMPTS; }
-  }
-  function bumpDevAttempts() {
-    DEV_ATTEMPTS = devAttempts() + 1;
-    try { localStorage.setItem(DEV_KEY + '.attempts', String(DEV_ATTEMPTS)); } catch (e) {}
-    return DEV_ATTEMPTS;
-  }
-  function paintDevBanner() {
-    let b = document.getElementById('devBanner');
-    if (!DEV_MODE) { if (b) b.remove(); document.body.classList.remove('dev-mode'); return; }
-    if (!b) {
-      b = document.createElement('div');
-      b.id = 'devBanner';
-      b.innerHTML = '<span class="db-tag">开发者模式</span><span class="db-sub">数据已隔离到 energy-ledger.dev · 券不封顶 · 热量不封顶</span>' +
-        '<button class="db-exit" data-act="dev-exit">退出开发者模式</button>';
-      document.body.appendChild(b);
-    }
-    document.body.classList.add('dev-mode');
-  }
-  function ensureDevDb() {
-    let dev = loadDBFrom(DEV_KEY);
-    if (!dev.profile) {
-      const p = DB.profile ? Object.assign({}, DB.profile) : {
-        sex: 'female', age: 28, height: 165, weight: 60, targetWeight: 55,
-        activity: 'light', goal: 'lose', rate: 0.5, proteinFactor: 1.6
-      };
-      dev = normalizeDB({ profile: p, onboarded: true, weights: [{ date: E.todayKey(), kg: p.weight }] });
-    }
-    return dev;
-  }
-  function enterDevMode(pw) {
-    if (String(pw) !== 'lovezhou') {
-      const n = bumpDevAttempts();
-      toast('密码不正确（本机尝试 ' + n + ' 次）');
-      const e = $('#devAttempts');
-      if (e) e.textContent = '本机已尝试 ' + n + ' 次，未做锁死';
-      return false;
-    }
-    if (DEV_MODE) return true;
-    REAL_DB = DB;
-    const dev = ensureDevDb();
-    if (!dev.devGranted) {
-      const today = E.todayKey();
-      for (let i = 0; i < 10000; i++) dev.scratch.tickets.push({ id: 'dev-' + i + '-' + uid(), source: 'dev', date: today, at: 0 });
-      dev.devGranted = true;
-      dev.scratch.milestones = { m3: today, m7: today, m14: today, m30: today };
-      SKINS.forEach(s => { if (dev.skins.unlocked.indexOf(s.id) < 0) dev.skins.unlocked.push(s.id); });
-      Object.keys(COS_KINDS).forEach(k => COS_KINDS[k].list.forEach(x => {
-        const key = cosKey(k, x.id);
-        if (dev.skins.unlockedCos.indexOf(key) < 0) dev.skins.unlockedCos.push(key);
-      }));
-    }
-    DEV_MODE = true;
-    DB = dev;
-    saveDB(true);
-    applySkins();
-    paintDevBanner();
-    renderActive();
-    toast('开发者模式已开启 · 10,000 张券 · 全部外观已解锁');
-    openDevSheet();
-    return true;
-  }
-  function exitDevMode() {
-    if (!DEV_MODE) return;
-    saveDB(true);
-    DEV_MODE = false;
-    DB = REAL_DB || loadDBFrom(KEY);
-    REAL_DB = null;
-    paintDevBanner();
-    applySkins();
-    renderActive();
-    toast('已退出开发者模式 · 已恢复真实账本');
-    closeSheet();
-  }
   function simulateScratch(n) {
     const total = Math.max(1, Number(n) || 1);
     let common = 0, rare = 0, legend = 0, top = 0, gold = 0, medal = 0;
@@ -8657,32 +8919,6 @@ window.SKIN_ART = {
       topInLegendPct: legend ? (top / legend * 100).toFixed(2) + '%' : '—'
     };
   }
-  function openDevSheet() {
-    state.sheetData = { type: 'dev' };
-    let body;
-    if (DEV_MODE) {
-      body = '<div class="dev-on"><div class="dev-on-head">开发者模式已开启</div>' +
-        '<div class="dev-stat"><span>抽奖券</span><b>' + DB.scratch.tickets.length + ' 张</b></div>' +
-        '<div class="dev-stat"><span>已解锁皮肤</span><b>' + DB.skins.unlocked.length + ' / 30</b></div>' +
-        '<div class="dev-stat"><span>数据键</span><b>' + DEV_KEY + '</b></div>' +
-        '<div class="dev-row"><button class="btn btn-primary btn-sm" data-act="dev-sim">批量抽取 1,000 次并统计</button>' +
-        '<button class="btn btn-ghost btn-sm" data-act="dev-exit">退出开发者模式</button></div>' +
-        '<div class="dev-sim" id="devSimOut">尚未运行抽样。</div>' +
-        '<div class="notebox">开发者模式下，抽奖券不设 10 张上限，热量奖品不受每周 300 kcal 限制；外观全部解锁可直接在皮肤图鉴启用。退出后真实账本 <code>energy-ledger.v2</code> 不受影响。</div></div>';
-    } else {
-      body = '<div class="dev-form"><div class="dev-on-head">输入开发者密码</div>' +
-        '<div class="tiny faint">入口仅用于本机自测与验收；密码写在源码里，公开部署等于公开可解锁，不做任何安全承诺。</div>' +
-        '<input class="dev-input" id="devPass" type="password" autocomplete="off" placeholder="密码" />' +
-        '<div class="dev-row"><button class="btn btn-primary btn-sm" data-act="dev-unlock">解锁</button>' +
-        '<button class="btn btn-ghost btn-sm" data-act="close-sheet">取消</button></div>' +
-        '<div class="tiny faint" id="devAttempts">本机已尝试 ' + devAttempts() + ' 次，未做锁死</div></div>';
-    }
-    openSheet(sheetHead('开发者模式', '独立数据空间 · 不读写真实账本', '') +
-      '<div class="sheet-body" id="devBody">' + body + '</div>' +
-      '<div class="sheet-foot"><span class="tiny faint">真实账本：energy-ledger.v2 · 开发账本：energy-ledger.dev</span></div>',
-      'dev');
-  }
-
   function renderCodex(data) {
     const lit = new Set(DB.codex.lit || []);
     const cats = data.cats || [];
@@ -9797,14 +10033,11 @@ window.SKIN_ART = {
         '<button class="setting-row" data-act="open-skin-gallery"><span class="l"><span class="t">皮肤图鉴</span><span class="s">30 套集中管理 · 未解锁显示灰度剪影 · 收集率 ' + (DB.skins.unlocked || []).length + '/30</span></span><span class="r">' + icon('spark') + '</span></button>' +
         '<button class="setting-row" data-act="open-skins"><span class="l"><span class="t">皮肤墙</span><span class="s">快速切换 · 当前：' + ((skinById(DB.skins.active) || { name: '宣纸' }).name) + '</span></span><span class="r">' + icon('arrow-r') + '</span></button>' +
       '</div>' +
-      '<div class="setting-group">' +
-        '<div class="gh"><div class="t">高级</div><div class="s">开发者入口 · 仅本机自用 · 不做安全承诺</div></div>' +
-        '<button class="setting-row" data-act="open-dev"><span class="l"><span class="t">开发者模式</span><span class="s">' + (DEV_MODE ? '已开启 · 当前数据写入 energy-ledger.dev' : '密码 lovezhou · 独立数据空间 · 测试用 10,000 张券') + '</span></span><span class="r">' + (DEV_MODE ? '退出' : icon('spark')) + '</span></button>' +
-      '</div>' +
+      (window.Maintenance ? window.Maintenance.settingsHTML() : '') +
 
       '<div class="setting-group">' +
         '<div class="gh"><div class="t">关于</div></div>' +
-        '<div class="setting-row"><span class="l"><span class="t">能量账本 v4.3</span><span class="s">本地优先 · 无账号 · 无云端 · 无社交</span></span><span class="r tiny faint">ENERGY LEDGER</span></div>' +
+        '<div class="setting-row"><span class="l"><span class="t">能量账本 v4.4</span><span class="s">本地优先 · 无账号 · 无云端 · 无社交</span></span><span class="r tiny faint">ENERGY LEDGER</span></div>' +
         settingRow('运行模式', STATIC_MODE ? '静态网页' : '本机服务', STATIC_MODE ? '可部署到任意静态主机，无后端依赖' : '带本机 AI 转发与离线缓存') +
         '<div class="setting-row"><span class="l"><span class="t">数据与免责声明</span><span class="s">所有数值均为估算，不构成医疗或营养处方。孕期、哺乳期、慢性病人群请咨询专业人士。</span></span></div>' +
         '<div class="setting-row"><span class="l"><span class="t">存储状态</span><span class="s">' + (storageOK ? 'localStorage 正常 · 数据只在此浏览器' : '本地存储受限，请导出备份') + '</span><span class="r tiny ' + (storageOK ? 'faint' : 'red') + '">' + (storageOK ? '正常' : '异常') + '</span></div>' +
@@ -13834,24 +14067,34 @@ window.SKIN_ART = {
       }
       case 'scratch-draw': drawTicket(); break;
       case 'export-scratch-log': exportScratchLog(); break;
-      case 'open-dev': openDevSheet(); break;
-      case 'dev-unlock': {
-        const input = $('#devPass');
-        enterDevMode(input ? input.value : '');
+      case 'scratch-batch': {
+        const tk = DB.scratch.tickets.length;
+        if (!tk) { toast('券袋是空的，先看看怎么拿券'); break; }
+        startBatch(Math.min(5, tk));
         break;
       }
-      case 'dev-exit': exitDevMode(); break;
-      case 'dev-sim': {
-        const r = simulateScratch(1000);
-        const out = $('#devSimOut');
-        if (out) out.innerHTML = '<div class="sim-grid">' +
-          '<div><b>' + r.commonPct + '</b><em>普通 (' + r.common + ')</em></div>' +
-          '<div><b>' + r.rarePct + '</b><em>稀有 (' + r.rare + ')</em></div>' +
-          '<div><b>' + r.legendPct + '</b><em>传说 (' + r.legend + ')</em></div>' +
-          '<div><b>' + r.topPct + '</b><em>顶级皮肤 (' + r.top + ')</em></div></div>' +
-          '<div class="tiny faint">传说档内部：顶级 ' + r.topInLegendPct + ' · 烫金封面 ' + r.gold + ' 次 · 纪念章 ' + r.medal + ' 次；顶级占总抽数期望 2.25%。</div>';
+      case 'batch-reveal': settleBatch(); break;
+      case 'batch-skip': {
+        const grid = $('#batchGrid');
+        if (grid) grid.classList.remove('anim');
+        const skip = $('[data-act="batch-skip"]');
+        if (skip) skip.remove();
         break;
       }
+      case 'ticket-help': {
+        const slot = $('#ticketHelpSlot');
+        if (slot) slot.innerHTML = ticketHelpHtml(true);
+        break;
+      }
+      case 'goto-trend': closeSheet(); setTab('trend'); break;
+      case 'maint-open': if (window.Maintenance) window.Maintenance.openSheet(); break;
+      case 'maint-unlock': {
+        const input = $('#maintPass');
+        if (window.Maintenance) window.Maintenance.unlock(input ? input.value : '');
+        break;
+      }
+      case 'maint-exit': if (window.Maintenance) window.Maintenance.exit(); break;
+      case 'maint-sim': if (window.Maintenance) window.Maintenance.simulate(); break;
       case 'daily-card': exportDailyCard(); break;
       case 'daily-shuffle': {
         if (!sd || sd.type !== 'daily') break;
@@ -14705,15 +14948,26 @@ window.SKIN_ART = {
     openReco: openRecoSheet,
     capGrant: function (kcal) { return creditCapGrant(Number(kcal) || 0, '测试额度', '测试'); },
     openScratch: openScratchSheet,
-    openDev: openDevSheet,
-    isDev: function () { return DEV_MODE; },
-    enterDev: enterDevMode,
-    exitDev: exitDevMode,
-    devState: function () {
-      return { dev: DEV_MODE, key: activeKey(), tickets: DB.scratch.tickets.length, skins: DB.skins.unlocked.length, cos: DB.skins.unlockedCos.length, devGranted: !!DB.devGranted };
+    batchStart: startBatch,
+    batchSettle: settleBatch,
+    batchState: function () {
+      const b = state.batch;
+      if (!b) return null;
+      return {
+        count: b.count, done: b.done, covered: b.covered || 0,
+        ratios: b.ratios || [],
+        results: b.results, counts: b.counts, summary: b.summary,
+        tickets: DB.scratch.tickets.length
+      };
     },
+    ticketHelpText: function () {
+      const d = document.createElement('div');
+      d.innerHTML = ticketHelpHtml(false);
+      return d.textContent.replace(/\s+/g, ' ').trim();
+    },
+    simulate: simulateScratch,
+    simulateScratch: simulateScratch,
     readReal: function () { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } },
-    readDev: function () { try { return JSON.parse(localStorage.getItem(DEV_KEY)); } catch (e) { return null; } },
     theme: function (t) { DB.settings.theme = t; saveDB(true); applyTheme(); return document.documentElement.getAttribute('data-theme'); },
     contrast: function (sel) {
       function rgb(s) {
@@ -14780,6 +15034,296 @@ window.SKIN_ART = {
     }, 60000);
   }
   init();
+})();
+
+</script>
+<script>
+/* assets/maint-credential.js */
+/* 构建期生成：仅保存加盐派生值，不包含口令 */
+window.__MAINT_CRED={salt:"2cac6bfbbdb66c2ea537efa1060674a8",iter:10000,hash:"3206034acc7039394214b25d6c0ea67cdf8724594cdbe8a56e620ee5d0d6dc12"};
+
+</script>
+<script>
+/* assets/maint.js */
+/* 维护入口 · 本机自用；口令只以加盐派生值参与比对，页面内不含明文 */
+(function () {
+  'use strict';
+  const H = window.__ledgerHost;
+  const CRED = window.__MAINT_CRED;
+  if (!H || !CRED) return;
+
+  const DB_KEY = 'energy-ledger.dev';
+  const TOKEN_KEY = 'el.mt.token';
+  const SKEY_KEY = 'el.mt.key';
+  const ATTEMPT_KEY = 'el.mt.attempts';
+
+  let active = false;
+
+  function hex(buf) {
+    return Array.prototype.map.call(buf, b => (b < 16 ? '0' : '') + b.toString(16)).join('');
+  }
+  function rndBytes(n) {
+    const a = new Uint8Array(n);
+    if (window.crypto && window.crypto.getRandomValues) window.crypto.getRandomValues(a);
+    else for (let i = 0; i < n; i++) a[i] = Math.floor(Math.random() * 256);
+    return hex(a);
+  }
+  function derive(text, iter) {
+    if (!(window.crypto && window.crypto.subtle && window.crypto.subtle.deriveBits)) return null;
+    const enc = new TextEncoder();
+    return window.crypto.subtle.importKey('raw', enc.encode(text), { name: 'PBKDF2' }, false, ['deriveBits'])
+      .then(k => window.crypto.subtle.deriveBits(
+        { name: 'PBKDF2', salt: enc.encode(CRED.salt), iterations: iter || CRED.iter, hash: 'SHA-256' }, k, 256))
+      .then(buf => hex(new Uint8Array(buf)));
+  }
+  function fingerprint() {
+    const s = [navigator.userAgent || '', navigator.platform || '', screen.width + 'x' + screen.height,
+      String(new Date().getTimezoneOffset())].join('|');
+    let h = 5381;
+    for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+    return h.toString(16);
+  }
+  function sessionSig(id, ts) {
+    return derive(id + '|' + ts + '|' + fingerprint(), CRED.iter);
+  }
+  function readToken() {
+    try {
+      const t = String(localStorage.getItem(TOKEN_KEY) || '');
+      const p = t.split('.');
+      return p.length === 2 && p[0] && p[1] ? { id: p[0], ts: p[1] } : null;
+    } catch (e) { return null; }
+  }
+  function tokenValid() {
+    const t = readToken();
+    if (!t) return Promise.resolve(false);
+    let stored = '';
+    try { stored = String(localStorage.getItem(SKEY_KEY) || ''); } catch (e) { stored = ''; }
+    if (!stored) return Promise.resolve(false);
+    const sig = sessionSig(t.id, t.ts);
+    if (!sig) return Promise.resolve(false);
+    return sig.then(v => v === stored);
+  }
+  function writeToken() {
+    const id = rndBytes(32);
+    const ts = String(Date.now());
+    const sig = sessionSig(id, ts);
+    if (!sig) return Promise.resolve(false);
+    return sig.then(v => {
+      try {
+        localStorage.setItem(TOKEN_KEY, id + '.' + ts);
+        localStorage.setItem(SKEY_KEY, v);
+      } catch (e) {}
+      return true;
+    });
+  }
+  function clearToken() {
+    try {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(SKEY_KEY);
+    } catch (e) {}
+  }
+  function attempts() {
+    try { return Number(localStorage.getItem(ATTEMPT_KEY)) || 0; } catch (e) { return 0; }
+  }
+  function bumpAttempts() {
+    const n = attempts() + 1;
+    try { localStorage.setItem(ATTEMPT_KEY, String(n)); } catch (e) {}
+    return n;
+  }
+
+  function paintBanner() {
+    let b = document.getElementById('maintBanner');
+    if (!active) {
+      if (b) b.remove();
+      document.body.classList.remove('maint-mode');
+      return;
+    }
+    if (!b) {
+      b = document.createElement('div');
+      b.id = 'maintBanner';
+      b.innerHTML = '<span class="mn-tag">维护模式</span><span class="mn-sub">独立数据空间 · 券与热量额度不封顶</span>' +
+        '<button class="mn-exit" data-act="maint-exit">退出维护模式</button>';
+      document.body.appendChild(b);
+    }
+    document.body.classList.add('maint-mode');
+  }
+
+  function defaultProfile() {
+    return {
+      sex: 'female', age: 28, height: 165, weight: 60, targetWeight: 55,
+      activity: 'light', goal: 'lose', rate: 0.5, proteinFactor: 1.6
+    };
+  }
+  function ensureDb() {
+    const db = H.loadFrom(DB_KEY);
+    if (!db.profile) {
+      const real = H.db();
+      const p = real && real.profile ? JSON.parse(JSON.stringify(real.profile)) : defaultProfile();
+      db.profile = p;
+      db.onboarded = true;
+      if (!db.weights.length) db.weights = [{ date: H.today(), kg: Number(p.weight) || 60 }];
+    }
+    return db;
+  }
+  function grant(db) {
+    const today = H.today();
+    for (let i = 0; i < 10000; i++) {
+      db.scratch.tickets.push({ id: 'm-' + i + '-' + rndBytes(4), source: 'maint', date: today, at: 0 });
+    }
+    db.granted = true;
+    db.scratch.milestones = { m3: today, m7: today, m14: today, m30: today };
+  }
+
+  function enter(quiet) {
+    if (active) return true;
+    const db = ensureDb();
+    H.enterMaint(db);
+    active = true;
+    if (!db.granted) grant(db);
+    try {
+      if (window.__v43 && window.__v43.unlockAll) window.__v43.unlockAll();
+    } catch (e) {}
+    H.save();
+    paintBanner();
+    H.repaint();
+    if (!quiet) {
+      H.toast('维护空间已开启 · 独立数据，不读写真实账本');
+      openSheet();
+    }
+    return true;
+  }
+  function exit() {
+    if (!active) return;
+    H.exitMaint();
+    active = false;
+    paintBanner();
+    H.repaint();
+    H.toast('已退出维护模式 · 已恢复真实账本');
+    H.closeSheet();
+  }
+
+  function unlock(pw) {
+    const d = derive(String(pw == null ? '' : pw), CRED.iter);
+    if (!d) {
+      H.toast('当前环境不支持安全校验，请用本机或 https 打开');
+      return Promise.resolve(false);
+    }
+    return d.then(function (digest) {
+      if (digest !== CRED.hash) {
+        const n = bumpAttempts();
+        H.toast('口令不正确（本机尝试 ' + n + ' 次）');
+        const e = document.getElementById('maintAttempts');
+        if (e) e.textContent = '本机已尝试 ' + n + ' 次，未做锁死';
+        return false;
+      }
+      return writeToken().then(() => enter(false));
+    });
+  }
+
+  function stat(label, value) {
+    return '<div class="mn-stat"><span>' + label + '</span><b>' + value + '</b></div>';
+  }
+  function openSheet() {
+    if (!active) {
+      tokenValid().then(ok => {
+        if (ok) { enter(false); return; }
+        paintSheet(false);
+      });
+      return;
+    }
+    paintSheet(true);
+  }
+  function paintSheet(isOn) {
+    const db = H.db();
+    let body;
+    if (isOn) {
+      const totalSkins = window.__v43 ? window.__v43.skins().length : 30;
+      body = '<div class="mn-on"><div class="mn-head">维护模式已开启</div>' +
+        stat('抽奖券', db.scratch.tickets.length + ' 张') +
+        stat('已解锁皮肤', db.skins.unlocked.length + ' / ' + totalSkins) +
+        stat('数据空间', '独立（与真实账本互不可见）') +
+        '<div class="mn-row"><button class="btn btn-primary btn-sm" data-act="maint-sim">批量抽取 1,000 次并统计</button>' +
+        '<button class="btn btn-ghost btn-sm" data-act="maint-exit">退出维护模式</button></div>' +
+        '<div class="mn-sim" id="maintSimOut">尚未运行抽样。</div>' +
+        '<div class="notebox">维护模式下抽奖券不设 10 张上限，热量奖品不受每周 300 kcal 限制；外观全部解锁。退出后真实账本 <code>energy-ledger.v2</code> 不受影响。</div></div>';
+    } else {
+      body = '<div class="mn-form"><div class="mn-head">输入维护口令</div>' +
+        '<div class="tiny faint">仅用于本机自测；口令以加盐派生值参与比对，首次通过后本机记住令牌。</div>' +
+        '<input class="mn-input" id="maintPass" type="password" autocomplete="off" placeholder="口令" />' +
+        '<div class="mn-row"><button class="btn btn-primary btn-sm" data-act="maint-unlock">确认</button>' +
+        '<button class="btn btn-ghost btn-sm" data-act="close-sheet">取消</button></div>' +
+        '<div class="tiny faint" id="maintAttempts">本机已尝试 ' + attempts() + ' 次，未做锁死</div></div>';
+    }
+    H.openSheet(H.sheetHead('维护模式', '独立数据空间 · 不读写真实账本', '') +
+      '<div class="sheet-body" id="maintBody">' + body + '</div>' +
+      '<div class="sheet-foot"><span class="tiny faint">真实账本与维护空间各自保留，切换时互不覆盖。</span></div>',
+      'maint');
+  }
+
+  function simulate() {
+    const r = window.__v43 && window.__v43.simulate ? window.__v43.simulate(1000) : null;
+    const out = document.getElementById('maintSimOut');
+    if (!r || !out) return;
+    out.innerHTML = '<div class="sim-grid">' +
+      '<div><b>' + r.commonPct + '</b><em>普通 (' + r.common + ')</em></div>' +
+      '<div><b>' + r.rarePct + '</b><em>稀有 (' + r.rare + ')</em></div>' +
+      '<div><b>' + r.legendPct + '</b><em>传说 (' + r.legend + ')</em></div>' +
+      '<div><b>' + r.topPct + '</b><em>顶级皮肤 (' + r.top + ')</em></div></div>' +
+      '<div class="tiny faint">传说档内部：顶级 ' + r.topInLegendPct + ' · 烫金封面 ' + r.gold + ' 次 · 纪念章 ' + r.medal + ' 次；顶级占总抽数期望 2.25%。</div>';
+  }
+
+  function settingsHTML() {
+    return '<div class="setting-group">' +
+      '<div class="gh"><div class="t">维护</div><div class="s">本机自用入口 · 数据与真实账本隔离</div></div>' +
+      '<button class="setting-row" data-act="maint-open"><span class="l"><span class="t">维护模式</span><span class="s">' +
+      (active ? '已开启 · 当前写入独立数据空间' : '需要口令 · 数据与真实账本隔离') +
+      '</span></span><span class="r">' + (active ? '退出' : '进入') + '</span></button>' +
+      '</div>';
+  }
+
+  const style = document.createElement('style');
+  style.textContent =
+    'body.maint-mode .app-shell{padding-top:36px}' +
+    '#maintBanner{position:fixed;top:0;left:0;right:0;z-index:2000;height:36px;display:flex;align-items:center;gap:10px;padding:0 14px;background:#1C2A22;color:#E8E2CF;font-size:11px;box-shadow:0 2px 10px rgba(0,0,0,.25)}' +
+    '.mn-tag{font-weight:700;letter-spacing:.08em;color:#D8B96F;border:1px solid #D8B96F;border-radius:4px;padding:1px 6px}' +
+    '.mn-sub{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#F3EEE0}' +
+    '.mn-exit{border:1px solid #A9B6AC;background:transparent;color:#F3EEE0;border-radius:999px;font-size:10px;padding:3px 10px;cursor:pointer}' +
+    '.mn-head{font-size:14px;font-weight:600;margin-bottom:10px}' +
+    '.mn-stat{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dashed var(--line);font-size:11px}' +
+    '.mn-stat b{font-size:13px}' +
+    '.mn-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}' +
+    '.mn-input{width:100%;padding:10px 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--field);color:var(--ink);font-size:14px;margin:10px 0}' +
+    '.mn-sim{margin-top:10px;font-size:11px;color:var(--ink-2)}' +
+    '@media (prefers-reduced-motion:reduce){#maintBanner{transition:none}}';
+  document.head.appendChild(style);
+
+  window.Maintenance = {
+    key: DB_KEY,
+    active: function () { return active; },
+    boot: function () { return tokenValid().then(ok => { if (ok) enter(true); return ok; }); },
+    settingsHTML: settingsHTML,
+    openSheet: openSheet,
+    unlock: unlock,
+    exit: exit,
+    simulate: simulate,
+    hasToken: tokenValid
+  };
+
+  window.__v43 = window.__v43 || {};
+  window.__v43.isMaint = function () { return active; };
+  window.__v43.enterMaint = function (pw) { return unlock(pw); };
+  window.__v43.exitMaint = exit;
+  window.__v43.maintState = function () {
+    const db = H.db();
+    return {
+      active: active, key: H.isMaint() ? DB_KEY : 'energy-ledger.v2', token: !!readToken(),
+      tickets: db.scratch.tickets.length, skins: db.skins.unlocked.length,
+      cos: db.skins.unlockedCos.length, granted: !!db.granted
+    };
+  };
+  window.__v43.readMaint = function () { try { return JSON.parse(localStorage.getItem(DB_KEY)); } catch (e) { return null; } };
+
+  window.Maintenance.boot();
 })();
 
 </script>

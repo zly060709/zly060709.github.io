@@ -1,24 +1,13 @@
-/* 能量账本 · 离线缓存
+/* 能量账本 · 离线缓存（v4.4）
    页面与静态资源优先走网络，失败时回退缓存；不缓存 API。
-   首次成功打开后，即使断网也能启动账本。 */
-const CACHE = 'energy-ledger-v4.3.0';
-const ASSETS = [
-  './',
-  './index.html',
-  './assets/app.css',
-  './assets/data.js',
-  './assets/engine.js',
-  './assets/wellness.js',
-  './assets/gender.js',
-  './assets/extras.js',
-  './assets/app.js',
-  './icon.svg',
-  './manifest.webmanifest'
-];
+   只缓存入口与图标，旧版本缓存会在激活时清理。 */
+const CACHE = 'energy-ledger-v4.4.0';
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE)
+      .then(c => c.addAll(['./', './index.html', './icon.svg', './manifest.webmanifest']))
+      .then(() => self.skipWaiting())
   );
 });
 
