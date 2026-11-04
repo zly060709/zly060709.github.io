@@ -911,6 +911,46 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .gap-foot svg { width: 12px; height: 12px; color: var(--amber); flex-shrink: 0; }
 .gap-foot b { color: var(--green); }
 
+/* ---------- 份量参照 ---------- */
+.portion-hint {
+  width: 100%; display: flex; align-items: center; gap: 10px; margin-top: 10px;
+  padding: 10px 12px; border: 1px dashed var(--green-line); border-radius: 12px;
+  background: var(--surface); text-align: left;
+}
+.ph-ic { width: 30px; height: 30px; border-radius: 50%; background: var(--green-soft); color: var(--green-deep); display: grid; place-items: center; flex-shrink: 0; }
+.ph-ic svg { width: 15px; height: 15px; }
+.ph-t { flex: 1; display: flex; flex-direction: column; gap: 1px; font-size: 10.5px; color: var(--ink-3); }
+.ph-t b { font-size: 12.5px; color: var(--ink); }
+.ph-a { font-size: 10.5px; color: var(--green); flex-shrink: 0; }
+.portion-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.portion-tabs button { font-size: 11px; padding: 7px 4px; }
+.hand-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.hand-card { padding: 11px 12px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
+.hand-card .h { font-size: 12.5px; font-weight: 600; }
+.hand-card .g { font-family: var(--serif); font-size: 18px; color: var(--green-deep); margin-top: 2px; }
+.hand-card .s { font-size: 10.5px; color: var(--ink-3); line-height: 1.5; margin-top: 3px; }
+.portion-list { border: 1px solid var(--line); border-radius: 11px; overflow: hidden; }
+.portion-row {
+  width: 100%; display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+  border-bottom: 1px solid var(--line); background: var(--surface); text-align: left;
+  font-size: 11.5px;
+}
+.portion-row:last-child { border-bottom: 0; }
+.portion-row .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.portion-row .u { color: var(--ink-3); font-size: 10.5px; flex-shrink: 0; }
+.portion-row .g { color: var(--green-deep); font-weight: 600; flex-shrink: 0; }
+.portion-row .s { font-size: 9.5px; color: var(--ink-3); flex-shrink: 0; }
+.portion-row .k { font-size: 10.5px; color: var(--ink-3); flex-shrink: 0; }
+.portion-row .a { font-size: 10px; color: var(--green); flex-shrink: 0; }
+.portion-row.catalog:hover { background: var(--surface-2); }
+.portion-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-top: 8px; }
+.portion-suggest .lbl { font-size: 10.5px; color: var(--ink-3); margin-right: 2px; }
+.portion-suggest button {
+  padding: 4px 8px; border: 1px solid var(--green-line); border-radius: 12px;
+  background: var(--green-soft); color: var(--green-deep); font-size: 10.5px;
+}
+.portion-link { display: inline-block; margin-top: 8px; font-size: 10.5px; color: var(--green); background: transparent; }
+
 /* ---------- 控糖 / 控油 / 控盐 ---------- */
 .control-card { margin-top: 12px; padding: 15px 18px; cursor: pointer; }
 .cc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
@@ -3814,6 +3854,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '<section class="quick-card">' +
         quickActions.map(q => '<button class="quick" data-act="' + q[0] + '"><span class="q-ic">' + icon(q[1]) + '</span><span class="q-t">' + q[2] + '</span></button>').join('') +
       '</section>' +
+      '<button class="portion-hint" data-act="open-portion"><span class="ph-ic">' + icon('scale') + '</span><span class="ph-t"><b>不知道吃了多少克？</b><em>用手掌、碗、杯、包装估一份</em></span><span class="ph-a">份量参照 →</span></button>' +
 
       renderGapCard(gap) +
       renderControlCard() +
@@ -4197,6 +4238,155 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       '<div class="sheet-foot"><button class="btn btn-primary" data-act="close-sheet">知道了</button></div>',
       'control'
     );
+  }
+
+  /* ---------- 份量参照 ---------- */
+  const HAND_GUIDE = [
+    ['一个手掌', '约 100g', '肉、鱼、禽：和手掌一样大、差不多厚'],
+    ['一个拳头', '约 150g', '米饭、面条、薯类（熟）'],
+    ['一大把', '约 100g', '绿叶蔬菜，双手捧满'],
+    ['一小把', '约 25g', '坚果、葡萄干、枸杞'],
+    ['一个拇指', '约 15g', '油、黄油、花生酱'],
+    ['一汤匙', '约 15g', '油、沙拉酱；酱油约 15ml'],
+    ['一茶匙', '约 5g', '盐、糖、油'],
+    ['一个杯子', '约 250ml', '牛奶、水、果汁']
+  ];
+
+  const PORTION_CATS = { staple: '主食', protein: '蛋白', veg: '蔬菜', fruit: '水果', drink: '饮品', fat: '油盐糖', snack: '零食' };
+
+  function PU(n, unit, g, cat, note) { return { n: n, unit: unit, g: g, cat: cat, note: note || '' }; }
+
+  const PORTION_UNITS = [
+    PU('米饭', '小碗', 150, 'staple', '约一个拳头'), PU('米饭', '大碗', 250, 'staple', '约两个拳头'),
+    PU('粥', '小碗', 250, 'staple', ''), PU('面条', '一碗', 250, 'staple', ''), PU('米粉', '一碗', 250, 'staple', ''),
+    PU('馒头', '一个', 80, 'staple', ''), PU('花卷', '一个', 80, 'staple', ''), PU('包子', '一个', 80, 'staple', ''),
+    PU('饺子', '一个', 25, 'staple', ''), PU('馄饨', '一个', 20, 'staple', ''), PU('烧麦', '一个', 30, 'staple', ''),
+    PU('面包', '一片', 30, 'staple', ''), PU('吐司', '一片', 35, 'staple', ''), PU('贝果', '一个', 100, 'staple', ''),
+    PU('油条', '一根', 60, 'staple', ''), PU('煎饼', '一个', 150, 'staple', ''), PU('手抓饼', '一张', 100, 'staple', ''),
+    PU('玉米', '一根', 200, 'staple', ''), PU('红薯', '一个', 200, 'staple', ''), PU('粽子', '一个', 150, 'staple', ''),
+    PU('鸡蛋', '一个', 50, 'protein', ''), PU('鸡胸', '一块', 150, 'protein', ''), PU('鸡腿', '一个', 120, 'protein', ''),
+    PU('鸡翅', '一个', 50, 'protein', ''), PU('排骨', '一块', 30, 'protein', ''), PU('牛肉', '一片', 15, 'protein', ''),
+    PU('猪肉丝', '一筷子', 20, 'protein', ''), PU('鱼', '一条', 300, 'protein', '可食部'), PU('鱼片', '一片', 20, 'protein', ''),
+    PU('虾', '一只', 10, 'protein', ''), PU('豆腐', '一块', 300, 'protein', ''), PU('豆干', '一块', 30, 'protein', ''),
+    PU('火腿肠', '一根', 40, 'protein', ''), PU('培根', '一片', 15, 'protein', ''), PU('午餐肉', '一片', 30, 'protein', ''),
+    PU('猪肝', '一片', 20, 'protein', ''), PU('虾滑', '一勺', 30, 'protein', ''), PU('牛肉丸', '一个', 20, 'protein', ''),
+    PU('鱼丸', '一个', 15, 'protein', ''), PU('蟹棒', '一根', 20, 'protein', ''),
+    PU('番茄', '一个', 150, 'veg', ''), PU('黄瓜', '一根', 200, 'veg', ''), PU('青椒', '一个', 80, 'veg', ''),
+    PU('洋葱', '一个', 150, 'veg', ''), PU('胡萝卜', '一根', 100, 'veg', ''), PU('土豆', '一个', 150, 'veg', ''),
+    PU('茄子', '一个', 200, 'veg', ''), PU('西兰花', '一颗', 300, 'veg', ''), PU('白菜', '一片', 30, 'veg', ''),
+    PU('生菜', '一片', 20, 'veg', ''), PU('菠菜', '一把', 100, 'veg', ''), PU('青菜', '一把', 100, 'veg', ''),
+    PU('蘑菇', '一个', 15, 'veg', ''), PU('香菇', '一个', 20, 'veg', ''), PU('木耳', '一朵', 10, 'veg', '泡发'),
+    PU('豆角', '一根', 10, 'veg', ''), PU('花菜', '一朵', 100, 'veg', ''), PU('莲藕', '一段', 100, 'veg', ''),
+    PU('山药', '一段', 150, 'veg', ''), PU('冬瓜', '一块', 100, 'veg', ''), PU('南瓜', '一块', 100, 'veg', ''),
+    PU('苹果', '一个', 200, 'fruit', ''), PU('香蕉', '一根', 120, 'fruit', ''), PU('橘子', '一个', 150, 'fruit', ''),
+    PU('橙子', '一个', 200, 'fruit', ''), PU('梨', '一个', 200, 'fruit', ''), PU('桃', '一个', 200, 'fruit', ''),
+    PU('猕猴桃', '一个', 100, 'fruit', ''), PU('火龙果', '一个', 350, 'fruit', ''), PU('芒果', '一个', 200, 'fruit', ''),
+    PU('西瓜', '一块', 150, 'fruit', ''), PU('葡萄', '一串', 150, 'fruit', ''), PU('草莓', '一颗', 15, 'fruit', ''),
+    PU('蓝莓', '一颗', 2, 'fruit', ''), PU('樱桃', '一颗', 8, 'fruit', ''), PU('荔枝', '一颗', 20, 'fruit', ''),
+    PU('龙眼', '一颗', 10, 'fruit', ''), PU('枣', '一颗', 15, 'fruit', ''), PU('柠檬', '一个', 100, 'fruit', ''),
+    PU('牛油果', '一个', 150, 'fruit', ''), PU('椰子', '一个', 500, 'fruit', '可食部'),
+    PU('牛奶', '一盒', 250, 'drink', ''), PU('酸奶', '一杯', 200, 'drink', ''), PU('豆浆', '一杯', 300, 'drink', ''),
+    PU('咖啡', '一杯', 350, 'drink', ''), PU('奶茶', '一杯', 500, 'drink', ''), PU('可乐', '一罐', 330, 'drink', ''),
+    PU('啤酒', '一瓶', 500, 'drink', ''), PU('白酒', '一两', 50, 'drink', ''), PU('红酒', '一杯', 150, 'drink', ''),
+    PU('果汁', '一杯', 350, 'drink', ''), PU('水', '一杯', 250, 'drink', ''), PU('茶', '一杯', 250, 'drink', ''),
+    PU('气泡水', '一瓶', 500, 'drink', ''), PU('运动饮料', '一瓶', 500, 'drink', ''), PU('椰奶', '一杯', 250, 'drink', ''),
+    PU('油', '一汤匙', 15, 'fat', ''), PU('油', '一茶匙', 5, 'fat', ''), PU('盐', '一平勺', 5, 'fat', ''),
+    PU('糖', '一平勺', 5, 'fat', ''), PU('酱油', '一汤匙', 15, 'fat', ''), PU('沙拉酱', '一汤匙', 15, 'fat', ''),
+    PU('花生酱', '一汤匙', 15, 'fat', ''), PU('坚果', '一小把', 25, 'fat', ''), PU('花生', '10 粒', 15, 'fat', ''),
+    PU('瓜子', '一把', 20, 'fat', ''), PU('核桃', '一个', 10, 'fat', ''), PU('腰果', '一个', 3, 'fat', ''),
+    PU('杏仁', '一颗', 2, 'fat', ''), PU('开心果', '一颗', 1.5, 'fat', ''), PU('芝麻', '一勺', 5, 'fat', ''),
+    PU('薯片', '一小包', 50, 'snack', ''), PU('薯片', '分享装', 110, 'snack', ''), PU('饼干', '一块', 10, 'snack', ''),
+    PU('巧克力', '一块', 10, 'snack', ''), PU('巧克力', '一排', 50, 'snack', ''), PU('糖果', '一颗', 5, 'snack', ''),
+    PU('蛋糕', '一块', 80, 'snack', ''), PU('蛋挞', '一个', 60, 'snack', ''), PU('泡芙', '一个', 30, 'snack', ''),
+    PU('面包', '一个', 100, 'snack', ''), PU('冰淇淋', '一支', 80, 'snack', ''), PU('雪糕', '一支', 70, 'snack', ''),
+    PU('爆米花', '一小桶', 80, 'snack', ''), PU('海苔', '一小包', 10, 'snack', ''), PU('辣条', '一小包', 30, 'snack', '')
+  ];
+
+  function portionForCatalog(d) {
+    const unit = { home: '盘', soup: '碗', staple: '份', snack: '包', drink: '杯', fruit: '份', light: '份', fast: '份', breakfast: '份' }[d.cat] || '份';
+    return { unit: unit, grams: Math.round(d.grams), kcal: Math.round(d.k) };
+  }
+
+  function portionUnits(q) {
+    const query = String(q || '').trim();
+    if (!query) return PORTION_UNITS.slice(0, 24);
+    return PORTION_UNITS.filter(u => u.n.indexOf(query) >= 0 || query.indexOf(u.n) >= 0).slice(0, 30);
+  }
+
+  function unitText(unit) {
+    if (unit === '分享装') return unit;
+    if (/^[一两二三四五六七八九十0-9]/.test(unit)) return unit;
+    return '1' + unit;
+  }
+
+  function renderPortionBody() {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'portion') return '';
+    const q = sd.query || '';
+    if (sd.tab === 'hand') {
+      return '<div class="hand-grid">' + HAND_GUIDE.map(h =>
+        '<div class="hand-card"><div class="h">' + esc(h[0]) + '</div><div class="g">' + esc(h[1]) + '</div><div class="s">' + esc(h[2]) + '</div></div>').join('') + '</div>' +
+        '<div class="notebox">手掌、拳头按普通成年女性估；手大或手小会上下浮动约 20%。这套方法适合日常记录，不需要每顿称重。</div>';
+    }
+    if (sd.tab === 'units') {
+      const rows = portionUnits(q);
+      return '<div class="portion-list">' + (rows.length ? rows.map(u =>
+        '<div class="portion-row"><span class="n">' + esc(u.n) + '</span><span class="u">' + esc(unitText(u.unit)) + '</span><span class="g">≈ ' + u.g + 'g</span>' + (u.note ? '<span class="s">' + esc(u.note) + '</span>' : '') + '</div>').join('')
+        : '<div class="cart-empty">没有匹配的常见单位，试试「碗」「个」「把」「杯」。</div>') + '</div>' +
+        '<div class="notebox">这些是常见家用份量的中位数。同一碗饭，小碗 150g、大碗 250g，差很多；拿不准就选小碗。</div>';
+    }
+    const all = buildDishCatalog();
+    const list = q ? dishSuggestions(q, 'all', 20) : all.slice().sort((a, b) => (b.pop - a.pop) || (a.n.length - b.n.length)).slice(0, 16);
+    return '<div class="portion-list">' + list.map(d => {
+      const p = portionForCatalog(d);
+      return '<button class="portion-row catalog" data-act="portion-dish" data-name="' + esc(d.n) + '"><span class="n">' + esc(d.n) + '</span>' +
+        '<span class="u">1' + p.unit + '</span><span class="g">≈ ' + p.grams + 'g</span><span class="k">' + fmt(p.kcal) + ' kcal</span><span class="a">估算 →</span></button>';
+    }).join('') + '</div>' +
+      '<div class="notebox">这里的“1 份”是该菜/零食的默认份量，可直接点进估算页按这个份量记录。共 ' + fmt(all.length) + ' 条。</div>';
+  }
+
+  function openPortionSheet() {
+    state.sheetData = { type: 'portion', tab: 'hand', query: '' };
+    openSheet(
+      sheetHead('份量参照', '手、碗、杯、包装都能估 · 不用每顿称重') +
+      '<div class="sheet-body">' +
+        '<div class="seg portion-tabs">' +
+          '<button data-act="portion-tab" data-v="hand" class="on">手 / 餐具</button>' +
+          '<button data-act="portion-tab" data-v="units">常见一份</button>' +
+          '<button data-act="portion-tab" data-v="catalog">整份菜 / 零食</button>' +
+        '</div>' +
+        '<div class="search-box" id="portionSearchWrap" style="margin-top:10px;display:none">' + icon('search') + '<input class="input" id="portionSearch" placeholder="搜索食物，如 米饭 / 鸡蛋 / 薯片" autocomplete="off"></div>' +
+        '<div id="portionBody" style="margin-top:10px">' + renderPortionBody() + '</div>' +
+      '</div>' +
+      '<div class="sheet-foot"><button class="btn btn-primary" data-act="close-sheet">知道了</button></div>',
+      'portion'
+    );
+  }
+
+  function setPortionTab(tab) {
+    const sd = state.sheetData;
+    if (!sd || sd.type !== 'portion') return;
+    sd.tab = tab;
+    const seg = $('.portion-tabs');
+    if (seg) $$('button', seg).forEach(b => b.classList.toggle('on', b.dataset.v === tab));
+    const wrap = $('#portionSearchWrap');
+    if (wrap) wrap.style.display = tab === 'hand' ? 'none' : '';
+    const body = $('#portionBody');
+    if (body) body.innerHTML = renderPortionBody();
+  }
+
+  function portionSuggestionsFor(name, grams, isDish) {
+    const q = String(name || '').replace(/（.*?）/g, '').trim();
+    const out = [];
+    if (!isDish) {
+      PORTION_UNITS.filter(u => u.n && (q.indexOf(u.n) === 0 || u.n.indexOf(q) === 0)).slice(0, 4).forEach(u => out.push({ label: unitText(u.unit), grams: u.g, note: u.n }));
+    }
+    if (grams > 0) {
+      out.push({ label: '整份', grams: Math.round(grams), note: '' });
+      out.push({ label: '半份', grams: Math.round(grams / 2), note: '' });
+    }
+    const seen = new Set();
+    return out.filter(x => x.grams > 0 && !seen.has(x.grams) && seen.add(x.grams)).slice(0, 6);
   }
 
   /* ---------- 创新：同上一餐一键复刻 ---------- */
@@ -6066,6 +6256,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
           [['0.75', '小份'], ['1', '常规'], ['1.3', '大份']].map(p =>
             '<button data-act="dish-size" data-v="' + p[0] + '" class="' + (p[0] === '1' ? 'on' : '') + '">' + p[1] + '</button>').join('') +
         '</div><button class="chip dish-rice" id="dishRice" data-act="dish-rice">配一碗米饭</button></div>' +
+        '<button class="portion-link" data-act="open-portion">不知道一份多大？看份量参照 →</button>' +
         '<div id="dishResultBox" style="margin-top:10px">' + renderDishResult(null) + '</div>' +
         '<div class="notebox">常见菜用配料表；扩展菜名按食材和做法估；零食饮料按品类/口味估。实际用油、份量和包装标签会浮动，记入后仍可改份量或删除。</div>' +
       '</div>' +
@@ -6322,6 +6513,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
     if (!e) return;
     const hasPer100 = !!e.per100;
     const grams = e.grams || 100;
+    const pSug = hasPer100 ? portionSuggestionsFor(e.name, grams, e.source === 'dish') : [];
     state.sheetData = { type: 'entry', id: id, meal: e.meal, conf: E.confOf(e) };
     const srcLabel = { lib: '食物库', manual: '手动', ai: 'AI 识别', combo: '组合', dish: '菜名估算', legacy: '旧版导入', custom: '自定义' }[e.source] || '记录';
     openSheet(
@@ -6337,6 +6529,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
             '</div></div>' +
           '<div class="field"><label>热量（自动）</label><div class="input input-num" style="display:flex;align-items:center;justify-content:center" id="eKcalView">' + fmt(e.kcal) + ' kcal</div></div></div>' +
           '<div class="portion-chips">' + [50, 100, 150, 200, 250].map(g => '<button data-act="entry-grams" data-v="' + g + '">' + g + 'g</button>').join('') + '</div>' +
+          (pSug.length ? '<div class="portion-suggest"><span class="lbl">不知道多少克？</span>' + pSug.map(x => '<button data-act="entry-portion" data-g="' + x.grams + '">' + esc(x.label) + ' · ' + x.grams + 'g</button>').join('') + '</div>' : '') +
           '<div class="notebox">每 100g：' + Math.round(e.per100.kcal) + ' kcal · 蛋白 ' + round1(e.per100.p) + 'g · 碳水 ' + round1(e.per100.c) + 'g · 脂肪 ' + round1(e.per100.f) + 'g</div>' +
           (e.components && e.components.length ? '<div class="notebox entry-comps">估算构成：' + e.components.map(c => esc(c.name) + ' ' + c.grams + 'g').join(' · ') + '<br>这是按菜名拆出的配料，改份量会按比例换算。</div>' : '') +
           (e.control ? '<div class="notebox entry-comps">三控估算：添加糖 ' + round1(e.control.sugar) + 'g · 烹调油 ' + round1(e.control.oil) + 'g · 盐 ' + round1(e.control.salt) + 'g（钠 ' + Math.round(e.control.sodium) + 'mg）</div>' : '')
@@ -8590,6 +8783,17 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       case 'next-log': logNextBite(); break;
       case 'repeat-meal': repeatMeal(el.dataset.meal); break;
       case 'open-control': openControlSheet(); break;
+      case 'open-portion': openPortionSheet(); break;
+      case 'portion-tab': setPortionTab(el.dataset.v || 'hand'); break;
+      case 'portion-dish': openDishSheet({ date: E.todayKey(), meal: E.guessMeal(), query: el.dataset.name }); break;
+      case 'entry-portion': {
+        const gi = $('#eGrams');
+        if (gi) {
+          gi.value = el.dataset.g;
+          gi.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        break;
+      }
       case 'control-tab': {
         if (!sd) break;
         sd.tab = el.dataset.v || 'sugar';
@@ -8985,6 +9189,14 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
       if (state.sheetData && state.sheetData.type === 'dish') {
         state.sheetData.query = t.value;
         refreshDishSuggestions();
+      }
+      return;
+    }
+    if (t.id === 'portionSearch') {
+      if (state.sheetData && state.sheetData.type === 'portion') {
+        state.sheetData.query = t.value;
+        const body = $('#portionBody');
+        if (body) body.innerHTML = renderPortionBody();
       }
       return;
     }
