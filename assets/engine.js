@@ -328,12 +328,25 @@
     return Math.round(Number(e.kcal) || 0);
   }
 
-  function streak(entries, today) {
+  /* 连续达标天数。opts.skipDays：请假条 / 已批准放纵日，跳过但不计数；
+     opts.okDay(day)：该日是否算达标（默认只要有记录就算）。 */
+  function streak(entries, today, opts) {
+    const o = opts || {};
     const days = new Set((entries || []).map(e => e.date || e.dateKey));
-    let k = days.has(today) ? today : addDays(today, -1);
-    if (!days.has(k)) return 0;
-    let n = 0;
-    while (days.has(k) && n < 999) { n++; k = addDays(k, -1); }
+    const skip = new Set(o.skipDays || []);
+    const okDay = typeof o.okDay === 'function' ? o.okDay : null;
+    let k = (days.has(today) || skip.has(today)) ? today : addDays(today, -1);
+    if (!days.has(k) && !skip.has(k)) return 0;
+    let n = 0, guard = 0;
+    while (guard++ < 999) {
+      if (days.has(k)) {
+        if (okDay && !okDay(k)) break;
+        n++;
+        k = addDays(k, -1);
+      } else if (skip.has(k)) {
+        k = addDays(k, -1);
+      } else break;
+    }
     return n;
   }
 

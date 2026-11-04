@@ -1,0 +1,12 @@
+{
+  "theme": "sakura",
+  "mode": "petal",
+  "fps": 30,
+  "opacity": 0.55,
+  "particles": { "far": 14, "mid": 16, "near": 8 },
+  "speed": { "far": 0.22, "mid": 0.5, "near": 0.9 },
+  "sway": { "far": 8, "mid": 16, "near": 26 },
+  "size": { "far": 2.4, "mid": 3.6, "near": 5.2 },
+  "colors": ["#F7C4D4", "#F2A9BF", "#FBE0E7"],
+  "vignette": 0.16
+}

@@ -1,0 +1,13 @@
+{
+  "theme": "neon",
+  "mode": "rain",
+  "fps": 30,
+  "opacity": 0.6,
+  "particles": { "drops": 32, "signs": 3 },
+  "angle": 16,
+  "fallSpeed": 0.85,
+  "flicker": 0.9,
+  "reflection": 0.22,
+  "colors": ["#C77DFF", "#FF6FB5", "#7AE7FF"],
+  "vignette": 0.22
+}

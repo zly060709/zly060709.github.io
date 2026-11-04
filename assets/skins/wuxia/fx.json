@@ -1,0 +1,11 @@
+{
+  "theme": "wuxia",
+  "mode": "ink",
+  "fps": 30,
+  "opacity": 0.35,
+  "particles": { "blooms": 6, "motes": 12 },
+  "bloomPeriod": 14,
+  "swordEvery": 9,
+  "colors": ["#2B2A26", "#4A463E"],
+  "vignette": 0.24
+}

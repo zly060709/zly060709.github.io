@@ -1,37 +1,52 @@
-/* 能量账本 · 离线缓存
-   页面与静态资源优先走网络，失败时回退缓存；不缓存 API。
-   皮肤包（assets/skins/）单独走 cache-first，写入 el-skins-v2，避免旧缓存卡住新版本。 */
-const CACHE = 'energy-ledger-v5.0.2';
-const SKIN_CACHE = 'el-skins-v2';
-const ASSETS = [
+/* 能量账本 · 离线缓存（v5.0.3 多文件版）
+   安装时一次预缓存入口、全部 JS/CSS、五套皮肤包与图标；
+   页面/静态资源网络优先，断网回退缓存；version.json 网络优先、缓存兜底。 */
+const CACHE = 'energy-ledger-v5.0.3';
+const PRECACHE = [
   './',
   './index.html',
-  './assets/app.css',
-  './assets/skins-v43.css',
-  './assets/skins-v5.css',
-  './assets/data.js',
-  './assets/engine.js',
-  './assets/wellness.js',
-  './assets/gender.js',
-  './assets/extras.js',
-  './assets/skin-fx.js',
-  './assets/codes.js',
-  './assets/announce.js',
-  './assets/app.js',
+  './version.json',
   './icon.svg',
-  './manifest.webmanifest'
+  './manifest.webmanifest',
+  './assets/app.css?v=5.0.3',
+  './assets/skins-v43.css?v=5.0.3',
+  './assets/skins-v5.css?v=5.0.3',
+  './assets/data.js?v=5.0.3',
+  './assets/engine.js?v=5.0.3',
+  './assets/wellness.js?v=5.0.3',
+  './assets/gender.js?v=5.0.3',
+  './assets/extras.js?v=5.0.3',
+  './assets/foodlib.js?v=5.0.3',
+  './assets/foodlib-data.js?v=5.0.3',
+  './assets/skin-fx.js?v=5.0.3',
+  './assets/codes.js?v=5.0.3',
+  './assets/announce.js?v=5.0.3',
+  './assets/trip.js?v=5.0.3',
+  './assets/app.js?v=5.0.3',
+  './assets/maint-credential.js?v=5.0.3',
+  './assets/maint.js?v=5.0.3',
+  './assets/skins/sakura/key.webp',
+  './assets/skins/sakura/fx.json',
+  './assets/skins/galaxy/key.webp',
+  './assets/skins/galaxy/fx.json',
+  './assets/skins/neon/key.webp',
+  './assets/skins/neon/fx.json',
+  './assets/skins/wuxia/key.webp',
+  './assets/skins/wuxia/fx.json',
+  './assets/skins/fireworks/key.webp',
+  './assets/skins/fireworks/fx.json'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== CACHE && k !== SKIN_CACHE).map(k => caches.delete(k))))
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -43,25 +58,35 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith('/api/')) return;
 
-  // 版本公告必须走网络：每次都带 cache-busting 参数，且不写入缓存
+  // 版本公告：先走网络，失败回退缓存（断网不报错）
   if (url.pathname.endsWith('/version.json')) {
-    event.respondWith(fetch(req));
+    event.respondWith(
+      fetch(req)
+        .then(res => {
+          if (res && res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
+          }
+          return res;
+        })
+        .catch(() => caches.match(req, { ignoreSearch: true }))
+    );
     return;
   }
 
+  // 皮肤包：缓存优先（已预缓存，断网直接可用），未命中再回源并写入
   if (url.pathname.indexOf('/assets/skins/') >= 0) {
-    // 皮肤包 cache-first：下载过的断网可用；未下载的才回源
     event.respondWith(
-      caches.open(SKIN_CACHE).then(c => c.match(req, { ignoreSearch: true }).then(hit => {
+      caches.match(req, { ignoreSearch: true }).then(hit => {
         if (hit) return hit;
         return fetch(req).then(res => {
           if (res && res.ok) {
             const copy = res.clone();
-            c.put(req, copy).catch(() => {});
+            caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
           }
           return res;
         });
-      })).catch(() => fetch(req))
+      })
     );
     return;
   }
@@ -72,7 +97,7 @@ self.addEventListener('fetch', event => {
         .then(res => {
           if (res && res.ok) {
             const copy = res.clone();
-            caches.open(CACHE).then(c => c.put('./index.html', copy));
+            caches.open(CACHE).then(c => c.put('./index.html', copy)).catch(() => {});
           }
           return res;
         })
@@ -89,10 +114,10 @@ self.addEventListener('fetch', event => {
       .then(res => {
         if (res && res.ok) {
           const copy = res.clone();
-          caches.open(CACHE).then(c => c.put(req, copy));
+          caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
         }
         return res;
       })
-      .catch(() => caches.match(req).then(hit => hit || new Response('', { status: 504 })))
+      .catch(() => caches.match(req, { ignoreSearch: true }).then(hit => hit || new Response('', { status: 504 })))
   );
 });

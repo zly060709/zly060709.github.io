@@ -1,0 +1,12 @@
+{
+  "theme": "galaxy",
+  "mode": "starfield",
+  "fps": 30,
+  "opacity": 0.7,
+  "particles": { "stars": 34, "nebula": 2 },
+  "twinklePeriod": 3.4,
+  "meteorEvery": 12,
+  "parallax": 0.22,
+  "colors": ["#EAF1FF", "#A9B8FF", "#7E9CF0"],
+  "vignette": 0.2
+}
