@@ -1,0 +1,12 @@
+{
+  "theme": "a-aurora",
+  "mode": "wave",
+  "fps": 30,
+  "opacity": 0.8,
+  "vignette": 0.12,
+  "colors": [
+    "#6CE5B1"
+  ],
+  "amp": 0.1,
+  "bands": 3
+}

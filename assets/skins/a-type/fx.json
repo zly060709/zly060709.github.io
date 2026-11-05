@@ -1,0 +1,10 @@
+{
+  "theme": "a-type",
+  "mode": "none",
+  "fps": 30,
+  "opacity": 0,
+  "vignette": 0.12,
+  "colors": [
+    "#A63A2B"
+  ]
+}

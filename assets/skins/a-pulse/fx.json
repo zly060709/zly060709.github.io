@@ -1,0 +1,11 @@
+{
+  "theme": "a-pulse",
+  "mode": "pulse",
+  "fps": 30,
+  "opacity": 0.8,
+  "vignette": 0.12,
+  "colors": [
+    "#FF5C6C"
+  ],
+  "amp": 0.06
+}

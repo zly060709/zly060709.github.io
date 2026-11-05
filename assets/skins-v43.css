@@ -702,3 +702,470 @@
 .gal-head .tiny, .gal-info .tiny, .notebox, .rw-note, .rw-code-head em, .sheet-sub .tiny { color: var(--ink-2); }
 .gp-paper span { color: var(--ink); }
 
+
+/* ============================================================
+   v5.3 · 十套新皮肤（数据驱动 / 材质 / 交互触发）
+   明暗两套 token；top 皮肤一律带真实底图（--skin-art，按需下载）。
+   对比度目标 ≥4.5:1：正文 ink 对 paper 最低约 5.5:1（a-polar 黄昏档）。
+   ============================================================ */
+
+/* ---------- 深纸组：潮汐 / 极光餐盘 / 静默电台 / 脉搏 / 星图 ---------- */
+[data-skin="a-tidal"], [data-theme="dark"][data-skin="a-tidal"] {
+  --paper: #0B3B4C; --paper-deep: #082A37;
+  --surface: #10465A; --surface-2: #145063; --field: #124C5F;
+  --ink: #E8F5F2; --ink-2: #BBD9D3; --ink-3: #8FB4AD;
+  --line: #1D5A6E; --line-2: #2A6E82;
+  --green: #37C2B0; --green-deep: #5FD9C9; --green-soft: #0F3F44; --green-line: #2E7C74;
+  --amber: #F2B366; --amber-soft: #3A3323; --red: #E88A7A; --red-soft: #3A2723; --seal: #37C2B0;
+  --serif: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+[data-skin="a-aurora"], [data-theme="dark"][data-skin="a-aurora"] {
+  --paper: #10162E; --paper-deep: #0B1022;
+  --surface: #161D3A; --surface-2: #1C2447; --field: #1A2142;
+  --ink: #EAEAF5; --ink-2: #BFC2DE; --ink-3: #8F93B8;
+  --line: #232C52; --line-2: #303A66;
+  --green: #6CE5B1; --green-deep: #8FEDC5; --green-soft: #1A2C3C; --green-line: #37675A;
+  --amber: #FFB86B; --amber-soft: #342B20; --red: #E88A9A; --red-soft: #35232B; --seal: #A78BFA;
+  --serif: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+[data-skin="a-radio"], [data-theme="dark"][data-skin="a-radio"] {
+  --paper: #0E1712; --paper-deep: #0A110D;
+  --surface: #14201A; --surface-2: #1A2820; --field: #17241C;
+  --ink: #E8F5EC; --ink-2: #BCD8C6; --ink-3: #8BB098;
+  --line: #22352A; --line-2: #2F4739;
+  --green: #8FE3A8; --green-deep: #ACEDBE; --green-soft: #16301F; --green-line: #3A6B4B;
+  --amber: #D6C36B; --amber-soft: #33301F; --red: #E88A7A; --red-soft: #352622; --seal: #8FE3A8;
+  --serif: ui-monospace, "SFMono-Regular", Consolas, "Courier New", monospace;
+}
+[data-skin="a-pulse"], [data-theme="dark"][data-skin="a-pulse"] {
+  --paper: #12161C; --paper-deep: #0D1015;
+  --surface: #181D25; --surface-2: #1E242E; --field: #1B212A;
+  --ink: #E8EEF5; --ink-2: #BAC5D4; --ink-3: #8794A6;
+  --line: #262E3A; --line-2: #333D4C;
+  --green: #6FE3D0; --green-deep: #93ECDD; --green-soft: #16302B; --green-line: #35695F;
+  --amber: #FFB86B; --amber-soft: #352B20; --red: #FF5C6C; --red-soft: #3A2026; --seal: #FF5C6C;
+  --serif: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+[data-skin="a-chart"], [data-theme="dark"][data-skin="a-chart"] {
+  --paper: #0A1024; --paper-deep: #070B1A;
+  --surface: #101730; --surface-2: #151E3C; --field: #131B38;
+  --ink: #E8EEFF; --ink-2: #BCC7E8; --ink-3: #8A96C2;
+  --line: #202B52; --line-2: #2C3A6B;
+  --green: #8FB0FF; --green-deep: #ADC6FF; --green-soft: #17234A; --green-line: #3A4E8C;
+  --amber: #F5C86B; --amber-soft: #342C1C; --red: #E88AA0; --red-soft: #34232E; --seal: #F5C86B;
+  --serif: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+/* 深纸组共用：底图压暗，正文永远坐在不透明卡片上 */
+[data-skin="a-tidal"] body, [data-skin="a-aurora"] body, [data-skin="a-radio"] body,
+[data-skin="a-pulse"] body, [data-skin="a-chart"] body,
+[data-theme="dark"][data-skin="a-tidal"] body, [data-theme="dark"][data-skin="a-aurora"] body,
+[data-theme="dark"][data-skin="a-radio"] body, [data-theme="dark"][data-skin="a-pulse"] body,
+[data-theme="dark"][data-skin="a-chart"] body {
+  background-color: var(--paper);
+  background-image: linear-gradient(180deg, rgba(8,12,16,.66), rgba(6,9,12,.86)), var(--skin-art);
+  background-size: cover, cover;
+  background-position: center top, center top;
+  background-attachment: fixed, fixed;
+}
+[data-skin="a-tidal"] .page-title, [data-skin="a-tidal"] .page-sub,
+[data-skin="a-aurora"] .page-title, [data-skin="a-aurora"] .page-sub,
+[data-skin="a-radio"] .page-title, [data-skin="a-radio"] .page-sub,
+[data-skin="a-pulse"] .page-title, [data-skin="a-pulse"] .page-sub,
+[data-skin="a-chart"] .page-title, [data-skin="a-chart"] .page-sub {
+  background: rgba(8,12,16,.78); border-radius: 8px; padding: 3px 9px; display: inline-block;
+}
+/* 静默电台：LOCAL ONLY 直接写在副标题后面——隐私主张变成界面的一部分 */
+html[data-skin="a-radio"] .page-sub::after {
+  content: " · LOCAL ONLY · NO SYNC";
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 10px; letter-spacing: .1em; color: var(--ink-3);
+}
+
+/* ---------- 浅纸组：菌群 / 玻璃器皿 / 活字 / 液态金属（+ 各自暗色变体） ---------- */
+[data-skin="a-culture"] {
+  --paper: #F6F1E4; --paper-deep: #EAE3D2;
+  --surface: #FBF8EF; --surface-2: #F9F4E9; --field: #FAF6EC;
+  --ink: #2F4A38; --ink-2: #5C7263; --ink-3: #84958A;
+  --line: #E2DBC8; --line-2: #CFC7B1;
+  --green: #2F6B4F; --green-deep: #265941; --green-soft: #E3EBDD; --green-line: #C2D2BC;
+  --amber: #C8A24A; --amber-soft: #F0E8D2; --red: #A64A3C; --red-soft: #EDDCD4; --seal: #C8A24A;
+  --serif: "Kaiti SC", KaiTi, "STKaiti", serif;
+}
+[data-skin="a-glass"] {
+  --paper: #E9F1F2; --paper-deep: #DCE7E8;
+  --surface: #F4FAFA; --surface-2: #EFF7F7; --field: #F2F9F9;
+  --ink: #1B3A42; --ink-2: #4E6B73; --ink-3: #759095;
+  --line: #D5E2E3; --line-2: #BFD2D4;
+  --green: #3E8894; --green-deep: #33707A; --green-soft: #DFEDEC; --green-line: #BBD6D6;
+  --amber: #B1773B; --amber-soft: #E8EDE6; --red: #A64A3C; --red-soft: #E8DEDE; --seal: #3E8894;
+  --serif: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+[data-skin="a-type"] {
+  --paper: #EFE9D8; --paper-deep: #E4DCC7;
+  --surface: #F7F2E5; --surface-2: #F4EEDF; --field: #F6F0E2;
+  --ink: #2B2A26; --ink-2: #5C5A52; --ink-3: #857F72;
+  --line: #DED6C0; --line-2: #C9C0A8;
+  --green: #8A6B45; --green-deep: #715839; --green-soft: #E8E0CC; --green-line: #D4C7AB;
+  --amber: #B1773B; --amber-soft: #ECDFCC; --red: #A63A2B; --red-soft: #EDD8D0; --seal: #A63A2B;
+  --serif: "Songti SC", "Noto Serif SC", "SimSun", serif;
+}
+[data-skin="a-chrome"] {
+  --paper: #D8DDE3; --paper-deep: #CBD1D8;
+  --surface: #E8ECEF; --surface-2: #E2E7EA; --field: #E6EAED;
+  --ink: #22262E; --ink-2: #4E555F; --ink-3: #737A85;
+  --line: #C2C9D0; --line-2: #ABB4BD;
+  --green: #3E7A88; --green-deep: #336470; --green-soft: #DFE8E8; --green-line: #B8CDD1;
+  --amber: #8A6B2F; --amber-soft: #E4E2D8; --red: #A64238; --red-soft: #E8DCD8; --seal: #3E7A88;
+  --serif: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+/* 浅纸组暗色变体（极昼极夜例外：夜间档即深空） */
+[data-theme="dark"][data-skin="a-culture"], [data-theme="dark"][data-skin="a-glass"],
+[data-theme="dark"][data-skin="a-type"], [data-theme="dark"][data-skin="a-chrome"] {
+  --paper: #232523; --paper-deep: #191B19;
+  --surface: #313330; --surface-2: #3A3C39; --field: #353734;
+  --ink: #DEDAD0; --ink-2: #A6A59D; --ink-3: #7C7C75;
+  --line: #41423E; --line-2: #52524E;
+  --amber: #D6A36B; --amber-soft: #3B372C; --red: #D98878; --red-soft: #3C332E;
+}
+[data-theme="dark"][data-skin="a-culture"] { --green: #9DBB8F; --green-deep: #B0CBA4; --green-soft: #2B3626; --green-line: #67725B; --seal: #C8A24A; }
+[data-theme="dark"][data-skin="a-glass"] { --green: #93C9CE; --green-deep: #AED8DB; --green-soft: #24393B; --green-line: #577679; --seal: #93C9CE; }
+[data-theme="dark"][data-skin="a-type"] { --green: #C0A982; --green-deep: #CFBB9A; --green-soft: #38321F; --green-line: #75684C; --seal: #D96A55; }
+[data-theme="dark"][data-skin="a-chrome"] { --green: #9FBFC7; --green-deep: #B8D2D8; --green-soft: #2A3A3E; --green-line: #5C7478; --seal: #9FBFC7; }
+
+/* 浅纸组底图：轻遮罩，底图只做氛围 */
+[data-skin="a-culture"] body, [data-skin="a-glass"] body, [data-skin="a-type"] body, [data-skin="a-chrome"] body {
+  background-color: var(--paper);
+  background-image: linear-gradient(180deg, rgba(250,248,240,.62), rgba(250,248,240,.82)), var(--skin-art);
+  background-size: cover, cover;
+  background-position: center top, center top;
+  background-attachment: fixed, fixed;
+}
+
+/* ---------- 极昼极夜：时间即特效（data-dayphase 由 app.js 按本机时间写入） ---------- */
+[data-skin="a-polar"] {
+  --paper: #7FB6D9; --paper-deep: #6FA8CE;
+  --surface: #F2F7FA; --surface-2: #EAF2F6; --field: #EFF5F8;
+  --ink: #17324A; --ink-2: #43617A; --ink-3: #6A8499;
+  --line: #C2D8E6; --line-2: #A6C4D8;
+  --green: #2E7A8A; --green-deep: #266572; --green-soft: #DDEBEC; --green-line: #AFD2D6;
+  --amber: #B1773B; --amber-soft: #F0E4D4; --red: #A64A3C; --red-soft: #EDDAD4; --seal: #F09A76;
+  --serif: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+[data-skin="a-polar"] body {
+  background-color: var(--paper);
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+}
+[data-skin="a-polar"][data-dayphase="dawn"] body {
+  background-image: linear-gradient(180deg, #F6E3BE 0%, #F4D9A8 34%, #BFD9E4 100%);
+}
+[data-skin="a-polar"][data-dayphase="noon"] body {
+  background-image: linear-gradient(180deg, #A8CCE4 0%, #7FB6D9 42%, #DCEBF2 100%);
+}
+[data-skin="a-polar"][data-dayphase="dusk"] body {
+  background-image: linear-gradient(180deg, #F6C9A8 0%, #F09A76 40%, #8FA8C4 100%);
+}
+[data-skin="a-polar"][data-dayphase="night"] body {
+  background-image: linear-gradient(180deg, #16233F 0%, #101C33 55%, #0A1220 100%);
+}
+/* 夜间档整体翻成深空 token（等同一套深色皮肤） */
+[data-skin="a-polar"][data-dayphase="night"], [data-theme="dark"][data-skin="a-polar"] {
+  --paper: #101C33; --paper-deep: #0B1526;
+  --surface: #182640; --surface-2: #1E2E4C; --field: #1A2944;
+  --ink: #E6EDF8; --ink-2: #B4C4DE; --ink-3: #8496B4;
+  --line: #24365A; --line-2: #304470;
+  --green: #7FB6D9; --green-deep: #9CCAE6; --green-soft: #1A2C44; --green-line: #3E5F84;
+  --seal: #F09A76;
+}
+[data-skin="a-polar"][data-dayphase="dusk"] .page-title,
+[data-skin="a-polar"][data-dayphase="dusk"] .page-sub {
+  background: rgba(255,248,240,.88);
+}
+
+/* ---------- 玻璃器皿：材质即特效（backdrop-filter 磨砂 + 指针高光跟走） ---------- */
+[data-skin="a-glass"] .card, [data-skin="a-glass"] .hero, [data-skin="a-glass"] .quick-card {
+  background: rgba(248, 252, 252, .66);
+  backdrop-filter: blur(12px) saturate(1.08);
+  -webkit-backdrop-filter: blur(12px) saturate(1.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 8px 22px rgba(27,58,66,.10);
+  border-color: rgba(255,255,255,.75);
+}
+[data-skin="a-glass"] body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(340px 340px at var(--fx-gx, 70%) var(--fx-gy, 20%), rgba(168,218,220,.24), transparent 70%);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  [data-skin="a-glass"] .card, [data-skin="a-glass"] .hero, [data-skin="a-glass"] .quick-card { background: var(--surface); }
+}
+[data-theme="dark"][data-skin="a-glass"] .card, [data-theme="dark"][data-skin="a-glass"] .hero,
+[data-theme="dark"][data-skin="a-glass"] .quick-card {
+  background: rgba(49, 51, 48, .72);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 8px 22px rgba(0,0,0,.3);
+}
+
+/* ---------- 活字·压印：交互触发——数字是凸版活字，朱砂只用在印章 ---------- */
+[data-skin="a-type"] .balance-num {
+  text-shadow: 0 1px 0 rgba(255,255,255,.7), 0 -1px 1px rgba(43,42,38,.28);
+}
+[data-skin="a-type"] .ledger-stamp {
+  box-shadow: 0 1px 0 rgba(255,255,255,.6), inset 0 -1px 1px rgba(43,42,38,.2);
+}
+[data-skin="a-type"] .lg-add, [data-skin="a-type"] .fe-main { letter-spacing: .04em; }
+
+/* ---------- 液态金属：conic-gradient 反光随滚动走 ----------
+   用 CSS 滚动驱动动画（animation-timeline: scroll(root)）驱动 --fx-shift，
+   零 JS、零事件监听；不支持的浏览器回退为 40° 静态反光。 */
+@property --fx-shift { syntax: "<angle>"; inherits: false; initial-value: 40deg; }
+[data-skin="a-chrome"] .hero { position: relative; overflow: hidden; }
+[data-skin="a-chrome"] .hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: conic-gradient(from var(--fx-shift, 40deg) at 50% -20%,
+    rgba(255,255,255,0) 0deg, rgba(255,255,255,.5) 40deg, rgba(185,240,228,.35) 80deg,
+    rgba(255,255,255,0) 130deg, rgba(255,255,255,.35) 220deg, rgba(255,255,255,0) 300deg);
+  mix-blend-mode: screen; opacity: .8;
+  animation: chrome-shift linear both;
+  animation-timeline: scroll(root);
+}
+@keyframes chrome-shift { from { --fx-shift: 0deg; } to { --fx-shift: 360deg; } }
+[data-skin="a-chrome"] .quick-card, [data-skin="a-chrome"] .card {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 24px rgba(34,38,46,.12);
+}
+
+/* ---------- v5.3 图鉴：未解锁 top 卡片的局部揭示（灰度底 + 一条彩色切片） ---------- */
+.gal-card.locked .gc-thumb { position: relative; }
+.gal-card.locked .gc-thumb::after {
+  content: ""; position: absolute; inset: 0;
+  -webkit-backdrop-filter: grayscale(1) brightness(.82);
+  backdrop-filter: grayscale(1) brightness(.82);
+  -webkit-mask-image: linear-gradient(120deg, #000 0 30%, transparent 30%);
+  mask-image: linear-gradient(120deg, #000 0 30%, transparent 30%);
+  pointer-events: none;
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .gal-card.locked .gc-thumb { filter: grayscale(1) brightness(.85); opacity: .55; }
+  .gal-card.locked .gc-thumb::after { display: none; }
+}
+
+/* ---------- v5.3 第一笔入口（空账日的大按钮 + 三个一键模板） ---------- */
+.first-entry {
+  margin-top: 14px; padding: 16px 14px 13px;
+  border: 1px solid var(--green-line, #C2D2BC); border-radius: 18px;
+  background: var(--green-soft, #E3EBDD);
+}
+.fe-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 11px; }
+.fe-head b { font-size: 16px; font-weight: 800; color: var(--ink); }
+.fe-head span { font-size: 11.5px; color: var(--ink-2); }
+.fe-main {
+  display: flex; align-items: center; gap: 11px; width: 100%;
+  padding: 15px 16px; border: none; border-radius: 14px; cursor: pointer;
+  background: var(--green, #2F6B4F); color: #FFFDF6; text-align: left;
+}
+[data-theme="dark"] .fe-main { color: #0F1B14; }
+.fe-main svg { width: 22px; height: 22px; flex: 0 0 auto; }
+.fe-main .t { font-size: 16px; font-weight: 800; }
+.fe-main .s { margin-left: auto; font-size: 11px; opacity: .92; }
+.fe-quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 9px; }
+.fe-chip {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  padding: 10px 11px; border: 1px solid var(--line-2); border-radius: 12px; cursor: pointer;
+  background: var(--surface); color: var(--ink); text-align: left; min-height: 62px;
+}
+.fe-chip:active { transform: translateY(1px); }
+.fe-chip svg { width: 16px; height: 16px; color: var(--green-deep, var(--green)); margin-bottom: 3px; }
+.fe-chip span { font-size: 13.5px; font-weight: 700; }
+.fe-chip em { font-style: normal; font-size: 10.5px; color: var(--ink-3); }
+.fe-note { margin-top: 9px; font-size: 11px; line-height: 1.6; color: var(--ink-2); }
+@media (max-width: 360px) { .fe-quick { grid-template-columns: 1fr 1fr; } .fe-chip:last-child { grid-column: span 2; } }
+@media (prefers-reduced-motion: reduce) { .fe-chip:active { transform: none; } }
+
+/* ============================================================
+   v5.3 · 25 套普通皮肤的材质差异化
+   同一套色板不变（对比度不受影响），只把「纸面质感」按材质分家：
+   织物 / 金属 / 玻璃冰面 / 陶土 / 竹木 / 瓷开片 / 账簿栏线 / 新闻纸……
+   稀有度不再是「换个角度的 repeating-linear-gradient」。
+   全部 ≤6% 透明度静态纹理，零动画开销。
+   ============================================================ */
+
+/* 灰蓝·表格 → 经典账簿：红栏线 + 双细线（真正的 ledger ruling） */
+[data-skin="greyblue"] body {
+  background-image:
+    linear-gradient(90deg, transparent 0 44px, rgba(166,74,60,.14) 44px 45.5px, transparent 45.5px),
+    repeating-linear-gradient(0deg, rgba(70,90,110,.05) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(0deg, rgba(70,90,110,.09) 0 1px, transparent 1px 104px),
+    radial-gradient(1100px 520px at 52% -8%, #FAFBFC, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #DDE5EA, transparent 65%);
+}
+
+/* 亚麻·手账 → 双向织纹：经纬线 + 缝线虚线卡边 */
+[data-skin="linen"] body {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(120,100,70,.05) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgba(120,100,70,.045) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(45deg, rgba(120,100,70,.028) 0 2px, transparent 2px 8px),
+    radial-gradient(1100px 520px at 52% -8%, #FBF8F3, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #E9E0D1, transparent 65%);
+}
+[data-skin="linen"] .card { border-style: solid; box-shadow: inset 0 0 0 1px rgba(120,100,70,.08), 0 0 0 4px rgba(120,100,70,.03); }
+
+/* 石榴·朱红 → 宣纸洒金：朱砂细点 + 纤维 */
+[data-skin="pom"] body {
+  background-image:
+    radial-gradient(rgba(166,58,43,.055) 1px, transparent 1.4px),
+    radial-gradient(rgba(166,58,43,.035) .8px, transparent 1.2px),
+    repeating-linear-gradient(92deg, rgba(80,60,40,.022) 0 1px, transparent 1px 5px),
+    radial-gradient(1100px 520px at 52% -8%, #FDF8F7, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #F1DBD7, transparent 65%);
+  background-size: 26px 26px, 17px 17px, auto, auto, auto;
+}
+
+/* 橄榄·军绿 → 粗帆布：双向粗织 + 打补丁角 */
+[data-skin="olive"] body {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(90,100,60,.05) 0 2px, transparent 2px 7px),
+    repeating-linear-gradient(90deg, rgba(90,100,60,.045) 0 2px, transparent 2px 7px),
+    radial-gradient(1100px 520px at 52% -8%, #F9FAF4, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #DFE3D2, transparent 65%);
+}
+
+/* 雾紫·薰衣草 → 缎面：大跨距斜向光带（缎光泽，非点阵） */
+[data-skin="lavender"] body {
+  background-image:
+    linear-gradient(115deg, transparent 0 18%, rgba(122,95,158,.05) 24% 32%, transparent 40% 58%, rgba(122,95,158,.04) 66% 72%, transparent 80%),
+    radial-gradient(rgba(80,90,80,.05) .7px, transparent .8px),
+    radial-gradient(1100px 520px at 52% -8%, #FBFAFD, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #E8E1EF, transparent 65%);
+  background-size: auto, 9px 9px, auto, auto;
+}
+
+/* 赭石·陶土 → 拉坯轮纹：同心弧圈 */
+[data-skin="ochre"] body {
+  background-image:
+    repeating-radial-gradient(circle at 18% 108%, rgba(90,70,40,.05) 0 2px, transparent 2px 18px),
+    repeating-linear-gradient(45deg, rgba(90,70,40,.028) 0 2px, transparent 2px 9px),
+    radial-gradient(1100px 520px at 52% -8%, #FCF9F5, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #EEE0D4, transparent 65%);
+}
+
+/* 冰川·银灰 → 冰裂：三组细直线交错 + 冰面冷光（静态磨砂感） */
+[data-skin="glacier"] body {
+  background-image:
+    linear-gradient(74deg, transparent 0 31%, rgba(92,131,152,.06) 31.2% 31.6%, transparent 32% 67%, rgba(92,131,152,.05) 67.2% 67.5%, transparent 68%),
+    linear-gradient(158deg, transparent 0 44%, rgba(92,131,152,.05) 44.2% 44.5%, transparent 45% 81%, rgba(92,131,152,.06) 81.2% 81.6%, transparent 82%),
+    linear-gradient(12deg, transparent 0 55%, rgba(92,131,152,.04) 55.2% 55.5%, transparent 56%),
+    radial-gradient(1100px 520px at 52% -8%, #F9FBFC, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #E0E8EC, transparent 65%);
+}
+[data-skin="glacier"] .card { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 8px 22px rgba(42,58,68,.08); }
+
+/* 蜜柚·橙黄 → 橘皮：大小两档油胞点 */
+[data-skin="pomelo"] body {
+  background-image:
+    radial-gradient(circle at 34% 34%, rgba(201,137,58,.06) 1.6px, transparent 2.4px),
+    radial-gradient(circle at 66% 66%, rgba(201,137,58,.04) 1px, transparent 1.6px),
+    radial-gradient(1100px 520px at 52% -8%, #FFFAF2, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #F9E8CE, transparent 65%);
+  background-size: 22px 22px, 13px 13px, auto, auto;
+}
+
+/* 竹青·浅绿 → 竹竿：纵向竹壁 + 节环 */
+[data-skin="bamboo"] body {
+  background-image:
+    repeating-linear-gradient(90deg, rgba(76,122,85,.045) 0 3px, transparent 3px 64px, rgba(76,122,85,.03) 64px 66px, transparent 66px 128px),
+    repeating-linear-gradient(0deg, transparent 0 88px, rgba(76,122,85,.09) 88px 89.5px, transparent 89.5px),
+    radial-gradient(1100px 520px at 52% -8%, #F9FCF8, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #DDE9DD, transparent 65%);
+}
+
+/* 墨夜·深蓝 → 显微星图：极细连线网（区别于普通方格纸） */
+[data-skin="midnight"] body {
+  background-image:
+    linear-gradient(63deg, transparent 0 48.6%, rgba(60,90,140,.075) 48.8% 49%, transparent 49.2%),
+    linear-gradient(-63deg, transparent 0 48.6%, rgba(60,90,140,.075) 48.8% 49%, transparent 49.2%),
+    radial-gradient(rgba(60,90,140,.09) 1px, transparent 1.4px),
+    radial-gradient(1100px 520px at 52% -8%, #F5F7FB, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #D3DCEA, transparent 65%);
+  background-size: auto, auto, 84px 84px, auto, auto;
+}
+
+/* 玫瑰金·米色 → 金属拉丝：横向细丝 + 一条柔和高光 */
+[data-skin="rosegold"] body {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(176,122,94,.05) 0 1px, transparent 1px 2.5px),
+    linear-gradient(100deg, transparent 0 30%, rgba(176,122,94,.06) 42% 52%, transparent 64%),
+    radial-gradient(1100px 520px at 52% -8%, #FDFAF6, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #F2E4DB, transparent 65%);
+}
+[data-skin="rosegold"] .card { box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 8px 20px rgba(74,49,40,.08); }
+
+/* 雪松·深棕 → 木纹：波浪年轮 + 一个木节 */
+[data-skin="cedar"] body {
+  background-image:
+    repeating-linear-gradient(88deg, rgba(122,82,56,.04) 0 3px, transparent 3px 9px, rgba(122,82,56,.03) 9px 11px, transparent 11px 19px),
+    radial-gradient(ellipse 46px 22px at 78% 18%, rgba(122,82,56,.07), transparent 70%),
+    radial-gradient(1100px 520px at 52% -8%, #FAF7F3, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #E5DAD0, transparent 65%);
+}
+
+/* 气泡·天青 → 汽泡水：三档圆环气泡 */
+[data-skin="sky"] body {
+  background-image:
+    radial-gradient(circle at 30% 30%, transparent 5px, rgba(78,143,168,.07) 5.5px 6.5px, transparent 7px),
+    radial-gradient(circle at 70% 60%, transparent 9px, rgba(78,143,168,.055) 9.5px 10.5px, transparent 11px),
+    radial-gradient(circle at 50% 80%, transparent 3px, rgba(78,143,168,.06) 3.5px 4.5px, transparent 5px),
+    radial-gradient(1100px 520px at 52% -8%, #F8FCFD, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #DCEBF1, transparent 65%);
+  background-size: 72px 72px, 110px 110px, 54px 54px, auto, auto;
+}
+
+/* 旧报·灰白 → 新闻纸：分栏线 + 段落短横（远看是字，近看是纹） */
+[data-skin="oldnews"] body {
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 118px, rgba(51,52,46,.07) 118px 119px, transparent 119px),
+    repeating-linear-gradient(0deg, rgba(51,52,46,.045) 0 1px, transparent 1px 7px),
+    radial-gradient(1100px 520px at 52% -8%, #FAFAF8, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #E4E3DE, transparent 65%);
+}
+
+/* 釉蓝·瓷器 → 开片：冰裂纹三组交错（瓷器的 crackle glaze） */
+[data-skin="porcelain"] body {
+  background-image:
+    linear-gradient(38deg, transparent 0 22%, rgba(47,108,143,.055) 22.2% 22.5%, transparent 22.8% 58%, rgba(47,108,143,.045) 58.2% 58.5%, transparent 58.8%),
+    linear-gradient(146deg, transparent 0 37%, rgba(47,108,143,.05) 37.2% 37.5%, transparent 37.8% 73%, rgba(47,108,143,.055) 73.2% 73.5%, transparent 73.8%),
+    linear-gradient(94deg, transparent 0 62%, rgba(47,108,143,.04) 62.2% 62.4%, transparent 62.6%),
+    radial-gradient(1100px 520px at 52% -8%, #F7FAFC, transparent 70%),
+    radial-gradient(900px 700px at 100% 100%, #D7E4EB, transparent 65%);
+}
+[data-skin="porcelain"] .card { box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 8px 20px rgba(33,56,77,.08); }
+
+/* 烫金·黑膠 → 黑胶唱纹 + 烫金浮雕卡边 */
+[data-skin="gold"] .card {
+  box-shadow: inset 0 0 0 1px rgba(232,217,180,.28), inset 0 0 0 3px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.4);
+}
+[data-skin="gold"] .hero { position: relative; overflow: hidden; }
+[data-skin="gold"] .hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background: repeating-radial-gradient(circle at 88% -12%, rgba(232,217,180,.05) 0 1.5px, transparent 1.5px 7px);
+}
+
+/* 咖啡渍·旧账簿 → 杯渍环 + 茶渍晕 */
+[data-skin="coffee"] .card { box-shadow: inset 0 0 0 1px rgba(74,56,38,.07), 0 8px 20px rgba(74,56,38,.07); }
+
+/* 深夜·靛蓝 → 靛染布纹：斜向扎染晕带 */
+[data-skin="indigo"] .hero { position: relative; overflow: hidden; }
+[data-skin="indigo"] .hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background: linear-gradient(120deg, transparent 0 26%, rgba(242,233,216,.05) 34% 42%, transparent 50% 70%, rgba(242,233,216,.04) 78% 84%, transparent 92%);
+}
+
+/* 薄荷·方格 → 工作簿：方格 + 装订孔 */
+[data-skin="mint"] .card { box-shadow: inset 0 0 0 1px rgba(33,64,52,.06), 0 8px 20px rgba(33,64,52,.06); }
+
+/* 樱粉·便签 → 便签撕边暗示 */
+[data-skin="sakura"] .card { box-shadow: inset 0 0 0 1px rgba(75,58,64,.05), 0 8px 20px rgba(75,58,64,.06); }
+
+/* 老黄历·朱砂 → 双栏界格 */
+[data-skin="almanac"] .card { box-shadow: inset 0 0 0 1px rgba(58,42,28,.08), inset 4px 0 0 rgba(166,58,43,.14), 0 8px 20px rgba(58,42,28,.07); }
+
+/* 牛皮纸·老账房（base）→ 牛皮纤维 + 毛边 */
+[data-skin="kraft"] .card { box-shadow: inset 0 0 0 1px rgba(38,54,74,.06), 0 8px 20px rgba(38,54,74,.06); }

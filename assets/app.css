@@ -903,7 +903,8 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 
 /* ---------- 智能工具 ---------- */
 .tools-card { margin-top: 12px; padding: 15px 18px; }
-.tool-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+.tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+/* v5.3：1fr → minmax(0,1fr)，nowrap 副标题不再把 360px 下的列撑出横向溢出 */
 .tool-tile {
   display: flex; align-items: center; gap: 8px; padding: 9px 10px; text-align: left;
   border: 1px solid var(--line); border-radius: 10px; background: var(--surface);

@@ -1,0 +1,10 @@
+{
+  "theme": "a-glass",
+  "mode": "none",
+  "fps": 30,
+  "opacity": 0,
+  "vignette": 0.12,
+  "colors": [
+    "#A8DADC"
+  ]
+}

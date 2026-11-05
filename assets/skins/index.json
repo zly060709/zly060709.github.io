@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "v5.2.1 真实素材：30 套全部 ready（含 g03 云端列车），字段契约不变。",
+  "note": "v5.3 真实素材 30 套 + 数据/材质皮肤 10 套（a-tidal/a-aurora/a-radio/a-culture/a-glass/a-polar/a-type/a-pulse/a-chart/a-chrome）；字段契约不变。",
   "fields": [
     "id",
     "name",
@@ -615,6 +615,206 @@
         "speed": 0.45
       },
       "accent": "#D07A50",
+      "pending": false
+    },
+    {
+      "id": "a-tidal",
+      "name": "潮汐·海面",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#0B3B4C",
+      "ink": "#E8F5F2",
+      "tag": "青潮",
+      "thumb": "assets/skins/a-tidal/thumb.webp",
+      "art": "assets/skins/a-tidal/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "wave",
+        "density": 0,
+        "color": "#37C2B0",
+        "speed": 0
+      },
+      "accent": "#37C2B0",
+      "pending": false
+    },
+    {
+      "id": "a-aurora",
+      "name": "极光餐盘",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#10162E",
+      "ink": "#EAEAF5",
+      "tag": "极光",
+      "thumb": "assets/skins/a-aurora/thumb.webp",
+      "art": "assets/skins/a-aurora/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "wave",
+        "density": 0,
+        "color": "#6CE5B1",
+        "speed": 0
+      },
+      "accent": "#6CE5B1",
+      "pending": false
+    },
+    {
+      "id": "a-radio",
+      "name": "静默电台",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#0E1712",
+      "ink": "#E8F5EC",
+      "tag": "电台绿",
+      "thumb": "assets/skins/a-radio/thumb.webp",
+      "art": "assets/skins/a-radio/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "pulse",
+        "density": 0,
+        "color": "#8FE3A8",
+        "speed": 0
+      },
+      "accent": "#8FE3A8",
+      "pending": false
+    },
+    {
+      "id": "a-culture",
+      "name": "菌群·培养皿",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F6F1E4",
+      "ink": "#2F4A38",
+      "tag": "菌落",
+      "thumb": "assets/skins/a-culture/thumb.webp",
+      "art": "assets/skins/a-culture/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "nodes",
+        "density": 0,
+        "color": "#C8A24A",
+        "speed": 0
+      },
+      "accent": "#C8A24A",
+      "pending": false
+    },
+    {
+      "id": "a-glass",
+      "name": "玻璃器皿",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#E9F1F2",
+      "ink": "#1B3A42",
+      "tag": "玻璃",
+      "thumb": "assets/skins/a-glass/thumb.webp",
+      "art": "assets/skins/a-glass/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "still",
+        "density": 0,
+        "color": "#A8DADC",
+        "speed": 0
+      },
+      "accent": "#A8DADC",
+      "pending": false
+    },
+    {
+      "id": "a-polar",
+      "name": "极昼极夜",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#7FB6D9",
+      "ink": "#17324A",
+      "tag": "极昼",
+      "thumb": "assets/skins/a-polar/thumb.webp",
+      "art": "assets/skins/a-polar/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "still",
+        "density": 0,
+        "color": "#F09A76",
+        "speed": 0
+      },
+      "accent": "#F09A76",
+      "pending": false
+    },
+    {
+      "id": "a-type",
+      "name": "活字·压印",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#EFE9D8",
+      "ink": "#2B2A26",
+      "tag": "活字",
+      "thumb": "assets/skins/a-type/thumb.webp",
+      "art": "assets/skins/a-type/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "still",
+        "density": 0,
+        "color": "#A63A2B",
+        "speed": 0
+      },
+      "accent": "#A63A2B",
+      "pending": false
+    },
+    {
+      "id": "a-pulse",
+      "name": "脉搏·示波",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#12161C",
+      "ink": "#E8EEF5",
+      "tag": "脉搏",
+      "thumb": "assets/skins/a-pulse/thumb.webp",
+      "art": "assets/skins/a-pulse/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "pulse",
+        "density": 0,
+        "color": "#FF5C6C",
+        "speed": 0
+      },
+      "accent": "#FF5C6C",
+      "pending": false
+    },
+    {
+      "id": "a-chart",
+      "name": "星图·星座",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#0A1024",
+      "ink": "#E8EEFF",
+      "tag": "星图",
+      "thumb": "assets/skins/a-chart/thumb.webp",
+      "art": "assets/skins/a-chart/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "trace",
+        "density": 0,
+        "color": "#F5C86B",
+        "speed": 0
+      },
+      "accent": "#F5C86B",
+      "pending": false
+    },
+    {
+      "id": "a-chrome",
+      "name": "液态金属",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#D8DDE3",
+      "ink": "#22262E",
+      "tag": "金属",
+      "thumb": "assets/skins/a-chrome/thumb.webp",
+      "art": "assets/skins/a-chrome/key.webp",
+      "fg": "",
+      "fx": {
+        "engine": "still",
+        "density": 0,
+        "color": "#B9F0E4",
+        "speed": 0
+      },
+      "accent": "#B9F0E4",
       "pending": false
     }
   ]

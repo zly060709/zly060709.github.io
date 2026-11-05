@@ -1,0 +1,11 @@
+{
+  "theme": "a-culture",
+  "mode": "nodes",
+  "fps": 30,
+  "opacity": 0.8,
+  "vignette": 0.12,
+  "colors": [
+    "#C8A24A"
+  ],
+  "style": "culture"
+}

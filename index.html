@@ -1,16 +1,24 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN" data-theme="auto">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#EFECE2">
-<meta name="description" content="能量账本：一本会自我校准的私人饮食账本。记录更少，知道更多。">
+<meta name="description" content="能量账本：一本会自我校准的私人饮食账本。数据只保存在这台设备，没有账号，没有云端。记录更少，知道得更多。">
 <title>能量账本 · 记录得更少，知道得更多</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232F6B4F'/%3E%3Cpath d='M11 8v13.2c0 .9.8 1.5 1.8 1.5H22' fill='none' stroke='%23EFECE2' stroke-width='2'/%3E%3Cpath d='M15 12h5' stroke='%23EFECE2' stroke-width='2'/%3E%3C/svg%3E" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="assets/app.css?v=5.2.1">
-<link rel="stylesheet" href="assets/skins-v43.css?v=5.2.1">
-<link rel="stylesheet" href="assets/skins-v5.css?v=5.2.1">
+<script>/* 版本号唯一来源：build.py 会把这里与所有 ?v= 同步为 version.json 里的版本 */
+window.__EL_VER = '5.3.0';</script>
+<link rel="stylesheet" href="assets/app.css?v=5.3.0">
+<link rel="stylesheet" href="assets/skins-v43.css?v=5.3.0">
+<link rel="stylesheet" href="assets/skins-v5.css?v=5.3.0">
+<style>
+  /* 静态首屏骨架：无 JS / 弱网 / 爬虫直接可见（解决白屏）；JS 就绪后 renderToday
+     整块接管 #view-today，骨架随之消失。无 JS 时隐藏所有需要脚本才有意义的部件。 */
+  #view-today .today-static { display: block; }
+  html:not(.js) .noscript-hide { display: none !important; }
+</style>
 </head>
 <body>
 
@@ -61,16 +69,16 @@
         <div class="brand-en">ENERGY LEDGER</div>
       </div>
     </div>
-    <nav class="rail-nav">
-      <button data-tab="today" class="on"><span class="idx">01</span>今日<svg style="display:none"></svg><i></i></button>
-      <button data-tab="ledger"><span class="idx">02</span>账本<i></i></button>
-      <button data-tab="trend"><span class="idx">03</span>趋势<i></i></button>
-      <button data-tab="body"><span class="idx">04</span>身体<i></i></button>
-      <button data-tab="trip"><span class="idx">05</span>环游记<i></i></button>
-      <button data-tab="settings"><span class="idx">06</span>设置<i></i></button>
+    <nav class="rail-nav" aria-label="主导航">
+      <button data-tab="today" class="on" aria-current="page"><span class="idx" aria-hidden="true">01</span>今日<i></i></button>
+      <button data-tab="ledger"><span class="idx" aria-hidden="true">02</span>账本<i></i></button>
+      <button data-tab="trend"><span class="idx" aria-hidden="true">03</span>趋势<i></i></button>
+      <button data-tab="body"><span class="idx" aria-hidden="true">04</span>身体<i></i></button>
+      <button data-tab="trip" title="运动环游记：把运动折算成绕地球的里程"><span class="idx" aria-hidden="true">05</span>环游记<i></i></button>
+      <button data-tab="settings"><span class="idx" aria-hidden="true">06</span>设置<i></i></button>
     </nav>
     <div class="rail-foot">
-      <div class="rail-streak">
+      <div class="rail-streak noscript-hide">
         <div class="k">连续记账</div>
         <div class="v"><span id="railStreak">0</span> <small>天</small></div>
       </div>
@@ -84,11 +92,37 @@
         <div class="mark"><svg><use href="#i-mark"/></svg></div>
         <div class="brand-name">能量账本</div>
       </div>
-      <div class="date"><b id="topDate">—</b><span id="topStreak">尚未开始</span></div>
+      <div class="date"><b id="topDate">—</b><span id="topStreak" class="noscript-hide">尚未开始</span></div>
     </header>
 
     <div class="page">
-      <section id="view-today" class="view" data-view="today"></section>
+      <section id="view-today" class="view" data-view="today">
+        <!-- 静态首屏骨架：无 JS / 弱网 / 爬虫可见；JS 就绪后 renderToday 接管替换 -->
+        <div class="today-static">
+          <div class="page-head">
+            <div><h1 class="page-title">今日</h1><div class="page-sub">记录得更少，知道得更多</div></div>
+          </div>
+          <section class="card" style="padding:18px 16px">
+            <div style="font-size:15px;font-weight:700;line-height:1.6">一本会自我校准的私人饮食账本</div>
+            <p style="font-size:13px;line-height:1.8;color:#5B666F;margin:8px 0 0">
+              记下吃的东西，账本会用你自己的体重变化校准每日预算：不需要天天称重，也不需要手动设目标。
+              所有数据只保存在这台设备的浏览器里——没有账号，没有云端，也没有别人。
+            </p>
+            <p style="font-size:12px;line-height:1.7;color:#828B92;margin:10px 0 0">
+              正在加载账本…首次加载后即可离线使用；如果长时间停在这里，请检查网络后刷新。
+            </p>
+          </section>
+          <noscript>
+            <section class="card" style="padding:16px;margin-top:12px">
+              <div style="font-size:14px;font-weight:700;margin-bottom:6px">需要启用 JavaScript</div>
+              <p style="font-size:12.5px;line-height:1.8;color:#5B666F;margin:0">
+                记账、校准与趋势都要在本机运行一小段脚本才能工作。本站没有后端、不上传任何数据；
+                启用 JavaScript 后刷新即可记下第一笔。
+              </p>
+            </section>
+          </noscript>
+        </div>
+      </section>
       <section id="view-ledger" class="view" data-view="ledger" hidden></section>
       <section id="view-trend" class="view" data-view="trend" hidden></section>
       <section id="view-body" class="view" data-view="body" hidden></section>
@@ -96,12 +130,12 @@
       <section id="view-settings" class="view" data-view="settings" hidden></section>
     </div>
 
-    <nav class="tabbar">
-      <button data-tab="today" class="on"><svg><use href="#i-home"/></svg><span>今日</span></button>
+    <nav class="tabbar noscript-hide" aria-label="底部导航">
+      <button data-tab="today" class="on" aria-current="page"><svg><use href="#i-home"/></svg><span>今日</span></button>
       <button data-tab="ledger"><svg><use href="#i-book"/></svg><span>账本</span></button>
       <button data-tab="trend"><svg><use href="#i-chart"/></svg><span>趋势</span></button>
       <button data-tab="body"><svg><use href="#i-body"/></svg><span>身体</span></button>
-      <button data-tab="trip"><svg><use href="#i-globe"/></svg><span>环游</span></button>
+      <button data-tab="trip" title="运动环游记"><svg><use href="#i-globe"/></svg><span>环游记</span></button>
       <button data-tab="settings"><svg><use href="#i-settings"/></svg><span>设置</span></button>
     </nav>
   </div>
@@ -113,18 +147,16 @@
 <input type="file" id="photoFile" accept="image/*" multiple hidden>
 <input type="file" id="wearableFile" accept=".xml,.csv,text/xml,text/csv,application/xml" hidden>
 
-<script src="assets/data.js?v=5.2.1"></script>
-<script src="assets/engine.js?v=5.2.1"></script>
-<script src="assets/wellness.js?v=5.2.1"></script>
-<script src="assets/gender.js?v=5.2.1"></script>
-<script src="assets/extras.js?v=5.2.1"></script>
-<script src="assets/foodlib.js?v=5.2.1"></script>
-<script src="assets/skin-fx.js?v=5.2.1"></script>
-<script src="assets/codes.js?v=5.2.1"></script>
-<script src="assets/announce.js?v=5.2.1"></script>
-<script src="assets/app.js?v=5.2.1"></script>
-<script src="assets/maint-credential.js?v=5.2.1"></script>
-<script src="assets/maint.js?v=5.2.1"></script>
+<script>document.documentElement.classList.add('js');</script>
+<script src="assets/data.js?v=5.3.0" defer></script>
+<script src="assets/engine.js?v=5.3.0" defer></script>
+<script src="assets/wellness.js?v=5.3.0" defer></script>
+<script src="assets/gender.js?v=5.3.0" defer></script>
+<script src="assets/extras.js?v=5.3.0" defer></script>
+<script src="assets/foodlib.js?v=5.3.0" defer></script>
+<script src="assets/skin-fx.js?v=5.3.0" defer></script>
+<script src="assets/app.js?v=5.3.0" defer></script>
+<!-- 兑换码 / 版本公告 / 维护模块：已移出关键路径，由 app.js 的 ensureScript 按需拉起 -->
 </body>
 </html>
 

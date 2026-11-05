@@ -1,0 +1,10 @@
+{
+  "theme": "a-chrome",
+  "mode": "none",
+  "fps": 30,
+  "opacity": 0,
+  "vignette": 0.12,
+  "colors": [
+    "#B9F0E4"
+  ]
+}

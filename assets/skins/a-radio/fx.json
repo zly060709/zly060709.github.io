@@ -1,0 +1,11 @@
+{
+  "theme": "a-radio",
+  "mode": "pulse",
+  "fps": 30,
+  "opacity": 0.8,
+  "vignette": 0.12,
+  "colors": [
+    "#8FE3A8"
+  ],
+  "amp": 0.05
+}

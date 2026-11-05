@@ -1,0 +1,11 @@
+{
+  "theme": "a-chart",
+  "mode": "trace",
+  "fps": 30,
+  "opacity": 0.8,
+  "vignette": 0.12,
+  "colors": [
+    "#F5C86B"
+  ],
+  "style": "chart"
+}

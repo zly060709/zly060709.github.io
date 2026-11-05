@@ -406,8 +406,19 @@
     const t = resolvedTheme();
     document.documentElement.setAttribute('data-theme', t);
     document.documentElement.setAttribute('data-gentle', DB.settings.gentle ? '1' : '0');
+    applySkinThemeColor();
+  }
+  /* v5.3：theme-color 跟随当前皮肤——直接读 html 上生效的 --paper 计算值，
+     深色主题、极昼极夜的时段档、a-polar 夜间翻转全部自动正确 */
+  function applySkinThemeColor() {
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', t === 'dark' ? '#121714' : '#EFECE2');
+    if (!meta) return;
+    let color = resolvedTheme() === 'dark' ? '#121714' : '#EFECE2';
+    if (isFull()) {
+      const paper = getComputedStyle(document.documentElement).getPropertyValue('--paper').trim();
+      if (/^#[0-9a-fA-F]{6}$/.test(paper)) color = paper;
+    }
+    meta.setAttribute('content', color);
   }
   if (mqDark && mqDark.addEventListener) mqDark.addEventListener('change', () => { if (DB.settings.theme === 'auto') applyTheme(); });
 
@@ -450,7 +461,12 @@
 
   function setTab(tab) {
     state.tab = tab;
-    $$('.rail-nav button, .tabbar button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+    $$('.rail-nav button, .tabbar button').forEach(b => {
+      b.classList.toggle('on', b.dataset.tab === tab);
+      /* aria-current 跟随激活页，读屏器不再把六个空按钮都当"当前页" */
+      if (b.dataset.tab === tab) b.setAttribute('aria-current', 'page');
+      else b.removeAttribute('aria-current');
+    });
     $$('.view').forEach(v => { v.hidden = v.dataset.view !== tab; });
     renderActive();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1237,13 +1253,40 @@
      ============================================================ */
   let tripLoading = null;
   let globeLoading = null;
+  /* v5.3 通用懒加载：可分离模块（兑换码 / 公告 / 维护）不再进首屏关键路径 */
+  const SCRIPT_LOADS = {};
+  function ensureScript(src) {
+    if (SCRIPT_LOADS[src]) return SCRIPT_LOADS[src];
+    SCRIPT_LOADS[src] = new Promise(resolve => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = () => resolve(true);
+      s.onerror = () => { delete SCRIPT_LOADS[src]; resolve(false); };
+      document.head.appendChild(s);
+    });
+    return SCRIPT_LOADS[src];
+  }
+  function verUrl(path) { return path + '?v=' + (window.__EL_VER || APP_VERSION); }
+  function ensureCodes() {
+    if (window.ELCodes) return Promise.resolve(true);
+    return ensureScript(verUrl('assets/codes.js'));
+  }
+  function ensureAnnounce() {
+    if (window.ELAnnounce) return Promise.resolve(true);
+    return ensureScript(verUrl('assets/announce.js'));
+  }
+  function ensureMaint() {
+    if (window.Maintenance) return Promise.resolve(true);
+    return ensureScript(verUrl('assets/maint-credential.js'))
+      .then(() => ensureScript(verUrl('assets/maint.js')));
+  }
   /* 按需加载换算模块：ledger 首页不请求 trip.js */
   function ensureTrip() {
     if (window.Trip) return Promise.resolve(true);
     if (tripLoading) return tripLoading;
     tripLoading = new Promise(resolve => {
       const s = document.createElement('script');
-      s.src = 'assets/trip.js?v=5.1.0';
+      s.src = verUrl('assets/trip.js');
       s.onload = () => resolve(!!window.Trip);
       s.onerror = () => resolve(false);
       document.head.appendChild(s);
@@ -1256,7 +1299,7 @@
     if (globeLoading) return globeLoading;
     globeLoading = new Promise(resolve => {
       const s = document.createElement('script');
-      s.src = 'assets/globe.js?v=5.1.0';
+      s.src = verUrl('assets/globe.js');
       s.onload = () => resolve(!!window.Globe);
       s.onerror = () => resolve(false);
       document.head.appendChild(s);
@@ -2123,6 +2166,7 @@
         '</div>' +
         '<div class="hero-note">' + icon('info') + '<span>预算随代谢校准变化；运动用于校准与趋势，不额外兑换食物，避免重复计算。</span></div>' +
       '</section>' +
+      renderFirstEntryCard(st) +
       coachHtml(3) +
       pantryHintHtml() +
 
@@ -2252,6 +2296,69 @@
     if (remain <= 0) return '今日预算已用完。';
     if (sum.kcal === 0) return '从第一笔开始，账本会用你自己的体重变化校准一切。';
     return '';
+  }
+
+  /* ---------- v5.3 第一笔入口：空账日不再只有三处「尚未开始」 ----------
+     大按钮 + 三个一键模板（吃了 / 动了 / 称重）。吃过、动过或称过任意一项后整卡消失，
+     「连续 0 天」的空态第一次有了下一步。 */
+  function renderFirstEntryCard(st) {
+    const today = E.todayKey();
+    /* 只看饮食与运动：引导建档会写入当日体重，体重不算"第一笔"
+       （连续达标由饮食/运动驱动）；称重后卡片保留，饮食或运动入账后消失 */
+    const hasAny = st.sum.count > 0
+      || DB.exercises.some(x => x.date === today);
+    if (hasAny) return '';
+    return '<section class="first-entry" aria-label="记第一笔">' +
+      '<div class="fe-head"><b>从第一笔开始</b><span>今天记下任意一笔，连续就从今天算起</span></div>' +
+      '<button class="fe-main" data-act="open-add">' + icon('plus') +
+        '<span class="t">记第一笔</span><span class="s">一餐 · 一杯 · 一次运动都算</span>' +
+      '</button>' +
+      '<div class="fe-quick">' +
+        '<button class="fe-chip" data-act="quick-eat">' + icon('flame') + '<span>吃了</span><em>简记一餐</em></button>' +
+        '<button class="fe-chip" data-act="quick-move">' + icon('run') + '<span>动了</span><em>快走 20 分钟</em></button>' +
+        '<button class="fe-chip" data-act="quick-weight">' + icon('scale') + '<span>称重</span><em>沿用上次读数</em></button>' +
+      '</div>' +
+      '<div class="fe-note">「吃了」「动了」点一下就入账并标为粗估，之后在账本里随时改成实际数字。</div>' +
+    '</section>';
+  }
+  function quickFirstEntry(kind) {
+    const today = E.todayKey();
+    if (kind === 'eat') {
+      const meal = E.guessMeal();
+      const entry = {
+        id: uid(), date: today, meal: meal, name: '简记·一餐（待补充）', grams: 0, per100: null,
+        kcal: 400, p: 15, c: 0, f: 0, fib: 2, conf: 'low', source: 'quick', createdAt: Date.now()
+      };
+      const before = DB.entries.length;
+      DB.entries.push(entry);
+      if (!commit(() => { DB.entries.length = before; })) return;
+      logChange('一键简记一餐（粗估 400 kcal）', { kind: 'entry-add', item: entry });
+      renderActive();
+      toast('已记入' + E.mealLabel(meal) + ' · 粗估 400 kcal，账本里可改成实际菜名');
+    } else if (kind === 'move') {
+      const kg = currentWeight();
+      const mets = 5.0; /* 与 Trip.MET_TABLE.walk.mid 同口径 */
+      const kcal = E.burn(mets, kg, 20);
+      const km = tripReady() ? Trip.toEquivalentKm(kcal, kg, 0) : 0;
+      const rec = {
+        id: uid(), date: today, type: 'walk', name: '快走 20 分钟（简记）', intensity: 'mid', mets: mets,
+        minutes: 20, distance_km: 0, ascent_m: 0, weight_at_time: kg,
+        kcal: kcal, km_eq: km, valid: true, invalid_code: null,
+        source: 'quick', confidence: 'L2', multiplier: 1, createdAt: Date.now()
+      };
+      const before = DB.exercises.length;
+      const tripBefore = { km: DB.trip.total_km, at: DB.trip.updatedAt };
+      DB.exercises.push(rec);
+      syncTrip(false);
+      if (!commit(() => {
+        DB.exercises.length = before;
+        DB.trip.total_km = tripBefore.km;
+        DB.trip.updatedAt = tripBefore.at;
+      })) return;
+      logChange('一键简记快走 20 分钟（约 ' + Math.round(kcal) + ' kcal）', { kind: 'exercise-add', item: rec });
+      renderActive();
+      toast('已记入快走 20 分钟 · 约 ' + Math.round(kcal) + ' kcal');
+    }
   }
 
   /* ---------- 创新：今日还差什么 ---------- */
@@ -4019,6 +4126,7 @@
 
   function refreshSkinFx() {
     if (!window.SkinFX) return;
+    applyDayPhase();
     if (!isFull()) { SkinFX.stop(); return; }
     const sk = skinById(DB.skins.active);
     const ready = sk && sk.art && !sk.pending && skinUnlocked(sk.id) && packReady(sk.id);
@@ -4030,16 +4138,85 @@
       reduced: prefersReduced(),
       still: DB.skins.fxTheme === 'still'
     });
+    /* v5.3：数据驱动皮肤（潮汐/极光/菌群/星图/脉搏）读取当日账本上下文 */
+    if (SkinFX.setData) SkinFX.setData(fxDataContext());
+  }
+  /* v5.3：极昼极夜按本机时间分四档，写入 data-dayphase 供 CSS 取天空色 */
+  function applyDayPhase() {
+    const h = new Date().getHours();
+    const phase = h >= 5 && h < 10 ? 'dawn' : h >= 10 && h < 16 ? 'noon' : h >= 16 && h < 20 ? 'dusk' : 'night';
+    const el = document.documentElement;
+    if (el.getAttribute('data-dayphase') !== phase) el.setAttribute('data-dayphase', phase);
+  }
+  /* 数据上下文带缓存：同一"日期 + 记录数"组合只算一次，皮肤切换频繁也不抖 */
+  let _fxCache = { key: '', data: null };
+  function fxDataContext() {
+    const today = E.todayKey();
+    const key = today + ':' + DB.entries.length + ':' + DB.exercises.length;
+    if (_fxCache.key === key) return _fxCache.data;
+    const t = targetsNow();
+    const sum = E.summary(DB.entries, today);
+    let deficitRatio = 0;
+    if (t && t.priorTDEE) deficitRatio = Math.max(-1, Math.min(1, (t.priorTDEE - sum.kcal) / t.priorTDEE));
+    const meals = {};
+    E.MEALS.forEach(m => { meals[m[0]] = (sum.byMeal[m[0]] && sum.byMeal[m[0]].kcal) || 0; });
+    const lastAddAt = DB.entries.reduce((mx, e) => e.date === today ? Math.max(mx, e.createdAt || 0) : mx, 0);
+    /* 最近 14 天断记表（1=有记录）：星图的暗星 */
+    const recentMiss = [];
+    for (let i = 13; i >= 0; i--) {
+      recentMiss.push(E.summary(DB.entries, E.addDays(today, -i)).count > 0 ? 1 : 0);
+    }
+    const data = {
+      date: today,
+      recorded: sum.count > 0,
+      count: sum.count,
+      kcal: sum.kcal,
+      deficitRatio: deficitRatio,
+      meals: meals,
+      macros: { p: sum.p, c: sum.c, f: sum.f, kcal: sum.kcal },
+      streak: E.streak(DB.entries, today),
+      totalRecords: DB.entries.length,
+      lastAddAt: lastAddAt,
+      recentDates: DB.entries.slice(-40).map(e => e.date).reverse(),
+      recentMiss: recentMiss
+    };
+    _fxCache = { key: key, data: data };
+    return data;
+  }
+  /* v5.3：玻璃器皿的指针视差高光——一个 CSS 变量，全程零 canvas。
+     （液态金属的滚动偏移改用 CSS scroll-timeline 实现，无需 JS 监听） */
+  let fxPointerBound = false;
+  function bindFxPointer() {
+    if (fxPointerBound) return;
+    fxPointerBound = true;
+    let rafId = 0, px = 50, py = 50;
+    window.addEventListener('pointermove', function (ev) {
+      px = Math.round(ev.clientX / Math.max(1, window.innerWidth) * 100);
+      py = Math.round(ev.clientY / Math.max(1, window.innerHeight) * 100);
+      if (rafId) return;
+      rafId = requestAnimationFrame(function () {
+        rafId = 0;
+        document.documentElement.style.setProperty('--fx-gx', px + '%');
+        document.documentElement.style.setProperty('--fx-gy', py + '%');
+      });
+    }, { passive: true });
   }
   function previewSkinFx(id) {
     if (!window.SkinFX) return;
+    const sk = skinById(id);
     const t = packTheme(id);
-    if (!t || !packReady(id)) return;
+    if (!t || !sk || !sk.art || sk.pending) return;
+    /* 未下载的已解锁皮肤：先静默补包，包到手再放预览 */
+    if (skinUnlocked(id) && !packReady(id)) {
+      downloadSkinPack(id, { silent: true }).then(ok => { if (ok) previewSkinFx(id); });
+      return;
+    }
+    if (!packReady(id)) return;
     SkinFX.start(t, {
       power: true, powerSave: !!DB.settings.powerSave,
       reduced: prefersReduced(), still: false
     });
-    SkinFX.boost(4200);
+    SkinFX.boost(3000);
   }
   function applyFx() {
     document.documentElement.setAttribute('data-fx', DB.settings.fx === false ? 'off' : 'on');
@@ -4080,12 +4257,16 @@
     root.setAttribute('data-skin-font', s.font || 'default');
     root.setAttribute('data-skin-scratch', s.scratchArt || 'cloth');
     root.setAttribute('data-skin-fx', s.fxTheme || 'default');
-    const art = skinArtUrl(id) || (packTheme(id) ? PACK_PLACEHOLDER : '');
+    /* v5.3：纯 CSS 材质皮肤（无 canvas）不铺占位剪影——背景由皮肤自己的 CSS 画 */
+    const CSS_MATERIAL_SKINS = ['a-glass', 'a-polar', 'a-type', 'a-chrome'];
+    const art = skinArtUrl(id) || (packTheme(id) && CSS_MATERIAL_SKINS.indexOf(id) < 0 ? PACK_PLACEHOLDER : '');
     if (art) root.style.setProperty('--skin-art', 'url("' + art + '")');
     else root.style.removeProperty('--skin-art');
     const oldFx = document.getElementById('skinArtFx');
     if (oldFx) oldFx.remove();
     refreshSkinFx();
+    if (id === 'a-glass' || id === 'a-chrome') bindFxPointer();
+    applySkinThemeColor();
     const sig = (SIGNATURES.find(x => x.id === s.signature) || null);
     let se = document.getElementById('ledgerSignature');
     if (sig) {
@@ -4747,7 +4928,7 @@
   /* ---------- 兑换码 / 版本公告 ----------
      兑换码与公告状态一律写在独立 localStorage 键（el.codes.* / el.version.*），
      不进 DB、不进导出 JSON。verifyCode 是纯函数，状态由这里读写。 */
-  const APP_VERSION = '5.2.1';
+  const APP_VERSION = (window.__EL_VER || '5.3.0');
   const CODE_KEYS = (window.ELCodes && window.ELCodes.STORAGE_KEYS) ||
     { used: 'el.codes.used', revoked: 'el.codes.revoked', attempts: 'el.codes.attempts' };
   const CODE_TITLES = {
@@ -4822,7 +5003,8 @@
   function redeemCode() {
     const C = window.ELCodes;
     const inp = $('#codeInput');
-    if (!C || !inp) return;
+    if (!C) { ensureCodes().then(ok => { if (ok) redeemCode(); }); return; }
+    if (!inp) return;
     const r = C.verifyCode(inp.value, {
       usedHashes: codeUsed(), revokedHashes: codeRevoked(), attempts: codeAttempts()
     });
@@ -4894,7 +5076,11 @@
 
   /* ---------- 版本公告（首屏后静默拉取，失败不打扰） ---------- */
   function initAnnounce() {
-    if (!window.ELAnnounce) return;
+    if (!window.ELAnnounce) {
+      /* v5.3：公告模块已移出关键路径，首屏渲染完再拉起；失败静默 */
+      ensureAnnounce().then(ok => { if (ok) initAnnounce(); });
+      return;
+    }
     window.ELAnnounce.checkVersion({ appVersion: APP_VERSION }).then(function (r) {
       if (!r || r.status !== 'new') return;
       state.announce = r;
@@ -5782,6 +5968,7 @@
         ? '<div class="gal-soon-tip">' + icon('spark') + ' 这套素材还在制作中，暂不进入扭蛋池；上好即上架。</div>'
         : (on
         ? '<button class="btn btn-primary btn-sm" data-act="skin-set-active" data-id="' + selected.id + '">' + (DB.skins.active === selected.id ? '当前使用中' : '设为当前') + '</button>' +
+          (selected.tier === 'top' && selected.art ? '<button class="btn btn-ghost btn-sm" data-act="skin-preview" data-id="' + selected.id + '">动效预览 3 秒</button>' : '') +
           (pending ? '<div class="pack-pending"><b>已获得 · 待下载</b><em>' + (packProgressText(selected.id) || '点按钮下载皮肤包，之后离线也能用') + '</em>' +
             '<button class="btn btn-ghost btn-sm" data-act="skin-download" data-id="' + selected.id + '"' + (packState(selected.id) && packState(selected.id).status === 'loading' ? ' disabled' : '') + '>下载皮肤包</button></div>' : '')
         : '<div class="gal-locked-tip">' + icon('lock') + ' 未解锁 · 获取方式：' + esc(selected.src) + '。图鉴不提供跳过解锁的按钮。</div>')) +
@@ -7476,6 +7663,15 @@
   /* ============================================================
      设置
      ============================================================ */
+  /* v5.3：本机占用（字符数≈UTF-16 码元数，与浏览器配额统计同量级，够用于感知） */
+  function dbBytes() {
+    try { return (localStorage.getItem(KEY) || '').length * 2; } catch (e) { return 0; }
+  }
+  function fmtBytes(n) {
+    if (!n) return '0 KB';
+    if (n >= 1048576) return (n / 1048576).toFixed(1) + ' MB';
+    return Math.max(1, Math.round(n / 1024)) + ' KB';
+  }
   function renderSettings() {
     const view = $('#view-settings');
     if (!DB.profile) { view.innerHTML = renderNeedsOnboard(); return; }
@@ -7574,6 +7770,14 @@
         settingRow('PIN 锁', DB.settings.pin.on ? '已开启' : '未开启', DB.settings.pin.on ? '打开应用或离开 5 分钟后需要输入' : '给随手打开的人加一道门', 'open-pin', true) +
         (DB.settings.pin.on ? '<button class="setting-row" data-act="lock-now"><span class="l"><span class="t">立即锁定</span><span class="s">现在遮住屏幕，回到 PIN 界面</span></span><span class="r">' + icon('lock') + '</span></button>' : '') +
         '<div class="setting-row"><span class="l"><span class="t">说明</span><span class="s">PIN 只保存在本机，用于遮挡；它不是加密，清除浏览器数据会连同账本一起清除。</span></span></div>' +
+      '</div>' +
+
+      /* v5.3：隐私从一句文案变成可感知的状态——真实占用、真实规模，导出按钮就在下一组 */
+      '<div class="setting-group">' +
+        '<div class="gh"><div class="t">本机状态</div><div class="s">没有账号，没有云端，也没有别人——这是这本账在你设备上的真实占用</div></div>' +
+        settingRow('本地占用', fmtBytes(dbBytes()), '存储键 ' + KEY + ' · 只写这台设备的浏览器') +
+        settingRow('账本规模', DB.entries.length + ' 笔饮食 · ' + DB.weights.length + ' 次体重 · ' + DB.exercises.length + ' 次运动', '删除记录会同步缩小占用') +
+        '<div class="setting-row"><span class="l"><span class="t">哪些时候会联网</span><span class="s">记账、校准、统计全部在本机完成。只有皮肤包、版本公告，以及你自己配置的 AI 识别会联网；皮肤包下载一次后离线可用。</span></span></div>' +
       '</div>' +
 
       '<div class="setting-group">' +
@@ -12167,7 +12371,10 @@
         break;
       }
       case 'goto-trend': closeSheet(); setTab('trend'); break;
-      case 'maint-open': if (window.Maintenance) window.Maintenance.openSheet(); break;
+      case 'maint-open':
+        if (window.Maintenance) window.Maintenance.openSheet();
+        else { toast('维护模块加载中…'); ensureMaint().then(ok => { if (ok) window.Maintenance.openSheet(); }); }
+        break;
       case 'ver-tap': {
         const now = Date.now();
         if (!state.verTap || now - state.verTap.last > 5000) state.verTap = { n: 0, last: now };
@@ -12176,6 +12383,7 @@
         if (state.verTap.n >= 7) {
           state.verTap.n = 0;
           if (window.Maintenance) window.Maintenance.openSheet();
+          else ensureMaint().then(ok => { if (ok) window.Maintenance.openSheet(); });
         }
         break;
       }
@@ -12472,6 +12680,12 @@
         break;
       }
       case 'recent-add': addRecent(el.dataset.id); break;
+      /* v5.3 第一笔一键模板 */
+      case 'quick-eat': quickFirstEntry('eat'); break;
+      case 'quick-move': quickFirstEntry('move'); break;
+      case 'quick-weight': openWeightSheet(); break;
+      /* v5.3 图鉴动效微预览：复用满功率窗口 3 秒 */
+      case 'skin-preview': previewSkinFx(el.dataset.id); break;
       case 'quick-water': {
         const today = E.todayKey();
         const before = DB.water[today];
