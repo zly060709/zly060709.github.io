@@ -49,6 +49,7 @@
       const cat = cats.indexOf(r[1]) >= 0 ? r[1] : '半成品';
       const tokens = String(r[9] || '').split(/\s+/).filter(Boolean);
       const item = {
+        id: list.length,
         name: name,
         cat: cat,
         kcal: Number(r[2]) || 0,
@@ -59,6 +60,7 @@
         aliases: String(r[7] || '').split('|').filter(Boolean),
         portions: parsePortions(r[8], 100),
         ini: tokens[0] || '',
+        py: tokens[1] || '',
         index: norm(name + '|' + (r[7] || '')) + ' ' + String(r[9] || ''),
         norm: norm(name)
       };
@@ -155,11 +157,14 @@
     const n = item.norm;
     const idx = item.index;
     if (n === q) return 120;
-    if (n.indexOf(q) === 0) return 100;
-    if (n.indexOf(q) > 0) return 82;
     if (item.aliases.some(a => norm(a) === q)) return 110;
-    if (item.aliases.some(a => norm(a).indexOf(q) > -1)) return 70;
+    if (n.indexOf(q) === 0) return 100;
+    /* 拼音命中优先于菜名子串：先用首字母，再用全拼 */
     if (item.ini && item.ini.indexOf(q) === 0) return 92;
+    if (item.py && item.py.indexOf(q) === 0) return 88;
+    if (n.indexOf(q) > 0) return 82;
+    if (item.py && item.py.indexOf(q) > -1) return 78;
+    if (item.aliases.some(a => norm(a).indexOf(q) > -1)) return 70;
     if (idx.indexOf(q) > -1) return 58;
     return 0;
   }
@@ -190,8 +195,12 @@
       if (q && pool[i].norm === q) bonus += 20;
       scored.push({ item: pool[i], s: s + bonus });
     }
-    // 同分时保留数据顺序（基础食材在各类别开头），比按名字排序更符合预期
-    scored.sort((a, b) => b.s - a.s);
+    // 同分：名称更短优先 → 常用度（最近吃过/收藏加分）→ 原始 id 稳定排序
+    const useCount = it => (q && useMap[it.name]) || 0;
+    scored.sort((a, b) => b.s - a.s
+      || a.item.name.length - b.item.name.length
+      || useCount(b.item) - useCount(a.item)
+      || a.item.id - b.item.id);
     return scored.slice(0, limit || 40).map(x => x.item);
   }
 

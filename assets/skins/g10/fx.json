@@ -1,0 +1,15 @@
+{
+  "theme": "g10",
+  "mode": "starfield",
+  "fps": 30,
+  "opacity": 0.4,
+  "particles": {
+    "stars": 24
+  },
+  "twinklePeriod": 3.6,
+  "meteorEvery": 16,
+  "colors": [
+    "#FFE7B0"
+  ],
+  "vignette": 0.14
+}

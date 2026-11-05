@@ -1,0 +1,14 @@
+{
+  "theme": "g14",
+  "mode": "fog",
+  "fps": 30,
+  "opacity": 0.5,
+  "particles": {
+    "fog": 10
+  },
+  "colors": [
+    "#FFD9B0",
+    "#998E7E"
+  ],
+  "vignette": 0.1
+}

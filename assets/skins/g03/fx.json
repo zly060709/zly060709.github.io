@@ -1,0 +1,14 @@
+{
+  "theme": "g03",
+  "mode": "fog",
+  "fps": 30,
+  "opacity": 0.5,
+  "particles": {
+    "fog": 11
+  },
+  "colors": [
+    "#E8EEF6",
+    "#8D98A1"
+  ],
+  "vignette": 0.1
+}

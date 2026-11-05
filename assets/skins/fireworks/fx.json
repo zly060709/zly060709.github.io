@@ -2,10 +2,15 @@
   "theme": "fireworks",
   "mode": "fireworks",
   "fps": 30,
-  "opacity": 0.7,
-  "particles": { "sparks": 30, "embers": 8 },
-  "shellEvery": 8,
+  "opacity": 0.3,
+  "particles": {
+    "sparks": 16,
+    "embers": 5
+  },
+  "shellEvery": 12,
   "rise": 1.1,
-  "colors": ["#FFC46B", "#FF8A5B", "#FFE7B5", "#FF6B6B"],
-  "vignette": 0.24
+  "colors": [
+    "#FFC07A"
+  ],
+  "vignette": 0.14
 }

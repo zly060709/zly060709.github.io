@@ -1,0 +1,30 @@
+{
+  "theme": "g12",
+  "mode": "petal",
+  "fps": 30,
+  "opacity": 0.42,
+  "particles": {
+    "far": 10,
+    "mid": 16,
+    "near": 6
+  },
+  "speed": {
+    "far": 0.226,
+    "mid": 0.41900000000000004,
+    "near": 0.682
+  },
+  "sway": {
+    "far": 6,
+    "mid": 12,
+    "near": 20
+  },
+  "size": {
+    "far": 1.6,
+    "mid": 2.4,
+    "near": 3.4
+  },
+  "colors": [
+    "#FFFFFF"
+  ],
+  "vignette": 0.12
+}

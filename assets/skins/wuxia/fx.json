@@ -2,10 +2,15 @@
   "theme": "wuxia",
   "mode": "ink",
   "fps": 30,
-  "opacity": 0.35,
-  "particles": { "blooms": 6, "motes": 12 },
-  "bloomPeriod": 14,
-  "swordEvery": 9,
-  "colors": ["#2B2A26", "#4A463E"],
-  "vignette": 0.24
+  "opacity": 0.24,
+  "particles": {
+    "blooms": 3,
+    "motes": 9
+  },
+  "bloomPeriod": 12,
+  "swordEvery": 0,
+  "colors": [
+    "#E8E4DA"
+  ],
+  "vignette": 0.12
 }

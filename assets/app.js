@@ -1,4 +1,4 @@
-/* 能量账本 · 应用层
+﻿/* 能量账本 · 应用层
    本地优先：数据只写入当前设备的 localStorage。
    设计原则：账本可以估算，但必须诚实地展示不确定性，并用你自己的数据持续校准。 */
 (function () {
@@ -19,6 +19,7 @@
   const pct = (v, max) => clamp(max > 0 ? v / max * 100 : 0, 0, 100);
   const uid = () => 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   const round1 = n => Math.round(n * 10) / 10;
+  const round2 = n => Math.round(n * 100) / 100;
   const round5 = n => Math.round(n / 5) * 5;
   const STATIC_MODE = (function () {
     const meta = document.querySelector('meta[name="ledger-mode"]');
@@ -44,6 +45,9 @@
       gentle: false,
       fx: true,
       powerSave: false,
+      motion: false,
+      /* v5.2 长辈模式：持久化开关，只影响界面，不改任何记录 */
+      elder: false,
       pin: { on: false, hash: '' },
       /* 账本模式：ledger = 纯账本 / full = 完整。缺失或非法一律按 full（老用户优先不丢入口） */
       mode: 'full',
@@ -80,7 +84,7 @@
     gacha: { credits: 0, milestones: {}, history: [] },
     scratch: {
       lastEarnedDate: '', count: 0, miss: 0, log: [], card: null, last: null, weeklyKcal: {},
-      pass: { week: '', used: false }, tickets: [], milestones: {}
+      pass: { week: '', used: false }, tickets: [], milestones: {}, batch: null
     },
     cheatDays: { history: [] },
     leaveDays: [],
@@ -109,6 +113,8 @@
     db.settings.prefs = Object.assign({}, DEFAULT_DB.settings.prefs, (db.settings || {}).prefs || {});
     db.settings.pin = Object.assign({ on: false, hash: '' }, (db.settings || {}).pin || {});
     db.settings.powerSave = !!db.settings.powerSave;
+    db.settings.motion = !!db.settings.motion;
+    db.settings.elder = !!db.settings.elder;
     db.settings.mode = (db.settings.mode === 'ledger' || db.settings.mode === 'full') ? db.settings.mode : 'full';
     db.settings.modeHintSeen = !!db.settings.modeHintSeen;
     if (STATIC_MODE && !db.settings.ai.key && (!db.settings.ai.baseURL || db.settings.ai.baseURL === AI_GLM.baseURL)) {
@@ -182,6 +188,28 @@
       id: t.id, source: String(t.source || 'daily'), date: String(t.date || E.todayKey()), at: Number(t.at) || Date.now()
     })).slice(-20000);
     if (!db.scratch.milestones || typeof db.scratch.milestones !== 'object') db.scratch.milestones = {};
+    /* 连刮批次：开批即落盘，关面板不丢券。settled 只允许结算一次 */
+    const sb = db.scratch.batch;
+    if (!sb || typeof sb !== 'object' || !Array.isArray(sb.cards) || !sb.cards.length) {
+      db.scratch.batch = null;
+    } else {
+      sb.id = String(sb.id || '');
+      sb.at = Number(sb.at) || Date.now();
+      sb.date = String(sb.date || E.todayKey());
+      sb.count = Math.min(5, Math.max(1, Number(sb.count) || sb.cards.length));
+      sb.cards = sb.cards.slice(0, 5).map(function (c) {
+        return {
+          date: String((c && c.date) || ''), source: String((c && c.source) || 'daily'),
+          ticketId: String((c && c.ticketId) || ''), revealed: !!(c && c.revealed),
+          tier: c && c.tier ? String(c.tier) : null,
+          reward: c && c.reward && typeof c.reward === 'object' ? c.reward : null
+        };
+      });
+      sb.settled = !!sb.settled;
+      sb.results = Array.isArray(sb.results) ? sb.results : null;
+      sb.counts = sb.counts && typeof sb.counts === 'object' ? sb.counts : null;
+      sb.summary = String(sb.summary || '');
+    }
     if (!db.scratch.weeklyKcal || typeof db.scratch.weeklyKcal !== 'object') db.scratch.weeklyKcal = {};
     if (!db.scratch.pass || typeof db.scratch.pass !== 'object') db.scratch.pass = { week: '', used: false };
     if (!db.cheatDays || typeof db.cheatDays !== 'object') db.cheatDays = { history: [] };
@@ -409,7 +437,15 @@
     photos: null,
     weekCard: null,
     batch: null,
-    creditOpen: false
+    creditOpen: false,
+    tripFilter: 'all',
+    globe: null,
+    steps: null,
+    importRes: null,
+    motionBound: false,
+    /* v5.2 热力图视图：year = 近一年 53 周；month = 单月网格 */
+    heatView: 'year',
+    heatMonth: ''
   };
 
   function setTab(tab) {
@@ -423,16 +459,28 @@
   function isFull() {
     return (DB && DB.settings && DB.settings.mode) === 'full';
   }
+  /* 长辈模式：只改界面与动效，数据与账本模式互不影响 */
+  function applyElder() {
+    const on = !!(DB.settings && DB.settings.elder);
+    document.documentElement.setAttribute('data-elder', on ? '1' : '0');
+    if (on && window.SkinFX) SkinFX.stop();
+  }
   function applyModeChrome() {
     const mode = isFull() ? 'full' : 'ledger';
+    const elder = !!(DB.settings && DB.settings.elder);
     document.documentElement.setAttribute('data-mode', mode);
     $$('.rail-nav button, .tabbar button').forEach(b => {
-      const hide = mode === 'ledger' && (b.dataset.tab === 'trend' || b.dataset.tab === 'body' || b.dataset.tab === 'trip');
-      b.hidden = hide;
+      const ledgerHide = mode === 'ledger' && (b.dataset.tab === 'trend' || b.dataset.tab === 'body' || b.dataset.tab === 'trip');
+      /* 长辈模式：导航精简为 今日 / 账本 / 设置 */
+      const elderHide = elder && ['today', 'ledger', 'settings'].indexOf(b.dataset.tab) < 0;
+      b.hidden = ledgerHide || elderHide;
     });
+    if ((mode === 'ledger' || elder) && ['trend', 'body', 'trip'].indexOf(state.tab) >= 0) state.tab = 'today';
   }
   function renderActive() {
-    if (!isFull() && (state.tab === 'trend' || state.tab === 'body' || state.tab === 'trip')) state.tab = 'today';
+    if (state.tab !== 'trip' && state.globe && state.globe.destroy) { state.globe.destroy(); state.globe = null; }
+    const elder = !!(DB.settings && DB.settings.elder);
+    if ((!isFull() || elder) && (state.tab === 'trend' || state.tab === 'body' || state.tab === 'trip')) state.tab = 'today';
     if (state.tab === 'today') renderToday();
     else if (state.tab === 'ledger') renderLedger();
     else if (state.tab === 'trend') renderTrend();
@@ -1188,6 +1236,7 @@
      运动环游记（full 模式；ledger 只在首页留一行摘要）
      ============================================================ */
   let tripLoading = null;
+  let globeLoading = null;
   /* 按需加载换算模块：ledger 首页不请求 trip.js */
   function ensureTrip() {
     if (window.Trip) return Promise.resolve(true);
@@ -1201,9 +1250,42 @@
     }).then(ok => { tripLoading = null; return ok; });
     return tripLoading;
   }
-  /* 单条记录的等效里程：新记录用冻结的 km_eq；旧记录按 kcal/体重回退 */
+  /* 地球渲染器与海岸线数据都只在环游记页面按需加载（ledger 模式 0 请求） */
+  function ensureGlobe() {
+    if (window.Globe) return Promise.resolve(true);
+    if (globeLoading) return globeLoading;
+    globeLoading = new Promise(resolve => {
+      const s = document.createElement('script');
+      s.src = 'assets/globe.js?v=5.1.0';
+      s.onload = () => resolve(!!window.Globe);
+      s.onerror = () => resolve(false);
+      document.head.appendChild(s);
+    }).then(ok => { globeLoading = null; return ok; });
+    return globeLoading;
+  }
+  function mountTripGlobe(km) {
+    const cv = $('#trkGlobe');
+    if (!cv) return;
+    ensureGlobe().then(ok => {
+      if (!ok || !$('#trkGlobe')) return;
+      if (state.globe && state.globe.destroy) state.globe.destroy();
+      state.globe = Globe.mount(cv, {
+        km: km,
+        rot: 0.6,
+        stations: Trip.LANDMARKS,
+        reduced: prefersReduced(),
+        powerSave: !!DB.settings.powerSave
+      });
+      /* 验收用的只读观测钩子（与 __v5 / __v43 同类，不写数据） */
+      window.__v51 = window.__v51 || {};
+      window.__v51.globeStats = () => (state.globe ? state.globe.stats() : null);
+      window.__v51.globeLive = () => !!state.globe;
+    });
+  }
+  /* 单条记录"计入环游记"的等效里程：含可信度倍率，仅存档/存疑记 0 */
   function recKmEq(x) {
-    if (!x || x.valid === false) return 0;
+    if (!x || x.valid === false || x.suspect === true) return 0;
+    if (tripReady() && Trip.countedKm) return Trip.countedKm(x, currentWeight());
     const k = Number(x.km_eq);
     if (isFinite(k) && k > 0) return k;
     const kcal = Number(x.kcal) || 0;
@@ -1292,18 +1374,14 @@
       '</div>' +
 
       '<section class="card trip-track-card" data-trk="track">' +
-        '<div class="trip-track-top"><span>第 ' + lapNo + ' 圈 · 已走 ' + fmt(Math.round(inLap)) + ' / ' + fmt(C) + ' km</span>' +
+        '<div class="trip-track-top"><span id="trkLapText">第 ' + lapNo + ' 圈 · 已走 ' + inLap.toFixed(2) + ' / ' + fmt(C) + ' km</span>' +
           '<span class="tiny faint">' + (lp.lap > 0 ? '已绕地球 ' + lp.lap + ' 圈' : '起点：北京') + '</span></div>' +
-        '<div class="trk">' +
-          '<div class="trk-globe" aria-hidden="true">' + icon('globe') + '</div>' +
-          '<div class="trk-line">' +
-            '<span class="trk-base"></span>' +
-            '<i class="trk-fill" id="trkFill" style="width:' + fromPct + '%"></i>' +
-            ticks +
-            '<span class="trk-label" style="left:' + labelLeft + '%">' + esc(st.station.name) + '</span>' +
-            '<span class="trk-person" id="trkPerson" style="left:' + fromPct + '%">' + icon('run') + '</span>' +
-          '</div>' +
+        '<div class="trk-wrap" data-trk="globe">' +
+          '<canvas id="trkGlobe" class="trk-globe-canvas" aria-label="环游地球：已走 ' + inLap.toFixed(2) + ' 公里"></canvas>' +
         '</div>' +
+        '<div class="trk-legend"><span><i class="lg gold"></i>已走</span><span><i class="lg dash"></i>这一圈还差 ' +
+          Math.max(0, round1(C - inLap)).toFixed(1) + ' km</span>' +
+          (lp.lap > 0 ? '<span><i class="lg hist"></i>' + lp.lap + ' 圈历史</span>' : '') + '</div>' +
         '<div class="trk-next">' + nextText + '</div>' +
       '</section>' +
 
@@ -1316,6 +1394,8 @@
         '<button class="btn ' + (hasCollected ? 'btn-ghost' : 'btn-primary') + ' btn-sm" data-act="trip-collect" data-no="' + stationNo + '">' +
           (hasCollected ? '已收藏 · 点击移出' : '收藏进旅行册') + '</button>' +
       '</section>' +
+
+      sportBoardHtml() +
 
       '<section class="card trip-book" data-trk="book">' +
         '<div class="trip-book-head"><span>旅行册</span><span class="tiny faint">' + collected.length + ' 站</span></div>' +
@@ -1332,13 +1412,45 @@
                 (c.periods ? ' · ' + c.periods + ' 期' : '') + '</em></span></div>').join('') + '</div>'
           : '<div class="cart-empty">还没有结清凭证。欠款归零当天会自动生成一张，同一天不重复发。</div>') +
       '</section>' +
-      '<div class="notebox">口径：kcal = MET × 体重 × 时长 × 1.05；里程 = kcal ÷ 体重，登山每 100 m 爬升折 1 km。命中防虚填规则的记录只存档、不推进度。</div>';
+      '<div class="notebox">口径：kcal = MET × 体重 × 时长 × 1.05；里程 = kcal ÷ 体重，登山每 100 m 爬升折 1 km。' +
+        '可信度：L0 手记按 1×、L1 导入文件判定通过按 1.2×、L2 计步按 1× 估算；判为存疑与命中防虚填规则的记录只存档、不计里程。</div>';
 
-    requestAnimationFrame(() => {
-      const f = $('#trkFill'), p = $('#trkPerson');
-      if (f) f.style.width = toPct + '%';
-      if (p) p.style.left = toPct + '%';
+    state.tripKm = km;
+    requestAnimationFrame(() => mountTripGlobe(km));
+  }
+
+  /* ---------- 运动板块（九类分组 / 周月汇总 / 可信度） ---------- */
+  const LEGACY_TO_CAT = { jog: 'run', strength: 'other', ball: 'other' };
+  function sportCatOf(x) {
+    const t = tripReady() ? (Trip.resolveType(x) || 'other') : (x.type || 'other');
+    if (Trip.CATEGORIES.indexOf(t) >= 0) return t;
+    return LEGACY_TO_CAT[t] || 'other';
+  }
+  function sportAgg(from, to) {
+    const out = { km: 0, min: 0, count: 0, byCat: {} };
+    Trip.CATEGORIES.forEach(c => { out.byCat[c] = { km: 0, min: 0, count: 0 }; });
+    out.byCat.other = { km: 0, min: 0, count: 0 };
+    (DB.exercises || []).forEach(x => {
+      if (!x || x.date < from || x.date > to) return;
+      const c = sportCatOf(x);
+      const km = recKmEq(x), min = Number(x.minutes) || 0;
+      if (!out.byCat[c]) out.byCat[c] = { km: 0, min: 0, count: 0 };
+      out.byCat[c].km += km;
+      out.byCat[c].min += min;
+      out.byCat[c].count += 1;
+      out.km += km;
+      out.min += min;
+      out.count += 1;
     });
+    return out;
+  }
+  function confBadge(x, id) {
+    if (x.valid === false) return '<button class="conf-badge s-bad" data-act="why-km" data-id="' + esc(id || x.id) + '">仅存档</button>';
+    const src = Trip.sourceOf(x);
+    if (x.suspect === true) return '<button class="conf-badge s-bad" data-act="why-km" data-id="' + esc(id || x.id) + '">存疑 · 不计里程</button>';
+    if (src === 'import') return '<button class="conf-badge s-l1" data-act="why-km" data-id="' + esc(id || x.id) + '">L1 已验证 · 1.2×</button>';
+    if (src === 'motion') return '<button class="conf-badge s-l2" data-act="why-km" data-id="' + esc(id || x.id) + '">L2 估算</button>';
+    return '<button class="conf-badge s-l0" data-act="why-km" data-id="' + esc(id || x.id) + '">L0 手记</button>';
   }
   function weekMoveSummary(today) {
     const a = weekStart(today), b = today || E.todayKey();
@@ -1346,6 +1458,273 @@
     const minutes = list.reduce((s, x) => s + (Number(x.minutes) || 0), 0);
     const km = list.reduce((s, x) => s + recKmEq(x), 0);
     return { minutes: minutes, km: round1(km), count: list.length };
+  }
+
+  function sportBoardHtml() {
+    const today = E.todayKey();
+    const wk = sportAgg(weekStart(today), today);
+    const mo = sportAgg(today.slice(0, 7) + '-01', today);
+    const maxKm = Math.max(1, Math.max.apply(null, Trip.CATEGORIES.map(c => wk.byCat[c].km)));
+    const bars = Trip.CATEGORIES.map(c => {
+      const g = wk.byCat[c];
+      return '<button class="sb-cat" data-act="ex-filter" data-id="' + c + '">' +
+        '<span class="sb-cat-head"><b>' + esc(Trip.MET_TABLE[c].label) + '</b>' +
+        '<em>' + round1(g.km).toFixed(1) + ' km · ' + g.min + ' 分钟</em></span>' +
+        '<span class="sb-bar"><i style="width:' + pct(g.km, maxKm) + '%"></i></span></button>';
+    }).join('');
+    const chips = ['全部'].concat(Trip.CATEGORIES.map(c => Trip.MET_TABLE[c].label));
+    const keys = ['all'].concat(Trip.CATEGORIES);
+    const hasOther = wk.byCat.other.count > 0 || mo.byCat.other.count > 0;
+    if (hasOther) { chips.push('旧记录'); keys.push('other'); }
+    let f = state.tripFilter || 'all';
+    if (keys.indexOf(f) < 0) f = 'all';
+    return '<section class="card sport-board" data-trk="sport">' +
+      '<div class="trip-book-head"><span>运动板块</span><span class="tiny faint">九类分组 · 本周 / 本月</span></div>' +
+      '<div class="sb-sum">' +
+        '<div class="sb-sum-item"><span>本周</span><b>' + round1(wk.km).toFixed(1) + ' km</b><em>' + wk.min + ' 分钟 · ' + wk.count + ' 次</em></div>' +
+        '<div class="sb-sum-item"><span>本月</span><b>' + round1(mo.km).toFixed(1) + ' km</b><em>' + mo.min + ' 分钟 · ' + mo.count + ' 次</em></div>' +
+      '</div>' +
+      '<div class="sb-cats">' + bars + '</div>' +
+      '<div class="sb-tools"><button class="btn btn-primary btn-sm" data-act="open-exercise">' + icon('plus') + '记一条</button>' +
+        '<button class="btn btn-ghost btn-sm" data-act="ex-import">' + icon('upload') + '导入 GPX / TCX</button>' +
+        '<input type="file" id="exFile" class="hidden-input" accept=".gpx,.tcx,.fit" aria-label="导入运动文件"></div>' +
+      stepsPanelHtml() +
+      '<div class="sb-filter" id="sbFilter">' + chips.map((t, i) =>
+        '<button data-act="ex-filter" data-id="' + keys[i] + '" class="' + (f === keys[i] ? 'on' : '') + '">' + esc(t) + '</button>').join('') + '</div>' +
+      '<div class="sb-list" id="sportList">' + sportListHtml(f) + '</div>' +
+      '</section>';
+  }
+
+  function sportListHtml(f) {
+    f = f || state.tripFilter || 'all';
+    const list = (DB.exercises || []).filter(x => x && (f === 'all' || sportCatOf(x) === f))
+      .sort((a, b) => (a.date === b.date ? (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0) : (a.date < b.date ? 1 : -1)))
+      .slice(0, 30);
+    if (!list.length) return '<div class="cart-empty">这一类还没有记录。记一条，或导入运动文件。</div>';
+    return list.map(x => {
+      const label = x.name || (Trip.MET_TABLE[sportCatOf(x)] || {}).label || '运动';
+      const extra = [];
+      if (Number(x.distance_km) > 0) extra.push(round1(Number(x.distance_km)).toFixed(1) + ' km');
+      if (Number(x.ascent_m) > 0) extra.push('爬升 ' + Math.round(Number(x.ascent_m)) + ' m');
+      if (Number(x.jumps) > 0) extra.push(Math.round(Number(x.jumps)) + ' 次');
+      if (Number(x.floors) > 0) extra.push(Math.round(Number(x.floors)) + ' 层');
+      if (x.stroke) extra.push(esc(x.stroke));
+      return '<div class="sb-rec"><div class="sb-rec-main"><b>' + esc(label) + '</b>' +
+        '<em>' + E.shortLabel(x.date) + ' · ' + (Number(x.minutes) || 0) + ' 分钟' +
+        (extra.length ? ' · ' + extra.join(' · ') : '') + '</em></div>' +
+        '<div class="sb-rec-k"><span>' + fmt(x.kcal) + ' kcal</span><em>' + round1(recKmEq(x)).toFixed(1) + ' km</em></div>' +
+        confBadge(x) +
+        '<button class="x" data-act="del-exercise" data-id="' + x.id + '" aria-label="删除">' + icon('close') + '</button></div>';
+    }).join('');
+  }
+
+  function explainKm(id) {
+    const x = (DB.exercises || []).find(v => v.id === id);
+    if (!x || !tripReady()) return;
+    const kg = Trip.resolveWeight(x, currentWeight());
+    const mets = Trip.resolveMets(x);
+    const min = Number(x.minutes) || 0;
+    const kcal = Number(x.kcal) > 0 ? Number(x.kcal) : Trip.estimateKcal(x, kg);
+    const base = round2(kcal / kg);
+    const ascent = Number(x.ascent_m) || 0;
+    const extra = ascent > 0 ? round2(ascent / 100) : 0;
+    const raw = Number(x.km_eq) > 0 ? round2(Number(x.km_eq)) : round2(base + extra);
+    const factor = Trip.recFactor(x);
+    const counted = round2(raw * factor);
+    const srcTxt = { manual: '手记 · L0（基础里程，1×）', import: '文件导入 · L1（检验通过，1.2×）', motion: '手机计步 · L2（估算，1×）' }[Trip.sourceOf(x)];
+    const why = x.valid === false ? '命中防虚填规则（' + (x.invalid_code || '未通过校验') + '），只存档、不计里程。'
+      : x.suspect ? '导入判定存疑：' + (x.suspect_reason || '静止点过多或平均配速异常') + '，只存档、不计里程。'
+        : '按来源倍率 ×' + factor + ' 计入。';
+    openSheet(sheetHead('这条里程是怎么算的', esc(x.name || '运动') + ' · ' + E.shortLabel(x.date)) +
+      '<div class="sheet-body"><div class="why-box">' +
+        '<div class="why-row"><span>METs</span><b>' + (mets || '—') + '</b></div>' +
+        '<div class="why-row"><span>体重</span><b>' + kg + ' kg</b></div>' +
+        '<div class="why-row"><span>时长</span><b>' + min + ' 分钟</b></div>' +
+        '<div class="why-row"><span>热量</span><b>' + fmt(kcal) + ' kcal</b></div>' +
+        '<div class="why-row"><span>基础里程</span><b>' + base + ' km（kcal ÷ 体重）</b></div>' +
+        (extra > 0 ? '<div class="why-row"><span>爬升加权</span><b>+' + extra + ' km（每 100 m 折 1 km）</b></div>' : '') +
+        '<div class="why-row"><span>原始等效</span><b>' + raw + ' km</b></div>' +
+        '<div class="why-row"><span>来源</span><b>' + srcTxt + '</b></div>' +
+        '<div class="why-row"><span>计入环游记</span><b>' + counted + ' km</b></div>' +
+      '</div><div class="notebox">' + esc(why) +
+        ' 说明：导入只做文件结构与位移合理性检查，前端无法核验文件真伪。</div>' +
+      '</div><div class="sheet-foot"><button class="btn btn-primary" style="flex:1" data-act="close-sheet">知道了</button></div>', 'why');
+  }
+
+  /* ---------- L1：GPX / TCX 导入 ---------- */
+  let gpxLoading = null;
+  function ensureGpx() {
+    if (window.Gpx) return Promise.resolve(true);
+    if (gpxLoading) return gpxLoading;
+    gpxLoading = new Promise(resolve => {
+      const s = document.createElement('script');
+      s.src = 'assets/gpx.js?v=5.1.0';
+      s.onload = () => resolve(!!window.Gpx);
+      s.onerror = () => resolve(false);
+      document.head.appendChild(s);
+    }).then(ok => { gpxLoading = null; return ok; });
+    return gpxLoading;
+  }
+  function pickExFile() {
+    const i = $('#exFile');
+    if (i) i.click();
+  }
+  function handleExFile(input) {
+    const f = input && input.files && input.files[0];
+    if (!f) return;
+    const name = f.name;
+    const ext = (name.split('.').pop() || '').toLowerCase();
+    input.value = '';
+    if (ext === 'fit') { toast('FIT 暂不支持：请先在运动 App 导出 GPX 或 TCX'); return; }
+    if (f.size > 8 * 1024 * 1024) { toast('文件超过 8 MB，先裁剪再导入'); return; }
+    const rd = new FileReader();
+    rd.onload = () => ensureGpx().then(ok => {
+      if (!ok) { toast('解析模块未能加载，检查网络后重试'); return; }
+      const res = Gpx.parse(String(rd.result || ''), name);
+      if (!res || !res.ok) { toast('无法解析：' + ((res && res.error) || '不是有效的 GPX/TCX')); return; }
+      state.importRes = res;
+      showImportConfirm(res);
+    });
+    rd.onerror = () => toast('读取文件失败');
+    rd.readAsText(f);
+  }
+  function showImportConfirm(r) {
+    const t = r.type;
+    const opts = ['walk', 'run', 'bike', 'hike', 'swim'].map(k =>
+      '<button data-act="imp-type" data-id="' + k + '" class="' + (t === k ? 'on' : '') + '">' + Trip.MET_TABLE[k].label + '</button>').join('');
+    openSheet(sheetHead('导入运动文件', esc(r.name)) +
+      '<div class="sheet-body"><div class="why-box">' +
+        '<div class="why-row"><span>格式</span><b>' + r.kind.toUpperCase() + '</b></div>' +
+        '<div class="why-row"><span>时长</span><b>' + r.minutes + ' 分钟</b></div>' +
+        '<div class="why-row"><span>距离</span><b>' + r.distanceKm.toFixed(2) + ' km</b></div>' +
+        '<div class="why-row"><span>爬升</span><b>' + Math.round(r.ascentM) + ' m</b></div>' +
+        '<div class="why-row"><span>采样点</span><b>' + r.points + ' 个</b></div>' +
+        '<div class="why-row"><span>静止点占比</span><b>' + Math.round((1 - r.movingRatio) * 100) + '%</b></div>' +
+        '<div class="why-row"><span>平均配速</span><b>' + (r.avgPace > 0 ? r.avgPace.toFixed(1) + ' 分/km' : '—') + '</b></div>' +
+        '<div class="why-row"><span>判定</span><b>' + (r.suspect ? '存疑 · 不计里程' : '通过 · 按 1.2× 计入') + '</b></div>' +
+      '</div>' +
+      '<div class="sb-filter sb-filter-imp">' + opts + '</div>' +
+      (r.suspect ? '<div class="notebox">判定原因：' + esc(r.reason) + '。这条会存档，但不计入环游记。</div>' : '') +
+      '<div class="notebox">导入只做文件结构与位移合理性检查，前端无法核验文件是否为真实运动记录；1.2× 是规则上的奖励倍率，不是"已核验真实性"。</div>' +
+      '</div><div class="sheet-foot"><button class="btn btn-ghost" data-act="close-sheet">取消</button>' +
+      '<button class="btn btn-primary" style="flex:1" data-act="imp-save">确认写入</button></div>', 'import');
+  }
+  function saveImported() {
+    const r = state.importRes;
+    if (!r || !tripReady()) return;
+    const type = r.type;
+    const m = Trip.MET_TABLE[type];
+    const kg = currentWeight();
+    const today = E.todayKey();
+    const minutes = clamp(Math.round(r.minutes), 1, 720);
+    const mets = m.mid;
+    const kcal = E.burn(mets, kg, minutes);
+    const ascent = clamp(Math.round(r.ascentM || 0), 0, 3000);
+    const km = Trip.toEquivalentKm(kcal, kg, ascent);
+    const dayTotal = DB.exercises.filter(x => x.date === today).reduce((s, x) => s + (Number(x.minutes) || 0), 0) + minutes;
+    if (!isFinite(km) || km <= 0) { toast('这条没有有效时长，未写入'); return; }
+    const rec = {
+      id: uid(), date: today, type: type, name: m.label, intensity: 'mid', mets: mets,
+      minutes: minutes, distance_km: round2(r.distanceKm), ascent_m: ascent, weight_at_time: kg,
+      kcal: kcal, km_eq: km, valid: true, invalid_code: null,
+      source: 'import', confidence: 'L1', multiplier: r.suspect ? 0 : 1.2,
+      suspect: !!r.suspect, suspect_reason: r.reason || '', src_name: r.name,
+      createdAt: Date.now()
+    };
+    const v = Trip.validateRecord(rec, dayTotal);
+    if (!v.ok) { rec.valid = false; rec.invalid_code = v.code; rec.km_eq = 0; }
+    const before = DB.exercises.length;
+    const tripBefore = { km: DB.trip.total_km, at: DB.trip.updatedAt };
+    DB.exercises.push(rec);
+    syncTrip(false);
+    if (!commit(() => {
+      DB.exercises.length = before;
+      DB.trip.total_km = tripBefore.km;
+      DB.trip.updatedAt = tripBefore.at;
+    })) return;
+    state.importRes = null;
+    closeSheet();
+    renderActive();
+    toast(r.suspect ? '已存档（存疑，不计里程）' : '已导入 · 计入 ' + round1(Trip.countedKm(rec, kg)).toFixed(1) + ' km');
+  }
+
+  /* ---------- L2：计步（默认关；屏幕熄灭会停止、晃动会误判） ---------- */
+  function motionSupport() {
+    if (!('DeviceMotionEvent' in window)) return { ok: false, why: '当前浏览器不支持运动传感器（DeviceMotion）' };
+    if (!window.isSecureContext) return { ok: false, why: '当前不是 HTTPS / 安全环境，浏览器禁用传感器' };
+    return { ok: true, why: '' };
+  }
+  let stepsLoading = null;
+  function ensureSteps() {
+    if (window.Steps) return Promise.resolve(true);
+    if (stepsLoading) return stepsLoading;
+    stepsLoading = new Promise(resolve => {
+      const s = document.createElement('script');
+      s.src = 'assets/steps.js?v=5.1.0';
+      s.onload = () => resolve(!!window.Steps);
+      s.onerror = () => resolve(false);
+      document.head.appendChild(s);
+    }).then(ok => { stepsLoading = null; return ok; });
+    return stepsLoading;
+  }
+  function stepsPanelHtml() {
+    const sup = motionSupport();
+    if (!DB.settings.motion) {
+      return '<div class="sb-steps off"><span id="sbStepsLive">计步（L2 估算）未开启</span><em>' +
+        (sup.ok ? '在设置里打开；屏幕熄灭会停止、晃动会误判' : esc(sup.why)) + '</em></div>';
+    }
+    if (!sup.ok) return '<div class="sb-steps off"><span>计步（L2）不可用</span><em>' + esc(sup.why) + '</em></div>';
+    const st = state.steps || { steps: 0, minutes: 0 };
+    return '<div class="sb-steps"><span id="sbStepsLive">计步中 · ' + st.steps + ' 步（估算）</span>' +
+      '<em>' + st.minutes + ' 分钟 · 屏幕熄灭会停止、晃动会误判</em>' +
+      (st.steps > 0 ? '<button class="btn btn-ghost btn-sm" data-act="steps-settle">记入</button>' : '') + '</div>';
+  }
+  function startMotionCounting() {
+    if (!DB.settings.motion || !motionSupport().ok) return;
+    ensureSteps().then(ok => {
+      if (!ok) return;
+      state.steps = { steps: 0, minutes: 0, startTs: Date.now() };
+      if (state.motionBound) return;
+      state.motionBound = true;
+      const det = Steps.detector();
+      window.addEventListener('devicemotion', ev => {
+        const a = ev.accelerationIncludingGravity || ev.acceleration;
+        if (!a) return;
+        const mag = Math.sqrt((a.x || 0) * (a.x || 0) + (a.y || 0) * (a.y || 0) + (a.z || 0) * (a.z || 0));
+        if (det(mag, Date.now())) {
+          state.steps.steps++;
+          state.steps.minutes = Math.round((Date.now() - state.steps.startTs) / 60000);
+          const el = $('#sbStepsLive');
+          if (el) el.textContent = '计步中 · ' + state.steps.steps + ' 步（估算）';
+        }
+      });
+    });
+  }
+  function settleSteps() {
+    if (!tripReady()) return;
+    const st = state.steps;
+    if (!st || st.steps < 10) { toast('步数太少，先走一段再记'); return; }
+    const kg = currentWeight();
+    const minutes = clamp(Math.round((Date.now() - st.startTs) / 60000), 1, 720);
+    const mets = Trip.MET_TABLE.walk.mid;
+    const kcal = E.burn(mets, kg, minutes);
+    const km = Trip.toEquivalentKm(kcal, kg, 0);
+    const today = E.todayKey();
+    const rec = {
+      id: uid(), date: today, type: 'walk', name: '计步（估算）', intensity: 'mid', mets: mets,
+      minutes: minutes, distance_km: round2(st.steps * 0.7 / 1000), ascent_m: 0, weight_at_time: kg,
+      kcal: kcal, km_eq: km, valid: true, invalid_code: null, steps: st.steps,
+      source: 'motion', confidence: 'L2', multiplier: 1, createdAt: Date.now()
+    };
+    const v = Trip.validateRecord(rec, minutes);
+    if (!v.ok) { rec.valid = false; rec.invalid_code = v.code; rec.km_eq = 0; }
+    const before = DB.exercises.length;
+    DB.exercises.push(rec);
+    syncTrip(false);
+    if (!commit(() => { DB.exercises.length = before; })) return;
+    state.steps = { steps: 0, minutes: 0, startTs: Date.now() };
+    renderActive();
+    toast('已记入 ' + st.steps + ' 步 · 估算 ' + round1(km).toFixed(1) + ' km');
   }
   /* ============================================================
      账房批注（纯规则，不调模型、不联网）
@@ -1641,6 +2020,8 @@
     const { t, ad, budget, sum, burned, remain } = st;
     const streak = streakNow();
     checkMilestones(streak);
+    /* 盖章册跟随连续达标同步；独立键，静默写入，不打扰主流程 */
+    syncStamps(true);
     checkAnti();
     if (checkScratchEarn(st)) toast('今日刮卡已到账：在「今天吃什么」下方刮开');
     const burnedNote = burned > 0;
@@ -2016,6 +2397,8 @@
         '</div>' +
       '</section>' +
 
+      (isFull() ? renderHeatCard() : '') +
+
       '<section class="section" style="margin-top:16px">' +
         '<div class="card" style="padding-top:6px;padding-bottom:6px">' +
           meals.map(m => renderMealBlock(m, d)).join('') +
@@ -2030,6 +2413,97 @@
       '</section>' +
 
       '<div class="disclaimer">历史日的预算按「当时已有记录」的校准结果计算，所以回看某天时会与今天的预算不同。这是账本在学习，不是数据错误。</div>';
+  }
+
+  /* ---------- v5.2 饮食日历热力图 ----------
+     365 格按周排列；颜色只说明「记录完整度 + 是否在额度内」，没有记录就保持空白，不伪造颜色。 */
+  const HEAT_LEVELS = [
+    { lv: 1, label: '超出预算' },
+    { lv: 2, label: '有记录' },
+    { lv: 3, label: '较完整' },
+    { lv: 4, label: '三餐完整' }
+  ];
+  function heatWeekdayNum(k) {
+    const d = new Date(k + 'T00:00:00');
+    return (d.getDay() + 6) % 7; /* 0 = 周一 */
+  }
+  function heatLevelOf(k) {
+    const s = E.summary(DB.entries, k);
+    if (!s || !s.count) return 0;
+    const st = snapshot(k);
+    const budget = st ? st.budget : 0;
+    if (!budget) return 0;
+    if (s.kcal > budget * 1.03) return 1;
+    const list = DB.entries.filter(e => e.date === k);
+    const meals = {};
+    list.forEach(e => { meals[e.meal] = 1; });
+    const nMeals = Object.keys(meals).length;
+    if (nMeals >= 3 && list.length >= 3) return 4;
+    if (list.length >= 2 || nMeals >= 2) return 3;
+    return 2;
+  }
+  function heatYearCells() {
+    const today = E.todayKey();
+    const start = E.addDays(today, -364);
+    const first = E.addDays(start, -heatWeekdayNum(start));
+    const end = E.addDays(today, 6 - heatWeekdayNum(today));
+    const out = [];
+    let k = first, guard = 0;
+    while (k <= end && guard++ < 400) {
+      const inRange = k >= start && k <= today;
+      out.push({ date: k, inRange: inRange, future: k > today, level: inRange ? heatLevelOf(k) : 0 });
+      k = E.addDays(k, 1);
+    }
+    return out;
+  }
+  function heatMonthCells(month) {
+    const today = E.todayKey();
+    const y = Number(month.slice(0, 4)), m = Number(month.slice(5, 7));
+    const last = new Date(y, m, 0).getDate();
+    const cells = [];
+    for (let i = 0; i < heatWeekdayNum(month + '-01'); i++) cells.push(null);
+    for (let d = 1; d <= last; d++) {
+      const k = month + '-' + (d < 10 ? '0' : '') + d;
+      cells.push({ date: k, inRange: true, future: k > today, level: k <= today ? heatLevelOf(k) : 0 });
+    }
+    return cells;
+  }
+  function heatMonthShift(month, delta) {
+    const y = Number(month.slice(0, 4)), m = Number(month.slice(5, 7));
+    const d = new Date(y, m - 1 + delta, 1);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+  }
+  function renderHeatCard() {
+    const today = E.todayKey();
+    const view = state.heatView === 'month' ? 'month' : 'year';
+    const month = state.heatMonth || today.slice(0, 7);
+    const cells = view === 'year' ? heatYearCells() : heatMonthCells(month);
+    const cls = 'heat-cell' + (view === 'year' ? ' hy' : ' hm');
+    const grid = cells.map(function (x) {
+      if (!x) return '<span class="' + cls + ' blank"></span>';
+      const filled = x.level > 0 && !x.future;
+      return '<button class="' + cls + (filled ? ' lv' + x.level : '') + (x.future ? ' future' : '') + (x.date === today ? ' now' : '') + '"' +
+        ' data-act="heat-day" data-date="' + x.date + '"' +
+        (filled ? ' title="' + E.dateLabel(x.date) + ' · ' + HEAT_LEVELS[x.level - 1].label + '"' : '') +
+        (x.future || !x.inRange ? ' disabled' : '') + ' aria-label="' + E.dateLabel(x.date) + (filled ? ' ' + HEAT_LEVELS[x.level - 1].label : ' 无记录') + '"></button>';
+    }).join('');
+    const prevDisabled = view === 'month' && month >= today.slice(0, 7);
+    return '<section class="card heat-card" id="heatCard" style="margin-top:14px">' +
+      '<div class="heat-head"><div><div class="eyebrow">饮食日历</div><div class="heat-title">' +
+        (view === 'year' ? '近一年 · 365 天' : Number(month.slice(0, 4)) + ' 年 ' + Number(month.slice(5, 7)) + ' 月') + '</div></div>' +
+        '<div class="seg heat-seg">' + [['year', '年'], ['month', '月']].map(x =>
+          '<button data-act="heat-view" data-v="' + x[0] + '" class="' + (view === x[0] ? 'on' : '') + '">' + x[1] + '</button>').join('') + '</div>' +
+      '</div>' +
+      (view === 'month' ? '<div class="heat-month-nav">' +
+        '<button class="arrow-btn" data-act="heat-month" data-d="-1" aria-label="上个月">' + icon('chevron-l') + '</button>' +
+        '<span>' + Number(month.slice(0, 4)) + '.' + month.slice(5, 7) + '</span>' +
+        '<button class="arrow-btn" data-act="heat-month" data-d="1"' + (prevDisabled ? ' disabled' : '') + ' aria-label="下个月">' + icon('chevron-r') + '</button>' +
+      '</div>' : '') +
+      '<div class="heat-grid ' + (view === 'year' ? 'heat-year' : 'heat-month') + '">' + grid + '</div>' +
+      '<div class="heat-legend">' + HEAT_LEVELS.map(x => '<span><i class="hl lv' + x.lv + '"></i>' + x.label + '</span>').join('') +
+        '<span><i class="hl"></i>无记录</span></div>' +
+      '<div class="heat-note tiny faint">点任意格子回看当天；没有记录的日子保持空白，不补色。</div>' +
+    '</section>';
   }
 
   /* ---------- 创新：控糖 / 控油 / 控盐 ---------- */
@@ -3024,7 +3498,8 @@
     return got;
   }
   function gachaPool() {
-    return SKINS.filter(s => s.tier === 'top' && !skinUnlocked(s.id));
+    /* pending（素材未交付）不进池：宁可少抽一套，也不下发空图 */
+    return SKINS.filter(s => s.tier === 'top' && !s.pending && !skinUnlocked(s.id));
   }
   function gachaCredits() { return Math.max(0, Number(DB.gacha.credits) || 0); }
   function gachaPlan(n) {
@@ -3058,7 +3533,7 @@
     });
     DB.gacha.history = DB.gacha.history.slice(0, 20);
     saveDB(true);
-    picks.forEach(function (s) { if (TOP_ART[s.id]) downloadSkinPack(s.id, { silent: true }); });
+    picks.forEach(function (s) { if (s.art && !s.pending) downloadSkinPack(s.id, { silent: true }); });
     return { plan: plan, want: want, picks: picks, source: src };
   }
   function nextGachaMilestone(streak) {
@@ -3133,7 +3608,9 @@
     saveDB(true);
   }
 
-  const SKINS = [
+  /* v5.2：顶级皮肤目录可由 assets/skins/index.json 动态扩充（字段契约见该文件）。
+     manifest 缺失或解析失败时保持原有 5 套顶级皮肤，不影响任何已解锁状态。 */
+  let SKINS = [
     { id: 'paper', name: '宣纸·米白', src: '开局自带', tier: 'base', swatch: '#FBF9F2', ink: '#1D2A23', tag: '米白' },
     { id: 'kraft', name: '牛皮纸·老账房', src: '开局自带', tier: 'base', swatch: '#E7D7BD', ink: '#26364A', tag: '牛皮' },
     { id: 'green', name: '账房·墨绿', src: '连续达标 7 天', tier: 'milestone', swatch: '#2A4238', ink: '#EDE6D4', tag: '墨绿' },
@@ -3165,6 +3642,60 @@
     { id: 'a-wuxia', name: '水墨江湖·武侠', src: '扭蛋限定', tier: 'top', swatch: '#F4F0E6', ink: '#22201C', tag: '宣纸水墨', art: 'wuxia' },
     { id: 'a-fireworks', name: '夏日祭·烟火', src: '扭蛋限定', tier: 'top', swatch: '#1E140F', ink: '#FFF0DD', tag: '暖橙烟火', art: 'fireworks' }
   ];
+  const LEGACY_TOP_IDS = ['a-sakura', 'a-galaxy', 'a-neon', 'a-wuxia', 'a-fireworks'];
+  let SKIN_MANIFEST = { state: 'idle', count: 0, error: '', source: 'local', promise: null };
+  function gallerySkins() { return SKINS; }
+  function galleryUnlocked() { return SKINS.filter(s => skinUnlocked(s.id)).length; }
+  function galleryTopCount() { return SKINS.filter(s => s.tier === 'top').length; }
+  function loadSkinManifest() {
+    if (SKIN_MANIFEST.promise) return SKIN_MANIFEST.promise;
+    const p = fetch('assets/skins/index.json', { cache: 'no-cache' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        const raw = (data && Array.isArray(data.skins)) ? data.skins
+          : ((data && Array.isArray(data.items)) ? data.items : []);
+        const seen = Object.create(null);
+        const items = raw.filter(x => x && x.id && x.name && x.tier === 'top' && !seen[String(x.id)] && (seen[String(x.id)] = true)).map(function (x) {
+          /* v5.2.1 真实素材契约：key→art；fg/fx/accent 随条目下发；pending 条目留空位、不发图请求 */
+          const pending = x.pending === true || x.status === 'pending' || x.status === 'missing';
+          return {
+            id: String(x.id), name: String(x.name), src: String(x.src || '扭蛋限定'),
+            tier: 'top', swatch: String(x.swatch || '#F4F1E7'), ink: String(x.ink || '#1D2A23'),
+            tag: String(x.tag || '扭蛋'), thumb: pending ? '' : String(x.thumb || ''),
+            art: pending ? '' : String(x.key || x.art || ''), fg: pending ? '' : String(x.fg || ''),
+            fx: (x.fx && typeof x.fx === 'object') ? x.fx : null,
+            accent: String(x.accent || ''), pending: pending, manifest: true
+          };
+        });
+        if (!items.length) throw new Error('manifest 无有效条目');
+        /* 成功时顶级目录以 manifest 为准；已解锁的旧顶级仍保留，避免丢收藏（同 id 以 manifest 为准） */
+        const keepLegacy = SKINS.filter(s => s.tier === 'top' && LEGACY_TOP_IDS.indexOf(s.id) >= 0 && skinUnlocked(s.id) && !seen[s.id]);
+        SKINS = SKINS.filter(s => s.tier !== 'top').concat(items).concat(keepLegacy);
+        SKIN_MANIFEST = { state: 'ok', count: items.length, error: '', source: 'manifest', promise: p };
+        /* v5.2.1：manifest 到达后重新套用当前皮肤（启动时 g 系皮肤尚未进表，
+           不重跑会退回 paper），并把已解锁皮肤的缓存包读回运行时（不联网） */
+        applySkins();
+        if (isFull()) bootSkinPacks();
+        return SKIN_MANIFEST;
+      })
+      .catch(function (e) {
+        SKIN_MANIFEST = { state: 'fail', count: 0, error: String((e && e.message) || e), source: 'local', promise: p };
+        return SKIN_MANIFEST;
+      });
+    SKIN_MANIFEST.promise = p;
+    return p;
+  }
+  function refreshManifestViews() {
+    updateRail();
+    renderActive();
+    const gb = $('#galleryBody');
+    if (state.sheet === 'gallery' && gb) gb.innerHTML = renderSkinGallery();
+    const gacha = $('#gachaBody');
+    if (state.sheet === 'gacha' && gacha && typeof renderGachaBody === 'function') gacha.innerHTML = renderGachaBody();
+  }
   function skinById(id) { return SKINS.find(s => s.id === id) || null; }
   function skinSrcShort(s) {
     if (s.tier === 'base') return '默认';
@@ -3179,7 +3710,8 @@
     saveDB(true);
     if (!silent) toast('解锁皮肤：' + (skinById(id) || { name: id }).name);
     // 顶级皮肤解锁即按需拉包；普通皮肤无大图，不触发请求
-    if (TOP_ART[id]) downloadSkinPack(id);
+    const sk = skinById(id);
+    if (sk && sk.art && !sk.pending) downloadSkinPack(id);
     return true;
   }
 
@@ -3295,8 +3827,16 @@
     '</svg>'
   );
   const PACK_RT = {};
+  /* art 字段在 v5.2.1 起是真实路径（assets/skins/<dir>/key.webp），主题目录需从路径解析 */
+  function artThemeOf(s) {
+    if (!s) return '';
+    if (s.theme) return s.theme;
+    const m = /assets\/skins\/([^/]+)\//.exec(String(s.art || ''));
+    if (m) return m[1];
+    return TOP_ART[s.id] || String(s.art || '');
+  }
   function packTheme(id) {
-    return TOP_ART[id] || ((skinById(id) || {}).art || '');
+    return artThemeOf(skinById(id));
   }
   function packKey(theme, file) { return 'assets/skins/' + theme + '/' + file; }
   function packReady(id) {
@@ -3377,7 +3917,7 @@
     st.status = 'loading';
     st.pct = 0;
     refreshPackViews();
-    const url = packKey(theme, 'key.webp') + '?v=5.0.3';
+    const url = packKey(theme, 'key.webp') + '?v=5.2.1';
     st.promise = fetch(url).then(function (res) {
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const total = Number(res.headers.get('content-length')) || 0;
@@ -3397,18 +3937,26 @@
       };
       return pump();
     }).then(function (blob) {
-      return cachePut(packKey(theme, 'key.webp'), blob, 'image/webp')
-        .then(function () {
-          // fx.json 与图一起缓存；失败不阻塞底图
-          return fetch(packKey(theme, 'fx.json') + '?v=5.0.3')
-            .then(function (r) { return r.ok ? r.text() : null; })
-            .catch(function () { return null; })
-            .then(function (txt) {
-              if (txt) return cachePut(packKey(theme, 'fx.json'), txt, 'application/json');
-              return null;
-            });
-        })
-        .then(function () { return done(blob); });
+      /* 一次补齐 key + thumb + fx 三件套，之后离线可用 */
+      return Promise.all([
+        cachePut(packKey(theme, 'key.webp'), blob, 'image/webp'),
+        // fx.json 与图一起缓存；失败不阻塞底图
+        fetch(packKey(theme, 'fx.json') + '?v=5.2.1')
+          .then(function (r) { return r.ok ? r.text() : null; })
+          .catch(function () { return null; })
+          .then(function (txt) {
+            if (txt) return cachePut(packKey(theme, 'fx.json'), txt, 'application/json');
+            return null;
+          }),
+        // thumb 同步缓存，图鉴离线也能出图
+        fetch(packKey(theme, 'thumb.webp') + '?v=5.2.1')
+          .then(function (r) { return r.ok ? r.blob() : null; })
+          .catch(function () { return null; })
+          .then(function (tb) {
+            if (tb) return cachePut(packKey(theme, 'thumb.webp'), tb, 'image/webp');
+            return null;
+          })
+      ]).then(function () { return done(blob); });
     }).catch(function () {
       st.status = 'error';
       st.pct = 0;
@@ -3420,7 +3968,7 @@
   }
   function bootSkinPacks() {
     if (!isFull()) return;
-    const owned = SKINS.filter(s => s.art && skinUnlocked(s.id)).map(s => s.art);
+    const owned = SKINS.filter(s => s.art && !s.pending && skinUnlocked(s.id)).map(s => packTheme(s.id)).filter(Boolean);
     owned.forEach(function (theme) {
       const st = PACK_RT[theme] || (PACK_RT[theme] = { status: 'idle', pct: 0, url: '', bytes: 0 });
       cacheMatch(packKey(theme, 'key.webp')).then(function (res) {
@@ -3464,7 +4012,7 @@
   }
   window.addEventListener('online', function () {
     // 只补已获得的皮肤；未解锁的永不预取
-    SKINS.filter(s => s.art && skinUnlocked(s.id)).forEach(function (s) {
+    SKINS.filter(s => s.art && !s.pending && skinUnlocked(s.id)).forEach(function (s) {
       if (!packReady(s.id)) downloadSkinPack(s.id, { silent: true }).then(function (ok) { if (ok) toast('皮肤包已自动补全：' + s.name); });
     });
   });
@@ -3473,10 +4021,10 @@
     if (!window.SkinFX) return;
     if (!isFull()) { SkinFX.stop(); return; }
     const sk = skinById(DB.skins.active);
-    const ready = sk && sk.art && skinUnlocked(sk.id) && packReady(sk.id);
+    const ready = sk && sk.art && !sk.pending && skinUnlocked(sk.id) && packReady(sk.id);
     const off = DB.settings.fx === false || DB.settings.powerSave;
     if (!ready || off) { SkinFX.stop(); return; }
-    SkinFX.start(sk.art, {
+    SkinFX.start(packTheme(sk.id), {
       power: DB.settings.fx !== false,
       powerSave: !!DB.settings.powerSave,
       reduced: prefersReduced(),
@@ -3875,10 +4423,10 @@
       '<span class="pool-chip top' + (skinUnlocked(s.id) ? ' on' : ' locked') + '" title="传说档 · 各 15%">' +
       (skinUnlocked(s.id) ? '' : icon('lock')) + esc(s.name) + '</span>').join('');
     return '<div class="pool-board">' +
-      '<div class="pool-cat"><div class="pc-head"><b>外观</b><span>全 30 套：默认 2 · 里程碑 2 · 稀有池 ' + around.length + ' · 顶级 5；另含印章 12 / 纸纹 8 / 书签 6 / 签名 5 / 字体 4 / 刮层 6 / 动效 3 / 封面 4</span></div>' +
+      '<div class="pool-cat"><div class="pc-head"><b>外观</b><span>全 ' + gallerySkins().length + ' 套：默认 2 · 里程碑 2 · 稀有池 ' + around.length + ' · 顶级 ' + galleryTopCount() + '；另含印章 12 / 纸纹 8 / 书签 6 / 签名 5 / 字体 4 / 刮层 6 / 动效 3 / 封面 4</span></div>' +
         '<div class="pool-group"><div class="pg-head">稀有池皮肤 ' + around.filter(s => skinUnlocked(s.id)).length + '/' + around.length + '</div><div class="pool-grid">' + sk + '</div></div>' + groups + '</div>' +
       '<div class="pool-cat"><div class="pc-head"><b>道具</b><span>热量额度、请假条、复活券、银行券</span></div><div class="pool-grid">' + props + '</div></div>' +
-      '<div class="pool-cat"><div class="pc-head"><b>顶级</b><span>仅传说档 · 5 套各 15%，共 75%</span></div><div class="pool-grid">' + tops + '</div></div>' +
+      '<div class="pool-cat"><div class="pc-head"><b>顶级</b><span>仅传说档 · 只从扭蛋机产出（池中 ' + gachaPool().length + ' 套）</span></div><div class="pool-grid">' + tops + '</div></div>' +
       '</div>';
   }
 
@@ -3941,10 +4489,20 @@
 
   function openScratchSheet() {
     expireCredits(true);
+    /* 有未揭晓的连刮批次：重开面板直接续揭，不丢券 */
+    if (DB.scratch.batch && !DB.scratch.batch.settled) {
+      state.batch = hydrateBatch(DB.scratch.batch);
+      openBatchSheet();
+      return;
+    }
     state.sheetData = { type: 'scratch' };
     const card = DB.scratch.card;
     const streak = streakNow();
     const tk = DB.scratch.tickets.length;
+    const lastBatch = DB.scratch.batch && DB.scratch.batch.settled
+      ? '<div class="batch-resume"><b>上次连刮 ' + DB.scratch.batch.count + ' 张已入账</b>' +
+        '<span>' + esc(DB.scratch.batch.summary || '') + '</span>' +
+        '<button class="btn-quiet tiny" data-act="batch-resume">查看结果</button></div>' : '';
     let body;
     if (card) {
       const src = TICKET_SRC[card.source] || '每日打卡';
@@ -3970,6 +4528,7 @@
       sheetHead('抽奖券', '每日基础卡 + 连续里程碑 · 无付费、无真钱、无外部奖品', '') +
       '<div class="sheet-body" id="scratchBody">' +
         '<div class="scratch-meta"><span class="tiny faint">券袋 ' + tk + (maintOn() ? ' 张（不封顶）' : '/10') + ' · 本周热量额度 ' + (Number(DB.scratch.weeklyKcal[weekId()]) || 0) + '/300 kcal</span><span class="tiny faint">抽奖券无过期</span></div>' +
+        lastBatch +
         body +
         renderTicketList() +
         renderMilestoneProgress(streak) +
@@ -3992,7 +4551,182 @@
     if (!v) return '';
     return '<i class="rw-badge ' + (kind || '') + '">' + v + '</i>';
   }
+  /* ---------- v5.2 盖章册 ----------
+     独立 localStorage 键 energy-ledger.stamps：不进账本主数据、不进导出。
+     连续达标一日盖 1 枚，7 枚一页；断签只清空「当前页」，已集满的页保留。 */
+  const STAMP_KEY = 'energy-ledger.stamps';
+  const STAMP_PATTERNS = [
+    { id: 'seal-ink', name: '墨色方章' }, { id: 'seal-gold', name: '烫金方章' },
+    { id: 'seal-blue', name: '靛蓝方章' }, { id: 'seal-green', name: '竹青方章' },
+    { id: 'seal-violet', name: '雾紫方章' }, { id: 'seal-amber', name: '赭石方章' }
+  ];
+  function loadStamps() {
+    const raw = readStore(STAMP_KEY, null);
+    const st = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+    st.version = 1;
+    st.run = Array.isArray(st.run) ? st.run.filter(k => /^\d{4}-\d{2}-\d{2}$/.test(k)).sort() : [];
+    st.patterns = Array.isArray(st.patterns) ? st.patterns.filter(id => STAMP_PATTERNS.some(p => p.id === id)) : [];
+    st.pages = Array.isArray(st.pages) ? st.pages.filter(p => p && Array.isArray(p.stamps) && p.stamps.length === 7)
+      .map(p => ({
+        id: String(p.id || uid()), stamps: p.stamps.slice(0, 7).sort(),
+        at: Number(p.at) || Date.now(), claimed: !!p.claimed,
+        reward: p.reward === 'pattern' ? 'pattern' : (p.reward === 'ticket' ? 'ticket' : ''),
+        pattern: p.pattern || ''
+      })) : [];
+    return st;
+  }
+  function saveStamps(st) { return writeStore(STAMP_KEY, st); }
+  function stampSeries() {
+    const today = E.todayKey();
+    const skip = {};
+    (DB.leaveDays || []).forEach(x => { skip[typeof x === 'string' ? x : (x && x.date)] = 1; });
+    (DB.cheatDays.history || []).forEach(x => { if (x && x.date) skip[x.date] = 1; });
+    const has = {};
+    DB.entries.forEach(e => { has[e.date] = 1; });
+    let k = (has[today] || skip[today]) ? today : E.addDays(today, -1);
+    if (!has[k] && !skip[k]) return [];
+    const out = [];
+    for (let i = 0; i < 999; i++) {
+      if (has[k]) {
+        const st = snapshot(k);
+        if (!st) break;
+        if (!st.cheat && st.sum.kcal > st.budget * 1.05) break;
+        out.push(k);
+        k = E.addDays(k, -1);
+      } else if (skip[k]) {
+        k = E.addDays(k, -1);
+      } else break;
+    }
+    return out.reverse();
+  }
+  function syncStamps(silent) {
+    const st = loadStamps();
+    const series = stampSeries();
+    const completed = {};
+    st.pages.forEach(p => p.stamps.forEach(d => { completed[d] = 1; }));
+    /* 当前页必须是今天这串连续日期的末尾；断签→只丢弃当前页，已完成页保留 */
+    let run = st.run.filter(d => series.indexOf(d) >= 0);
+    if (run.length) {
+      const tail = series.slice(series.length - run.length);
+      if (tail.join('|') !== run.join('|')) run = [];
+    }
+    series.forEach(d => {
+      if (!completed[d] && run.indexOf(d) < 0) run.push(d);
+    });
+    run.sort();
+    let changed = run.join('|') !== st.run.join('|');
+    while (run.length >= 7) {
+      st.pages.push({
+        id: uid(), stamps: run.slice(0, 7), at: Date.now(),
+        claimed: false, reward: '', pattern: ''
+      });
+      run = run.slice(7);
+      changed = true;
+    }
+    st.run = run;
+    const pagesBefore = st.pages.length;
+    if (changed) saveStamps(st);
+    if (changed && pagesBefore > 0 && !silent) {
+      const ready = st.pages.filter(p => !p.claimed).length;
+      if (ready) toast('盖章册：可以兑 ' + ready + ' 页了');
+    }
+    return st;
+  }
+  function stampSummary() {
+    const st = syncStamps(true);
+    return {
+      current: st.run.length,
+      pages: st.pages.length,
+      claimable: st.pages.filter(p => !p.claimed).length,
+      patterns: st.patterns.length
+    };
+  }
+  function renderStampCard() {
+    const sm = stampSummary();
+    if (!sm.pages && !sm.current && sm.patterns === 0) {
+      return '<div class="stamp-card" data-act="open-stamps" role="button" tabindex="0">' +
+        '<span class="sc-ic">' + icon('book') + '</span>' +
+        '<span class="sc-main"><b>盖章册</b><em>连续达标一日盖 1 枚 · 7 枚一页 · 今日还没有盖章</em></span>' +
+        '<span class="sc-go">查看</span></div>';
+    }
+    return '<div class="stamp-card" data-act="open-stamps" role="button" tabindex="0">' +
+      '<span class="sc-ic">' + icon('book') + '</span>' +
+      '<span class="sc-main"><b>盖章册</b><em>当前页 ' + sm.current + '/7 · 已集满 ' + sm.pages + ' 页 · 纹样 ' + sm.patterns + ' 枚</em></span>' +
+      '<span class="sc-go">' + (sm.claimable ? '可兑' : '查看') + (sm.claimable ? '<i>' + sm.claimable + '</i>' : '') + '</span></div>';
+  }
+  function stampSealHTML(k, n) {
+    return '<span class="stamp-seal on" title="' + E.dateLabel(k) + '"><span>' + (n % 7 + 1) + '</span></span>';
+  }
+  function renderStampSheet() {
+    const st = syncStamps(true);
+    const pages = st.pages.slice().sort((a, b) => b.at - a.at);
+    const curSlots = [];
+    for (let i = 0; i < 7; i++) {
+      curSlots.push(st.run[i] ? stampSealHTML(st.run[i], i) : '<span class="stamp-seal">·</span>');
+    }
+    const pageCards = pages.length ? pages.map(function (p, idx) {
+      const range = p.stamps[0] + ' → ' + p.stamps[6];
+      const reward = p.claimed
+        ? (p.reward === 'ticket' ? '已兑 1 张刮刮卡' : '已兑纹样：' + (STAMP_PATTERNS.find(x => x.id === p.pattern) || { name: '纹样' }).name)
+        : '';
+      return '<div class="stamp-page">' +
+        '<div class="stamp-page-top"><b>第 ' + (pages.length - idx) + ' 页</b><em>' + range + '</em></div>' +
+        '<div class="stamp-slots">' + p.stamps.map((k, i) => stampSealHTML(k, i)).join('') + '</div>' +
+        (p.claimed ? '<div class="stamp-claimed">' + reward + '</div>' :
+          '<div class="stamp-page-actions">' +
+            '<button class="btn btn-ghost" data-act="stamp-claim" data-id="' + p.id + '" data-kind="ticket">兑 1 张刮刮卡</button>' +
+            '<button class="btn btn-ghost" data-act="stamp-claim" data-id="' + p.id + '" data-kind="pattern">兑 1 个纹样</button>' +
+          '</div>') +
+      '</div>';
+    }).join('') : '<div class="rw-hist-empty tiny faint" style="margin-top:10px">还没有集满的页。连续达标 7 天即可集满一页。</div>';
+    const patHTML = st.patterns.length
+      ? '<div class="stamp-patterns">' + st.patterns.map(id => {
+          const p = STAMP_PATTERNS.find(x => x.id === id);
+          return '<span class="chip">' + esc(p ? p.name : id) + '</span>';
+        }).join('') + '</div>'
+      : '<div class="tiny faint" style="margin-top:8px">纹样会解锁到「外观收藏 · 印章」，可随时切换。</div>';
+    return sheetHead('盖章册', '连续达标一日盖 1 枚 · 7 枚一页 · 断签只重置当前页', '') +
+      '<div class="sheet-body">' +
+        '<div class="stamp-progress"><b>' + st.run.length + '</b><em>/ 7 当前页 · 已集满 ' + st.pages.length + ' 页</em></div>' +
+        '<div class="stamp-page current">' +
+          '<div class="stamp-page-top"><b>当前页</b><em>' + (st.run.length ? st.run[0] + ' → 今天' : '从今天开始') + '</em></div>' +
+          '<div class="stamp-slots">' + curSlots.join('') + '</div>' +
+        '</div>' +
+        pageCards +
+        '<div class="stamp-note">盖章状态保存在独立键 <b>energy-ledger.stamps</b>，不进账本主数据、不进导出；断签只清空当前页，已集满页不受影响。</div>' +
+        '<div class="stamp-page-actions"><button class="btn btn-primary" data-act="open-rewards">回奖励中心</button></div>' +
+        (patHTML ? '<div class="section-head" style="margin-top:16px"><h2>已收集纹样</h2></div>' + patHTML : '') +
+      '</div>';
+  }
+  function openStampSheet() {
+    state.sheetData = { type: 'stamps' };
+    openSheet(renderStampSheet(), 'stamps');
+  }
+  function claimStampPage(id, kind) {
+    const st = loadStamps();
+    const p = st.pages.find(x => x.id === id);
+    if (!p) return toast('这一页不存在');
+    if (p.claimed) return toast('这一页已经兑过了，不能重复结算');
+    if (kind === 'ticket') {
+      const got = addTicket('stamp', 1);
+      if (!got.added) return toast('刮刮卡已满 10 张，先刮掉几张再来兑');
+      p.claimed = true; p.reward = 'ticket';
+      saveStamps(st);
+      toast('已兑换 1 张刮刮卡');
+    } else {
+      const next = STAMP_PATTERNS.find(x => !cosUnlocked('stamp', x.id));
+      if (!next) return toast('印章纹样已经集齐了，换刮刮卡吧');
+      unlockCos('stamp', next.id, true);
+      if (st.patterns.indexOf(next.id) < 0) st.patterns.push(next.id);
+      p.claimed = true; p.reward = 'pattern'; p.pattern = next.id;
+      saveStamps(st);
+      toast('已兑换纹样：' + next.name + '（可在设置 · 外观收藏切换）');
+    }
+    openStampSheet();
+  }
+
   function renderRewardEntry() {
+    if (DB.settings && DB.settings.elder) return '';
     const tk = DB.scratch.tickets.length;
     const ga = rewardAvail();
     return '<section class="reward-entry-wrap">' +
@@ -4013,7 +4747,7 @@
   /* ---------- 兑换码 / 版本公告 ----------
      兑换码与公告状态一律写在独立 localStorage 键（el.codes.* / el.version.*），
      不进 DB、不进导出 JSON。verifyCode 是纯函数，状态由这里读写。 */
-  const APP_VERSION = '5.0.3';
+  const APP_VERSION = '5.2.1';
   const CODE_KEYS = (window.ELCodes && window.ELCodes.STORAGE_KEYS) ||
     { used: 'el.codes.used', revoked: 'el.codes.revoked', attempts: 'el.codes.attempts' };
   const CODE_TITLES = {
@@ -4135,6 +4869,7 @@
         '<span class="rw-txt"><b>扭蛋机</b><em>可用 ' + ga + ' 次 · 池中 ' + pool + ' 套顶级皮肤 · 必中不重复</em></span>' +
         '<span class="rw-card-badge">' + rewardBadge(ga, 'ga') + '</span>' +
       '</button>' +
+      renderStampCard() +
       renderCodeCard() +
       '<div class="rw-note tiny faint">扭蛋限定皮肤只从扭蛋池产出；扭蛋币可累计、无上限，仅用于扭蛋。</div>' +
     '</div>';
@@ -4178,10 +4913,13 @@
     const notes = (r.data.notes || []).slice(0, 4)
       .map(n => '<li>' + esc(n) + '</li>').join('');
     bar.innerHTML = '<i class="ver-dot" aria-hidden="true"></i>' +
-      '<div class="vb-main"><b>' + (r.forceUpgrade ? '需要刷新到新版本' : '新版本 v' + esc(r.data.version)) + '</b>' +
-        (r.forceUpgrade
-          ? '<span class="vb-sub">' + esc(r.message) + '</span>'
-          : '<span class="vb-sub">' + (r.data.released ? esc(r.data.released) + ' 发布 · 本次更新：' : '本次更新：') + '</span>') +
+      '<div class="vb-line"><b>' + (r.forceUpgrade ? '需要刷新到新版本' : '新版本 v' + esc(r.data.version)) + '</b>' +
+        (r.forceUpgrade ? '' : '<button class="vb-toggle" data-act="ver-toggle" aria-expanded="false">更新点</button>') +
+      '</div>' +
+      '<div class="vb-detail"' + (r.forceUpgrade ? '' : ' hidden') + '>' +
+        '<span class="vb-sub">' + (r.forceUpgrade
+          ? esc(r.message)
+          : (r.data.released ? esc(r.data.released) + ' 发布 · 本次更新：' : '本次更新：')) + '</span>' +
         (notes ? '<ul class="vb-notes">' + notes + '</ul>' : '') +
       '</div>' +
       '<div class="vb-acts">' +
@@ -4214,9 +4952,13 @@
     return tops.map(function (s) {
       const own = skinUnlocked(s.id);
       const ready = packReady(s.id);
+      if (s.pending) {
+        return '<div class="gacha-slot soon" title="' + esc(s.name) + ' · 即将上架">' +
+          '<span class="gs-q">…</span><span class="gs-tag">即将上架</span></div>';
+      }
       const bg = own && ready ? ' style="background-image:url(&quot;' + skinArtThumb(s.id).replace(/"/g, '&quot;') + '&quot;)"' : '';
       return '<div class="gacha-slot' + (own ? ' own' : '') + (own && !ready ? ' pending' : '') + '"' + bg + ' title="' + esc(s.name) + '">' +
-        (own ? '<span class="gs-name">' + esc(s.name.split('·')[0]) + '</span>' + (ready ? '' : '<span class="gs-tag">待下载</span>') : '<span class="gs-q">?</span><span class="gs-tag">未获得</span>') +
+        (own ? '<span class="gs-name">' + esc(s.name.split('·')[0]) + '</span>' + (ready ? '' : '<span class="gs-tag">' + (s.art ? '待下载' : '已获得') + '</span>') : '<span class="gs-q">?</span><span class="gs-tag">未获得</span>') +
         '</div>';
     }).join('');
   }
@@ -4235,10 +4977,11 @@
     if (!res) return '';
     return '<div class="gacha-result">' + res.picks.map(function (s) {
       const ready = packReady(s.id);
+      const hasArt = !!s.art && !s.pending;
       return '<div class="gacha-win">' +
         '<span class="gw-art" style="background:' + (s.swatch || '#ccc') + '">' + (ready ? '<img alt="" src="' + skinArtThumb(s.id) + '">' : '<span class="gw-ph">' + icon('lock') + '</span>') + '</span>' +
-        '<span class="gw-txt"><b>' + esc(s.name) + '</b><em>' + (ready ? '皮肤包已就绪' : (packProgressText(s.id) || '已获得 · 待下载')) + '</em></span>' +
-        (ready ? '' : '<button class="btn btn-ghost btn-sm" data-act="skin-download" data-id="' + s.id + '"' + (packState(s.id) && packState(s.id).status === 'loading' ? ' disabled' : '') + '>' + (packState(s.id) && packState(s.id).status === 'loading' ? '下载中' : '下载') + '</button>') +
+        '<span class="gw-txt"><b>' + esc(s.name) + '</b><em>' + (ready ? '皮肤包已就绪' : hasArt ? (packProgressText(s.id) || '已获得 · 待下载') : '已获得 · 素材待接入') + '</em></span>' +
+        (hasArt && !ready ? '<button class="btn btn-ghost btn-sm" data-act="skin-download" data-id="' + s.id + '"' + (packState(s.id) && packState(s.id).status === 'loading' ? ' disabled' : '') + '>' + (packState(s.id) && packState(s.id).status === 'loading' ? '下载中' : '下载') + '</button>' : '') +
         '</div>';
     }).join('') + '<div class="gacha-sum">共得 ' + res.picks.length + ' 套 · 池中剩 ' + gachaPool().length + ' 套 · 来源：' + esc(res.source) + '</div></div>';
   }
@@ -4356,26 +5099,56 @@
       acts.innerHTML = pool
         ? '<button class="btn btn-primary" data-act="gacha-draw" data-n="1"' + (ga < 1 ? ' disabled' : '') + '>再抽一次</button>' +
           (pool >= 2 ? '<button class="btn btn-gold" data-act="gacha-draw" data-n="' + Math.min(5, pool) + '"' + (ga < 1 ? ' disabled' : '') + '>再抽 ' + Math.min(5, pool) + ' 个</button>' : '')
-        : '<div class="gacha-empty"><b>已集齐 · 等待新皮肤上架</b><em>5 套顶级皮肤都在图鉴里了。</em></div>';
+        : '<div class="gacha-empty"><b>已集齐 · 等待新皮肤上架</b><em>全部顶级皮肤都在图鉴里了。</em></div>';
     }
     if (window.SkinFX) SkinFX.boost(1200);
   }
 
   /* ---------- 五张连刮 ---------- */
+  function hydrateBatch(pb) {
+    if (!pb) return null;
+    return {
+      id: pb.id, at: pb.at, date: pb.date, count: pb.count, cards: pb.cards,
+      done: !!pb.settled, results: pb.results || null, counts: pb.counts || null, summary: pb.summary || ''
+    };
+  }
+
   function startBatch(n) {
     const tk = DB.scratch.tickets.length;
     if (!tk) { toast('券袋是空的，先看看怎么拿券'); return false; }
+    if (DB.scratch.batch && !DB.scratch.batch.settled) {
+      /* 已有未揭晓的批次：先继续它，不重复开批 */
+      state.batch = hydrateBatch(DB.scratch.batch);
+      openBatchSheet();
+      return true;
+    }
     if (DB.scratch.card && !DB.scratch.card.revealed) { toast('先刮开手里这张'); return false; }
     const count = Math.min(Number(n) || 5, tk, 5);
     if (count === 1) return drawTicket();
+    const tickets = DB.scratch.tickets.slice();
     const cards = [];
     for (let i = 0; i < count; i++) {
-      const t = DB.scratch.tickets.shift();
+      const t = tickets[i];
       cards.push({ date: t.date, source: t.source, ticketId: t.id, revealed: false, tier: null, reward: null });
     }
+    const prevCard = DB.scratch.card;
+    const prevBatch = DB.scratch.batch;
     DB.scratch.card = null;
-    state.batch = { cards: cards, count: count, done: false, results: null, counts: null };
-    saveDB(true);
+    DB.scratch.tickets = tickets.slice(count);
+    /* 先建批再落盘：券扣除与 5 张卡同一次写入，关面板也不会丢 */
+    DB.scratch.batch = {
+      id: uid(), at: Date.now(), date: E.todayKey(), count: count, cards: cards,
+      settled: false, results: null, counts: null, summary: ''
+    };
+    state.batch = hydrateBatch(DB.scratch.batch);
+    if (!saveDB(true)) {
+      DB.scratch.tickets = tickets;
+      DB.scratch.card = prevCard;
+      DB.scratch.batch = prevBatch;
+      state.batch = null;
+      toast('开批失败：存储写入失败，券未扣除');
+      return false;
+    }
     openBatchSheet();
     return true;
   }
@@ -4404,7 +5177,8 @@
       '<div class="sheet-foot"><span class="tiny faint">五张共用一条擦除轨迹；每张按普通 80% / 稀有 17% / 传说 3% 独立结算，连续 7 张未出稀有则保底。</span></div>',
       'scratch-batch'
     );
-    initBatchCanvases();
+    if (b.done && b.results) paintBatchResults();
+    else initBatchCanvases();
   }
 
   function batchCoat(ctx, w, h) {
@@ -4527,42 +5301,70 @@
 
   function settleBatch() {
     const b = state.batch;
-    if (!b || b.done) return null;
-    b.done = true;
-    const subs = [];
-    b.cards.forEach(function (c) {
-      const ti = scratchTierInfo(DB.scratch.miss);
-      const tier = ti.tier;
-      const reward = applyScratchReward(tier, ti.pity);
-      c.revealed = true;
-      c.tier = tier;
-      c.reward = reward;
-      DB.scratch.miss = tier === 'common' ? DB.scratch.miss + 1 : 0;
-      DB.scratch.count = (DB.scratch.count || 0) + 1;
-      subs.push({ tier: tier, label: reward.label, detail: reward.detail || '' });
-    });
-    const counts = { common: 0, rare: 0, legend: 0 };
-    subs.forEach(function (s) { counts[s.tier]++; });
-    const order = { legend: 3, rare: 2, common: 1 };
-    const sorted = subs.slice().sort(function (a, z) { return order[z.tier] - order[a.tier]; });
-    const summary = ['legend', 'rare', 'common'].filter(function (t) { return counts[t]; })
-      .map(function (t) { return counts[t] + ' ' + SCRATCH_TIER[t].label; }).join(' / ');
-    const top = sorted[0] ? sorted[0].tier : 'common';
-    b.results = sorted;
-    b.counts = counts;
-    b.summary = summary;
-    DB.scratch.last = { tier: top, label: '连刮 ' + b.count + ' 张 · ' + summary, detail: subs.map(function (s) { return s.label; }).join('；'), at: Date.now(), date: E.todayKey(), batch: true };
-    DB.scratch.log.unshift({
-      id: uid(), date: E.todayKey(), at: Date.now(), source: 'batch', batch: true, tier: top,
-      label: '刮 ' + b.count + ' 张 · ' + summary,
-      subs: subs.map(function (s) { return { tier: s.tier, label: s.label }; })
-    });
-    DB.scratch.log = DB.scratch.log.slice(0, 60);
-    saveDB(true);
+    if (!b) return null;
+    const pb = DB.scratch.batch;
+    /* 同一批只结算一次：内存标记 + 落盘 settled 双保险（刷新后也不会重复入账） */
+    if (b.done || (pb && pb.id === b.id && pb.settled)) return null;
+    const snapshot = JSON.stringify(DB);
+    try {
+      b.done = true;
+      const subs = [];
+      b.cards.forEach(function (c) {
+        const ti = scratchTierInfo(DB.scratch.miss);
+        const tier = ti.tier;
+        const reward = applyScratchReward(tier, ti.pity);
+        c.revealed = true;
+        c.tier = tier;
+        c.reward = reward;
+        DB.scratch.miss = tier === 'common' ? DB.scratch.miss + 1 : 0;
+        DB.scratch.count = (DB.scratch.count || 0) + 1;
+        subs.push({ tier: tier, label: reward.label, detail: reward.detail || '' });
+      });
+      const counts = { common: 0, rare: 0, legend: 0 };
+      subs.forEach(function (s) { counts[s.tier]++; });
+      const order = { legend: 3, rare: 2, common: 1 };
+      const sorted = subs.slice().sort(function (a, z) { return order[z.tier] - order[a.tier]; });
+      const summary = ['legend', 'rare', 'common'].filter(function (t) { return counts[t]; })
+        .map(function (t) { return counts[t] + ' ' + SCRATCH_TIER[t].label; }).join(' / ');
+      const top = sorted[0] ? sorted[0].tier : 'common';
+      b.results = sorted;
+      b.counts = counts;
+      b.summary = summary;
+      DB.scratch.last = { tier: top, label: '连刮 ' + b.count + ' 张 · ' + summary, detail: subs.map(function (s) { return s.label; }).join('；'), at: Date.now(), date: E.todayKey(), batch: true };
+      DB.scratch.log.unshift({
+        id: uid(), date: E.todayKey(), at: Date.now(), source: 'batch', batch: true, tier: top,
+        label: '刮 ' + b.count + ' 张 · ' + summary,
+        subs: subs.map(function (s) { return { tier: s.tier, label: s.label }; })
+      });
+      DB.scratch.log = DB.scratch.log.slice(0, 60);
+      /* 批次结果与奖励一次性写入；settled 落盘后重开只能查看，不能再结算 */
+      if (pb && pb.id === b.id) {
+        pb.settled = true;
+        pb.settledAt = Date.now();
+        pb.results = sorted;
+        pb.counts = counts;
+        pb.summary = summary;
+        pb.cards.forEach(function (c, i) {
+          const s = subs[i];
+          if (!s) return;
+          c.revealed = true;
+          c.tier = s.tier;
+          c.reward = { label: s.label, detail: s.detail || '' };
+        });
+      }
+      if (!saveDB(true)) throw new Error('save-failed');
+    } catch (e) {
+      /* 任一环节失败：整批回滚，券与奖励都不变，批次仍可继续揭晓 */
+      DB = JSON.parse(snapshot);
+      state.batch = hydrateBatch(DB.scratch.batch);
+      toast('结算失败：本批未入账，券与奖励保持原样；请清理存储后重试');
+      if (state.sheet === 'scratch-batch') openBatchSheet();
+      return null;
+    }
     paintBatchResults();
-    toast('连刮 ' + b.count + ' 张：' + summary);
+    toast('连刮 ' + b.count + ' 张：' + b.summary);
     if (state.tab === 'today') renderToday();
-    return { results: sorted, counts: counts, summary: summary };
+    return { results: b.results, counts: b.counts, summary: b.summary };
   }
 
   function paintBatchResults() {
@@ -4844,7 +5646,7 @@
       '</div>' +
       '<div class="wallet-sec"><div class="section-head"><h2>图鉴与皮肤</h2><span class="tiny faint">' + lit + '/1,046 原料点亮</span></div>' +
         '<div class="chip-row"><button class="chip" data-act="open-codex">图鉴 ' + lit + '</button>' +
-        '<button class="chip" data-act="open-skins">皮肤 ' + (DB.skins.unlocked || []).length + '/30 · ' + esc((skinById(DB.skins.active) || { name: '宣纸' }).name) + '</button></div>' +
+        '<button class="chip" data-act="open-skins">皮肤 ' + galleryUnlocked() + '/' + gallerySkins().length + ' · ' + esc((skinById(DB.skins.active) || { name: '宣纸' }).name) + '</button></div>' +
       '</div>';
   }
 
@@ -4919,17 +5721,18 @@
   function renderSkinWall() {
     const active = DB.skins.active;
     const unlocked = SKINS.filter(s => skinUnlocked(s.id)).length;
-    return '<div class="skin-note">' + unlocked + ' / 30 套纸面 · 点击即切换 · 暗色模式自动使用对应暗色变体 · 正文对比度 ≥ WCAG AA 4.5:1</div>' +
+    return '<div class="skin-note">' + unlocked + ' / ' + SKINS.length + ' 套纸面 · 点击即切换 · 暗色模式自动使用对应暗色变体 · 正文对比度 ≥ WCAG AA 4.5:1</div>' +
       '<div class="skin-grid">' + SKINS.map(s => {
         const on = skinUnlocked(s.id);
-        return '<button class="skin-card' + (on ? '' : ' locked') + (s.id === active ? ' active' : '') + (s.tier === 'top' ? ' top' : '') + '" data-act="skin-apply" data-id="' + s.id + '">' +
+        const soon = !!s.pending;
+        return '<button class="skin-card' + (on ? '' : ' locked') + (soon ? ' soon' : '') + (s.id === active ? ' active' : '') + (s.tier === 'top' ? ' top' : '') + '" data-act="skin-apply" data-id="' + s.id + '">' +
           '<span class="sk-swatch' + (s.art ? ' art' : '') + '" style="--sw:' + s.swatch + ';--swink:' + s.ink + (s.art ? ';background-image:url(' + skinArtThumb(s.id) + ')' : '') + '"><b>账</b></span>' +
-          '<span class="sk-main"><b>' + s.name + '</b><em>' + (on ? (s.art && !packReady(s.id) ? '已获得 · 待下载' : (s.id === active ? '当前使用' : '已解锁')) : '未解锁 · ' + s.src) + '</em></span>' +
-          (s.tier === 'top' ? '<span class="sk-top">扭蛋限定</span>' : '') +
-          (on ? '' : '<span class="sk-lock">' + icon('lock') + '</span>') +
+          '<span class="sk-main"><b>' + s.name + '</b><em>' + (soon ? '即将上架' : (on ? (s.art && !packReady(s.id) ? '已获得 · 待下载' : (s.id === active ? '当前使用' : '已解锁')) : '未解锁 · ' + s.src)) + '</em></span>' +
+          (s.tier === 'top' ? '<span class="sk-top">' + (soon ? '即将上架' : '扭蛋限定') + '</span>' : '') +
+          (on || soon ? '' : '<span class="sk-lock">' + icon('lock') + '</span>') +
         '</button>';
       }).join('') + '</div>' +
-      '<div class="notebox">解锁来源：开局自带 2 套；连续达标 7 天 / 30 天各 1 套；稀有档解锁 21 套；顶级 5 套为扭蛋限定，只从扭蛋机产出，刮卡池永不回填。</div>';
+      '<div class="notebox">解锁来源：开局自带 2 套；连续达标 7 天 / 30 天各 1 套；稀有档解锁 21 套；顶级 ' + galleryTopCount() + ' 套为扭蛋限定，只从扭蛋机产出，刮卡池永不回填。</div>';
   }
 
   function openSkinsSheet() {
@@ -4963,31 +5766,37 @@
     const sd = state.sheetData || {};
     const filter = sd.filter || 'all';
     const selected = skinById(sd.selected) || skinById(DB.skins.active) || SKINS[0];
-    const unlockedN = SKINS.filter(s => skinUnlocked(s.id)).length;
-    const list = SKINS.filter(s => filter === 'all' ? true : filter === 'unlocked' ? skinUnlocked(s.id) : !skinUnlocked(s.id));
+    const unlockedN = galleryUnlocked();
+    const totalN = gallerySkins().length;
+    const list = gallerySkins().filter(s => filter === 'all' ? true : filter === 'unlocked' ? skinUnlocked(s.id) : !skinUnlocked(s.id));
     const on = skinUnlocked(selected.id);
     const pending = on && selected.art && !packReady(selected.id);
-    const preview = '<div class="gal-preview' + (selected.art ? ' art' : '') + (on ? '' : ' locked') + '" style="--sw:' + selected.swatch + ';--swink:' + selected.ink +
-      (selected.art ? ';background-image:url(' + skinArtThumb(selected.id) + ')' : '') + '">' +
-      '<div class="gp-paper"><b>账本</b><span>预览 · ' + esc(selected.tag) + '</span></div></div>' +
-      '<div class="gal-info"><b>' + esc(selected.name) + (selected.tier === 'top' ? ' <span class="top-mark">扭蛋限定</span>' : '') + '</b>' +
-      '<span class="tiny faint">' + esc(selected.src) + ' · 色系：' + esc(selected.tag) +
-        (selected.tier === 'top' && !on ? ' · 在扭蛋池中（池中 ' + gachaPool().length + ' 套）' : '') + '</span>' +
-      (on
+    const soon = !!selected.pending;
+    const preview = '<div class="gal-preview' + (selected.art ? ' art' : '') + (on ? '' : ' locked') + (soon ? ' soon' : '') + '" style="--sw:' + selected.swatch + ';--swink:' + selected.ink +
+      (selected.thumb ? ';background-image:url(' + esc(selected.thumb) + ')' : selected.art ? ';background-image:url(' + skinArtThumb(selected.id) + ')' : '') + '">' +
+      '<div class="gp-paper"><b>账本</b><span>' + (soon ? '即将上架 · ' + esc(selected.tag) : '预览 · ' + esc(selected.tag)) + '</span></div></div>' +
+      '<div class="gal-info"><b>' + esc(selected.name) + (selected.tier === 'top' ? ' <span class="top-mark">' + (soon ? '即将上架' : '扭蛋限定') + '</span>' : '') + '</b>' +
+      '<span class="tiny faint">' + esc(soon ? '素材制作中' : selected.src) + ' · 色系：' + esc(selected.tag) +
+        (selected.tier === 'top' && !on && !soon ? ' · 在扭蛋池中（池中 ' + gachaPool().length + ' 套）' : '') + '</span>' +
+      (soon
+        ? '<div class="gal-soon-tip">' + icon('spark') + ' 这套素材还在制作中，暂不进入扭蛋池；上好即上架。</div>'
+        : (on
         ? '<button class="btn btn-primary btn-sm" data-act="skin-set-active" data-id="' + selected.id + '">' + (DB.skins.active === selected.id ? '当前使用中' : '设为当前') + '</button>' +
           (pending ? '<div class="pack-pending"><b>已获得 · 待下载</b><em>' + (packProgressText(selected.id) || '点按钮下载皮肤包，之后离线也能用') + '</em>' +
             '<button class="btn btn-ghost btn-sm" data-act="skin-download" data-id="' + selected.id + '"' + (packState(selected.id) && packState(selected.id).status === 'loading' ? ' disabled' : '') + '>下载皮肤包</button></div>' : '')
-        : '<div class="gal-locked-tip">' + icon('lock') + ' 未解锁 · 获取方式：' + esc(selected.src) + '。图鉴不提供跳过解锁的按钮。</div>') +
+        : '<div class="gal-locked-tip">' + icon('lock') + ' 未解锁 · 获取方式：' + esc(selected.src) + '。图鉴不提供跳过解锁的按钮。</div>')) +
       '</div>';
     const cards = list.map(s => {
       const u = skinUnlocked(s.id);
-      return '<button class="gal-card' + (u ? '' : ' locked') + (s.id === selected.id ? ' sel' : '') + (s.tier === 'top' ? ' top' : '') + '" data-act="gallery-pick" data-id="' + s.id + '">' +
+      const soon2 = !!s.pending;
+      return '<button class="gal-card' + (u ? '' : ' locked') + (soon2 ? ' soon' : '') + (s.id === selected.id ? ' sel' : '') + (s.tier === 'top' ? ' top' : '') + '" data-act="gallery-pick" data-id="' + s.id + '">' +
         '<span class="gc-thumb' + (s.art ? ' art' : '') + '" style="--sw:' + s.swatch + ';--swink:' + s.ink +
-        (s.art ? ';background-image:url(' + skinArtThumb(s.id) + ')' : '') + '"><b>账</b>' +
-        (u ? '' : '<span class="gc-lock">' + icon('lock') + '</span>') + '</span>' +
+        (!s.thumb && s.art ? ';background-image:url(' + skinArtThumb(s.id) + ')' : '') + '">' +
+        (s.thumb ? '<img class="gc-img" loading="lazy" decoding="async" alt="" src="' + esc(s.thumb) + '">' : '') + '<b>账</b>' +
+        (soon2 ? '<span class="gc-soon">即将上架</span>' : (u ? '' : '<span class="gc-lock">' + icon('lock') + '</span>')) + '</span>' +
         '<span class="gc-name">' + esc(s.name) + '</span>' +
         '<span class="gc-tag">' + esc(s.tag) + '</span>' +
-        '<span class="gc-src">' + esc(skinSrcShort(s)) + '</span>' +
+        '<span class="gc-src">' + (soon2 ? '即将上架' : esc(skinSrcShort(s))) + '</span>' +
         '</button>';
     }).join('');
     const cosGroups = Object.keys(COS_KINDS).map(k => {
@@ -5001,19 +5810,19 @@
       return '<div class="cos-group"><div class="cg-head">' + def.label + ' <span class="tiny faint">' +
         def.list.filter(x => cosUnlocked(k, x.id)).length + '/' + def.list.length + '</span></div><div class="cos-grid">' + chips + '</div></div>';
     }).join('');
-    return '<div class="gal-head"><div><b>皮肤图鉴</b><span class="tiny faint">已解锁 ' + unlockedN + ' / 30 · 收集率 ' + Math.round(unlockedN / 30 * 100) + '%</span></div>' +
+    return '<div class="gal-head"><div><b>皮肤图鉴</b><span class="tiny faint">已解锁 ' + unlockedN + ' / ' + totalN + ' · 收集率 ' + Math.round(unlockedN / totalN * 100) + '%</span></div>' +
       '<div class="seg gal-seg">' + [['all', '全部'], ['unlocked', '已解锁'], ['locked', '未解锁']].map(x =>
         '<button data-act="gallery-filter" data-f="' + x[0] + '" class="' + (filter === x[0] ? 'on' : '') + '">' + x[1] + '</button>').join('') + '</div></div>' +
       '<div class="gal-preview-wrap">' + preview + '</div>' +
       '<div class="gal-grid">' + cards + '</div>' +
       '<div class="sheet-sub">外观收藏 <span class="tiny faint">（点击已解锁项直接启用）</span></div>' + cosGroups +
-      '<div class="notebox">未解锁项显示灰度剪影，不提供假装解锁的按钮；顶级 5 套为扭蛋限定，只从扭蛋机产出。</div>';
+      '<div class="notebox">未解锁项显示灰度剪影，不提供假装解锁的按钮；顶级 ' + galleryTopCount() + ' 套为扭蛋限定，只从扭蛋机产出。</div>';
   }
 
   function openSkinGallery() {
     state.sheetData = { type: 'gallery', filter: 'all', selected: DB.skins.active };
     openSheet(
-      sheetHead('皮肤图鉴', '30 套纸面 · 未解锁显示灰度剪影 · 顶级 5 套扭蛋限定', '') +
+      sheetHead('皮肤图鉴', gallerySkins().length + ' 套纸面 · 未解锁显示灰度剪影 · 顶级 ' + galleryTopCount() + ' 套扭蛋限定', '') +
       '<div class="sheet-body" id="galleryBody">' + renderSkinGallery() + '</div>' +
       '<div class="sheet-foot"><button class="btn btn-ghost" data-act="open-skins">皮肤墙</button><button class="btn btn-ghost" data-act="close-sheet">关闭</button></div>',
       'gallery'
@@ -5131,7 +5940,9 @@
     '<section class="daily-card">' +
       '<div class="dc-head"><span class="dc-k">账本日报</span><span class="dc-d">' + todayLabel() + '</span></div>' +
       '<div class="dc-rows"><div><b>' + fmt(st.sum.kcal) + '</b><em>摄入 kcal</em></div><div><b>' + fmt(Math.max(0, st.remain)) + '</b><em>剩余 kcal</em></div><div><b>' + round1(st.sum.p) + 'g</b><em>蛋白</em></div><div><b>' + streak + ' 天</b><em>连续达标</em></div></div>' +
-      '<div class="dc-line">' + dailyLine(st, streak) + '</div>' +
+      (st.sum.count === 0
+        ? '<button class="dc-line dc-cta" data-act="open-add">' + esc(dailyLine(st, streak)) + ' <b>记一餐 →</b></button>'
+        : '<div class="dc-line">' + dailyLine(st, streak) + '</div>') +
       '<button class="btn btn-ghost btn-sm" data-act="daily-card">存为 PNG</button>' +
     '</section>';
   }
@@ -6775,7 +7586,7 @@
 
       '<div class="setting-group">' +
         '<div class="gh"><div class="t">数据</div><div class="s">你的数据属于你。随时全量导出，或彻底删除</div></div>' +
-        '<button class="setting-row" data-act="export-json"><span class="l"><span class="t">导出完整备份（JSON）</span><span class="s">包含记录、体重、运动、自定义食物与设置（不含 API Key）</span></span><span class="r">' + icon('download') + '</span></button>' +
+        '<button class="setting-row" data-act="export-json"><span class="l"><span class="t">导出完整备份（JSON）</span><span class="s">包含记录、体重、运动、奖励（券/币/皮肤）与设置（不含 API Key）</span></span><span class="r">' + icon('download') + '</span></button>' +
         '<button class="setting-row" data-act="export-csv"><span class="l"><span class="t">导出明细（CSV）</span><span class="s">可用 Excel 打开或做自己的分析</span></span><span class="r">' + icon('download') + '</span></button>' +
         '<button class="setting-row" data-act="export-health-csv"><span class="l"><span class="t">导出健康数据（CSV）</span><span class="s">体重、围度、状态、补剂、饮水、运动、饮食合成一张长表，可直接给医生或教练</span></span><span class="r">' + icon('download') + '</span></button>' +
         '<button class="setting-row" data-act="import-json"><span class="l"><span class="t">导入备份</span><span class="s">支持本应用备份，也兼容旧版「轻卡日记」的 JSON</span></span><span class="r">' + icon('upload') + '</span></button>' +
@@ -6788,20 +7599,22 @@
       '<div class="setting-group">' +
         '<div class="gh"><div class="t">外观与体验</div></div>' +
         settingRow('温和模式', DB.settings.gentle ? '已开启' : '已关闭', '模糊热量数字；点按可临时查看', 'toggle-gentle', true) +
+        settingRow('长辈模式', DB.settings.elder ? '已开启' : '已关闭', '字号 ×1.3 · 按钮 ≥48px · 关闭动效与抽奖入口 · 导航只留今日/账本/设置', 'toggle-elder', true) +
         settingRow('省电模式', DB.settings.powerSave ? '已开启' : '已关闭', DB.settings.powerSave ? '背景动效已全部关闭' : '一键关闭全部背景动效（含粒子）', 'toggle-power-save', true) +
+        settingRow('计步（L2 估算）', DB.settings.motion ? '已开启' : '已关闭', motionSupport().ok ? '屏幕熄灭会停止、晃动会误判；只算估算里程' : motionSupport().why, 'toggle-motion', motionSupport().ok) +
         settingRow('动效档位', (window.SkinFX ? (SkinFX.state().tier === 'eco' ? '降档' : '轻档') : '轻档'), '轻档 ≤40 粒子 / 30fps；连续掉帧会自动降档' + (DB.settings.fx === false ? ' · 当前已手动关闭动效' : '')) +
-        (isFull() ? '<button class="setting-row" data-act="open-rewards"><span class="l"><span class="t">奖励中心</span><span class="s">刮刮卡与扭蛋机 · 券 ' + DB.scratch.tickets.length + ' 张 · 扭蛋 ' + rewardAvail() + ' 次</span></span><span class="r">' + icon('gift') + '</span></button>' : '') +
+        (isFull() && !DB.settings.elder ? '<button class="setting-row" data-act="open-rewards"><span class="l"><span class="t">奖励中心</span><span class="s">刮刮卡与扭蛋机 · 券 ' + DB.scratch.tickets.length + ' 张 · 扭蛋 ' + rewardAvail() + ' 次</span></span><span class="r">' + icon('gift') + '</span></button>' : '') +
         '<div class="setting-row"><span class="l"><span class="t">主题</span><span class="s">跟随系统，或固定浅色 / 深色</span></span>' +
           '<div class="r"><div class="seg" style="width:210px">' + [['auto', '跟随'], ['light', '浅色'], ['dark', '深色']].map(x =>
             '<button data-act="set-theme" data-v="' + x[0] + '" class="' + (themePref === x[0] ? 'on' : '') + '">' + x[1] + '</button>').join('') + '</div></div></div>' +
-        (isFull() ? '<button class="setting-row" data-act="open-skin-gallery"><span class="l"><span class="t">皮肤图鉴</span><span class="s">30 套集中管理 · 未解锁显示灰度剪影 · 收集率 ' + (DB.skins.unlocked || []).length + '/30</span></span><span class="r">' + icon('spark') + '</span></button>' +
+        (isFull() && !DB.settings.elder ? '<button class="setting-row" data-act="open-skin-gallery"><span class="l"><span class="t">皮肤图鉴</span><span class="s">' + gallerySkins().length + ' 张集中管理 · 未解锁显示灰度剪影 · 收集率 ' + galleryUnlocked() + '/' + gallerySkins().length + '</span></span><span class="r">' + icon('spark') + '</span></button>' +
         '<button class="setting-row" data-act="open-skins"><span class="l"><span class="t">皮肤墙</span><span class="s">快速切换 · 当前：' + ((skinById(DB.skins.active) || { name: '宣纸' }).name) + '</span></span><span class="r">' + icon('arrow-r') + '</span></button>' : '') +
       '</div>' +
       (isFull() && window.Maintenance ? window.Maintenance.settingsHTML() : '') +
 
       '<div class="setting-group">' +
         '<div class="gh"><div class="t">关于</div></div>' +
-        '<button class="setting-row" data-act="ver-tap"><span class="l"><span class="t">能量账本 v5.0.3</span><span class="s">本地优先 · 无账号 · 无云端 · 无社交</span></span><span class="r tiny faint">ENERGY LEDGER</span></button>' +
+        '<button class="setting-row" data-act="ver-tap"><span class="l"><span class="t">能量账本 v5.2.1</span><span class="s">本地优先 · 无账号 · 无云端 · 无社交</span></span><span class="r tiny faint">ENERGY LEDGER</span></button>' +
         settingRow('运行模式', STATIC_MODE ? '静态网页' : '本机服务', STATIC_MODE ? '可部署到任意静态主机，无后端依赖' : '带本机 AI 转发与离线缓存') +
         '<div class="setting-row"><span class="l"><span class="t">数据与免责声明</span><span class="s">所有数值均为估算，不构成医疗或营养处方。孕期、哺乳期、慢性病人群请咨询专业人士。</span></span></div>' +
         '<div class="setting-row"><span class="l"><span class="t">存储状态</span><span class="s">' + (storageOK ? 'localStorage 正常 · 数据只在此浏览器' : '本地存储受限，请导出备份') + '</span><span class="r tiny ' + (storageOK ? 'faint' : 'red') + '">' + (storageOK ? '正常' : '异常') + '</span></div>' +
@@ -6892,11 +7705,15 @@
       sheet.addEventListener('click', e => {
         const b = e.target.closest('[data-mini]');
         if (!b) return;
-        if (b.dataset.mini === 'yes') {
-          const v = miniState && miniState.readValue ? miniState.readValue() : true;
-          miniClose(v);
-        } else {
+        const v = b.dataset.mini;
+        if (v === 'yes') {
+          const val = miniState && miniState.readValue ? miniState.readValue() : true;
+          miniClose(val);
+        } else if (v === 'no' || v === 'cancel') {
           miniClose(false);
+        } else {
+          /* 多于两个分支的选择（如导入的「合并 / 覆盖」）直接返回分支名 */
+          miniClose(v);
         }
       });
     }
@@ -8244,6 +9061,11 @@
     );
     updatePicks();
     updateCart();
+    /* 长辈模式：默认带入第一条常见食物，记一餐只需「打开 → 保存」两步 */
+    if (DB.settings && DB.settings.elder && (!state.sheetData.cart || !state.sheetData.cart.length)) {
+      const first = $('#pickBox .pick-row');
+      if (first) first.click();
+    }
     if (FL) {
       FL.ensure().then(() => {
         if (!state.sheetData || state.sheetData.type !== 'food') return;
@@ -8455,12 +9277,14 @@
     const sd = state.sheetData;
     if (!sd) return;
     const name = ($('#mName') && $('#mName').value.trim()) || '';
-    const kcal = Number($('#mKcal') && $('#mKcal').value);
+    const kcalRaw = ($('#mKcal') && $('#mKcal').value) || '';
+    const kcal = Number(kcalRaw);
     const grams = Number($('#mGrams') && $('#mGrams').value) || 0;
     const p = Number($('#mP') && $('#mP').value) || 0;
     const fib = Number($('#mFib') && $('#mFib').value) || 0;
     if (!name) { toast('先写个名字'); return; }
-    if (!kcal || kcal <= 0) { toast('热量要大于 0'); return; }
+    /* 0 kcal 合法：白水、无糖茶等；只拒绝空值和负数 */
+    if (kcalRaw === '' || !isFinite(kcal) || kcal < 0) { toast('热量要填 0 或更大的数字'); return; }
     if (kcal > 5000) { toast('单笔热量别超过 5000 kcal，请检查是否填错'); return; }
     if (grams && (grams < 1 || grams > 3000)) { toast('份量要填 1–3000g，或留空'); return; }
     const per100 = grams > 0 ? { kcal: kcal / grams * 100, p: p / grams * 100, c: 0, f: 0, fib: fib / grams * 100 } : null;
@@ -8522,7 +9346,7 @@
   /* ============================================================
      运动
      ============================================================ */
-  const TRIP_TYPES = ['walk', 'jog', 'run', 'bike', 'swim', 'hike', 'rope', 'strength', 'ball'];
+  const TRIP_TYPES = ['walk', 'run', 'bike', 'swim', 'hike', 'row', 'rope', 'stairs', 'yoga'];
   const TRIP_LEVELS = { low: '低强度', mid: '中强度', high: '高强度' };
   function tripReady() { return !!(window.Trip && window.Trip.MET_TABLE); }
   function exMets(type, intensity) {
@@ -8594,26 +9418,37 @@
     const box = $('#exCalc');
     if (!box) return;
     if (!sd.selected || !tripReady()) {
-      box.innerHTML = '<div class="ex-calc" style="margin-top:14px"><div class="note">先选一类运动，再填时长；距离与爬升可选。</div></div>';
+      box.innerHTML = '<div class="ex-calc" style="margin-top:14px"><div class="note">先选一类运动，再填时长；距离、爬升、次数按类目出现。</div></div>';
       const b = $('#exSaveBtn');
       if (b) { b.disabled = true; b.textContent = '选择类型'; }
       return;
     }
     const m = Trip.MET_TABLE[sd.selected];
     const pv = exPreview(sd);
-    const hike = sd.selected === 'hike';
+    const spec = Trip.FIELD_SPEC[sd.selected] || {};
+    const dist = Math.max(0, Number(sd.distance) || 0);
+    const speed = sd.minutes > 0 && dist > 0 ? round1(dist / (sd.minutes / 60)) : 0;
+    const pace = dist > 0 && sd.minutes > 0 ? round1(sd.minutes / dist) : 0;
+    const strokes = ['自由泳', '蛙泳', '仰泳', '蝶泳'];
     box.innerHTML = '<div class="ex-calc"><div class="row-between"><span class="strong">' + esc(m.label) + '</span>' +
       '<span class="tiny faint">METs ' + pv.mets + ' · 体重 ' + pv.kg + ' kg</span></div>' +
       '<div class="seg ex-seg" style="margin-top:10px">' + ['low', 'mid', 'high'].map(k =>
         '<button data-act="ex-intensity" data-v="' + k + '" class="' + (sd.intensity === k ? 'on' : '') + '">' + TRIP_LEVELS[k] + '</button>').join('') + '</div>' +
       '<div class="form-grid" style="margin-top:10px;align-items:end">' +
         '<div class="field" style="margin:0"><label>时长（分钟）</label><input class="input input-num" id="exMinutes" type="number" min="1" max="720" value="' + sd.minutes + '"></div>' +
-        '<div class="field" style="margin:0"><label>距离 km（可选）</label><input class="input input-num" id="exDistance" type="number" min="0" step="0.1" value="' + esc(sd.distance || '') + '" placeholder="不填也能算"></div>' +
-        (hike ? '<div class="field" style="margin:0"><label>爬升 m（可选）</label><input class="input input-num" id="exAscent" type="number" min="0" max="3000" step="10" value="' + esc(sd.ascent || '') + '"></div>' : '') +
+        (spec.distance ? '<div class="field" style="margin:0"><label>距离 km</label><input class="input input-num" id="exDistance" type="number" min="0" step="0.1" value="' + esc(sd.distance || '') + '" placeholder="选填"></div>' : '') +
+        (spec.ascent ? '<div class="field" style="margin:0"><label>爬升 m</label><input class="input input-num" id="exAscent" type="number" min="0" max="3000" step="10" value="' + esc(sd.ascent || '') + '"></div>' : '') +
+        (spec.jumps ? '<div class="field" style="margin:0"><label>跳绳次数</label><input class="input input-num" id="exJumps" type="number" min="0" max="20000" step="10" value="' + esc(sd.jumps || '') + '"></div>' : '') +
+        (spec.floors ? '<div class="field" style="margin:0"><label>楼层数</label><input class="input input-num" id="exFloors" type="number" min="0" max="300" step="1" value="' + esc(sd.floors || '') + '"></div>' : '') +
       '</div>' +
+      (spec.stroke ? '<div class="seg ex-seg" style="margin-top:10px">' + strokes.map(k =>
+        '<button data-act="ex-stroke" data-v="' + k + '" class="' + ((sd.stroke || '蛙泳') === k ? 'on' : '') + '">' + k + '</button>').join('') + '</div>' : '') +
+      ((spec.speed || spec.pace) ? '<div class="tiny faint" style="margin-top:8px">' +
+        (spec.speed ? '均速 ' + (speed ? speed.toFixed(1) + ' km/h' : '—（填距离后显示）') : '') +
+        (spec.pace ? ' · 配速 ' + (pace ? pace.toFixed(1) + ' 分/km' : '—（填距离后显示）') : '') + '</div>' : '') +
       '<div class="ex-preview" style="margin-top:10px"><div class="v" id="exKcalVal">' + pv.kcal + '<small> kcal</small></div>' +
       '<div class="v2" id="exKmVal">' + round1(pv.km).toFixed(1) + '<small> km</small></div>' +
-      '<div class="tiny faint">估算消耗 · 折算里程</div></div>' +
+      '<div class="tiny faint">估算消耗 · 折算里程（手记 L0 · 1×）</div></div>' +
       '</div>';
     const b = $('#exSaveBtn');
     if (b) { b.disabled = false; b.textContent = '记入 · ' + pv.kcal + ' kcal · ' + round1(pv.km).toFixed(1) + ' km'; }
@@ -8627,9 +9462,10 @@
     const list = DB.exercises.filter(x => x.date === sd.date);
     box.innerHTML = list.length ? list.map(x => {
       const bad = x.valid === false;
-      return '<div class="ex-item"><span>' + esc(x.name) + (bad ? ' <em class="tiny faint">仅存档</em>' : '') + '</span>' +
+      return '<div class="ex-item"><span>' + esc(x.name) + '</span>' +
         '<span class="tiny faint">' + x.minutes + ' 分钟</span>' +
-        '<span class="k">' + fmt(x.kcal) + ' kcal' + (bad ? '' : ' · ' + round1(Number(x.km_eq) || 0).toFixed(1) + ' km') + '</span>' +
+        '<span class="k">' + fmt(x.kcal) + ' kcal · ' + round1(recKmEq(x)).toFixed(1) + ' km</span>' +
+        confBadge(x) +
         '<button class="x" data-act="del-exercise" data-id="' + x.id + '" aria-label="删除">' + icon('close') + '</button></div>';
     }).join('') : '<div class="cart-empty">这一天还没有运动记录。</div>';
   }
@@ -8642,14 +9478,20 @@
     const mets = exMets(sd.selected, intensity);
     const minutes = clamp(Number(sd.minutes) || 30, 1, 720);
     const kg = currentWeight();
-    const ascent = sd.selected === 'hike' ? Math.max(0, Number(sd.ascent) || 0) : 0;
-    const distance = Math.max(0, Number(sd.distance) || 0);
+    const spec = Trip.FIELD_SPEC[sd.selected] || {};
+    const ascent = spec.ascent ? Math.max(0, Number(sd.ascent) || 0) : 0;
+    const distance = spec.distance ? Math.max(0, Number(sd.distance) || 0) : 0;
+    const jumps = spec.jumps ? Math.max(0, Math.round(Number(sd.jumps) || 0)) : 0;
+    const floors = spec.floors ? Math.max(0, Math.round(Number(sd.floors) || 0)) : 0;
+    const stroke = spec.stroke ? (sd.stroke || '蛙泳') : '';
     const kcal = E.burn(mets, kg, minutes);
     const dayTotal = DB.exercises.filter(x => x.date === sd.date).reduce((s, x) => s + (Number(x.minutes) || 0), 0) + minutes;
     const rec = {
       id: uid(), date: sd.date, type: sd.selected, name: m.label, intensity: intensity, mets: mets,
       minutes: minutes, distance_km: distance, ascent_m: ascent, weight_at_time: kg,
-      kcal: kcal, km_eq: 0, valid: true, invalid_code: null, createdAt: Date.now()
+      jumps: jumps, floors: floors, stroke: stroke,
+      kcal: kcal, km_eq: 0, valid: true, invalid_code: null,
+      source: 'manual', confidence: 'L0', multiplier: 1, createdAt: Date.now()
     };
     const km = Trip.toEquivalentKm(kcal, kg, ascent);
     const v = Trip.validateRecord(Object.assign({}, rec, { km_eq: km }), dayTotal);
@@ -10355,14 +11197,14 @@
   }
   function dateStamp() { return E.todayKey().replace(/-/g, ''); }
 
-  function exportJSON() {
-    if (!DB.profile) { toast('还没有可导出的数据'); return; }
-    const payload = {
-      version: 3, app: 'energy-ledger', exportedAt: new Date().toISOString(),
+  function buildExportPayload() {
+    return {
+      version: 4, app: 'energy-ledger', appVersion: APP_VERSION, exportedAt: new Date().toISOString(),
       profile: DB.profile,
       settings: {
         theme: DB.settings.theme, gentle: DB.settings.gentle, prefs: DB.settings.prefs,
         mode: DB.settings.mode, modeHintSeen: DB.settings.modeHintSeen,
+        fx: DB.settings.fx, powerSave: DB.settings.powerSave, motion: DB.settings.motion,
         ai: { baseURL: DB.settings.ai.baseURL, model: DB.settings.ai.model }
       },
       entries: DB.entries, weights: DB.weights, exercises: DB.exercises,
@@ -10370,10 +11212,21 @@
       cycle: DB.cycle, measures: DB.measures, checkins: DB.checkins, supplements: DB.supplements,
       lifts: DB.lifts, recipes: DB.recipes, shopping: DB.shopping, wearable: DB.wearable,
       trip: DB.trip,
-      pantry: DB.pantry
+      pantry: DB.pantry,
+      /* 奖励资产：券袋与抽奖历史、扭蛋币、皮肤与解锁状态，全部可恢复 */
+      scratch: DB.scratch, coins: DB.coins, gacha: DB.gacha,
+      skins: DB.skins, collect: DB.collect, codex: DB.codex, wallet: DB.wallet,
+      cheatDays: DB.cheatDays, leaveDays: DB.leaveDays, wishlist: DB.wishlist,
+      bank: DB.bank, favorites: DB.favorites, foodUse: DB.foodUse, reco: DB.reco,
+      tasks: DB.tasks, anti: DB.anti, revive: DB.revive, stats: DB.stats
     };
+  }
+
+  function exportJSON() {
+    if (!DB.profile) { toast('还没有可导出的数据'); return; }
+    const payload = buildExportPayload();
     downloadFile('能量账本-备份-' + dateStamp() + '.json', JSON.stringify(payload, null, 2), 'application/json');
-    toast('备份已导出');
+    toast('备份已导出（含奖励、券与皮肤解锁）');
   }
 
   function exportCSV() {
@@ -10432,10 +11285,150 @@
     };
   }
 
+  function importKey(x, fields) {
+    return fields.map(function (f) { return String(x && x[f] != null ? x[f] : ''); }).join('|');
+  }
+  function mergeBy(cur, inc, keyFn) {
+    const out = Array.isArray(cur) ? cur : [];
+    const seen = Object.create(null);
+    out.forEach(function (x) { const k = keyFn(x); if (k) seen[k] = 1; });
+    (Array.isArray(inc) ? inc : []).forEach(function (x) {
+      if (!x) return;
+      const k = keyFn(x);
+      if (!k || seen[k]) return;
+      seen[k] = 1;
+      out.push(x);
+    });
+    return out;
+  }
+  function unionList(a, b) {
+    const out = [], seen = Object.create(null);
+    (a || []).concat(b || []).forEach(function (x) {
+      const k = typeof x === 'string' ? x : JSON.stringify(x);
+      if (!seen[k]) { seen[k] = 1; out.push(x); }
+    });
+    return out;
+  }
+  function importPayload(data) {
+    const isLegacy = data && data.app === 'qingka-riji';
+    if (isLegacy) return { isLegacy: true, version: 0, payload: convertLegacy(data) };
+    if (!data || !Array.isArray(data.entries)) return null;
+    return {
+      isLegacy: false,
+      version: Number(data.version) || 3,
+      payload: {
+        profile: data.profile, entries: data.entries, weights: data.weights || [],
+        exercises: data.exercises || [], foods: data.foods || [], combos: data.combos || [],
+        water: data.water || {}, notes: data.notes || {}, settings: data.settings || {},
+        cycle: data.cycle || null, measures: data.measures || [],
+        checkins: data.checkins || [], supplements: data.supplements || [],
+        lifts: data.lifts || [], recipes: data.recipes || [], shopping: data.shopping || null,
+        wearable: data.wearable || {}, pantry: data.pantry || null, trip: data.trip || null,
+        scratch: data.scratch || null, coins: data.coins, gacha: data.gacha || null,
+        skins: data.skins || null, collect: data.collect || null, codex: data.codex || null,
+        wallet: data.wallet || null, cheatDays: data.cheatDays || null, leaveDays: data.leaveDays || null,
+        wishlist: data.wishlist || null, bank: data.bank || null, favorites: data.favorites || null,
+        foodUse: data.foodUse || null, reco: data.reco || null, tasks: data.tasks || null,
+        anti: data.anti || null, revive: data.revive || null, stats: data.stats || null,
+        counts: { entries: data.entries.length, weights: (data.weights || []).length, exercises: (data.exercises || []).length }
+      }
+    };
+  }
+
+  function mergeImport(payload) {
+    const src = payload;
+    DB.entries = mergeBy(DB.entries, src.entries, x => x.id || importKey(x, ['date', 'meal', 'name', 'createdAt']));
+    DB.weights = mergeBy(DB.weights, src.weights, x => String(x.date || ''));
+    DB.exercises = mergeBy(DB.exercises, src.exercises, x => x.id || importKey(x, ['date', 'name', 'minutes', 'createdAt']));
+    DB.foods = mergeBy(DB.foods, src.foods, x => x.id || String(x.name || ''));
+    DB.combos = mergeBy(DB.combos, src.combos, x => x.id || String(x.name || ''));
+    DB.measures = mergeBy(DB.measures, src.measures, x => x.id || importKey(x, ['date', 'kind', 'part']));
+    DB.checkins = mergeBy(DB.checkins, src.checkins, x => importKey(x, ['date', 'kind', 'tag']));
+    DB.supplements = mergeBy(DB.supplements, src.supplements, x => x.id || importKey(x, ['date', 'name']));
+    DB.lifts = mergeBy(DB.lifts, src.lifts, x => x.id || importKey(x, ['date', 'exercise', 'sets', 'weight']));
+    DB.recipes = mergeBy(DB.recipes, src.recipes, x => x.id || String(x.name || ''));
+    DB.favorites = unionList(DB.favorites, src.favorites);
+    DB.water = Object.assign({}, src.water || {}, DB.water || {});
+    DB.notes = Object.assign({}, src.notes || {}, DB.notes || {});
+    DB.leaveDays = unionList(DB.leaveDays, src.leaveDays);
+    DB.wishlist = mergeBy(DB.wishlist, src.wishlist, x => importKey(x, ['name', 'at']));
+    DB.cheatDays = DB.cheatDays || { history: [] };
+    DB.cheatDays.history = mergeBy(DB.cheatDays.history, (src.cheatDays && src.cheatDays.history) || [], x => importKey(x, ['date', 'source']));
+    DB.bank = DB.bank || { loans: [], waivers: { free: 0, extra: 0 } };
+    DB.bank.loans = mergeBy(DB.bank.loans, (src.bank && src.bank.loans) || [], x => x.id || importKey(x, ['date', 'kcal']));
+    DB.bank.waivers.free = Math.max(DB.bank.waivers.free || 0, (src.bank && src.bank.waivers && src.bank.waivers.free) || 0);
+    DB.bank.waivers.extra = Math.max(DB.bank.waivers.extra || 0, (src.bank && src.bank.waivers && src.bank.waivers.extra) || 0);
+    if (src.foodUse) Object.keys(src.foodUse).forEach(k => { DB.foodUse[k] = Math.max(DB.foodUse[k] || 0, Number(src.foodUse[k]) || 0); });
+    if (src.reco && Array.isArray(src.reco.seen)) DB.reco.seen = unionList(DB.reco.seen, src.reco.seen).slice(-500);
+    if (src.shopping && !DB.shopping) DB.shopping = src.shopping;
+    if (src.cycle && (!DB.cycle || !DB.cycle.enabled)) DB.cycle = src.cycle;
+    if (src.wearable) DB.wearable = Object.assign({}, src.wearable, DB.wearable);
+    if (src.trip) {
+      DB.trip.total_km = Math.max(DB.trip.total_km || 0, Number(src.trip.total_km) || 0);
+      DB.trip.collected = unionList(DB.trip.collected, src.trip.collected).map(Number).filter(n => n > 0 && n <= 30);
+    }
+    /* 奖励资产：券、抽奖历史、币、皮肤解锁取并集/较大值，绝不覆盖归零 */
+    const sc = src.scratch;
+    if (sc) {
+      DB.scratch.tickets = mergeBy(DB.scratch.tickets, sc.tickets, t => String(t.id || '')).slice(-10);
+      DB.scratch.log = mergeBy(DB.scratch.log, sc.log, r => String(r.id || '')).sort((a, b) => (b.at || 0) - (a.at || 0)).slice(0, 60);
+      DB.scratch.count = Math.max(DB.scratch.count || 0, Number(sc.count) || 0);
+      DB.scratch.miss = Math.max(DB.scratch.miss || 0, Number(sc.miss) || 0);
+      DB.scratch.milestones = Object.assign({}, sc.milestones || {}, DB.scratch.milestones || {});
+      DB.scratch.weeklyKcal = Object.assign({}, sc.weeklyKcal || {}, DB.scratch.weeklyKcal || {});
+      if (sc.pass && sc.pass.week) {
+        const cur = DB.scratch.pass && DB.scratch.pass.week;
+        if (!cur || String(sc.pass.week) > String(DB.scratch.pass.week)) DB.scratch.pass = sc.pass;
+      }
+      if (!DB.scratch.card && sc.card) DB.scratch.card = sc.card;
+      if (!DB.scratch.batch && sc.batch) DB.scratch.batch = sc.batch;
+      if (sc.last && (!DB.scratch.last || (Number(sc.last.at) || 0) > (Number(DB.scratch.last.at) || 0))) DB.scratch.last = sc.last;
+    }
+    DB.coins = Math.max(DB.coins || 0, Number(src.coins) || 0);
+    if (src.gacha) {
+      DB.gacha.credits = Math.max(DB.gacha.credits || 0, Number(src.gacha.credits) || 0);
+      DB.gacha.milestones = Object.assign({}, src.gacha.milestones || {}, DB.gacha.milestones || {});
+      DB.gacha.history = mergeBy(DB.gacha.history, src.gacha.history || [], x => x.id || importKey(x, ['at', 'kind'])).slice(0, 20);
+    }
+    if (src.skins) {
+      DB.skins.unlocked = unionList(DB.skins.unlocked, src.skins.unlocked);
+      DB.skins.unlockedCos = unionList(DB.skins.unlockedCos, src.skins.unlockedCos);
+      DB.skins.packs = Object.assign({}, src.skins.packs || {}, DB.skins.packs || {});
+    }
+    if (src.collect) {
+      DB.collect.quotes = unionList(DB.collect.quotes, src.collect.quotes);
+      DB.collect.eggs = unionList(DB.collect.eggs, src.collect.eggs);
+      DB.collect.medals = unionList(DB.collect.medals, src.collect.medals);
+    }
+    if (src.codex) DB.codex.lit = unionList(DB.codex.lit, src.codex.lit);
+    if (src.wallet) {
+      DB.wallet.credits = mergeBy(DB.wallet.credits, src.wallet.credits, c => String(c.id || ''));
+      DB.wallet.applied = mergeBy(DB.wallet.applied, src.wallet.applied, a => String(a.id || ''));
+    }
+    if (src.tasks && src.tasks.date === DB.tasks.date) {
+      DB.tasks.list = mergeBy(DB.tasks.list, src.tasks.list || [], t => String(t.id || ''));
+    }
+    if (src.anti && src.anti.since) DB.anti = Object.assign({}, src.anti, DB.anti);
+    if (src.revive) DB.revive = mergeBy(DB.revive, src.revive, x => x.id || importKey(x, ['date', 'kind']));
+    if (src.stats) {
+      DB.stats.aiCalls = Math.max(DB.stats.aiCalls || 0, Number(src.stats.aiCalls) || 0);
+      DB.stats.aiOk = Math.max(DB.stats.aiOk || 0, Number(src.stats.aiOk) || 0);
+      DB.stats.aiFail = Math.max(DB.stats.aiFail || 0, Number(src.stats.aiFail) || 0);
+      DB.stats.aiMs = Math.max(DB.stats.aiMs || 0, Number(src.stats.aiMs) || 0);
+    }
+    if (!DB.profile && src.profile) DB.profile = src.profile;
+    DB.onboarded = true;
+  }
+
   function importJSON() {
     const input = document.createElement('input');
     input.type = 'file';
+    input.id = 'importFile';
     input.accept = 'application/json,.json';
+    input.style.display = 'none';
+    const old = document.getElementById('importFile');
+    if (old) old.remove();
+    document.body.appendChild(input);
     input.onchange = () => {
       const file = input.files && input.files[0];
       if (!file) return;
@@ -10443,59 +11436,93 @@
       reader.onload = async () => {
         let data;
         try { data = JSON.parse(reader.result); } catch (e) { toast('文件不是有效的 JSON'); return; }
-        const isLegacy = data && data.app === 'qingka-riji';
-        let payload;
-        if (isLegacy) {
-          payload = convertLegacy(data);
-        } else if (data && Array.isArray(data.entries)) {
-          payload = {
-            profile: data.profile, entries: data.entries, weights: data.weights || [],
-            exercises: data.exercises || [], foods: data.foods || [], combos: data.combos || [],
-            water: data.water || {}, notes: data.notes || {}, settings: data.settings || {},
-            cycle: data.cycle || null, measures: data.measures || [],
-            checkins: data.checkins || [], supplements: data.supplements || [],
-            lifts: data.lifts || [], recipes: data.recipes || [], shopping: data.shopping || null, wearable: data.wearable || {},
-            pantry: data.pantry || null,
-            counts: { entries: data.entries.length, weights: (data.weights || []).length, exercises: (data.exercises || []).length }
-          };
-        } else {
-          toast('无法识别的备份格式');
-          return;
-        }
+        const parsed = importPayload(data);
+        if (!parsed) { toast('无法识别的备份格式'); return; }
+        const payload = parsed.payload;
         if (!payload.profile) { toast('备份里没有身体档案'); return; }
-        const ok = await confirmSheet('导入备份？',
-          '即将覆盖当前的 <b>' + DB.entries.length + '</b> 笔记录、' + DB.weights.length + ' 次体重。<br>备份中有 <b>' + payload.counts.entries + '</b> 笔记录、' + payload.counts.weights + ' 次体重' + (isLegacy ? '（来自旧版轻卡日记）' : '') + '。<br><br>这会清空当前数据，且不可撤销。',
-          '覆盖并导入', true);
-        if (!ok) return;
+        const choice = await new Promise(function (resolve) {
+          miniOpen(
+            '<div class="mini-t">导入备份</div>' +
+            '<div class="mini-b">备份版本 v' + (parsed.isLegacy ? '旧版轻卡日记' : parsed.version) + ' · 含 <b>' + payload.counts.entries + '</b> 笔记录、<b>' + payload.counts.weights + '</b> 次体重。<br><br>' +
+              '<b>合并</b>：保留本机现有数据，重复记录自动去重，奖励取并集 / 较大值。<br>' +
+              '<b>覆盖</b>：用备份替换本机全部数据，<b>不可撤销</b>。本机现有 <b>' + DB.entries.length + '</b> 笔记录、<b>' + DB.weights.length + '</b> 次体重。</div>' +
+            '<div class="mini-a mini-a-3"><button class="btn btn-ghost" data-mini="cancel">取消</button>' +
+            '<button class="btn btn-ghost" data-mini="merge">合并导入</button>' +
+            '<button class="btn btn-danger" data-mini="overwrite">覆盖导入</button></div>',
+            resolve
+          );
+        });
+        if (!choice) return;
+        if (choice === 'overwrite') {
+          const sure = await confirmSheet('确认覆盖？',
+            '备份将替换本机全部数据，覆盖后无法撤销。建议先导出当前备份。<br><br>本机现有 <b>' + DB.entries.length + '</b> 笔记录、<b>' + DB.weights.length + '</b> 次体重。',
+            '仍然覆盖', true);
+          if (!sure) return;
+        }
+        const dbBefore = DB;
+        const snapshot = JSON.stringify(DB);
         const keepKey = (DB.settings.ai && DB.settings.ai.key) || '';
         const backupSettings = payload.settings || {};
         const debtBefore = isFull() ? creditEnsure(true).debt : 0;
         const pantryPrev = JSON.parse(JSON.stringify(DB.pantry || { items: [], ops: [] }));
-        const dbBefore = DB;
-        DB = normalizeDB({
-          version: 3, createdAt: Date.now(), onboarded: true,
-          profile: payload.profile,
-          settings: {
-            theme: backupSettings.theme || DB.settings.theme,
-            gentle: !!backupSettings.gentle,
-            prefs: backupSettings.prefs || DB.settings.prefs,
-            pin: DB.settings.pin,
-            ai: Object.assign({}, DB.settings.ai, backupSettings.ai || {}, { key: keepKey }),
-            /* 模式跟着备份走；旧备份没有该字段时按规格兜底为 full */
-            mode: backupSettings.mode || 'full',
-            modeHintSeen: !!backupSettings.modeHintSeen,
-            demo: false
-          },
-          entries: payload.entries, weights: payload.weights, exercises: payload.exercises,
-          foods: payload.foods, combos: payload.combos, water: payload.water, notes: payload.notes,
-          cycle: payload.cycle || DB.cycle, measures: payload.measures,
-          checkins: payload.checkins, supplements: payload.supplements,
-          lifts: payload.lifts, recipes: payload.recipes, shopping: payload.shopping, wearable: payload.wearable,
-          trip: payload.trip || { total_km: 0, updatedAt: 0, collected: [], last_station: 0 },
-          pantry: payload.pantry || { items: [], ops: [], hintDate: '' }
-        });
-        if (!commit(() => { DB = dbBefore; })) return;
-        const pantryMerged = pantryImportMerge(pantryPrev);
+        try {
+          if (choice === 'merge') {
+            mergeImport(payload);
+          } else {
+            DB = normalizeDB({
+              version: 4, createdAt: Date.now(), onboarded: true,
+              profile: payload.profile,
+              settings: {
+                theme: backupSettings.theme || dbBefore.settings.theme,
+                gentle: !!backupSettings.gentle,
+                prefs: backupSettings.prefs || dbBefore.settings.prefs,
+                pin: dbBefore.settings.pin,
+                ai: Object.assign({}, dbBefore.settings.ai, backupSettings.ai || {}, { key: keepKey }),
+                fx: backupSettings.fx !== false,
+                powerSave: !!backupSettings.powerSave,
+                motion: !!backupSettings.motion,
+                /* 模式跟着备份走；旧备份没有该字段时按规格兜底为 full */
+                mode: backupSettings.mode || 'full',
+                modeHintSeen: !!backupSettings.modeHintSeen,
+                demo: false
+              },
+              entries: payload.entries, weights: payload.weights, exercises: payload.exercises,
+              foods: payload.foods, combos: payload.combos, water: payload.water, notes: payload.notes,
+              cycle: payload.cycle || dbBefore.cycle, measures: payload.measures,
+              checkins: payload.checkins, supplements: payload.supplements,
+              lifts: payload.lifts, recipes: payload.recipes, shopping: payload.shopping, wearable: payload.wearable,
+              trip: payload.trip || { total_km: 0, updatedAt: 0, collected: [], last_station: 0 },
+              pantry: payload.pantry || { items: [], ops: [], hintDate: '' },
+              /* 旧版备份没有奖励字段时保留本机资产，避免换代清零 */
+              scratch: payload.scratch || dbBefore.scratch,
+              coins: payload.coins != null ? payload.coins : dbBefore.coins,
+              gacha: payload.gacha || dbBefore.gacha,
+              skins: payload.skins || dbBefore.skins,
+              collect: payload.collect || dbBefore.collect,
+              codex: payload.codex || dbBefore.codex,
+              wallet: payload.wallet || dbBefore.wallet,
+              cheatDays: payload.cheatDays || dbBefore.cheatDays,
+              leaveDays: payload.leaveDays || dbBefore.leaveDays,
+              wishlist: payload.wishlist || dbBefore.wishlist,
+              bank: payload.bank || dbBefore.bank,
+              favorites: payload.favorites || dbBefore.favorites,
+              foodUse: payload.foodUse || dbBefore.foodUse,
+              reco: payload.reco || dbBefore.reco,
+              tasks: payload.tasks || dbBefore.tasks,
+              anti: payload.anti || dbBefore.anti,
+              revive: payload.revive || dbBefore.revive,
+              stats: payload.stats || dbBefore.stats
+            });
+          }
+          if (!commit(() => { DB = normalizeDB(JSON.parse(snapshot)); })) return;
+        } catch (e) {
+          /* 导入失败整包回滚：任何解析 / 归一化异常都不留下半份数据 */
+          try { DB = normalizeDB(JSON.parse(snapshot)); } catch (e2) { DB = dbBefore; }
+          saveDB(true);
+          toast('导入失败：已整包回滚，原数据未变');
+          return;
+        }
+        const pantryMerged = choice === 'overwrite' ? pantryImportMerge(pantryPrev) : 0;
         state.recordDate = E.todayKey();
         closeSheet();
         applyModeChrome();
@@ -10505,11 +11532,12 @@
         if (isFull()) ensureTrip().then(() => syncTrip(true));
         const debtAfter = isFull() ? creditEnsure(true).debt : 0;
         renderActive();
-        toast('已导入 ' + payload.counts.entries + ' 笔记录' + (pantryMerged ? ' · 冰箱合并 ' + pantryMerged + ' 条' : '') + (debtAfter !== debtBefore
+        toast((choice === 'merge' ? '已合并导入 ' : '已覆盖导入 ') + payload.counts.entries + ' 笔记录' + (pantryMerged ? ' · 冰箱合并 ' + pantryMerged + ' 条' : '') + (debtAfter !== debtBefore
           ? ' · 欠款按新记录重算为 ' + fmt(debtAfter) + ' kcal' : ''));
       };
       reader.readAsText(file);
     };
+    window.__importInput = input;
     input.click();
   }
 
@@ -10602,10 +11630,11 @@
           '<div class="result-grid">' +
             '<div class="result-item"><div class="k">基础代谢 BMR</div><div class="v">' + fmt(t.bmr) + ' <small>kcal</small></div></div>' +
             '<div class="result-item"><div class="k">公式日消耗</div><div class="v">' + fmt(t.priorTDEE) + ' <small>kcal</small></div></div>' +
-            '<div class="result-item"><div class="k">起始预算</div><div class="v green">' + fmt(t.budgetPrior) + ' <small>kcal</small></div></div>' +
+            '<div class="result-item"><div class="k">起始预算（推荐）</div><div class="v green">' + fmt(t.budgetPrior) + ' <small>kcal</small></div></div>' +
+            '<div class="result-item"><div class="k">安全下限（硬底线）</div><div class="v">' + fmt(t.floor) + ' <small>kcal</small></div></div>' +
             '<div class="result-item"><div class="k">蛋白质目标</div><div class="v">' + t.protein + ' <small>g / 天</small></div></div>' +
           '</div>' +
-          '<div class="result-note">' + (ob.sex === 'male' ? '男' : '女') + ' · ' + ob.age + ' 岁 · ' + ob.height + ' cm · ' + ob.weight + ' kg → 目标 ' + ob.targetWeight + ' kg（' + goalText + '，' + ob.rate + ' kg/周）<br>预算已应用安全下限 ' + fmt(t.floor) + ' kcal。' + (t.capped ? ' 你选择的速度超过消耗的 22%，已自动收窄。' : '') + '</div>' +
+          '<div class="result-note">' + (ob.sex === 'male' ? '男' : '女') + ' · ' + ob.age + ' 岁 · ' + ob.height + ' cm · ' + ob.weight + ' kg → 目标 ' + ob.targetWeight + ' kg（' + goalText + '，' + ob.rate + ' kg/周）<br>最终采用<b>推荐值 ' + fmt(t.budgetPrior) + ' kcal</b>；<b>安全下限 ' + fmt(t.floor) + ' kcal</b> 是硬底线，只有推荐值低于它时才会抬到下限。' + (t.capped ? ' 你选择的速度超过消耗的 22%，已自动收窄。' : '') + '</div>' +
         '</div>' +
         '<div class="ob-actions"><button class="btn btn-ghost" data-ob="back">上一步</button><button class="btn btn-primary" data-ob="finish">开始记账</button></div>' +
         '<p class="ob-note">第一周：先把记录做完整，不必追求精确。<br>第二周：账本开始校准。<br>第四周：你会看到一条只属于你的曲线。</p>' +
@@ -10913,6 +11942,25 @@
       case 'save-entry': saveEntry(); break;
       case 'delete-entry': deleteEntry(el.dataset.id); break;
       case 'day-prev': state.recordDate = E.addDays(state.recordDate, -1); renderLedger(); break;
+      case 'heat-view': {
+        state.heatView = el.dataset.v === 'month' ? 'month' : 'year';
+        if (state.heatView === 'month' && !state.heatMonth) state.heatMonth = E.todayKey().slice(0, 7);
+        renderLedger();
+        break;
+      }
+      case 'heat-month': {
+        const base = state.heatMonth || E.todayKey().slice(0, 7);
+        state.heatMonth = heatMonthShift(base, Number(el.dataset.d) || 0);
+        renderLedger();
+        break;
+      }
+      case 'heat-day': {
+        if (!el.dataset.date || el.dataset.date > E.todayKey()) break;
+        state.recordDate = el.dataset.date;
+        renderLedger();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        break;
+      }
       case 'day-next': {
         const next = E.addDays(state.recordDate, 1);
         if (next <= E.todayKey()) { state.recordDate = next; renderLedger(); }
@@ -10978,6 +12026,17 @@
       case 'reco-log-plan': recoLogPlan(); break;
       case 'open-scratch': openScratchSheet(); break;
       case 'open-rewards': openRewardCenter(); break;
+      case 'open-stamps': openStampSheet(); break;
+      case 'stamp-claim': claimStampPage(el.dataset.id, el.dataset.kind); break;
+      case 'toggle-elder': {
+        DB.settings.elder = !DB.settings.elder;
+        saveDB(true);
+        applyElder();
+        applyModeChrome();
+        renderActive();
+        toast(DB.settings.elder ? '长辈模式已开启：字号放大、入口精简' : '已退出长辈模式');
+        break;
+      }
       case 'open-gacha': openGachaSheet(); break;
       case 'gacha-draw': gachaGo(Number(el.dataset.n) || 1, false); break;
       case 'gacha-confirm': gachaGo(Number(el.dataset.n) || 1, true); break;
@@ -10990,14 +12049,36 @@
       case 'redeem-code': redeemCode(); break;
       case 'ver-seen': dismissAnnounce('seen'); break;
       case 'ver-snooze': dismissAnnounce('snooze'); break;
+      case 'ver-toggle': {
+        const d = $('#verBanner .vb-detail');
+        if (!d) break;
+        d.hidden = !d.hidden;
+        el.setAttribute('aria-expanded', d.hidden ? 'false' : 'true');
+        el.textContent = d.hidden ? '更新点' : '收起';
+        break;
+      }
       case 'skin-download': downloadSkinPack(el.dataset.id); break;
       case 'toggle-power-save':
         DB.settings.powerSave = !DB.settings.powerSave;
         saveDB(true);
         applyFx();
+        if (state.globe && state.globe.destroy) { state.globe.destroy(); state.globe = null; }
         if (state.sheet === 'settings') renderSettings();
+        if (state.tab === 'trip' && isFull()) renderActive();
         toast(DB.settings.powerSave ? '省电模式已开启 · 全部动效关闭' : '省电模式已关闭');
         break;
+      case 'toggle-motion': {
+        const sup = motionSupport();
+        if (!sup.ok) { toast(sup.why); break; }
+        DB.settings.motion = !DB.settings.motion;
+        saveDB(true);
+        if (DB.settings.motion) startMotionCounting();
+        else { state.steps = null; }
+        if (state.sheet === 'settings') renderSettings();
+        if (state.tab === 'trip' && isFull()) renderActive();
+        toast(DB.settings.motion ? '计步已开启 · 屏幕熄灭会停止、晃动会误判' : '计步已关闭');
+        break;
+      }
       case 'toggle-fx':
         DB.settings.fx = !DB.settings.fx;
         saveDB(true);
@@ -11066,6 +12147,13 @@
         break;
       }
       case 'batch-reveal': settleBatch(); break;
+      case 'batch-resume': {
+        const pb = DB.scratch.batch;
+        if (!pb) break;
+        state.batch = hydrateBatch(pb);
+        openBatchSheet();
+        break;
+      }
       case 'batch-skip': {
         const grid = $('#batchGrid');
         if (grid) grid.classList.remove('anim');
@@ -11502,6 +12590,26 @@
         renderExCalc();
         break;
       }
+      case 'ex-stroke': {
+        const sdx = state.sheetData;
+        if (!sdx || sdx.type !== 'exercise') break;
+        sdx.stroke = el.dataset.v || '蛙泳';
+        renderExCalc();
+        break;
+      }
+      case 'ex-filter': {
+        state.tripFilter = el.dataset.id || 'all';
+        renderActive();
+        break;
+      }
+      case 'why-km': explainKm(el.dataset.id); break;
+      case 'ex-import': pickExFile(); break;
+      case 'imp-type': {
+        if (state.importRes) { state.importRes.type = el.dataset.id; showImportConfirm(state.importRes); }
+        break;
+      }
+      case 'imp-save': saveImported(); break;
+      case 'steps-settle': settleSteps(); break;
       case 'save-exercise': saveExercise(); break;
       case 'del-exercise': {
         const item = DB.exercises.find(x => x.id === el.dataset.id);
@@ -11594,7 +12702,7 @@
     } else {
       const raw = $('#eKcal') ? $('#eKcal').value : '';
       const kcal = Number(raw);
-      if (raw === '' || !isFinite(kcal) || kcal <= 0) { toast('热量要填大于 0 的数字'); return; }
+      if (raw === '' || !isFinite(kcal) || kcal < 0) { toast('热量要填 0 或更大的数字'); return; }
       if (kcal > 5000) { toast('单笔热量别超过 5000 kcal，请检查是否填错'); return; }
       nextKcal = kcal;
     }
@@ -11826,10 +12934,11 @@
       refreshExPreview();
       return;
     }
-    if (t.id === 'exDistance' || t.id === 'exAscent') {
+    if (t.id === 'exDistance' || t.id === 'exAscent' || t.id === 'exJumps' || t.id === 'exFloors') {
       const sd = state.sheetData;
       if (!sd || sd.type !== 'exercise') return;
-      sd[t.id === 'exDistance' ? 'distance' : 'ascent'] = t.value;
+      const map = { exDistance: 'distance', exAscent: 'ascent', exJumps: 'jumps', exFloors: 'floors' };
+      sd[map[t.id]] = t.value;
       refreshExPreview();
       return;
     }
@@ -11849,6 +12958,7 @@
 
   document.addEventListener('change', e => {
     const t = e.target;
+    if (t.id === 'exFile') { handleExFile(t); return; }
     if (t.id === 'photoFile') {
       handlePhotoFiles(t.files);
       return;
@@ -12047,16 +13157,26 @@
     openReco: openRecoSheet,
     capGrant: function (kcal) { return creditCapGrant(Number(kcal) || 0, '测试额度', '测试'); },
     openScratch: openScratchSheet,
+    exportData: function () { return JSON.parse(JSON.stringify(buildExportPayload())); },
+    showAnnounce: paintAnnounce,
     batchStart: startBatch,
     batchSettle: settleBatch,
     batchState: function () {
+      const pb = DB.scratch.batch;
+      if (!pb && !state.batch) return null;
+      const persisted = pb ? {
+        id: pb.id, at: pb.at, count: pb.count, settled: !!pb.settled,
+        cards: pb.cards.map(c => ({ revealed: !!c.revealed, tier: c.tier, label: c.reward && c.reward.label })),
+        results: pb.results || null, summary: pb.summary || ''
+      } : null;
       const b = state.batch;
-      if (!b) return null;
+      if (!b) return { persisted: persisted };
       return {
         count: b.count, done: b.done, covered: b.covered || 0,
         ratios: b.ratios || [],
         results: b.results, counts: b.counts, summary: b.summary,
-        tickets: DB.scratch.tickets.length
+        tickets: DB.scratch.tickets.length,
+        persisted: persisted
       };
     },
     ticketHelpText: function () {
@@ -12264,11 +13384,96 @@
     }
   };
 
+  /* v5.2 验收钩子：只读状态 + 少量与 UI 同源的写入口，便于回归脚本断言 */
+  window.__v52 = {
+    stateDate: function () { return state.recordDate; },
+    heat: function () {
+      const view = state.heatView === 'month' ? 'month' : 'year';
+      const month = state.heatMonth || E.todayKey().slice(0, 7);
+      const cells = (view === 'year' ? heatYearCells() : heatMonthCells(month)).filter(Boolean);
+      const counts = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 };
+      cells.forEach(c => { if (!c.future) counts[c.level]++; });
+      return { view: view, month: month, counts: counts, cells: cells.map(c => ({ date: c.date, level: c.level, future: c.future })) };
+    },
+    setHeatView: function (v, month) {
+      state.heatView = v === 'month' ? 'month' : 'year';
+      if (month) state.heatMonth = month;
+      else if (state.heatView === 'month' && !state.heatMonth) state.heatMonth = E.todayKey().slice(0, 7);
+      if (state.tab === 'ledger') renderLedger();
+      return state.heatView;
+    },
+    stamps: function () {
+      const st = syncStamps(true);
+      return {
+        run: st.run.slice(), pages: st.pages.length,
+        claimable: st.pages.filter(p => !p.claimed).length,
+        patterns: st.patterns.slice(), series: stampSeries().length,
+        pageIds: st.pages.map(p => p.id)
+      };
+    },
+    syncStamps: function () { return this.stamps(); },
+    claimStamp: claimStampPage,
+    elder: function () {
+      const zoom = parseFloat(getComputedStyle(document.body).zoom) || 1;
+      const base = parseFloat(getComputedStyle(document.body).fontSize) || 0;
+      return {
+        on: !!DB.settings.elder,
+        attr: document.documentElement.getAttribute('data-elder'),
+        zoom: zoom, baseFont: base, renderedFont: round1(base * zoom),
+        visibleTabs: $$('.tabbar button').filter(b => !b.hidden).map(b => b.dataset.tab),
+        tab: state.tab,
+        rewardEntry: !!$('.reward-entry-wrap'),
+        rewardEntryVisible: (function () { const x = $('.reward-entry-wrap'); return !!(x && x.getClientRects().length); })(),
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth
+      };
+    },
+    setElder: function (on) {
+      DB.settings.elder = !!on;
+      saveDB(true);
+      applyElder();
+      applyModeChrome();
+      renderActive();
+      return window.__v52.elder();
+    },
+    manifest: function () {
+      return {
+        state: SKIN_MANIFEST.state, count: SKIN_MANIFEST.count,
+        error: SKIN_MANIFEST.error, source: SKIN_MANIFEST.source,
+        skins: SKINS.length, tops: galleryTopCount(),
+        normal: SKINS.filter(s => s.tier !== 'top').length
+      };
+    },
+    reloadManifest: function () { return loadSkinManifest().then(function () { refreshManifestViews(); return window.__v52.manifest(); }); },
+    drawAll: function () {
+      const rounds = [];
+      let guard = 0;
+      while (gachaPool().length && guard++ < 12) {
+        const res = performGacha(Math.min(5, gachaPool().length));
+        if (!res) break;
+        rounds.push(res.picks.map(s => s.id));
+      }
+      return {
+        rounds: rounds.length, left: gachaPool().length,
+        picked: rounds.reduce((a, r) => a.concat(r), [])
+      };
+    },
+    gallery: function () {
+      return {
+        total: gallerySkins().length, top: galleryTopCount(),
+        normal: gallerySkins().filter(s => s.tier !== 'top').length,
+        unlocked: galleryUnlocked(), thumbs: gallerySkins().filter(s => s.thumb).length,
+        ids: gallerySkins().map(s => s.id)
+      };
+    }
+  };
+
   /* ============================================================
      启动
      ============================================================ */
   function init() {
     applyTheme();
+    applyElder();
     applySkins();
     applyModeChrome();
     if (DB.profile) bootSkinPacks();
@@ -12287,9 +13492,13 @@
     if (DB.profile && isFull()) creditEnsure(true);
     /* 启动对账：库存以扣减记录为准，不一致就重建并提示 */
     if (DB.profile && isFull()) pantryEnsure(true);
+    if (DB.profile && DB.settings.motion) startMotionCounting();
     updateRail();
     renderActive();
     if (!DB.profile) startOnboarding();
+    /* v5.2：皮肤 manifest 后置加载（首次引导期间也加载，引导完成后图鉴已是 30 套）；
+       缺失或解析失败自动保留旧 5 套，不影响首屏 */
+    loadSkinManifest().then(function () { if (DB.profile) refreshManifestViews(); });
     if (DB.settings.pin.on && DB.settings.pin.hash) showLock();
     let hiddenAt = 0;
     document.addEventListener('visibilitychange', () => {

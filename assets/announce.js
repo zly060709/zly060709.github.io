@@ -143,6 +143,15 @@
       if (seen && typeof seen === 'object') seenVersion = seen.version;
       else if (typeof seen === 'string') seenVersion = seen;
 
+      /* 语义版本比较：低于/等于当前客户端版本的公告不再弹出（除非确实需要强制升级） */
+      var forceUpgrade = false;
+      if (o.appVersion && data.minClient) {
+        forceUpgrade = compareVersions(o.appVersion, data.minClient) < 0;
+      }
+      if (!forceUpgrade && o.appVersion && compareVersions(data.version, o.appVersion) <= 0) {
+        return { status: 'none', reason: 'not-newer', data: data };
+      }
+
       if (seenVersion && seenVersion === data.version) {
         return { status: 'none', reason: 'seen', data: data };
       }
@@ -156,11 +165,6 @@
           status: 'none', reason: 'snoozed', data: data,
           snoozeUntil: new Date(snoozed.until).toISOString()
         };
-      }
-
-      var forceUpgrade = false;
-      if (o.appVersion && data.minClient) {
-        forceUpgrade = compareVersions(o.appVersion, data.minClient) < 0;
       }
 
       return {

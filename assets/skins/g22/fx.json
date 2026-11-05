@@ -1,0 +1,16 @@
+{
+  "theme": "g22",
+  "mode": "fireworks",
+  "fps": 30,
+  "opacity": 0.3,
+  "particles": {
+    "sparks": 17,
+    "embers": 5
+  },
+  "shellEvery": 12,
+  "rise": 1.1,
+  "colors": [
+    "#FFB98A"
+  ],
+  "vignette": 0.14
+}

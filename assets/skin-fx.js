@@ -42,7 +42,7 @@
   function fetchCfg(t) {
     const fallback = DEFAULT_FX[t] || null;
     if (!window.fetch) return Promise.resolve(fallback);
-    const url = 'assets/skins/' + t + '/fx.json';
+    const url = 'assets/skins/' + t + '/fx.json?v=5.2.1';
     const get = (u) => (window.caches ? caches.match(u).then(hit => hit || fetch(u)) : fetch(u));
     return get(url).then(r => (r && r.ok ? r.json() : null)).catch(() => null)
       .then(j => {
@@ -122,6 +122,13 @@
       const m = Math.round((p.motes || 10) * mult * full);
       for (let i = 0; i < m; i++) particles.push({
         k: 'mote', x: rnd(0, W), y: rnd(0, H), r: rnd(.6, 1.6), ph: rnd(0, 6.28), c: pick(colors)
+      });
+    } else if (mode === 'fog') {
+      /* 雾：极低透明度的缓慢漂移团块，不压正文 */
+      const n = Math.round((p.fog || 8) * mult * full);
+      for (let i = 0; i < n; i++) particles.push({
+        k: 'fog', x: rnd(-W * .1, W * 1.1), y: rnd(H * .2, H * 1.05),
+        r: rnd(48, 110), ph: rnd(0, 6.28), vx: rnd(-7, 7), vy: rnd(-5, -1.5), c: pick(colors)
       });
     } else if (mode === 'fireworks') {
       for (let i = 0; i < (p.embers || 6); i++) particles.push({
@@ -229,6 +236,24 @@
       sword.life -= .016;
     }
   }
+  function drawFog(t) {
+    ctx.globalCompositeOperation = 'source-over';
+    particles.forEach(function (p) {
+      if (p.k !== 'fog') return;
+      const k = .5 + .5 * Math.sin(t * .00018 + p.ph);
+      const r = p.r * (1 + k * .18);
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+      const base = p.c || '#EAF4FF';
+      g.addColorStop(0, base);
+      g.addColorStop(.55, base);
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.globalAlpha = cfg.opacity * (.16 + k * .16);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, 6.283);
+      ctx.fill();
+    });
+  }
   function drawFireworks(t) {
     particles.forEach(function (p) {
       if (p.k === 'ember') {
@@ -307,6 +332,16 @@
       }
       drawInk(t);
       if (sword) sword.life -= 0; // 生命周期在 drawInk 内递减
+    } else if (mode === 'fog') {
+      particles.forEach(function (p) {
+        if (p.k !== 'fog') return;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        if (p.y < -p.r) { p.y = H + p.r; p.x = rnd(-W * .1, W * 1.1); }
+        if (p.x < -p.r) p.x = W + p.r;
+        if (p.x > W + p.r) p.x = -p.r;
+      });
+      drawFog(t);
     } else if (mode === 'fireworks') {
       timers.shell = (timers.shell || 0) + dt;
       const shell = particles.find(function (x) { return x.k === 'shell'; });

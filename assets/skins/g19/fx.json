@@ -1,0 +1,16 @@
+{
+  "theme": "g19",
+  "mode": "rain",
+  "fps": 30,
+  "opacity": 0.3,
+  "particles": {
+    "drops": 34,
+    "signs": 0
+  },
+  "angle": 12,
+  "fallSpeed": 0.8,
+  "colors": [
+    "#D5F0E2"
+  ],
+  "vignette": 0.1
+}

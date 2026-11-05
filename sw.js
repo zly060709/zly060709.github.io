@@ -1,40 +1,30 @@
-/* 能量账本 · 离线缓存（v5.0.3 多文件版）
-   安装时一次预缓存入口、全部 JS/CSS、五套皮肤包与图标；
+﻿/* 能量账本 · 离线缓存（v5.2.1 多文件版）
+   安装时只预缓存入口与 JS/CSS；30 套皮肤包一律按需缓存，启动不预取未解锁素材。
    页面/静态资源网络优先，断网回退缓存；version.json 网络优先、缓存兜底。 */
-const CACHE = 'energy-ledger-v5.0.3';
+const CACHE = 'energy-ledger-v5.2.1';
 const PRECACHE = [
   './',
   './index.html',
   './version.json',
   './icon.svg',
   './manifest.webmanifest',
-  './assets/app.css?v=5.0.3',
-  './assets/skins-v43.css?v=5.0.3',
-  './assets/skins-v5.css?v=5.0.3',
-  './assets/data.js?v=5.0.3',
-  './assets/engine.js?v=5.0.3',
-  './assets/wellness.js?v=5.0.3',
-  './assets/gender.js?v=5.0.3',
-  './assets/extras.js?v=5.0.3',
-  './assets/foodlib.js?v=5.0.3',
-  './assets/foodlib-data.js?v=5.0.3',
-  './assets/skin-fx.js?v=5.0.3',
-  './assets/codes.js?v=5.0.3',
-  './assets/announce.js?v=5.0.3',
-  './assets/trip.js?v=5.0.3',
-  './assets/app.js?v=5.0.3',
-  './assets/maint-credential.js?v=5.0.3',
-  './assets/maint.js?v=5.0.3',
-  './assets/skins/sakura/key.webp',
-  './assets/skins/sakura/fx.json',
-  './assets/skins/galaxy/key.webp',
-  './assets/skins/galaxy/fx.json',
-  './assets/skins/neon/key.webp',
-  './assets/skins/neon/fx.json',
-  './assets/skins/wuxia/key.webp',
-  './assets/skins/wuxia/fx.json',
-  './assets/skins/fireworks/key.webp',
-  './assets/skins/fireworks/fx.json'
+  './assets/app.css?v=5.2.1',
+  './assets/skins-v43.css?v=5.2.1',
+  './assets/skins-v5.css?v=5.2.1',
+  './assets/data.js?v=5.2.1',
+  './assets/engine.js?v=5.2.1',
+  './assets/wellness.js?v=5.2.1',
+  './assets/gender.js?v=5.2.1',
+  './assets/extras.js?v=5.2.1',
+  './assets/foodlib.js?v=5.2.1',
+  './assets/foodlib-data.js?v=5.2.1',
+  './assets/skin-fx.js?v=5.2.1',
+  './assets/codes.js?v=5.2.1',
+  './assets/announce.js?v=5.2.1',
+  './assets/trip.js?v=5.2.1',
+  './assets/app.js?v=5.2.1',
+  './assets/maint-credential.js?v=5.2.1',
+  './assets/maint.js?v=5.2.1'
 ];
 
 self.addEventListener('install', event => {

@@ -569,7 +569,7 @@
 
 /* 皮肤墙补充 */
 .skin-card.top { border-color: var(--amber); }
-.sk-top { position: absolute; top: 6px; right: 6px; font-size: 9px; letter-spacing: .08em; color: var(--amber); border: 1px solid var(--amber); border-radius: 999px; padding: 1px 5px; }
+.sk-top { position: absolute; top: 6px; right: 6px; font-size:11px; letter-spacing: .08em; color: var(--amber); border: 1px solid var(--amber); border-radius: 999px; padding: 1px 5px; }
 .sk-swatch.art { background-size: cover; background-position: center; color: transparent; }
 .sk-swatch.art b { display: none; }
 
@@ -584,10 +584,10 @@
 .gp-paper { background: rgba(255,255,255,.82); color: var(--swink); border-radius: 8px; padding: 5px 7px; font-family: var(--serif); display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
 [data-theme="dark"] .gp-paper { background: rgba(20,22,20,.72); }
 .gp-paper b { font-size: 15px; }
-.gp-paper span { font-size: 9px; opacity: .8; }
+.gp-paper span { font-size:11px; opacity: .8; }
 .gal-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; justify-content: center; }
 .gal-info > b { font-size: 16px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-.top-mark { font-size: 9px; color: var(--amber); border: 1px solid var(--amber); border-radius: 999px; padding: 1px 6px; font-weight: 500; }
+.top-mark { font-size:11px; color: var(--amber); border: 1px solid var(--amber); border-radius: 999px; padding: 1px 6px; font-weight: 500; }
 .gal-locked-tip { font-size: 11px; color: var(--ink-2); background: var(--surface-2); border-radius: 8px; padding: 7px 9px; display: flex; align-items: center; gap: 6px; }
 .gal-locked-tip svg { width: 14px; height: 14px; flex: 0 0 auto; }
 .gal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -600,8 +600,8 @@
 .gc-lock { position: absolute; right: 6px; bottom: 6px; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,.45); color: #fff; display: flex; align-items: center; justify-content: center; }
 .gc-lock svg { width: 12px; height: 12px; }
 .gc-name { font-size: 12px; padding: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gc-tag { font-size: 9px; color: var(--ink-3); padding: 0 8px; }
-.gc-src { font-size: 9px; color: var(--ink-3); padding: 0 8px 8px; }
+.gc-tag { font-size:11px; color: var(--ink-3); padding: 0 8px; }
+.gc-src { font-size:11px; color: var(--ink-3); padding: 0 8px 8px; }
 .gal-card.top .gc-src { color: var(--seal); font-weight: 600; }
 .cos-group { margin: 10px 0 14px; }
 .cg-head { font-size: 12px; font-weight: 600; margin-bottom: 6px; display: flex; gap: 6px; align-items: baseline; }
@@ -618,8 +618,8 @@
 .tk-ic svg { width: 14px; height: 14px; }
 .tk-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .tk-main b { font-size: 12px; }
-.tk-main em { font-style: normal; font-size: 10px; color: var(--ink-3); }
-.tk-tag { font-size: 9px; color: var(--amber); border: 1px solid var(--amber); border-radius: 999px; padding: 1px 6px; }
+.tk-main em { font-style: normal; font-size:11px; color: var(--ink-3); }
+.tk-tag { font-size:11px; color: var(--amber); border: 1px solid var(--amber); border-radius: 999px; padding: 1px 6px; }
 .ms-progress { margin: 12px 0; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .ms-head { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 11px; margin-bottom: 8px; }
 .ms-head b { font-size: 13px; }
@@ -627,16 +627,16 @@
 .ms-bar { height: 7px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
 .ms-bar i { display: block; height: 100%; background: var(--green); border-radius: 99px; transition: width .3s; }
 .ms-chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 4px; }
-.ms-chip { font-size: 10px; padding: 2px 7px; border-radius: 99px; border: 1px dashed var(--line-2); color: var(--ink-3); }
+.ms-chip { font-size:11px; padding: 2px 7px; border-radius: 99px; border: 1px dashed var(--line-2); color: var(--ink-3); }
 .ms-chip.on { border-style: solid; border-color: var(--green); color: var(--green); background: var(--green-soft); }
 .pool-board { display: flex; flex-direction: column; gap: 12px; }
 .pool-cat { border: 1px solid var(--line); border-radius: 12px; padding: 10px 11px; background: var(--surface); }
 .pc-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; font-size: 11px; color: var(--ink-3); }
 .pc-head b { font-size: 13px; color: var(--ink); }
 .pool-group { margin: 6px 0 9px; }
-.pg-head { font-size: 10px; color: var(--ink-3); margin-bottom: 5px; }
+.pg-head { font-size:11px; color: var(--ink-3); margin-bottom: 5px; }
 .pool-grid { display: flex; flex-wrap: wrap; gap: 5px; }
-.pool-chip { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; padding: 3px 7px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2); }
+.pool-chip { display: inline-flex; align-items: center; gap: 3px; font-size:11px; padding: 3px 7px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2); }
 .pool-chip.on { border-color: var(--green); color: var(--green); background: var(--green-soft); }
 .pool-chip.locked { color: var(--ink-3); border-style: dashed; opacity: .8; }
 .pool-chip.top { border-color: var(--amber); color: var(--amber); background: var(--amber-soft); }
@@ -647,14 +647,58 @@
 .btn-quiet { border: 0; background: none; color: var(--green); cursor: pointer; }
 .hist-list { display: flex; flex-direction: column; gap: 5px; }
 .hist-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
-.hr-tier { font-size: 9px; padding: 1px 6px; border-radius: 99px; border: 1px solid var(--line-2); flex: 0 0 auto; }
+.hr-tier { font-size:11px; padding: 1px 6px; border-radius: 99px; border: 1px solid var(--line-2); flex: 0 0 auto; }
 .hr-tier.rare { color: var(--amber); border-color: var(--amber); }
 .hr-tier.legend { color: var(--red); border-color: var(--red); }
 .hr-main { flex: 1; min-width: 0; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
 .hr-main b { font-size: 11px; font-weight: 500; }
-.hr-main em { font-style: normal; font-size: 9px; color: var(--ink-3); flex: 0 0 auto; }
+.hr-main em { font-style: normal; font-size:11px; color: var(--ink-3); flex: 0 0 auto; }
 
 .sim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
 .sim-grid > div { background: var(--surface-2); border-radius: 9px; padding: 8px; display: flex; flex-direction: column; gap: 2px; }
 .sim-grid b { font-size: 16px; }
-.sim-grid em { font-style: normal; font-size: 9px; color: var(--ink-3); }
+.sim-grid em { font-style: normal; font-size:11px; color: var(--ink-3); }
+
+/* ---------- v5.2.1 真实素材 30 套顶级皮肤 ---------- */
+/* 新顶级皮肤（g01–g30）统一用真实立绘作页面底图；正文都在不透明卡片上，底图只做氛围 */
+[data-skin^="g"] body {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(1100px 520px at 52% -8%, rgba(255,253,245,.92), transparent 70%),
+    linear-gradient(180deg, rgba(251,249,242,.58), rgba(251,249,242,.88)),
+    var(--skin-art);
+  background-size: auto, cover, cover;
+  background-position: center top, center top, center top;
+  background-attachment: fixed, fixed, fixed;
+}
+[data-theme="dark"][data-skin^="g"] body {
+  background-image:
+    linear-gradient(180deg, rgba(18,23,20,.72), rgba(10,14,12,.92)),
+    var(--skin-art);
+  background-size: cover, cover;
+  background-position: center top, center top;
+  background-attachment: fixed, fixed;
+}
+[data-skin^="g"] .page-title, [data-skin^="g"] .page-sub {
+  background: rgba(255,255,255,.86); border-radius: 8px; padding: 3px 9px; display: inline-block;
+}
+[data-theme="dark"][data-skin^="g"] .page-title, [data-theme="dark"][data-skin^="g"] .page-sub {
+  background: rgba(10,13,22,.74);
+}
+
+/* 图鉴：真图不再叠“账”字，正文永远压在不透明衬底上 */
+.gc-thumb.art b { display: none; }
+.gp-paper { color: var(--ink); }
+.gp-paper span { color: var(--ink-2); opacity: 1; }
+.skin-card.soon .sk-swatch, .gal-card.soon .gc-thumb { filter: grayscale(.7) brightness(.95); opacity: .72; }
+.gal-soon-tip { font-size: 11px; color: var(--ink-2); background: var(--surface-2); border-radius: 8px; padding: 7px 9px; display: flex; align-items: center; gap: 6px; }
+.gal-soon-tip svg { width: 14px; height: 14px; flex: 0 0 auto; }
+.gc-soon { position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); font-size: 10px; line-height: 1.4; padding: 1px 6px; border-radius: 99px; background: rgba(20,22,20,.66); color: #F7F5EC; white-space: nowrap; }
+.gacha-slot.soon { opacity: .66; border-style: dashed; }
+
+/* v5.2.1 可读性：正文说明统一 ≥4.5，标题衬底用主题表面色（含旧皮肤） */
+[data-skin] .page-title, [data-skin] .page-sub { background: var(--surface); }
+.page-sub { color: var(--ink-2); }
+.gal-head .tiny, .gal-info .tiny, .notebox, .rw-note, .rw-code-head em, .sheet-sub .tiny { color: var(--ink-2); }
+.gp-paper span { color: var(--ink); }
+

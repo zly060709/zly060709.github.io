@@ -1,0 +1,16 @@
+{
+  "theme": "g18",
+  "mode": "fireworks",
+  "fps": 30,
+  "opacity": 0.3,
+  "particles": {
+    "sparks": 13,
+    "embers": 5
+  },
+  "shellEvery": 12,
+  "rise": 1.1,
+  "colors": [
+    "#FFB066"
+  ],
+  "vignette": 0.14
+}

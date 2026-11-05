@@ -1,0 +1,621 @@
+{
+  "version": 1,
+  "note": "v5.2.1 真实素材：30 套全部 ready（含 g03 云端列车），字段契约不变。",
+  "fields": [
+    "id",
+    "name",
+    "tier",
+    "src",
+    "swatch",
+    "ink",
+    "tag",
+    "thumb",
+    "art",
+    "fg",
+    "fx",
+    "accent",
+    "pending"
+  ],
+  "items": [
+    {
+      "id": "a-sakura",
+      "name": "樱花祭·吹雪",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#FCEFF4",
+      "ink": "#4A2333",
+      "tag": "和风粉",
+      "thumb": "assets/skins/sakura/thumb.webp",
+      "art": "assets/skins/sakura/key.webp",
+      "fg": "assets/skins/sakura/fg.png",
+      "fx": {
+        "engine": "petals",
+        "density": 26,
+        "color": "#F6D8DE",
+        "speed": 0.3
+      },
+      "accent": "#E8A3B4",
+      "pending": false
+    },
+    {
+      "id": "a-galaxy",
+      "name": "星海·银河",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#101B33",
+      "ink": "#EAF1FF",
+      "tag": "深蓝星空",
+      "thumb": "assets/skins/galaxy/thumb.webp",
+      "art": "assets/skins/galaxy/key.webp",
+      "fg": "assets/skins/galaxy/fg.png",
+      "fx": {
+        "engine": "stars",
+        "density": 24,
+        "color": "#DCEAFF",
+        "speed": 0.22
+      },
+      "accent": "#4A5F86",
+      "pending": false
+    },
+    {
+      "id": "a-neon",
+      "name": "霓虹雨夜·赛博",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#1B1230",
+      "ink": "#F6E9FF",
+      "tag": "紫粉霓虹",
+      "thumb": "assets/skins/neon/thumb.webp",
+      "art": "assets/skins/neon/key.webp",
+      "fg": "assets/skins/neon/fg.png",
+      "fx": {
+        "engine": "rain",
+        "density": 38,
+        "color": "#CFE0FF",
+        "speed": 0.4
+      },
+      "accent": "#FF3C8C",
+      "pending": false
+    },
+    {
+      "id": "a-wuxia",
+      "name": "水墨江湖·武侠",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F4F0E6",
+      "ink": "#22201C",
+      "tag": "宣纸水墨",
+      "thumb": "assets/skins/wuxia/thumb.webp",
+      "art": "assets/skins/wuxia/key.webp",
+      "fg": "assets/skins/wuxia/fg.png",
+      "fx": {
+        "engine": "ink",
+        "density": 28,
+        "color": "#E8E4DA",
+        "speed": 0.2
+      },
+      "accent": "#3A3A33",
+      "pending": false
+    },
+    {
+      "id": "a-fireworks",
+      "name": "夏日祭·烟火",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#1E140F",
+      "ink": "#FFF0DD",
+      "tag": "暖橙烟火",
+      "thumb": "assets/skins/fireworks/thumb.webp",
+      "art": "assets/skins/fireworks/key.webp",
+      "fg": "assets/skins/fireworks/fg.png",
+      "fx": {
+        "engine": "sparks",
+        "density": 32,
+        "color": "#FFC07A",
+        "speed": 0.36
+      },
+      "accent": "#E0903C",
+      "pending": false
+    },
+    {
+      "id": "g01",
+      "name": "雪国温泉",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#EAF2F0",
+      "ink": "#1F3A33",
+      "tag": "青瓷",
+      "thumb": "assets/skins/g01/thumb.webp",
+      "art": "assets/skins/g01/key.webp",
+      "fg": "assets/skins/g01/fg.png",
+      "fx": {
+        "engine": "snow",
+        "density": 36,
+        "color": "#EAF4FF",
+        "speed": 0.35
+      },
+      "accent": "#7FB3D5",
+      "pending": false
+    },
+    {
+      "id": "g02",
+      "name": "深海鲸落",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#EFF6EC",
+      "ink": "#23392A",
+      "tag": "竹青",
+      "thumb": "assets/skins/g02/thumb.webp",
+      "art": "assets/skins/g02/key.webp",
+      "fg": "assets/skins/g02/fg.png",
+      "fx": {
+        "engine": "bubbles",
+        "density": 30,
+        "color": "#BFE9FF",
+        "speed": 0.28
+      },
+      "accent": "#2E6F9E",
+      "pending": false
+    },
+    {
+      "id": "g03",
+      "name": "云端列车",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F2F5F7",
+      "ink": "#26343C",
+      "tag": "霜白",
+      "thumb": "assets/skins/g03/thumb.webp",
+      "art": "assets/skins/g03/key.webp",
+      "fg": "assets/skins/g03/fg.png",
+      "fx": {
+        "engine": "fog",
+        "density": 34,
+        "color": "#E8EEF6",
+        "speed": 0.23
+      },
+      "accent": "#C9D6E4",
+      "pending": false
+    },
+    {
+      "id": "g04",
+      "name": "废土黄昏",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#FBF0DC",
+      "ink": "#4A3320",
+      "tag": "琥珀",
+      "thumb": "assets/skins/g04/thumb.webp",
+      "art": "assets/skins/g04/key.webp",
+      "fg": "assets/skins/g04/fg.png",
+      "fx": {
+        "engine": "dust",
+        "density": 40,
+        "color": "#E0A56A",
+        "speed": 0.31
+      },
+      "accent": "#C97B4A",
+      "pending": false
+    },
+    {
+      "id": "g05",
+      "name": "竹林听雨",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#E8F0EC",
+      "ink": "#2A4038",
+      "tag": "铜绿",
+      "thumb": "assets/skins/g05/thumb.webp",
+      "art": "assets/skins/g05/key.webp",
+      "fg": "assets/skins/g05/fg.png",
+      "fx": {
+        "engine": "rain",
+        "density": 36,
+        "color": "#CFE6D6",
+        "speed": 0.44
+      },
+      "accent": "#4E8F6B",
+      "pending": false
+    },
+    {
+      "id": "g06",
+      "name": "图书馆夜读",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F2E9E6",
+      "ink": "#3D2622",
+      "tag": "紫檀",
+      "thumb": "assets/skins/g06/thumb.webp",
+      "art": "assets/skins/g06/key.webp",
+      "fg": "assets/skins/g06/fg.png",
+      "fx": {
+        "engine": "dust",
+        "density": 26,
+        "color": "#E9C98C",
+        "speed": 0.18
+      },
+      "accent": "#B08A5A",
+      "pending": false
+    },
+    {
+      "id": "g07",
+      "name": "极光营地",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F4F8FA",
+      "ink": "#24343E",
+      "tag": "月白",
+      "thumb": "assets/skins/g07/thumb.webp",
+      "art": "assets/skins/g07/key.webp",
+      "fg": "assets/skins/g07/fg.png",
+      "fx": {
+        "engine": "stars",
+        "density": 30,
+        "color": "#DFFFF4",
+        "speed": 0.21
+      },
+      "accent": "#57C6A8",
+      "pending": false
+    },
+    {
+      "id": "g08",
+      "name": "和风庭院",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#FBEDE8",
+      "ink": "#5A2A22",
+      "tag": "朱砂",
+      "thumb": "assets/skins/g08/thumb.webp",
+      "art": "assets/skins/g08/key.webp",
+      "fg": "assets/skins/g08/fg.png",
+      "fx": {
+        "engine": "petals",
+        "density": 20,
+        "color": "#F2DCE2",
+        "speed": 0.26
+      },
+      "accent": "#8FA57C",
+      "pending": false
+    },
+    {
+      "id": "g09",
+      "name": "电子森林",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#1E2A44",
+      "ink": "#EAF1FF",
+      "tag": "靛青",
+      "thumb": "assets/skins/g09/thumb.webp",
+      "art": "assets/skins/g09/key.webp",
+      "fg": "assets/skins/g09/fg.png",
+      "fx": {
+        "engine": "lightray",
+        "density": 30,
+        "color": "#9BF6E4",
+        "speed": 0.32
+      },
+      "accent": "#39D2C0",
+      "pending": false
+    },
+    {
+      "id": "g10",
+      "name": "沙漠星夜",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#EFF4E8",
+      "ink": "#2B3A26",
+      "tag": "苔绿",
+      "thumb": "assets/skins/g10/thumb.webp",
+      "art": "assets/skins/g10/key.webp",
+      "fg": "assets/skins/g10/fg.png",
+      "fx": {
+        "engine": "stars",
+        "density": 24,
+        "color": "#FFE7B0",
+        "speed": 0.16
+      },
+      "accent": "#D9A05B",
+      "pending": false
+    },
+    {
+      "id": "g11",
+      "name": "咖啡馆雨窗",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#FAF3DF",
+      "ink": "#4A3A20",
+      "tag": "麦金",
+      "thumb": "assets/skins/g11/thumb.webp",
+      "art": "assets/skins/g11/key.webp",
+      "fg": "assets/skins/g11/fg.png",
+      "fx": {
+        "engine": "rain",
+        "density": 28,
+        "color": "#F6D8B0",
+        "speed": 0.38
+      },
+      "accent": "#C58B5C",
+      "pending": false
+    },
+    {
+      "id": "g12",
+      "name": "神社初雪",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#EDF1F3",
+      "ink": "#2C3A42",
+      "tag": "远黛",
+      "thumb": "assets/skins/g12/thumb.webp",
+      "art": "assets/skins/g12/key.webp",
+      "fg": "assets/skins/g12/fg.png",
+      "fx": {
+        "engine": "snow",
+        "density": 32,
+        "color": "#FFFFFF",
+        "speed": 0.33
+      },
+      "accent": "#B8422F",
+      "pending": false
+    },
+    {
+      "id": "g13",
+      "name": "玻璃温室",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#22252A",
+      "ink": "#EDE8DE",
+      "tag": "松烟",
+      "thumb": "assets/skins/g13/thumb.webp",
+      "art": "assets/skins/g13/key.webp",
+      "fg": "assets/skins/g13/fg.png",
+      "fx": {
+        "engine": "lightray",
+        "density": 22,
+        "color": "#E8F6DC",
+        "speed": 0.24
+      },
+      "accent": "#7FB88A",
+      "pending": false
+    },
+    {
+      "id": "g14",
+      "name": "山顶日出",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#FDF0F1",
+      "ink": "#542430",
+      "tag": "桃粉",
+      "thumb": "assets/skins/g14/thumb.webp",
+      "art": "assets/skins/g14/key.webp",
+      "fg": "assets/skins/g14/fg.png",
+      "fx": {
+        "engine": "fog",
+        "density": 30,
+        "color": "#FFD9B0",
+        "speed": 0.25
+      },
+      "accent": "#E8A05E",
+      "pending": false
+    },
+    {
+      "id": "g15",
+      "name": "海崖灯塔",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F6F1F8",
+      "ink": "#3B2C46",
+      "tag": "藕荷",
+      "thumb": "assets/skins/g15/thumb.webp",
+      "art": "assets/skins/g15/key.webp",
+      "fg": "assets/skins/g15/fg.png",
+      "fx": {
+        "engine": "fog",
+        "density": 34,
+        "color": "#DCE9F2",
+        "speed": 0.34
+      },
+      "accent": "#6E93B8",
+      "pending": false
+    },
+    {
+      "id": "g16",
+      "name": "茶室晨雾",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#FAF4E2",
+      "ink": "#4A3B1E",
+      "tag": "杏黄",
+      "thumb": "assets/skins/g16/thumb.webp",
+      "art": "assets/skins/g16/key.webp",
+      "fg": "assets/skins/g16/fg.png",
+      "fx": {
+        "engine": "fog",
+        "density": 26,
+        "color": "#EDE3CC",
+        "speed": 0.19
+      },
+      "accent": "#8C7A5B",
+      "pending": false
+    },
+    {
+      "id": "g17",
+      "name": "红叶山道",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F1EBE3",
+      "ink": "#3A2D22",
+      "tag": "雪松",
+      "thumb": "assets/skins/g17/thumb.webp",
+      "art": "assets/skins/g17/key.webp",
+      "fg": "assets/skins/g17/fg.png",
+      "fx": {
+        "engine": "petals",
+        "density": 28,
+        "color": "#F0A882",
+        "speed": 0.37
+      },
+      "accent": "#C05A2E",
+      "pending": false
+    },
+    {
+      "id": "g18",
+      "name": "蒸汽工坊",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#EEF6FA",
+      "ink": "#1E3A46",
+      "tag": "海盐",
+      "thumb": "assets/skins/g18/thumb.webp",
+      "art": "assets/skins/g18/key.webp",
+      "fg": "assets/skins/g18/fg.png",
+      "fx": {
+        "engine": "sparks",
+        "density": 26,
+        "color": "#FFB066",
+        "speed": 0.41
+      },
+      "accent": "#B57642",
+      "pending": false
+    },
+    {
+      "id": "g19",
+      "name": "雨林瀑布",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F8EEDF",
+      "ink": "#4A3620",
+      "tag": "焦糖",
+      "thumb": "assets/skins/g19/thumb.webp",
+      "art": "assets/skins/g19/key.webp",
+      "fg": "assets/skins/g19/fg.png",
+      "fx": {
+        "engine": "rain",
+        "density": 34,
+        "color": "#D5F0E2",
+        "speed": 0.46
+      },
+      "accent": "#3F8F6E",
+      "pending": false
+    },
+    {
+      "id": "g20",
+      "name": "冰湖极夜",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F8EAE7",
+      "ink": "#52261F",
+      "tag": "赤豆",
+      "thumb": "assets/skins/g20/thumb.webp",
+      "art": "assets/skins/g20/key.webp",
+      "fg": "assets/skins/g20/fg.png",
+      "fx": {
+        "engine": "snow",
+        "density": 26,
+        "color": "#CDE8FF",
+        "speed": 0.27
+      },
+      "accent": "#6FA8C8",
+      "pending": false
+    },
+    {
+      "id": "g21",
+      "name": "古董钟楼",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F2FAEA",
+      "ink": "#2E3F20",
+      "tag": "青柠",
+      "thumb": "assets/skins/g21/thumb.webp",
+      "art": "assets/skins/g21/key.webp",
+      "fg": "assets/skins/g21/fg.png",
+      "fx": {
+        "engine": "dust",
+        "density": 24,
+        "color": "#E8D2A8",
+        "speed": 0.29
+      },
+      "accent": "#A8845B",
+      "pending": false
+    },
+    {
+      "id": "g22",
+      "name": "江畔灯会",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#E9F1F8",
+      "ink": "#22384E",
+      "tag": "蓝染",
+      "thumb": "assets/skins/g22/thumb.webp",
+      "art": "assets/skins/g22/key.webp",
+      "fg": "assets/skins/g22/fg.png",
+      "fx": {
+        "engine": "sparks",
+        "density": 34,
+        "color": "#FFB98A",
+        "speed": 0.39
+      },
+      "accent": "#E06A4A",
+      "pending": false
+    },
+    {
+      "id": "g23",
+      "name": "海边电车",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#1B1F2E",
+      "ink": "#EFEAF7",
+      "tag": "星砂",
+      "thumb": "assets/skins/g23/thumb.webp",
+      "art": "assets/skins/g23/key.webp",
+      "fg": "assets/skins/g23/fg.png",
+      "fx": {
+        "engine": "lightray",
+        "density": 24,
+        "color": "#DCEEF6",
+        "speed": 0.42
+      },
+      "accent": "#5FA8C0",
+      "pending": false
+    },
+    {
+      "id": "g24",
+      "name": "海底车站",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F4F3EF",
+      "ink": "#33322C",
+      "tag": "云母",
+      "thumb": "assets/skins/g24/thumb.webp",
+      "art": "assets/skins/g24/key.webp",
+      "fg": "assets/skins/g24/fg.png",
+      "fx": {
+        "engine": "bubbles",
+        "density": 32,
+        "color": "#B8E2F2",
+        "speed": 0.43
+      },
+      "accent": "#3E7FA0",
+      "pending": false
+    },
+    {
+      "id": "g25",
+      "name": "黄昏操场",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F7EDE9",
+      "ink": "#4C2E24",
+      "tag": "赭红",
+      "thumb": "assets/skins/g25/thumb.webp",
+      "art": "assets/skins/g25/key.webp",
+      "fg": "assets/skins/g25/fg.png",
+      "fx": {
+        "engine": "dust",
+        "density": 28,
+        "color": "#F0BE96",
+        "speed": 0.45
+      },
+      "accent": "#D07A50",
+      "pending": false
+    }
+  ]
+}

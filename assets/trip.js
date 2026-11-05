@@ -40,15 +40,35 @@
      跑步 10.0 / 骑行 6.0 / 游泳 蛙泳 6.0 / 登山 6.0 / 跳绳 11.0 / 力量 3.5 /
      羽毛球 5.5 等），low/high 为同一运动的轻度/高强度档。 */
   var MET_TABLE = {
-    walk:     { label: '走/散步',   low: 2.8, mid: 5.0,  high: 6.5 },
-    jog:      { label: '慢跑',      low: 7.0, mid: 8.3,  high: 10.0 },
-    run:      { label: '跑步',      low: 8.3, mid: 10.0, high: 11.5 },
-    bike:     { label: '骑行',      low: 6.0, mid: 8.0,  high: 10.0 },
-    swim:     { label: '游泳',      low: 6.0, mid: 8.3,  high: 10.0 },
-    hike:     { label: '登山/徒步', low: 5.0, mid: 6.0,  high: 7.5 },
-    rope:     { label: '跳绳',      low: 11.0, mid: 12.0, high: 13.0 },
-    strength: { label: '力量训练',  low: 3.5, mid: 5.0,  high: 6.0 },
-    ball:     { label: '球类',      low: 4.0, mid: 5.5,  high: 8.0 }
+    walk:     { label: '走',       low: 2.8, mid: 5.0,  high: 6.5 },
+    run:      { label: '跑',       low: 8.3, mid: 10.0, high: 11.5 },
+    bike:     { label: '骑行',     low: 6.0, mid: 8.0,  high: 10.0 },
+    swim:     { label: '游泳',     low: 6.0, mid: 8.3,  high: 10.0 },
+    hike:     { label: '登山',     low: 5.0, mid: 6.0,  high: 7.5 },
+    row:      { label: '划船',     low: 4.0, mid: 7.0,  high: 9.0 },
+    rope:     { label: '跳绳',     low: 11.0, mid: 12.0, high: 13.0 },
+    stairs:   { label: '爬楼',     low: 5.0, mid: 8.0,  high: 10.0 },
+    yoga:     { label: '瑜伽',     low: 2.3, mid: 3.0,  high: 4.0 },
+    /* 以下为旧账本的兼容类目，不再出现在九类选择器里，但历史记录仍按原 MET 折算 */
+    jog:      { label: '慢跑（旧）', low: 7.0, mid: 8.3,  high: 10.0, legacy: true },
+    strength: { label: '力量训练（旧）', low: 3.5, mid: 5.0, high: 6.0, legacy: true },
+    ball:     { label: '球类（旧）', low: 4.0, mid: 5.5, high: 8.0, legacy: true }
+  };
+
+  /* 九类运动板块：顺序即 UI 顺序 */
+  var CATEGORIES = ['walk', 'run', 'bike', 'swim', 'hike', 'row', 'rope', 'stairs', 'yoga'];
+
+  /* 每类需要额外出哪些字段（时长永远必填） */
+  var FIELD_SPEC = {
+    walk:   { distance: true },
+    run:    { distance: true, pace: true },
+    bike:   { distance: true, speed: true },
+    swim:   { distance: true, stroke: true },
+    hike:   { distance: true, ascent: true },
+    row:    { distance: true },
+    rope:   { jumps: true },
+    stairs: { floors: true },
+    yoga:   {}
   };
 
   var INTENSITY = {
@@ -218,6 +238,37 @@
     return { ok: true, code: null, message: '' };
   }
 
+  /* ---------- 3.5 可信度分级 ----------
+     manual → L0（基础里程，1×）
+     import → L1（导入文件，判定通过 1.2×；判为 suspect 则 0）
+     motion → L2（手机计步估算，1×）
+     倍率只影响"计入环游记的里程"，不改 kcal 与原始 km_eq。 */
+  var SOURCE_LABEL = { manual: '手记', import: '导入', motion: '计步' };
+  function sourceOf(rec) {
+    var s = rec && rec.source;
+    return SOURCE_LABEL[s] ? s : 'manual';
+  }
+  function confidenceOf(rec) {
+    var s = sourceOf(rec);
+    return s === 'import' ? 'L1' : (s === 'motion' ? 'L2' : 'L0');
+  }
+  function recFactor(rec) {
+    if (!rec) return 0;
+    if (rec.valid === false || rec.suspect === true) return 0;
+    var m = Number(rec.multiplier);
+    if (isFinite(m) && m >= 0) return m;
+    return confidenceOf(rec) === 'L1' ? 1.2 : 1;
+  }
+  /* 计入环游记的里程（含倍率；仅存档记录为 0） */
+  function countedKm(rec, weight) {
+    if (!rec || rec.valid === false || rec.suspect === true) return 0;
+    var kg = resolveWeight(rec, weight);
+    var kcal = Number(rec.kcal) > 0 ? Number(rec.kcal) : estimateKcal(rec, weight);
+    var ascent = Number(rec.ascent_m) > 0 ? Number(rec.ascent_m) : 0;
+    var kmEq = Number(rec.km_eq) > 0 ? Number(rec.km_eq) : toEquivalentKm(kcal, kg, ascent);
+    return round2(kmEq * recFactor(rec));
+  }
+
   /* ---------- 4. 累计 ---------- */
   /* 只累计校验通过的记录。当天总时长按数组顺序累加（含未通过的记录，因为身体承受的是总负荷），
      超 12 h 的那条起判为 daily_over_12h。 */
@@ -244,14 +295,15 @@
       var kmEq = r.km_eq != null && Number.isFinite(Number(r.km_eq)) && Number(r.km_eq) > 0
         ? round2(Number(r.km_eq))              // 已写入的等效里程，直接沿用
         : toEquivalentKm(kcal, kg, ascent);
-      totalKm += kmEq;
+      var counted = round2(kmEq * recFactor(r));
+      totalKm += counted;
       totalMin += Number(r.minutes) || 0;
       kcalTotal += kcal;
       valid += 1;
       var type = resolveType(r) || 'other';
       if (!byType[type]) byType[type] = { minutes: 0, km_eq: 0, count: 0 };
       byType[type].minutes += Number(r.minutes) || 0;
-      byType[type].km_eq = round2(byType[type].km_eq + kmEq);
+      byType[type].km_eq = round2(byType[type].km_eq + counted);
       byType[type].count += 1;
     });
 
@@ -334,6 +386,13 @@
       LIMIT: LIMIT
     },
     MET_TABLE: MET_TABLE,
+    CATEGORIES: CATEGORIES,
+    FIELD_SPEC: FIELD_SPEC,
+    SOURCE_LABEL: SOURCE_LABEL,
+    sourceOf: sourceOf,
+    confidenceOf: confidenceOf,
+    recFactor: recFactor,
+    countedKm: countedKm,
     LANDMARKS: LANDMARKS,
     estimateKcal: estimateKcal,
     toEquivalentKm: toEquivalentKm,
