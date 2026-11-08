@@ -3743,6 +3743,10 @@
     { id: 'sky', name: '气泡·天青', src: '稀有掉落', tier: 'rare', swatch: '#EFF8FB', ink: '#1D3947', tag: '天青' },
     { id: 'oldnews', name: '旧报·灰白', src: '稀有掉落', tier: 'rare', swatch: '#F5F4EF', ink: '#33342E', tag: '灰白' },
     { id: 'porcelain', name: '釉蓝·瓷器', src: '稀有掉落', tier: 'rare', swatch: '#EEF4F8', ink: '#21384D', tag: '釉蓝' },
+    { id: 'crt', name: '临光·荧光终端', src: '方案解锁', tier: 'rare', swatch: '#0C0906', ink: '#FFB454', tag: '磷光' },
+    { id: 'receipt', name: '出票口·热敏小票', src: '方案解锁', tier: 'rare', swatch: '#F7F6F1', ink: '#1D1D1B', tag: '小票' },
+    { id: 'stall', name: '深夜面档·霓虹', src: '方案解锁', tier: 'rare', swatch: '#1B1626', ink: '#F7EFE4', tag: '霓虹' },
+    { id: 'gauge', name: '吨位车间·仪表', src: '方案解锁', tier: 'rare', swatch: '#D9DCDF', ink: '#202429', tag: '工业' },
     { id: 'a-sakura', name: '樱花祭·吹雪', src: '扭蛋限定', tier: 'top', swatch: '#FCEFF4', ink: '#4A2333', tag: '和风粉', art: 'sakura' },
     { id: 'a-galaxy', name: '星海·银河', src: '扭蛋限定', tier: 'top', swatch: '#101B33', ink: '#EAF1FF', tag: '深蓝星空', art: 'galaxy' },
     { id: 'a-neon', name: '霓虹雨夜·赛博', src: '扭蛋限定', tier: 'top', swatch: '#1B1230', ink: '#F6E9FF', tag: '紫粉霓虹', art: 'neon' },
@@ -4258,7 +4262,7 @@
     root.setAttribute('data-skin-scratch', s.scratchArt || 'cloth');
     root.setAttribute('data-skin-fx', s.fxTheme || 'default');
     /* v5.3：纯 CSS 材质皮肤（无 canvas）不铺占位剪影——背景由皮肤自己的 CSS 画 */
-    const CSS_MATERIAL_SKINS = ['a-glass', 'a-polar', 'a-type', 'a-chrome'];
+    const CSS_MATERIAL_SKINS = ['a-glass', 'a-polar', 'a-type', 'a-chrome', 'crt', 'receipt', 'stall', 'gauge'];
     const art = skinArtUrl(id) || (packTheme(id) && CSS_MATERIAL_SKINS.indexOf(id) < 0 ? PACK_PLACEHOLDER : '');
     if (art) root.style.setProperty('--skin-art', 'url("' + art + '")');
     else root.style.removeProperty('--skin-art');

@@ -1,0 +1,415 @@
+/* ============================================================
+   能量账本 · v6.0 标杆皮肤包（手写文件，非 make_skin_css.py 生成）
+   ------------------------------------------------------------
+   包含 4 套：
+     crt     临光终端   （强制夜底：浅色=琥珀磷光 / 深色=绿磷光）
+     receipt 出票口     （浅色=热敏纸   / 深色=复写纸）
+     stall   深夜面档   （强制夜底：浅色=灯箱初上 / 深色=深夜）
+     gauge   吨位车间   （浅色=白班     / 深色=夜班）
+   ------------------------------------------------------------
+   设计约定（六要素）：
+     - 只覆写 app.css 既有语义 token + 少量组件个性覆写；
+       组件覆写全部带 [data-skin] 前缀，不污染默认层。
+     - 动效仅 transform/opacity，全部尊重 prefers-reduced-motion。
+     - 背景材质 ≤ 3 层渐变；辉光只用 text-shadow / box-shadow。
+     - 数据区无粒子、无 canvas；fx.json 不需要（无背景粒子）。
+   接入：index.html 增加一行 <link>，注册项见接入指南（index.json）。
+   ============================================================ */
+
+/* ============================================================
+   01 · crt 临光终端 —— 1980s 荧光命令行
+   招牌：▌闪烁光标 + ▓▓▓░ 分块进度条 + SYS:CALIB OK 自检行
+   ============================================================ */
+
+[data-skin="crt"] {
+  --paper:#0C0906; --paper-deep:#080503;
+  --surface:#130E08; --surface-2:#191309; --field:#16110A;
+  --ink:#FFB454; --ink-2:#C98F3D; --ink-3:#8A6224;
+  --line:#2E2312; --line-2:#45351B;
+  --green:#FFB454; --green-deep:#FFC97A; --green-soft:rgba(255,180,84,.09); --green-line:rgba(255,180,84,.34);
+  --amber:#FFD07A; --amber-soft:rgba(255,208,122,.09);
+  --red:#FF7A50; --red-soft:rgba(255,122,80,.12);
+  --seal:#FFB454;
+  --shadow:none; --shadow-sm:none;
+  --radius:3px;
+  --rail:rgba(12,9,6,.74);
+  --serif:"Cascadia Mono", Consolas, "Courier New", monospace;
+  --sans:"Cascadia Mono", Consolas, "Courier New", "PingFang SC", "Microsoft YaHei", monospace;
+  --rw-accent:#FFB454; --rw-gold:#FFB454; --rw-line:rgba(255,180,84,.3);
+}
+[data-theme="dark"][data-skin="crt"] {
+  --paper:#040A05; --paper-deep:#020603;
+  --surface:#0A130B; --surface-2:#0F1A10; --field:#0D170E;
+  --ink:#3DFF70; --ink-2:#2FB85A; --ink-3:#1E7C3C;
+  --line:#123419; --line-2:#1D5330;
+  --green:#3DFF70; --green-deep:#7DFFA0; --green-soft:rgba(61,255,112,.09); --green-line:rgba(61,255,112,.32);
+  --amber:#FFC24D; --amber-soft:rgba(255,194,77,.09);
+  --red:#FF5F5F; --red-soft:rgba(255,95,95,.12);
+  --seal:#3DFF70;
+  --rail:rgba(4,10,5,.74);
+  --rw-accent:#3DFF70; --rw-gold:#3DFF70; --rw-line:rgba(61,255,112,.3);
+}
+/* 屏幕：扫描线 + 荧光渐晕（每态两层） */
+[data-skin="crt"] body {
+  background-color:var(--paper);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,180,84,.05) 0 1px, transparent 1px 3px),
+    radial-gradient(120% 90% at 50% -10%, rgba(255,180,84,.08), transparent 62%);
+}
+[data-theme="dark"][data-skin="crt"] body {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(61,255,112,.055) 0 1px, transparent 1px 3px),
+    radial-gradient(120% 90% at 50% -10%, rgba(61,255,112,.08), transparent 62%);
+}
+/* 辉光：只落在标题与主数字上 */
+[data-skin="crt"] .page-title,
+[data-skin="crt"] .balance-num,
+[data-skin="crt"] .section-head h2,
+[data-skin="crt"] .brand-name { text-shadow:0 0 8px rgba(255,180,84,.42); }
+[data-theme="dark"][data-skin="crt"] .page-title,
+[data-theme="dark"][data-skin="crt"] .balance-num,
+[data-theme="dark"][data-skin="crt"] .section-head h2,
+[data-theme="dark"][data-skin="crt"] .brand-name { text-shadow:0 0 8px rgba(61,255,112,.4); }
+/* 主数字后的常驻光标 */
+[data-skin="crt"] .balance-num { letter-spacing:.01em; }
+[data-skin="crt"] .balance-num::after {
+  content:"▌"; margin-left:4px; font-weight:400;
+  animation:crt-caret 1.1s steps(2, start) infinite;
+}
+@keyframes crt-caret { 0%, 49% { opacity:.9; } 50%, 100% { opacity:0; } }
+/* 预算条 → 分块字符条 */
+[data-skin="crt"] .meter {
+  height:12px; border:1px solid var(--green-line);
+  border-radius:0; background:transparent;
+}
+[data-skin="crt"] .meter-band {
+  opacity:.3;
+  background:repeating-linear-gradient(135deg, var(--ink-3) 0 3px, transparent 3px 7px);
+}
+[data-skin="crt"] .meter-fill {
+  border-radius:0;
+  background:repeating-linear-gradient(90deg, var(--green) 0 6px, transparent 6px 9px);
+}
+[data-skin="crt"] .meter-fill.warn {
+  background:repeating-linear-gradient(90deg, var(--red) 0 6px, transparent 6px 9px);
+}
+[data-skin="crt"] .meter-tick { background:var(--amber); opacity:1; }
+[data-skin="crt"] .meter-legend::after {
+  content:"SYS:CALIB OK"; margin-left:12px;
+  color:var(--ink-2); font-size:10px; letter-spacing:.1em;
+}
+/* 组件质感：去投影、荧光描边 */
+[data-skin="crt"] .card, [data-skin="crt"] .hero { box-shadow:none; }
+[data-skin="crt"] .hero::before { opacity:.14; }
+[data-skin="crt"] .hero::after { background:linear-gradient(var(--green), transparent); }
+[data-skin="crt"] .btn { border-radius:2px; }
+[data-skin="crt"] .btn-primary { color:#0C0906; box-shadow:0 0 14px rgba(255,180,84,.24); }
+[data-theme="dark"][data-skin="crt"] .btn-primary { color:#040A05; box-shadow:0 0 14px rgba(61,255,112,.28); }
+[data-skin="crt"] .chip { border-radius:1px; }
+[data-skin="crt"] .toast { border-radius:3px; border:1px solid var(--green-line); }
+[data-skin="crt"] .ledger-stamp { border-radius:4px; font-family:var(--sans); }
+[data-skin="crt"] .mark { border-radius:2px; color:#0C0906; }
+[data-theme="dark"][data-skin="crt"] .mark { color:#040A05; }
+[data-skin="crt"] .tabbar { background:rgba(12,9,6,.95); }
+[data-theme="dark"][data-skin="crt"] .tabbar { background:rgba(4,10,5,.95); }
+
+/* ============================================================
+   02 · receipt 出票口 —— 每日热敏小票
+   招牌：撕纸锯齿边 + 条形码 + NO. 票号（复用账页号）+ 谢谢惠顾
+   ============================================================ */
+
+[data-skin="receipt"] {
+  --paper:#33363B; --paper-deep:#2A2D31;
+  --surface:#F7F6F1; --surface-2:#EFEEE7; --field:#F2F1EA;
+  --ink:#1D1D1B; --ink-2:#5E5E56; --ink-3:#8F8F85;
+  --line:#DBD9CF; --line-2:#C2C0B4;
+  --green:#1D1D1B; --green-deep:#000000; --green-soft:#ECEAE1; --green-line:#B5B3A6;
+  --amber:#8A7440; --amber-soft:#EFE9DA;
+  --red:#BF3B2B; --red-soft:#F3DDD7; --seal:#BF3B2B;
+  --shadow:0 12px 28px rgba(0,0,0,.34);
+  --shadow-sm:0 4px 10px rgba(0,0,0,.22);
+  --radius:0px;
+  --rail:rgba(51,54,59,.9);
+  --serif:Consolas, "Courier New", monospace;
+  --sans:Consolas, "Courier New", "PingFang SC", "Microsoft YaHei", monospace;
+  --rw-accent:#BF3B2B; --rw-gold:#8A7440; --rw-line:rgba(191,59,43,.3);
+}
+[data-theme="dark"][data-skin="receipt"] {
+  --paper:#121311; --paper-deep:#0C0D0B;
+  --surface:#1E1F1C; --surface-2:#262723; --field:#22231F;
+  --ink:#E6E3D6; --ink-2:#A8A698; --ink-3:#74726A;
+  --line:#3A3B35; --line-2:#4F5048;
+  --green:#E6E3D6; --green-deep:#FFFFFF; --green-soft:rgba(230,227,214,.07); --green-line:rgba(230,227,214,.3);
+  --amber:#D6A36B; --amber-soft:rgba(214,163,107,.09);
+  --red:#E0685A; --red-soft:rgba(224,104,90,.12); --seal:#E0685A;
+  --rail:rgba(18,19,17,.92);
+  --rw-accent:#E0685A; --rw-gold:#D6A36B; --rw-line:rgba(224,104,90,.3);
+}
+/* 台面：深灰无纹理，衬托纸面 */
+[data-skin="receipt"] body {
+  background-color:var(--paper);
+  background-image:none;
+}
+/* 侧栏与主栏都变成夹在台面上的两张纸条 */
+[data-skin="receipt"] .rail {
+  background:var(--surface);
+  backdrop-filter:none;
+  border-right:1px dashed var(--line-2);
+  box-shadow:var(--shadow);
+}
+[data-skin="receipt"] .rail::before,
+[data-skin="receipt"] .rail::after,
+[data-skin="receipt"] .app-main::before,
+[data-skin="receipt"] .app-main::after {
+  content:""; position:absolute; left:-1px; right:-1px; height:6px;
+  pointer-events:none; z-index:2;
+  background:conic-gradient(from 135deg at 50% 0%, var(--surface) 0 90deg, transparent 90deg 360deg) 0 0/12px 6px repeat-x;
+}
+[data-skin="receipt"] .rail::before { top:-6px; }
+[data-skin="receipt"] .rail::after {
+  bottom:-6px;
+  background:conic-gradient(from -45deg at 50% 100%, var(--surface) 0 90deg, transparent 90deg 360deg) 0 0/12px 6px repeat-x;
+}
+[data-skin="receipt"] .app-main { position:relative; background:var(--surface); box-shadow:var(--shadow); }
+[data-skin="receipt"] .app-main::before { top:-6px; }
+[data-skin="receipt"] .app-main::after {
+  bottom:-6px;
+  background:conic-gradient(from -45deg at 50% 100%, var(--surface) 0 90deg, transparent 90deg 360deg) 0 0/12px 6px repeat-x;
+}
+/* 卡片 → 小票行：无底无影，虚线分隔 */
+[data-skin="receipt"] .card {
+  background:transparent; border:none; border-bottom:1px dashed var(--line-2);
+  box-shadow:none;
+}
+[data-skin="receipt"] .card-flat { background:transparent; border:1px dashed var(--line-2); box-shadow:none; }
+[data-skin="receipt"] .hero { border:1px dashed var(--line-2); box-shadow:none; }
+[data-skin="receipt"] .hero::before { opacity:.12; }
+[data-skin="receipt"] .hero::after { width:0; }
+[data-skin="receipt"] .balance { text-align:center; }
+[data-skin="receipt"] .bal-cap { text-align:center; }
+/* 条形码 + 谢谢惠顾 */
+[data-skin="receipt"] .bal-cap::after {
+  content:""; display:block; height:24px; margin-top:12px;
+  background:repeating-linear-gradient(90deg,
+    var(--ink) 0 2px, transparent 2px 4px,
+    var(--ink) 4px 7px, transparent 7px 8px,
+    var(--ink) 8px 9px, transparent 9px 13px);
+}
+[data-skin="receipt"] .hero-note { flex-wrap:wrap; }
+[data-skin="receipt"] .hero-note::after {
+  content:"* 谢谢惠顾 · 本小票仅存本机 *";
+  flex-basis:100%; display:block; margin-top:6px; text-align:center;
+  font-size:10px; letter-spacing:.18em; color:var(--ink-3);
+}
+/* 结算条与按钮 */
+[data-skin="receipt"] .meter { height:8px; border-radius:0; background:var(--surface-2); }
+[data-skin="receipt"] .meter-fill { border-radius:0; background:var(--ink); }
+[data-skin="receipt"] .meter-fill.warn { background:var(--red); }
+[data-skin="receipt"] .meter-band { opacity:.35; }
+[data-skin="receipt"] .meter-tick { width:2px; background:var(--ink-2); opacity:1; }
+[data-skin="receipt"] .hero-stats { border-top:1px dashed var(--line-2); }
+[data-skin="receipt"] .btn { border-radius:0; }
+[data-skin="receipt"] .btn-primary { background:var(--ink); color:var(--surface); box-shadow:none; }
+[data-skin="receipt"] .btn-primary:hover { background:var(--ink-2); }
+[data-skin="receipt"] .chip { border-radius:0; border-style:dashed; }
+[data-skin="receipt"] .toast { border-radius:0; }
+[data-skin="receipt"] .tabbar {
+  background:var(--surface); border-top:1px dashed var(--line-2);
+  box-shadow:0 -8px 20px rgba(0,0,0,.28);
+}
+
+/* ============================================================
+   03 · stall 深夜面档 —— 大排档霓虹灯箱
+   招牌：竖排「深夜面档」灯箱 + 标题坏灯 flicker + 三色霓虹
+   （粉=能量 黄=招牌 青=健康）
+   ============================================================ */
+
+[data-skin="stall"] {
+  --paper:#1B1626; --paper-deep:#140F1D;
+  --surface:#241E33; --surface-2:#2B2440; --field:#272138;
+  --ink:#F7EFE4; --ink-2:#B3A6C6; --ink-3:#847898;
+  --line:#3A3154; --line-2:#514469;
+  --green:#FF3E78; --green-deep:#FF6B97; --green-soft:rgba(255,62,120,.1); --green-line:rgba(255,62,120,.38);
+  --amber:#FFC94D; --amber-soft:rgba(255,201,77,.09);
+  --red:#FF7A5C; --red-soft:rgba(255,122,92,.1);
+  --seal:#FFC94D;
+  --shadow:0 10px 30px rgba(0,0,0,.42);
+  --shadow-sm:0 4px 12px rgba(0,0,0,.3);
+  --radius:6px;
+  --rail:rgba(27,22,38,.62);
+  --serif:"Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --sans:"Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --rw-accent:#FF3E78; --rw-gold:#FFC94D; --rw-line:rgba(255,62,120,.32);
+}
+[data-theme="dark"][data-skin="stall"] {
+  --paper:#120E19; --paper-deep:#0D0A13;
+  --surface:#1A1524; --surface-2:#221B30; --field:#1E1829;
+  --ink:#F3ECE1; --ink-2:#A99DBC; --ink-3:#7A6F8C;
+  --line:#302844; --line-2:#453A5C;
+  --green:#FF3E78; --green-deep:#FF6B97; --green-soft:rgba(255,62,120,.09); --green-line:rgba(255,62,120,.32);
+  --amber:#FFC94D; --amber-soft:rgba(255,201,77,.08);
+  --red:#FF7A5C; --red-soft:rgba(255,122,92,.09);
+  --seal:#FFC94D;
+  --rail:rgba(18,14,25,.7);
+  --rw-accent:#FF3E78; --rw-gold:#FFC94D; --rw-line:rgba(255,62,120,.3);
+}
+/* 街面：焦外光斑 bokeh + 沥青渐变 */
+[data-skin="stall"] body {
+  background-color:var(--paper);
+  background-image:
+    radial-gradient(420px 420px at 86% 12%, rgba(255,62,120,.13), transparent 68%),
+    radial-gradient(520px 520px at 8% 66%, rgba(255,201,77,.08), transparent 70%),
+    linear-gradient(180deg, #1B1626, #130F1C 58%, #0F0C16);
+}
+[data-theme="dark"][data-skin="stall"] body {
+  background-image:
+    radial-gradient(420px 420px at 86% 12%, rgba(255,62,120,.1), transparent 68%),
+    radial-gradient(520px 520px at 8% 66%, rgba(255,201,77,.06), transparent 70%),
+    linear-gradient(180deg, #120E19, #0D0A13 58%, #0A0810);
+}
+/* 灯箱：品牌与标题 */
+[data-skin="stall"] .brand-name {
+  color:#FF5C8A;
+  text-shadow:0 0 10px rgba(255,62,120,.6), 0 0 26px rgba(255,62,120,.28);
+}
+[data-skin="stall"] .mark {
+  background:rgba(255,62,120,.12); border:1px solid rgba(255,62,120,.55);
+  color:#FF5C8A; border-radius:5px;
+  box-shadow:0 0 14px rgba(255,62,120,.3), inset 0 0 10px rgba(255,62,120,.14);
+}
+[data-skin="stall"] .page-title {
+  color:#FF5C8A;
+  text-shadow:0 0 8px rgba(255,62,120,.7), 0 0 22px rgba(255,62,120,.32), 0 0 44px rgba(255,62,120,.16);
+  animation:stall-flicker 4.6s linear infinite;
+}
+@keyframes stall-flicker {
+  0%, 17%, 19%, 21%, 52%, 56%, 100% { opacity:1; }
+  18%, 20%, 54% { opacity:.35; }
+}
+/* 竖排招牌（挂在侧栏右缘；移动端侧栏隐藏即自动消失） */
+[data-skin="stall"] .rail::after {
+  content:"深夜面档";
+  position:absolute; top:118px; right:12px;
+  writing-mode:vertical-rl; padding:14px 4px; border-radius:4px;
+  font-size:13px; font-weight:700; letter-spacing:.4em; text-align:center;
+  color:#FFD66B; background:rgba(255,201,77,.06); border:1px solid rgba(255,201,77,.42);
+  text-shadow:0 0 10px rgba(255,201,77,.55);
+  box-shadow:0 0 14px rgba(255,201,77,.12);
+  pointer-events:none;
+}
+/* 火焰色预算条 */
+[data-skin="stall"] .meter { background:rgba(247,239,228,.08); }
+[data-skin="stall"] .meter-fill {
+  background:linear-gradient(90deg, #FF3E78, #FF7B9C);
+  box-shadow:0 0 10px rgba(255,62,120,.45);
+}
+[data-skin="stall"] .meter-fill.warn { background:linear-gradient(90deg, #FF7A5C, #FF5F5F); }
+[data-skin="stall"] .meter-tick { background:#FFD66B; opacity:1; }
+/* 霓虹下的一切 */
+[data-skin="stall"] .btn-primary { color:#1D0F17; box-shadow:0 4px 18px rgba(255,62,120,.4); }
+[data-skin="stall"] .hs-item .n.amber { text-shadow:0 0 8px rgba(255,201,77,.4); }
+[data-skin="stall"] .chip:hover { box-shadow:0 0 10px rgba(255,62,120,.18); }
+[data-skin="stall"] .toast { border-radius:6px; }
+[data-skin="stall"] .tabbar { background:rgba(27,22,38,.96); }
+[data-theme="dark"][data-skin="stall"] .tabbar { background:rgba(18,14,25,.96); }
+
+/* ============================================================
+   04 · gauge 吨位车间 —— 工业称重仪表
+   招牌：载重表盘（红区网格 + 预算针）+ 钢印浮雕数字 + 黄黑危险纹
+   ============================================================ */
+
+[data-skin="gauge"] {
+  --paper:#D9DCDF; --paper-deep:#CCD0D3;
+  --surface:#E7E9EB; --surface-2:#EFF0F1; --field:#EAECED;
+  --ink:#202429; --ink-2:#565C62; --ink-3:#7E858B;
+  --line:#BEC3C7; --line-2:#A2A9AF;
+  --green:#9A7400; --green-deep:#7C5C00; --green-soft:rgba(190,140,0,.12); --green-line:#D6BC7A;
+  --amber:#C96A1F; --amber-soft:rgba(201,106,31,.1);
+  --red:#C0392B; --red-soft:rgba(192,57,43,.1);
+  --seal:#202429;
+  --shadow:0 10px 26px rgba(20,24,28,.14);
+  --shadow-sm:0 4px 10px rgba(20,24,28,.08);
+  --radius:6px;
+  --rail:rgba(231,233,235,.62);
+  --serif:Bahnschrift, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --sans:"Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --rw-accent:#9A7400; --rw-gold:#9A7400; --rw-line:rgba(154,116,0,.3);
+}
+[data-theme="dark"][data-skin="gauge"] {
+  --paper:#1F2225; --paper-deep:#171A1C;
+  --surface:#2A2E32; --surface-2:#33383D; --field:#303539;
+  --ink:#E9E5D9; --ink-2:#A6ABB0; --ink-3:#767D83;
+  --line:#3C4348; --line-2:#515960;
+  --green:#F5C518; --green-deep:#FFD84D; --green-soft:rgba(245,197,24,.09); --green-line:rgba(245,197,24,.4);
+  --amber:#E87722; --amber-soft:rgba(232,119,34,.1);
+  --red:#E2594D; --red-soft:rgba(226,89,77,.1);
+  --seal:#F5C518;
+  --rail:rgba(31,34,37,.62);
+  --rw-accent:#F5C518; --rw-gold:#F5C518; --rw-line:rgba(245,197,24,.3);
+}
+/* 拉丝金属面板 */
+[data-skin="gauge"] body {
+  background-color:var(--paper);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #E0E3E5, #D2D5D8);
+}
+[data-theme="dark"][data-skin="gauge"] body {
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.028) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #26292C, #1B1E21);
+}
+/* 钢印数字与面板标题 */
+[data-skin="gauge"] .page-title,
+[data-skin="gauge"] .section-head h2 { letter-spacing:.1em; }
+[data-skin="gauge"] .balance-num {
+  font-weight:600; letter-spacing:.02em;
+  text-shadow:0 1px 0 rgba(255,255,255,.4);
+}
+[data-theme="dark"][data-skin="gauge"] .balance-num {
+  text-shadow:0 1px 0 rgba(0,0,0,.55), 0 -1px 0 rgba(255,255,255,.06);
+}
+/* 载重表盘：分段表 + 右侧 25% 红区网格 + 预算针 */
+[data-skin="gauge"] .meter {
+  height:14px; border-radius:3px;
+  border:1px solid var(--line-2); background:var(--field);
+}
+[data-skin="gauge"] .meter::after {
+  content:""; position:absolute; top:0; bottom:0; right:0; width:25%;
+  background:repeating-linear-gradient(-45deg, rgba(214,69,65,.5) 0 5px, transparent 5px 10px);
+  pointer-events:none;
+}
+[data-skin="gauge"] .meter-fill {
+  border-radius:2px;
+  background:linear-gradient(180deg, #E9B525, #C29200);
+}
+[data-theme="dark"][data-skin="gauge"] .meter-fill { background:linear-gradient(180deg, #F5C518, #D9A90E); }
+[data-skin="gauge"] .meter-fill.warn { background:linear-gradient(90deg, #E87722, #D64541); }
+[data-skin="gauge"] .meter-tick { width:3px; background:var(--ink); opacity:1; }
+[data-skin="gauge"] .meter-legend { letter-spacing:.04em; }
+/* 面板卡：上缘高光 + 机械边框 */
+[data-skin="gauge"] .card {
+  border-color:var(--line-2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 4px 12px rgba(20,24,28,.08);
+}
+[data-theme="dark"][data-skin="gauge"] .card {
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 6px 16px rgba(0,0,0,.3);
+}
+[data-skin="gauge"] .hero::before { opacity:.16; }
+[data-skin="gauge"] .hero::after { background:linear-gradient(var(--green), transparent); }
+[data-skin="gauge"] .btn { border-radius:4px; }
+[data-skin="gauge"] .btn-primary { box-shadow:0 4px 12px rgba(154,116,0,.3); }
+[data-theme="dark"][data-skin="gauge"] .btn-primary { color:#1F2225; box-shadow:0 4px 12px rgba(245,197,24,.22); }
+[data-skin="gauge"] .chip { border-radius:3px; }
+[data-skin="gauge"] .toast { border-radius:4px; }
+[data-skin="gauge"] .ledger-stamp { border-radius:6px; font-family:var(--sans); }
+[data-skin="gauge"] .mark { border-radius:4px; }
+[data-theme="dark"][data-skin="gauge"] .mark { color:#1F2225; }
+
+/* ============================================================
+   动效降级：reduced-motion 下光标常亮、霓虹不再闪
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  [data-skin="crt"] .balance-num::after { animation:none; opacity:.9; }
+  [data-skin="stall"] .page-title { animation:none; opacity:1; }
+}
