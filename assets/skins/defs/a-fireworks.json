@@ -1,0 +1,101 @@
+{
+  "id": "a-fireworks",
+  "name": "夏日祭·烟火",
+  "group": "motion",
+  "tier": "top",
+  "art": "assets/skins/fireworks/key.webp",
+  "fg": "assets/skins/fireworks/fg.png",
+  "tag": "烟火",
+  "palette": {
+    "light": {
+      "paper": "#211712",
+      "paperDeep": "#1F1611",
+      "surface": "#372E2A",
+      "surface2": "#443C38",
+      "field": "#3E3531",
+      "ink": "#FFF0DD",
+      "ink2": "#C6BBAF",
+      "ink3": "#B8B0A9",
+      "line": "#433932",
+      "line2": "#5D5249",
+      "green": "#E0903C",
+      "greenDeep": "#E6A460",
+      "greenSoft": "#3C2818",
+      "greenLine": "#7D5126",
+      "amber": "#C69664",
+      "amberSoft": "#3B2B1F",
+      "red": "#D38D88",
+      "redSoft": "#3D2A25",
+      "seal": "#DE904A"
+    },
+    "dark": {
+      "paper": "#1E140F",
+      "paperDeep": "#160E0B",
+      "surface": "#2A211C",
+      "surface2": "#342C27",
+      "field": "#2F2621",
+      "ink": "#FFF0DD",
+      "ink2": "#B8AB9D",
+      "ink3": "#AAA198",
+      "line": "#41362F",
+      "line2": "#5B4F47",
+      "green": "#E0903C",
+      "greenDeep": "#E0913D",
+      "greenSoft": "#392515",
+      "greenLine": "#7B5025",
+      "amber": "#BD864C",
+      "amberSoft": "#372619",
+      "red": "#CC7B75",
+      "redSoft": "#3A251F",
+      "seal": "#DC8C46"
+    }
+  },
+  "themeMode": "always-dark",
+  "material": {
+    "kernel": "lacquer",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "round",
+    "radius": 18,
+    "cardAlpha": 0.95
+  },
+  "component": {
+    "surface": "lacquer",
+    "edge": "round",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "band"
+  },
+  "motion": {
+    "engine": "sparks",
+    "intensity": 1,
+    "signature": "ember",
+    "signatureCss": "sk-rise 20s ease-in-out infinite"
+  },
+  "structure": {
+    "archetype": "ledger",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.58,
+    "dark": 0.52,
+    "railAlpha": 0.92,
+    "cardAlpha": 0.95,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#3A3E3F",
+    "bright": "#856658",
+    "lum": 0.047
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "canvas2d"
+  ]
+}

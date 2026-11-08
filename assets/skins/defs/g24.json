@@ -1,0 +1,101 @@
+{
+  "id": "g24",
+  "name": "海底车站",
+  "group": "structure",
+  "tier": "top",
+  "art": "assets/skins/g24/key.webp",
+  "fg": "assets/skins/g24/fg.png",
+  "tag": "海底车站",
+  "palette": {
+    "light": {
+      "paper": "#E2DFD5",
+      "paperDeep": "#D7D4CA",
+      "surface": "#EEECE6",
+      "surface2": "#EBE9E1",
+      "field": "#ECEBE4",
+      "ink": "#32312B",
+      "ink2": "#4F4E4A",
+      "ink3": "#575652",
+      "line": "#C7C4BA",
+      "line2": "#B2B0A7",
+      "green": "#346A86",
+      "greenDeep": "#2D5B73",
+      "greenSoft": "#CACFCA",
+      "greenLine": "#8EA7AF",
+      "amber": "#855C31",
+      "amberSoft": "#D3CABA",
+      "red": "#A6453E",
+      "redSoft": "#D8C7BD",
+      "seal": "#486379"
+    },
+    "dark": {
+      "paper": "#0E1518",
+      "paperDeep": "#0A0F11",
+      "surface": "#1C2224",
+      "surface2": "#272C2F",
+      "field": "#212629",
+      "ink": "#D6D5CF",
+      "ink2": "#AAABA9",
+      "ink3": "#9FA1A0",
+      "line": "#2D3234",
+      "line2": "#444949",
+      "green": "#5097BB",
+      "greenDeep": "#6CA8C6",
+      "greenSoft": "#18272F",
+      "greenLine": "#2E5366",
+      "amber": "#BD864C",
+      "amberSoft": "#2A2720",
+      "red": "#CB7972",
+      "redSoft": "#2D2526",
+      "seal": "#6A94B0"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "ceramic",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "perf",
+    "radius": 14,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "ceramic",
+    "edge": "perf",
+    "divider": "line",
+    "number": "sans",
+    "display": "sans",
+    "ornament": "perf"
+  },
+  "motion": {
+    "engine": "bubbles",
+    "intensity": 1,
+    "signature": "drift",
+    "signatureCss": "sk-drift 34s linear infinite"
+  },
+  "structure": {
+    "archetype": "ticket",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#579297",
+    "bright": "#ADD4D0",
+    "lum": 0.249
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "container-query"
+  ]
+}

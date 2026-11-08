@@ -1,0 +1,102 @@
+{
+  "id": "g13",
+  "name": "玻璃温室",
+  "group": "structure",
+  "tier": "top",
+  "art": "assets/skins/g13/key.webp",
+  "fg": "assets/skins/g13/fg.png",
+  "tag": "玻璃温室",
+  "palette": {
+    "light": {
+      "paper": "#17191C",
+      "paperDeep": "#15181B",
+      "surface": "#2E3033",
+      "surface2": "#3C3E41",
+      "field": "#35373A",
+      "ink": "#EEE9E0",
+      "ink2": "#BEBCB8",
+      "ink3": "#B2B1AF",
+      "line": "#38393B",
+      "line2": "#515151",
+      "green": "#7FB88A",
+      "greenDeep": "#89BE93",
+      "greenSoft": "#252F2C",
+      "greenLine": "#496551",
+      "amber": "#C69664",
+      "amberSoft": "#332D28",
+      "red": "#D38D87",
+      "redSoft": "#352B2E",
+      "seal": "#8EB08A"
+    },
+    "dark": {
+      "paper": "#22252A",
+      "paperDeep": "#181B1E",
+      "surface": "#2E3136",
+      "surface2": "#383B3F",
+      "field": "#33353A",
+      "ink": "#EFEBE3",
+      "ink2": "#BFBEBA",
+      "ink3": "#B3B3B2",
+      "line": "#424447",
+      "line2": "#595B5C",
+      "green": "#7FB88A",
+      "greenDeep": "#8BBF95",
+      "greenSoft": "#2F3A37",
+      "greenLine": "#4F6C58",
+      "amber": "#C69766",
+      "amberSoft": "#3C3734",
+      "red": "#D38F89",
+      "redSoft": "#3E3639",
+      "seal": "#8EB18A"
+    }
+  },
+  "themeMode": "always-dark",
+  "material": {
+    "kernel": "glass",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "cut",
+    "radius": 2,
+    "cardAlpha": 0.95
+  },
+  "component": {
+    "surface": "glass",
+    "edge": "cut",
+    "divider": "line",
+    "number": "mono",
+    "display": "sans",
+    "ornament": "window"
+  },
+  "motion": {
+    "engine": "lightray",
+    "intensity": 1,
+    "signature": "frost",
+    "signatureCss": "sk-breathe 22s ease-in-out infinite"
+  },
+  "structure": {
+    "archetype": "panel",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.52,
+    "dark": 0.6,
+    "railAlpha": 0.92,
+    "cardAlpha": 0.95,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#93A58F",
+    "bright": "#E7F1E2",
+    "lum": 0.35
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "container-query",
+    "color-mix"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "id": "g21",
+  "name": "古董钟楼",
+  "group": "structure",
+  "tier": "top",
+  "art": "assets/skins/g21/key.webp",
+  "fg": "assets/skins/g21/fg.png",
+  "tag": "钟楼",
+  "palette": {
+    "light": {
+      "paper": "#DBF1C5",
+      "paperDeep": "#D0E5BB",
+      "surface": "#EAF7DC",
+      "surface2": "#E6F5D7",
+      "field": "#E8F6DA",
+      "ink": "#2A391D",
+      "ink2": "#4B5542",
+      "ink3": "#535D49",
+      "line": "#C0D5AB",
+      "line2": "#ABC098",
+      "green": "#7F6343",
+      "greenDeep": "#6D553A",
+      "greenSoft": "#CEDDB3",
+      "greenLine": "#AFAD87",
+      "amber": "#8A5F33",
+      "amberSoft": "#CEDAAE",
+      "red": "#AD4840",
+      "redSoft": "#D4D6B0",
+      "seal": "#875E43"
+    },
+    "dark": {
+      "paper": "#161310",
+      "paperDeep": "#100E0B",
+      "surface": "#23201D",
+      "surface2": "#2E2B28",
+      "field": "#282522",
+      "ink": "#C8DBB8",
+      "ink2": "#A4AE9A",
+      "ink3": "#9CA392",
+      "line": "#32322A",
+      "line2": "#46493D",
+      "green": "#AC8962",
+      "greenDeep": "#B99B7A",
+      "greenSoft": "#2B241B",
+      "greenLine": "#5E4C37",
+      "amber": "#BD864C",
+      "amberSoft": "#31261A",
+      "red": "#CB7972",
+      "redSoft": "#332420",
+      "seal": "#B18665"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "wood",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 10,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "wood",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "rule"
+  },
+  "motion": {
+    "engine": "dust",
+    "intensity": 1,
+    "signature": "sweep",
+    "signatureCss": "sk-rotate 12s linear infinite"
+  },
+  "structure": {
+    "archetype": "almanac",
+    "density": "relaxed"
+  },
+  "scrim": {
+    "light": 0.54,
+    "dark": 0.57,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#968A7E",
+    "bright": "#D2C8BB",
+    "lum": 0.261
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "container-query"
+  ]
+}

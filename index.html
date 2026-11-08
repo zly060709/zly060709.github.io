@@ -13,12 +13,42 @@ window.__EL_VER = '5.3.0';</script>
 <link rel="stylesheet" href="assets/app.css?v=5.3.0">
 <link rel="stylesheet" href="assets/skins-v43.css?v=5.3.0">
 <link rel="stylesheet" href="assets/skins-v5.css?v=5.3.0">
-<link rel="stylesheet" href="assets/skins-v6-benchmark.css?v=5.3.0">
+<script>/* 已选强化皮肤时：先把皮肤样式表与 data-skin/主题写进首屏，再让第一屏渲染。
+   原因：等 app.js 再挂属性，标题字体会在首屏骨架之后才换，实测造成 0.001~0.002 的 CLS；
+   样式表后到还会改动卡片内距与底栏按钮宽度（0.036）。默认纸面皮肤不触发，首屏零皮肤请求。 */
+(function () {
+  try {
+    var s = JSON.parse(localStorage.getItem('energy-ledger.v2') || '{}');
+    var id = (s.skins && s.skins.active) || 'paper';
+    if (!/^(a-(sakura|galaxy|neon|wuxia|fireworks)|g\d\d)$/.test(id)) return;
+    var th = (s.settings && s.settings.theme) || 'auto';
+    if (th === 'auto') th = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    var r = document.documentElement;
+    r.setAttribute('data-skin', id);
+    r.setAttribute('data-theme', th);
+    r.setAttribute('data-skin-gen', '1');
+    r.classList.add('skinned');
+    var l = document.createElement('link');
+    l.rel = 'stylesheet'; l.id = 'skinsGenCss';
+    l.href = 'assets/skins-gen.css?v=5.3.0';
+    document.head.appendChild(l);
+  } catch (e) {}
+})();</script>
 <style>
   /* 静态首屏骨架：无 JS / 弱网 / 爬虫直接可见（解决白屏）；JS 就绪后 renderToday
      整块接管 #view-today，骨架随之消失。无 JS 时隐藏所有需要脚本才有意义的部件。 */
   #view-today .today-static { display: block; }
   html:not(.js) .noscript-hide { display: none !important; }
+  /* 宽屏的顶栏/底栏必须在 app.css 到达前就藏好：否则先按移动端排版、样式表一到再藏起来，
+     整页上移 6px（实测 CLS 0.001）。这条规则与 app.css 的 @media (min-width:1024px) 一致。 */
+  @media (min-width: 1024px) { .mobile-top { display: none; } }
+  /* 已经选好强化皮肤的老用户不画通用骨架：骨架和真实首屏的高度不可能完全一致，
+     换掉时会推一下（g21 在 390 实测 CLS 0.011）。首访者仍走骨架。 */
+  html.skinned #view-today .today-static { display: none; }
+  /* 桌面端 .page 的 padding-top 是 0，首个子元素的 margin-top 会穿透出去，
+     内容一渲染整页就下移 6px（g21 1440 实测 CLS 0.002）。flow-root 建 BFC
+     拦住外边距穿透，最终布局像素不变，只是从第一帧就位。 */
+  html.skinned .page { display: flow-root; }
 </style>
 </head>
 <body>
@@ -156,6 +186,7 @@ window.__EL_VER = '5.3.0';</script>
 <script src="assets/extras.js?v=5.3.0" defer></script>
 <script src="assets/foodlib.js?v=5.3.0" defer></script>
 <script src="assets/skin-fx.js?v=5.3.0" defer></script>
+<script src="assets/skins-gen.js?v=5.3.0" defer></script>
 <script src="assets/app.js?v=5.3.0" defer></script>
 <!-- 兑换码 / 版本公告 / 维护模块：已移出关键路径，由 app.js 的 ensureScript 按需拉起 -->
 </body>

@@ -1,0 +1,101 @@
+{
+  "id": "g12",
+  "name": "神社初雪",
+  "group": "material",
+  "tier": "top",
+  "art": "assets/skins/g12/key.webp",
+  "fg": "assets/skins/g12/fg.png",
+  "tag": "石阶落雪",
+  "palette": {
+    "light": {
+      "paper": "#D4DEE2",
+      "paperDeep": "#CAD3D7",
+      "surface": "#E5EBEE",
+      "surface2": "#E1E8EB",
+      "field": "#E4EAED",
+      "ink": "#263238",
+      "ink2": "#484E52",
+      "ink3": "#4F565A",
+      "line": "#B9C3C8",
+      "line2": "#A5AFB5",
+      "green": "#AD3E2C",
+      "greenDeep": "#953526",
+      "greenSoft": "#CFC7C9",
+      "greenLine": "#C1918B",
+      "amber": "#835B30",
+      "amberSoft": "#C7C9C6",
+      "red": "#A5443D",
+      "redSoft": "#CDC5C8",
+      "seal": "#AB3F2F"
+    },
+    "dark": {
+      "paper": "#190F0D",
+      "paperDeep": "#120B0A",
+      "surface": "#261C1B",
+      "surface2": "#302726",
+      "field": "#2A2120",
+      "ink": "#C8D4DB",
+      "ink2": "#A5A9AC",
+      "ink3": "#9D9EA0",
+      "line": "#342E2D",
+      "line2": "#484445",
+      "green": "#D66F5F",
+      "greenDeep": "#DD877A",
+      "greenSoft": "#331C19",
+      "greenLine": "#743D35",
+      "amber": "#BD864C",
+      "amberSoft": "#332217",
+      "red": "#CA766F",
+      "redSoft": "#351F1D",
+      "seal": "#D47162"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "stone",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 14,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "stone",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "frost"
+  },
+  "motion": {
+    "engine": "snow",
+    "intensity": 1,
+    "signature": "snowline",
+    "signatureCss": "sk-fall 24s linear infinite"
+  },
+  "structure": {
+    "archetype": "ledger",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.49,
+    "dark": 0.63,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#B1B4BD",
+    "bright": "#EEF8FD",
+    "lum": 0.457
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "canvas2d"
+  ]
+}

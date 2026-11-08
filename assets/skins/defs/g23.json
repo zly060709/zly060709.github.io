@@ -1,0 +1,102 @@
+{
+  "id": "g23",
+  "name": "海边电车",
+  "group": "structure",
+  "tier": "top",
+  "art": "assets/skins/g23/key.webp",
+  "fg": "assets/skins/g23/fg.png",
+  "tag": "海边电车",
+  "palette": {
+    "light": {
+      "paper": "#15171E",
+      "paperDeep": "#14161C",
+      "surface": "#2C2E34",
+      "surface2": "#3A3C42",
+      "field": "#33353B",
+      "ink": "#EFEAF7",
+      "ink2": "#BCB9C2",
+      "ink3": "#B0AFB5",
+      "line": "#373840",
+      "line2": "#505059",
+      "green": "#5FA8C0",
+      "greenDeep": "#7DB8CC",
+      "greenSoft": "#1F2B35",
+      "greenLine": "#395D6C",
+      "amber": "#C59461",
+      "amberSoft": "#312B29",
+      "red": "#D28B85",
+      "redSoft": "#33292E",
+      "seal": "#76A4B7"
+    },
+    "dark": {
+      "paper": "#1B1F2E",
+      "paperDeep": "#131621",
+      "surface": "#282B39",
+      "surface2": "#323543",
+      "field": "#2C303E",
+      "ink": "#EFEAF7",
+      "ink2": "#B8B6C1",
+      "ink3": "#ACACB5",
+      "line": "#3C3E4D",
+      "line2": "#545664",
+      "green": "#5FA8C0",
+      "greenDeep": "#78B5CA",
+      "greenSoft": "#253242",
+      "greenLine": "#3C6174",
+      "amber": "#C3915C",
+      "amberSoft": "#363135",
+      "red": "#D18781",
+      "redSoft": "#38303B",
+      "seal": "#73A2B5"
+    }
+  },
+  "themeMode": "always-dark",
+  "material": {
+    "kernel": "metal",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "cut",
+    "radius": 4,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "metal",
+    "edge": "cut",
+    "divider": "line",
+    "number": "mono",
+    "display": "sans",
+    "ornament": "window"
+  },
+  "motion": {
+    "engine": "lightray",
+    "intensity": 1,
+    "signature": "scan",
+    "signatureCss": "sk-scan 9s linear infinite"
+  },
+  "structure": {
+    "archetype": "cabin",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.54,
+    "dark": 0.57,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#919097",
+    "bright": "#FDDAB7",
+    "lum": 0.281
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "container-query",
+    "color-mix"
+  ]
+}

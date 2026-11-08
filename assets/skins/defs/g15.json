@@ -1,0 +1,101 @@
+{
+  "id": "g15",
+  "name": "海崖灯塔",
+  "group": "motion",
+  "tier": "top",
+  "art": "assets/skins/g15/key.webp",
+  "fg": "assets/skins/g15/fg.png",
+  "tag": "灯塔",
+  "palette": {
+    "light": {
+      "paper": "#E0CFE7",
+      "paperDeep": "#D5C5DC",
+      "surface": "#EDE2F1",
+      "surface2": "#EADEEE",
+      "field": "#EBE1F0",
+      "ink": "#35283F",
+      "ink2": "#504856",
+      "ink3": "#594F5E",
+      "line": "#C6B5CD",
+      "line2": "#B2A2BA",
+      "green": "#416385",
+      "greenDeep": "#385572",
+      "greenSoft": "#CAC0D9",
+      "greenLine": "#949BB8",
+      "amber": "#80582F",
+      "amberSoft": "#D1BCCA",
+      "red": "#A0433B",
+      "redSoft": "#D6B9CC",
+      "seal": "#525D78"
+    },
+    "dark": {
+      "paper": "#101317",
+      "paperDeep": "#0B0E10",
+      "surface": "#1D2024",
+      "surface2": "#272B2E",
+      "field": "#212528",
+      "ink": "#DAD0E2",
+      "ink2": "#ACA8B2",
+      "ink3": "#A19EA6",
+      "line": "#2F3036",
+      "line2": "#46464D",
+      "green": "#6E93B8",
+      "greenDeep": "#83A3C2",
+      "greenSoft": "#1D252D",
+      "greenLine": "#3D5164",
+      "amber": "#BD864C",
+      "amberSoft": "#2B251F",
+      "red": "#CA7771",
+      "redSoft": "#2D2325",
+      "seal": "#7F8FAC"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "stone",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "bevel",
+    "radius": 8,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "stone",
+    "edge": "bevel",
+    "divider": "line",
+    "number": "surfmono",
+    "display": "sans",
+    "ornament": "ticks"
+  },
+  "motion": {
+    "engine": "fog",
+    "intensity": 1,
+    "signature": "sweep",
+    "signatureCss": "sk-rotate 12s linear infinite"
+  },
+  "structure": {
+    "archetype": "ledger",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.54,
+    "dark": 0.57,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#81929C",
+    "bright": "#CCCBC6",
+    "lum": 0.278
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "canvas2d"
+  ]
+}

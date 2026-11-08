@@ -1,0 +1,102 @@
+{
+  "id": "g18",
+  "name": "蒸汽工坊",
+  "group": "structure",
+  "tier": "top",
+  "art": "assets/skins/g18/key.webp",
+  "fg": "assets/skins/g18/fg.png",
+  "tag": "蒸汽工坊",
+  "palette": {
+    "light": {
+      "paper": "#C8E2EF",
+      "paperDeep": "#BED7E3",
+      "surface": "#DEEDF5",
+      "surface2": "#D8EBF4",
+      "field": "#DCECF5",
+      "ink": "#1B343E",
+      "ink2": "#415057",
+      "ink3": "#49585F",
+      "line": "#ADC7D3",
+      "line2": "#99B3BF",
+      "green": "#885932",
+      "greenDeep": "#754C2B",
+      "greenSoft": "#BFCFD4",
+      "greenLine": "#A9A094",
+      "amber": "#845B31",
+      "amberSoft": "#BDCCD0",
+      "red": "#A5453D",
+      "redSoft": "#C2C9D2",
+      "seal": "#8D5534"
+    },
+    "dark": {
+      "paper": "#18130E",
+      "paperDeep": "#110D0A",
+      "surface": "#25201B",
+      "surface2": "#2F2A26",
+      "field": "#292420",
+      "ink": "#C0D9E4",
+      "ink2": "#A0ADB1",
+      "ink3": "#9AA2A4",
+      "line": "#32312F",
+      "line2": "#454848",
+      "green": "#BF814F",
+      "greenDeep": "#C9966B",
+      "greenSoft": "#2F2217",
+      "greenLine": "#68482D",
+      "amber": "#BD864C",
+      "amberSoft": "#322518",
+      "red": "#CB7872",
+      "redSoft": "#35231E",
+      "seal": "#C18055"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "metal",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "bevel",
+    "radius": 8,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "metal",
+    "edge": "bevel",
+    "divider": "line",
+    "number": "mono",
+    "display": "mono",
+    "ornament": "ticks"
+  },
+  "motion": {
+    "engine": "sparks",
+    "intensity": 1,
+    "signature": "steam",
+    "signatureCss": "sk-rise 18s ease-in-out infinite"
+  },
+  "structure": {
+    "archetype": "instrument",
+    "density": "compact"
+  },
+  "scrim": {
+    "light": 0.58,
+    "dark": 0.52,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#564E43",
+    "bright": "#A1876A",
+    "lum": 0.078
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "container-query",
+    "color-mix"
+  ]
+}

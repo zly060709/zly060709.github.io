@@ -148,7 +148,7 @@ img { display: block; max-width: 100%; }
 .mobile-top .brand { display: flex; align-items: center; gap: 9px; }
 .mobile-top .mark { width: 28px; height: 28px; border-radius: 8px; }
 .mobile-top .brand-name { font-size: 15px; }
-.mobile-top .date { font-size: 11.5px; color: var(--ink-3); text-align: right; line-height: 1.35; }
+.mobile-top .date { font-size: 11.5px; color: var(--ink-3); text-align: right; line-height: 1.35; min-width: 74px; }
 .mobile-top .date b { display: block; color: var(--ink-2); font-weight: 500; font-size: 12.5px; }
 
 .page { padding: 2px 20px 10px; }
@@ -739,7 +739,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
 }
 [data-theme="dark"] .tabbar { background: rgba(25, 31, 27, .94); }
-.tabbar button { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size:11px; color: var(--ink-3); padding: 3px 8px; border-radius: 9px; }
+.tabbar button { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size:11px; color: var(--ink-3); padding: 3px 8px; border-radius: 9px; min-width: 44px; }
 .tabbar button svg { width: 19px; height: 19px; }
 .tabbar button.on { color: var(--green); }
 .tabbar button.on svg { stroke-width: 1.9; }

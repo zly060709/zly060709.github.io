@@ -1,0 +1,101 @@
+{
+  "id": "g25",
+  "name": "黄昏操场",
+  "group": "structure",
+  "tier": "top",
+  "art": "assets/skins/g25/key.webp",
+  "fg": "assets/skins/g25/fg.png",
+  "tag": "黄昏操场",
+  "palette": {
+    "light": {
+      "paper": "#ECD4CB",
+      "paperDeep": "#E0CAC1",
+      "surface": "#F4E5E0",
+      "surface2": "#F2E1DA",
+      "field": "#F3E4DD",
+      "ink": "#42281F",
+      "ink2": "#584943",
+      "ink3": "#60514B",
+      "line": "#D2B9B0",
+      "line2": "#BEA69C",
+      "green": "#984D29",
+      "greenDeep": "#824223",
+      "greenSoft": "#E0C1B4",
+      "greenLine": "#C4937D",
+      "amber": "#815930",
+      "amberSoft": "#DBC1B2",
+      "red": "#A3443C",
+      "redSoft": "#E0BDB4",
+      "seal": "#9A4B2C"
+    },
+    "dark": {
+      "paper": "#19110D",
+      "paperDeep": "#120C0A",
+      "surface": "#261E1B",
+      "surface2": "#302926",
+      "field": "#2A2320",
+      "ink": "#E5CFC8",
+      "ink2": "#B5A7A2",
+      "ink3": "#A89D99",
+      "line": "#392F2A",
+      "line2": "#504540",
+      "green": "#D07A50",
+      "greenDeep": "#D78E6A",
+      "greenSoft": "#332017",
+      "greenLine": "#71432D",
+      "amber": "#BD864C",
+      "amberSoft": "#332417",
+      "red": "#CA7771",
+      "redSoft": "#35221D",
+      "seal": "#CF7A56"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "paper",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "bevel",
+    "radius": 6,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "paper",
+    "edge": "bevel",
+    "divider": "line",
+    "number": "mono",
+    "display": "sans",
+    "ornament": "grid"
+  },
+  "motion": {
+    "engine": "dust",
+    "intensity": 1,
+    "signature": "sunrise",
+    "signatureCss": "sk-rise 40s linear infinite"
+  },
+  "structure": {
+    "archetype": "poster",
+    "density": "compact"
+  },
+  "scrim": {
+    "light": 0.54,
+    "dark": 0.57,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#A38C7B",
+    "bright": "#F0C09C",
+    "lum": 0.28
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "container-query"
+  ]
+}

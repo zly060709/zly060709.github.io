@@ -1,0 +1,101 @@
+{
+  "id": "g01",
+  "name": "雪国温泉",
+  "group": "material",
+  "tier": "top",
+  "art": "assets/skins/g01/key.webp",
+  "fg": "assets/skins/g01/fg.png",
+  "tag": "青瓷",
+  "palette": {
+    "light": {
+      "paper": "#D3E4E0",
+      "paperDeep": "#C8D8D4",
+      "surface": "#E5EFEC",
+      "surface2": "#E0ECE9",
+      "field": "#E3EEEB",
+      "ink": "#1D362F",
+      "ink2": "#44524E",
+      "ink3": "#4C5956",
+      "line": "#B7C9C4",
+      "line2": "#A2B5B0",
+      "green": "#2F6A90",
+      "greenDeep": "#295B7C",
+      "greenSoft": "#BCD3D4",
+      "greenLine": "#84A9B9",
+      "amber": "#855C31",
+      "amberSoft": "#C6CEC4",
+      "red": "#A7453E",
+      "redSoft": "#CCCAC6",
+      "seal": "#456381"
+    },
+    "dark": {
+      "paper": "#0E1418",
+      "paperDeep": "#0A0F12",
+      "surface": "#1B2125",
+      "surface2": "#262C30",
+      "field": "#20262A",
+      "ink": "#BCDBD3",
+      "ink2": "#9CAEAB",
+      "ink3": "#93A3A2",
+      "line": "#293335",
+      "line2": "#3D4A4B",
+      "green": "#7FB3D5",
+      "greenDeep": "#7FB3D5",
+      "greenSoft": "#1E2A33",
+      "greenLine": "#446073",
+      "amber": "#BD864C",
+      "amberSoft": "#2A2621",
+      "red": "#CB7872",
+      "redSoft": "#2C2427",
+      "seal": "#8DA8C3"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "ceramic",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 20,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "ceramic",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "frost"
+  },
+  "motion": {
+    "engine": "snow",
+    "intensity": 1,
+    "signature": "steam",
+    "signatureCss": "sk-rise 18s ease-in-out infinite"
+  },
+  "structure": {
+    "archetype": "ledger",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#7086A7",
+    "bright": "#DCD2D7",
+    "lum": 0.234
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "canvas2d"
+  ]
+}

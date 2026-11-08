@@ -1,0 +1,101 @@
+{
+  "id": "a-wuxia",
+  "name": "水墨江湖·武侠",
+  "group": "motion",
+  "tier": "top",
+  "art": "assets/skins/wuxia/key.webp",
+  "fg": "assets/skins/wuxia/fg.png",
+  "tag": "水墨",
+  "palette": {
+    "light": {
+      "paper": "#E9E1CD",
+      "paperDeep": "#DED6C3",
+      "surface": "#F2EDE1",
+      "surface2": "#F0EADC",
+      "field": "#F1ECDF",
+      "ink": "#22201C",
+      "ink2": "#514F4A",
+      "ink3": "#595751",
+      "line": "#CAC3B2",
+      "line2": "#B3AD9E",
+      "green": "#3A3A33",
+      "greenDeep": "#3A3A33",
+      "greenSoft": "#D1CAB8",
+      "greenLine": "#959183",
+      "amber": "#865C31",
+      "amberSoft": "#D9CCB4",
+      "red": "#A8463E",
+      "redSoft": "#DFC8B6",
+      "seal": "#4E3C35"
+    },
+    "dark": {
+      "paper": "#141412",
+      "paperDeep": "#0E0E0D",
+      "surface": "#21211F",
+      "surface2": "#2B2B2A",
+      "field": "#252524",
+      "ink": "#D7D5CF",
+      "ink2": "#ACAAA7",
+      "ink3": "#A1A09D",
+      "line": "#323230",
+      "line2": "#494845",
+      "green": "#909081",
+      "greenDeep": "#A1A194",
+      "greenSoft": "#252522",
+      "greenLine": "#4F4F47",
+      "amber": "#BD864C",
+      "amberSoft": "#2F261C",
+      "red": "#CB7972",
+      "redSoft": "#312422",
+      "seal": "#9B8D7F"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "ink",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 10,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "ink",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "kai",
+    "ornament": "seal"
+  },
+  "motion": {
+    "engine": "ink",
+    "intensity": 1,
+    "signature": "inkbleed",
+    "signatureCss": "sk-breathe 28s ease-in-out infinite"
+  },
+  "structure": {
+    "archetype": "ledger",
+    "density": "relaxed"
+  },
+  "scrim": {
+    "light": 0.47,
+    "dark": 0.66,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#C1C2BA",
+    "bright": "#EDEBE3",
+    "lum": 0.534
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "canvas2d"
+  ]
+}

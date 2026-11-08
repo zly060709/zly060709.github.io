@@ -1,0 +1,101 @@
+{
+  "id": "g07",
+  "name": "极光营地",
+  "group": "material",
+  "tier": "top",
+  "art": "assets/skins/g07/key.webp",
+  "fg": "assets/skins/g07/fg.png",
+  "tag": "月白织物",
+  "palette": {
+    "light": {
+      "paper": "#CEE0E9",
+      "paperDeep": "#C4D5DD",
+      "surface": "#E2ECF2",
+      "surface2": "#DDE9EF",
+      "field": "#E0EBF1",
+      "ink": "#23323C",
+      "ink2": "#454F55",
+      "ink3": "#4D575C",
+      "line": "#B3C5CE",
+      "line2": "#A0B1BA",
+      "green": "#266F5B",
+      "greenDeep": "#205F4E",
+      "greenSoft": "#B6D0D5",
+      "greenLine": "#7DAAA5",
+      "amber": "#835B31",
+      "amberSoft": "#C2CACB",
+      "red": "#A5443D",
+      "redSoft": "#C7C7CD",
+      "seal": "#3D6756"
+    },
+    "dark": {
+      "paper": "#0E1816",
+      "paperDeep": "#0A120F",
+      "surface": "#1B2522",
+      "surface2": "#262F2D",
+      "field": "#202A27",
+      "ink": "#CDDAE2",
+      "ink2": "#A5AFB2",
+      "ink3": "#9BA4A6",
+      "line": "#2C3635",
+      "line2": "#414D4D",
+      "green": "#57C6A8",
+      "greenDeep": "#57C6A8",
+      "greenSoft": "#18312A",
+      "greenLine": "#316C5C",
+      "amber": "#BD864D",
+      "amberSoft": "#2A2A1E",
+      "red": "#CC7B75",
+      "redSoft": "#2C2825",
+      "seal": "#6CB99F"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "cloth",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "round",
+    "radius": 22,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "cloth",
+    "edge": "round",
+    "divider": "line",
+    "number": "mono",
+    "display": "sans",
+    "ornament": "band"
+  },
+  "motion": {
+    "engine": "stars",
+    "intensity": 1,
+    "signature": "aurora",
+    "signatureCss": "sk-drift 30s linear infinite"
+  },
+  "structure": {
+    "archetype": "ledger",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#58899E",
+    "bright": "#B5C6D1",
+    "lum": 0.226
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "canvas2d"
+  ]
+}

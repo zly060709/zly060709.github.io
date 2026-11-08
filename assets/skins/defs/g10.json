@@ -1,0 +1,101 @@
+{
+  "id": "g10",
+  "name": "沙漠星夜",
+  "group": "material",
+  "tier": "top",
+  "art": "assets/skins/g10/key.webp",
+  "fg": "assets/skins/g10/fg.png",
+  "tag": "岩面",
+  "palette": {
+    "light": {
+      "paper": "#DDE8CF",
+      "paperDeep": "#D2DCC4",
+      "surface": "#EBF1E2",
+      "surface2": "#E7EFDD",
+      "field": "#E9F0E0",
+      "ink": "#283724",
+      "ink2": "#4A5246",
+      "ink3": "#535A4D",
+      "line": "#C1CCB4",
+      "line2": "#ADB8A1",
+      "green": "#8C5B20",
+      "greenDeep": "#794F1C",
+      "greenSoft": "#D2D4B6",
+      "greenLine": "#B6A47B",
+      "amber": "#875D32",
+      "amberSoft": "#D0D2B6",
+      "red": "#A9463F",
+      "redSoft": "#D5CEB8",
+      "seal": "#915826"
+    },
+    "dark": {
+      "paper": "#19140D",
+      "paperDeep": "#120E0A",
+      "surface": "#26211B",
+      "surface2": "#302B26",
+      "field": "#2A2520",
+      "ink": "#CBDAC7",
+      "ink2": "#A7ADA1",
+      "ink3": "#9FA298",
+      "line": "#35322A",
+      "line2": "#49493F",
+      "green": "#D9A05B",
+      "greenDeep": "#D9A05B",
+      "greenSoft": "#342718",
+      "greenLine": "#755733",
+      "amber": "#BD864C",
+      "amberSoft": "#332617",
+      "red": "#CB7973",
+      "redSoft": "#35241E",
+      "seal": "#D7995F"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "stone",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "bevel",
+    "radius": 8,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "stone",
+    "edge": "bevel",
+    "divider": "line",
+    "number": "mono",
+    "display": "sans",
+    "ornament": "ticks"
+  },
+  "motion": {
+    "engine": "stars",
+    "intensity": 1,
+    "signature": "starslow",
+    "signatureCss": "sk-breathe 34s ease-in-out infinite"
+  },
+  "structure": {
+    "archetype": "ledger",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.57,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#9683A5",
+    "bright": "#DDABB9",
+    "lum": 0.254
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "canvas2d"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "id": "a-sakura",
+  "name": "樱花祭·吹雪",
+  "group": "material",
+  "tier": "top",
+  "art": "assets/skins/sakura/key.webp",
+  "fg": "assets/skins/sakura/fg.png",
+  "tag": "和纸",
+  "palette": {
+    "light": {
+      "paper": "#F4C3D6",
+      "paperDeep": "#E8B9CB",
+      "surface": "#F8DBE6",
+      "surface2": "#F7D5E2",
+      "field": "#F8D9E5",
+      "ink": "#43202E",
+      "ink2": "#5A424C",
+      "ink3": "#634A54",
+      "line": "#D8AABC",
+      "line2": "#C497A8",
+      "green": "#AE2B4C",
+      "greenDeep": "#952541",
+      "greenSoft": "#EAAEC2",
+      "greenLine": "#D27A93",
+      "amber": "#7D562E",
+      "amberSoft": "#E1B2BB",
+      "red": "#9D413A",
+      "redSoft": "#E6AEBD",
+      "seal": "#AB2F48"
+    },
+    "dark": {
+      "paper": "#190D10",
+      "paperDeep": "#120A0C",
+      "surface": "#261B1D",
+      "surface2": "#302628",
+      "field": "#2A2022",
+      "ink": "#E6CAD5",
+      "ink2": "#B5A3AA",
+      "ink3": "#A89A9F",
+      "line": "#392B2F",
+      "line2": "#504045",
+      "green": "#E8A3B4",
+      "greenDeep": "#E8A3B4",
+      "greenSoft": "#362227",
+      "greenLine": "#7C555F",
+      "amber": "#BD864C",
+      "amberSoft": "#33211A",
+      "red": "#C9756E",
+      "redSoft": "#351E1F",
+      "seal": "#E39BA7"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "paper",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 18,
+    "cardAlpha": 0.97
+  },
+  "component": {
+    "surface": "paper",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "seal"
+  },
+  "motion": {
+    "engine": "petals",
+    "intensity": 1,
+    "signature": "petal",
+    "signatureCss": "sk-drift 26s linear infinite"
+  },
+  "structure": {
+    "archetype": "ledger",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.51,
+    "dark": 0.61,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.97,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#B49FAB",
+    "bright": "#F2D2D1",
+    "lum": 0.373
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "tokens",
+    "canvas2d"
+  ]
+}
