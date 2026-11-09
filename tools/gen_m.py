@@ -135,12 +135,12 @@ M = [
  'radial-gradient(40% 26% at 38% 92%, rgba(230,240,238,.6), transparent 72%),'
  'linear-gradient(180deg, var(--paper-deep) 0%, transparent 84%)',
  '16px 16px 4px 16px', 'wave'),
-('g20', '冰',
+('g20', '霜',
  'linear-gradient(102deg, transparent 12%, rgba(140,220,200,.16) 30%, rgba(170,190,255,.14) 52%, transparent 72%),'
  'repeating-linear-gradient(64deg, transparent 0 40px, rgba(200,230,240,.35) 40px 41px, transparent 41px 90px),'
  'linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%)',
  '14px 4px 4px 14px', 'diamond'),
-('g21', '钟',
+('g21', '摆',
  'radial-gradient(circle 40px at 50% 40%, transparent 56%, rgba(120,130,90,.30) 58% 64%, transparent 68%),'
  'repeating-conic-gradient(from -10deg at 50% 40%, rgba(120,130,90,.22) 0 1.5deg, transparent 1.5deg 30deg),'
  'linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%)',
@@ -181,12 +181,12 @@ M = [
  'radial-gradient(circle 3px at 56% 40%, rgba(240,170,190,.45) 96%, transparent),'
  'radial-gradient(circle 4px at 78% 70%, rgba(240,170,190,.5) 96%, transparent)',
  '4px 18px 4px 18px', 'moon'),
-('a-galaxy', '星',
+('a-galaxy', '河',
  'radial-gradient(circle 2px at 24% 40%, rgba(255,255,255,.85) 96%, transparent),'
  'radial-gradient(circle 2px at 52% 58%, rgba(255,255,255,.7) 96%, transparent),'
  'radial-gradient(circle 2px at 74% 34%, rgba(255,255,255,.8) 96%, transparent)',
  '3px', 'bar'),
-('a-neon', '雨',
+('a-neon', '虹',
  'repeating-linear-gradient(100deg, rgba(140,240,220,.10) 0 1px, transparent 1px 12px),'
  'linear-gradient(90deg, transparent 30%, rgba(230,80,170,.14) 42% 58%, transparent 70%)',
  '4px', 'bar'),
@@ -229,7 +229,7 @@ M = [
  'linear-gradient(180deg, var(--paper-deep) 0%, transparent 48%),'
  'linear-gradient(180deg, transparent 50%, rgba(255,255,255,.18) 50%, transparent 88%)',
  '3px', 'bar'),
-('a-type', '字',
+('a-type', '铅',
  'repeating-linear-gradient(90deg, rgba(110,110,100,.10) 0 1px, transparent 1px 26px),'
  'repeating-linear-gradient(0deg, rgba(110,110,100,.10) 0 1px, transparent 1px 26px),'
  'linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%)',

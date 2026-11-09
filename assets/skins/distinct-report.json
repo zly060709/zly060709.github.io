@@ -164,7 +164,7 @@
   },
   "g20": {
    "stage": "h:0c4143fb",
-   "emblem": "冰",
+   "emblem": "霜",
    "shape": "14px 4px 4px 14px",
    "tab": "diamond",
    "motion": "br2/4.1/-1.5",
@@ -172,7 +172,7 @@
   },
   "g21": {
    "stage": "h:8bc0cfeb",
-   "emblem": "钟",
+   "emblem": "摆",
    "shape": "4px 4px 4px 18px",
    "tab": "bar",
    "motion": "lift/5.0/-3.2",
@@ -220,7 +220,7 @@
   },
   "a-galaxy": {
    "stage": "h:7efbb8e4",
-   "emblem": "星",
+   "emblem": "河",
    "shape": "3px",
    "tab": "bar",
    "motion": "lift/5.6/-0.2",
@@ -228,7 +228,7 @@
   },
   "a-neon": {
    "stage": "h:ee0c8a8a",
-   "emblem": "雨",
+   "emblem": "虹",
    "shape": "4px",
    "tab": "bar",
    "motion": "br/4.1/-1.9",
@@ -300,7 +300,7 @@
   },
   "a-type": {
    "stage": "h:58af63a1",
-   "emblem": "字",
+   "emblem": "铅",
    "shape": "2px",
    "tab": "dot2",
    "motion": "br/5.0/-4.0",
@@ -935,22 +935,6 @@
    ]
   ],
   [
-   "g20",
-   "g75",
-   [
-    "emblem",
-    "tab"
-   ]
-  ],
-  [
-   "g21",
-   "g52",
-   [
-    "emblem",
-    "tab"
-   ]
-  ],
-  [
    "a-galaxy",
    "a-polar",
    [
@@ -983,14 +967,6 @@
    ]
   ],
   [
-   "a-type",
-   "g57",
-   [
-    "emblem",
-    "shape"
-   ]
-  ],
-  [
    "g76",
    "g31",
    [
@@ -1008,9 +984,9 @@
   ]
  ],
  "stats": {
-  "emblemUnique": false,
+  "emblemUnique": true,
   "clonePairs": 0,
-  "nearPairs": 24,
+  "nearPairs": 21,
   "debts": 0
  }
 }
