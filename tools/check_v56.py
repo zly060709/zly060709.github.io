@@ -170,15 +170,20 @@ else:
 h8path = 'tools/v8-harness.html'
 if os.path.exists(h8path):
     h8 = read(h8path)
-    m_all = re.search(r'const ALL=(\[[^\]]+\])', h8)
-    if m_all:
-        all_ids = re.findall(r"'([^']+)'", m_all.group(1))
-        check('v8-harness ALL=101（100 皮肤+paper）', len(all_ids) == 101, str(len(all_ids)))
-        check('v8-harness 无缺漏', set(all_ids) - {'paper'} == set(ids),
-              'diff=%s' % str((set(all_ids) - {'paper'}) ^ set(ids))[:120])
-    else:
-        check('v8-harness ALL=101（100 皮肤+paper）', False, 'ALL 数组未找到')
-    check('v8-harness 增强审计探针', 'minFont' in h8 and 'tap44' in h8 and 'contrast' in h8)
+    fams = {}
+    for name, pat in (('V7', r'\bV7=(\[[^\]]+\])'), ('V6', r'\bV6=(\[[^\]]+\])'),
+                      ('GEN', r'\bGEN=(\[[^\]]+\])'), ('ART5', r'\bART5=(\[[^\]]+\])'),
+                      ('A10', r'\bA10=(\[[^\]]+\])')):
+        mm = re.search(pat, h8)
+        fams[name] = re.findall(r'"([^"]+)"', mm.group(1)) if mm else []
+    union = [i for k in ('V7', 'V6', 'GEN', 'ART5', 'A10') for i in fams[k]]
+    check('v8-harness 全池=101（50+10+25+5+10+paper）',
+          len(union) == 100 and 'V7.concat(V6,GEN,ART5,A10' in h8.replace(' ', ''),
+          '%d+%d+%d+%d+%d' % tuple(len(fams[k]) for k in ('V7', 'V6', 'GEN', 'ART5', 'A10')))
+    check('v8-harness 无缺漏', set(union) == set(ids),
+          'diff=%s' % str(set(union) ^ set(ids))[:120])
+    check('v8-harness 增强审计探针', 'scanMinFont' in h8 and 'scanTap44' in h8 and 'contrastSpot' in h8)
+    check('v8-harness 逻辑探针', 'runLogic' in h8 and 'P4c' in h8 and 'ensureSkinFamily' in appjs)
 else:
     check('v8-harness 存在', False, 'tools/v8-harness.html 缺失（D 交付）')
 
