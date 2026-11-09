@@ -1,0 +1,1016 @@
+{
+ "version": "v5.6",
+ "channels": [
+  "stage",
+  "emblem",
+  "shape",
+  "tab",
+  "motion",
+  "desk"
+ ],
+ "pool": 100,
+ "skins": {
+  "g01": {
+   "stage": "h:70d27f59",
+   "emblem": "汤",
+   "shape": "4px 18px 4px 18px",
+   "tab": "moon",
+   "motion": "br/3.8/0.0",
+   "desk": "176px"
+  },
+  "g02": {
+   "stage": "h:94564767",
+   "emblem": "鲸",
+   "shape": "18px 18px 4px 18px",
+   "tab": "bar",
+   "motion": "br2/4.7/-1.7",
+   "desk": "168px"
+  },
+  "g03": {
+   "stage": "h:83023bc7",
+   "emblem": "云",
+   "shape": "3px",
+   "tab": "bar",
+   "motion": "lift/5.6/-3.4",
+   "desk": "148px"
+  },
+  "g04": {
+   "stage": "h:0fec3d14",
+   "emblem": "昏",
+   "shape": "3px 14px 14px 14px",
+   "tab": "diamond",
+   "motion": "br/4.1/-0.7",
+   "desk": "188px"
+  },
+  "g05": {
+   "stage": "h:4194ae4d",
+   "emblem": "竹",
+   "shape": "2px 16px 2px 16px",
+   "tab": "wave",
+   "motion": "br2/5.0/-2.4",
+   "desk": "160px"
+  },
+  "g06": {
+   "stage": "h:73adbad8",
+   "emblem": "读",
+   "shape": "4px",
+   "tab": "bar",
+   "motion": "lift/5.9/-4.1",
+   "desk": "172px"
+  },
+  "g07": {
+   "stage": "h:21de0d2a",
+   "emblem": "光",
+   "shape": "16px 16px 4px 4px",
+   "tab": "diamond",
+   "motion": "br/4.4/-1.4",
+   "desk": "156px"
+  },
+  "g08": {
+   "stage": "h:293dc81a",
+   "emblem": "庭",
+   "shape": "4px 4px 14px 14px",
+   "tab": "moon",
+   "motion": "br2/5.3/-3.1",
+   "desk": "168px"
+  },
+  "g09": {
+   "stage": "h:fae30102",
+   "emblem": "电",
+   "shape": "4px",
+   "tab": "bar",
+   "motion": "lift/3.8/-0.4",
+   "desk": "152px"
+  },
+  "g10": {
+   "stage": "h:2fc7d7ba",
+   "emblem": "漠",
+   "shape": "2px 18px 18px 18px",
+   "tab": "diamond",
+   "motion": "br/4.7/-2.1",
+   "desk": "180px"
+  },
+  "g11": {
+   "stage": "h:87801a5b",
+   "emblem": "咖",
+   "shape": "14px 4px 14px 14px",
+   "tab": "moon",
+   "motion": "br2/5.6/-3.8",
+   "desk": "164px"
+  },
+  "g12": {
+   "stage": "h:4aa9e4db",
+   "emblem": "初",
+   "shape": "4px 4px 16px 4px",
+   "tab": "bar",
+   "motion": "lift/4.1/-1.1",
+   "desk": "172px"
+  },
+  "g13": {
+   "stage": "h:af6fac9e",
+   "emblem": "玻",
+   "shape": "12px",
+   "tab": "dot2",
+   "motion": "br/5.0/-2.8",
+   "desk": "152px"
+  },
+  "g14": {
+   "stage": "h:8fef5093",
+   "emblem": "晓",
+   "shape": "18px 4px 18px 4px",
+   "tab": "diamond",
+   "motion": "br2/5.9/-0.1",
+   "desk": "184px"
+  },
+  "g15": {
+   "stage": "h:97bb4b4d",
+   "emblem": "灯",
+   "shape": "4px 18px 18px 18px",
+   "tab": "bar",
+   "motion": "lift/4.4/-1.8",
+   "desk": "168px"
+  },
+  "g16": {
+   "stage": "h:2030f406",
+   "emblem": "茶",
+   "shape": "2px 14px 2px 14px",
+   "tab": "wave",
+   "motion": "br/5.3/-3.5",
+   "desk": "156px"
+  },
+  "g17": {
+   "stage": "h:5e722d93",
+   "emblem": "枫",
+   "shape": "4px 16px 4px 16px",
+   "tab": "diamond",
+   "motion": "br2/3.8/-0.8",
+   "desk": "176px"
+  },
+  "g18": {
+   "stage": "h:c6a52119",
+   "emblem": "工",
+   "shape": "3px",
+   "tab": "bar",
+   "motion": "lift/4.7/-2.5",
+   "desk": "148px"
+  },
+  "g19": {
+   "stage": "h:a9d19005",
+   "emblem": "瀑",
+   "shape": "16px 16px 4px 16px",
+   "tab": "wave",
+   "motion": "br/5.6/-4.2",
+   "desk": "172px"
+  },
+  "g20": {
+   "stage": "h:0c4143fb",
+   "emblem": "冰",
+   "shape": "14px 4px 4px 14px",
+   "tab": "diamond",
+   "motion": "br2/4.1/-1.5",
+   "desk": "160px"
+  },
+  "g21": {
+   "stage": "h:8bc0cfeb",
+   "emblem": "钟",
+   "shape": "4px 4px 4px 18px",
+   "tab": "bar",
+   "motion": "lift/5.0/-3.2",
+   "desk": "168px"
+  },
+  "g22": {
+   "stage": "h:3c18b4e3",
+   "emblem": "霓",
+   "shape": "4px",
+   "tab": "dot2",
+   "motion": "br/5.9/-0.5",
+   "desk": "184px"
+  },
+  "g23": {
+   "stage": "h:724d583e",
+   "emblem": "缆",
+   "shape": "14px 4px 4px 14px",
+   "tab": "bar",
+   "motion": "br2/4.4/-2.2",
+   "desk": "156px"
+  },
+  "g24": {
+   "stage": "h:6fd14214",
+   "emblem": "底",
+   "shape": "18px 4px 18px 4px",
+   "tab": "wave",
+   "motion": "lift/5.3/-3.9",
+   "desk": "172px"
+  },
+  "g25": {
+   "stage": "h:42deab56",
+   "emblem": "操",
+   "shape": "3px 3px 16px 16px",
+   "tab": "diamond",
+   "motion": "br/3.8/-1.2",
+   "desk": "160px"
+  },
+  "a-sakura": {
+   "stage": "h:bfd6e741",
+   "emblem": "樱",
+   "shape": "4px 18px 4px 18px",
+   "tab": "moon",
+   "motion": "br2/4.7/-2.9",
+   "desk": "168px"
+  },
+  "a-galaxy": {
+   "stage": "h:7efbb8e4",
+   "emblem": "星",
+   "shape": "3px",
+   "tab": "bar",
+   "motion": "lift/5.6/-0.2",
+   "desk": "156px"
+  },
+  "a-neon": {
+   "stage": "h:ee0c8a8a",
+   "emblem": "雨",
+   "shape": "4px",
+   "tab": "bar",
+   "motion": "br/4.1/-1.9",
+   "desk": "176px"
+  },
+  "a-wuxia": {
+   "stage": "h:f92473ca",
+   "emblem": "侠",
+   "shape": "2px 14px 2px 14px",
+   "tab": "wave",
+   "motion": "br2/5.0/-3.6",
+   "desk": "160px"
+  },
+  "a-fireworks": {
+   "stage": "h:015ed116",
+   "emblem": "祭",
+   "shape": "16px 16px 4px 16px",
+   "tab": "dot2",
+   "motion": "lift/5.9/-0.9",
+   "desk": "184px"
+  },
+  "a-tidal": {
+   "stage": "h:4610d1cd",
+   "emblem": "潮",
+   "shape": "12px",
+   "tab": "wave",
+   "motion": "br/4.4/-2.6",
+   "desk": "156px"
+  },
+  "a-aurora": {
+   "stage": "h:6c642564",
+   "emblem": "极",
+   "shape": "14px 4px 14px 14px",
+   "tab": "diamond",
+   "motion": "br2/5.3/-4.3",
+   "desk": "176px"
+  },
+  "a-radio": {
+   "stage": "h:bda20ce4",
+   "emblem": "台",
+   "shape": "4px",
+   "tab": "bar",
+   "motion": "lift/3.8/-1.6",
+   "desk": "148px"
+  },
+  "a-culture": {
+   "stage": "h:171f15e4",
+   "emblem": "菌",
+   "shape": "18px 18px 4px 4px",
+   "tab": "dot2",
+   "motion": "br/4.7/-3.3",
+   "desk": "168px"
+  },
+  "a-glass": {
+   "stage": "h:b1bbae5f",
+   "emblem": "皿",
+   "shape": "4px 16px 16px 16px",
+   "tab": "moon",
+   "motion": "br2/5.6/-0.6",
+   "desk": "152px"
+  },
+  "a-polar": {
+   "stage": "h:7d602bf8",
+   "emblem": "昼",
+   "shape": "3px",
+   "tab": "bar",
+   "motion": "lift/4.1/-2.3",
+   "desk": "160px"
+  },
+  "a-type": {
+   "stage": "h:58af63a1",
+   "emblem": "字",
+   "shape": "2px",
+   "tab": "dot2",
+   "motion": "br/5.0/-4.0",
+   "desk": "144px"
+  },
+  "a-pulse": {
+   "stage": "h:2c6774d5",
+   "emblem": "搏",
+   "shape": "12px 12px 3px 3px",
+   "tab": "wave",
+   "motion": "br2/5.9/-1.3",
+   "desk": "168px"
+  },
+  "a-chart": {
+   "stage": "h:bd9e5080",
+   "emblem": "图",
+   "shape": "3px 14px 14px 14px",
+   "tab": "diamond",
+   "motion": "lift/4.4/-3.0",
+   "desk": "156px"
+  },
+  "a-chrome": {
+   "stage": "h:8c60e266",
+   "emblem": "液",
+   "shape": "16px 4px 16px 16px",
+   "tab": "bar",
+   "motion": "br/5.3/-0.3",
+   "desk": "160px"
+  },
+  "g36": {
+   "stage": "h:4fb474d8",
+   "emblem": "盆",
+   "shape": "6px 20px 6px 20px",
+   "tab": "moon",
+   "motion": "drift/3.6/0.0",
+   "desk": "yes"
+  },
+  "g37": {
+   "stage": "h:0b452055",
+   "emblem": "串",
+   "shape": "18px 18px 6px 6px",
+   "tab": "ring",
+   "motion": "drift/4.3/-1.3",
+   "desk": "yes"
+  },
+  "g38": {
+   "stage": "h:cd7cfd2d",
+   "emblem": "巢",
+   "shape": "3px",
+   "tab": "bar",
+   "motion": "drift/5.0/-2.6",
+   "desk": "yes"
+  },
+  "g39": {
+   "stage": "h:18f43080",
+   "emblem": "邮",
+   "shape": "2px 10px 2px 10px",
+   "tab": "notch",
+   "motion": "drift/5.7/-3.9",
+   "desk": "yes"
+  },
+  "g40": {
+   "stage": "h:e080733f",
+   "emblem": "苗",
+   "shape": "4px 4px 16px 4px",
+   "tab": "diamond",
+   "motion": "drift/4.2/-1.2",
+   "desk": "yes"
+  },
+  "g41": {
+   "stage": "h:ff7a4f5e",
+   "emblem": "铃",
+   "shape": "16px 4px 16px 4px",
+   "tab": "dot2",
+   "motion": "drift/4.9/-2.5",
+   "desk": "yes"
+  },
+  "g42": {
+   "stage": "h:10e4b4ab",
+   "emblem": "鸽",
+   "shape": "20px 8px 8px 8px",
+   "tab": "wave",
+   "motion": "drift/5.6/-3.8",
+   "desk": "yes"
+  },
+  "g43": {
+   "stage": "h:5a2209bb",
+   "emblem": "龙",
+   "shape": "2px 14px 2px 14px",
+   "tab": "moon",
+   "motion": "drift/4.1/-1.1",
+   "desk": "yes"
+  },
+  "g44": {
+   "stage": "h:0de721bf",
+   "emblem": "钨",
+   "shape": "22px 22px 6px 6px",
+   "tab": "ring",
+   "motion": "drift/4.8/-2.4",
+   "desk": "yes"
+  },
+  "g45": {
+   "stage": "h:951c3582",
+   "emblem": "石",
+   "shape": "10px 26px 10px 26px",
+   "tab": "bar",
+   "motion": "drift/5.5/-3.7",
+   "desk": "yes"
+  },
+  "g46": {
+   "stage": "h:2dc3230b",
+   "emblem": "汞",
+   "shape": "12px 12px 26px 26px",
+   "tab": "notch",
+   "motion": "pulse/4.0/-1.0",
+   "desk": "yes"
+  },
+  "g47": {
+   "stage": "h:04422410",
+   "emblem": "铜",
+   "shape": "4px 16px 16px 16px",
+   "tab": "diamond",
+   "motion": "pulse/4.7/-2.3",
+   "desk": "yes"
+  },
+  "g48": {
+   "stage": "h:8653007f",
+   "emblem": "戥",
+   "shape": "3px 14px 14px 3px",
+   "tab": "dot2",
+   "motion": "pulse/5.4/-3.6",
+   "desk": "yes"
+  },
+  "g49": {
+   "stage": "h:66cb516f",
+   "emblem": "格",
+   "shape": "2px 2px 10px 10px",
+   "tab": "wave",
+   "motion": "pulse/3.9/-0.9",
+   "desk": "yes"
+  },
+  "g50": {
+   "stage": "h:cf441f68",
+   "emblem": "风",
+   "shape": "18px 4px 18px 4px",
+   "tab": "moon",
+   "motion": "pulse/4.6/-2.2",
+   "desk": "yes"
+  },
+  "g51": {
+   "stage": "h:f5213959",
+   "emblem": "频",
+   "shape": "8px 8px 20px 20px",
+   "tab": "ring",
+   "motion": "pulse/5.3/-3.5",
+   "desk": "yes"
+  },
+  "g52": {
+   "stage": "h:23fa6032",
+   "emblem": "钟",
+   "shape": "30px 30px 4px 4px",
+   "tab": "bar",
+   "motion": "pulse/3.8/-0.8",
+   "desk": "yes"
+  },
+  "g53": {
+   "stage": "h:578abf1b",
+   "emblem": "沙",
+   "shape": "4px 22px 22px 4px",
+   "tab": "notch",
+   "motion": "pulse/4.5/-2.1",
+   "desk": "yes"
+  },
+  "g54": {
+   "stage": "h:f2012987",
+   "emblem": "雨",
+   "shape": "2px 12px 2px 12px",
+   "tab": "diamond",
+   "motion": "pulse/5.2/-3.4",
+   "desk": "yes"
+  },
+  "g55": {
+   "stage": "h:09f94f02",
+   "emblem": "星",
+   "shape": "24px 4px 24px 4px",
+   "tab": "dot2",
+   "motion": "pulse/3.7/-0.7",
+   "desk": "yes"
+  },
+  "g56": {
+   "stage": "h:a1cd5c95",
+   "emblem": "牌",
+   "shape": "3px 3px 14px 14px",
+   "tab": "wave",
+   "motion": "sheen/4.4/-2.0",
+   "desk": "yes"
+  },
+  "g57": {
+   "stage": "h:9215874a",
+   "emblem": "字",
+   "shape": "2px",
+   "tab": "moon",
+   "motion": "sheen/5.1/-3.3",
+   "desk": "yes"
+  },
+  "g58": {
+   "stage": "h:090ae7d1",
+   "emblem": "筹",
+   "shape": "8px 2px 8px 2px",
+   "tab": "ring",
+   "motion": "sheen/3.6/-0.6",
+   "desk": "yes"
+  },
+  "g59": {
+   "stage": "h:df661e11",
+   "emblem": "闸",
+   "shape": "4px 18px 18px 4px",
+   "tab": "bar",
+   "motion": "sheen/4.3/-1.9",
+   "desk": "yes"
+  },
+  "g60": {
+   "stage": "h:9ba21d44",
+   "emblem": "梯",
+   "shape": "3px 3px 3px 18px",
+   "tab": "notch",
+   "motion": "sheen/5.0/-3.2",
+   "desk": "yes"
+  },
+  "g61": {
+   "stage": "h:8ecc28e0",
+   "emblem": "漆",
+   "shape": "26px 6px 26px 6px",
+   "tab": "diamond",
+   "motion": "sheen/5.7/-0.5",
+   "desk": "yes"
+  },
+  "g62": {
+   "stage": "h:ab8dff49",
+   "emblem": "板",
+   "shape": "4px 4px 14px 4px",
+   "tab": "dot2",
+   "motion": "sheen/4.2/-1.8",
+   "desk": "yes"
+  },
+  "g63": {
+   "stage": "h:a1623c6b",
+   "emblem": "影",
+   "shape": "6px 22px 6px 22px",
+   "tab": "wave",
+   "motion": "sheen/4.9/-3.1",
+   "desk": "yes"
+  },
+  "g64": {
+   "stage": "h:c068d5ea",
+   "emblem": "尺",
+   "shape": "2px 2px 16px 16px",
+   "tab": "moon",
+   "motion": "sheen/5.6/-0.4",
+   "desk": "yes"
+  },
+  "g65": {
+   "stage": "h:effae714",
+   "emblem": "砝",
+   "shape": "4px 14px 14px 14px",
+   "tab": "ring",
+   "motion": "sheen/4.1/-1.7",
+   "desk": "yes"
+  },
+  "g66": {
+   "stage": "h:0fefb14e",
+   "emblem": "信",
+   "shape": "3px 12px 12px 3px",
+   "tab": "bar",
+   "motion": "sway/4.8/-3.0",
+   "desk": "yes"
+  },
+  "g67": {
+   "stage": "h:288ce0e4",
+   "emblem": "笼",
+   "shape": "20px 20px 8px 8px",
+   "tab": "notch",
+   "motion": "sway/5.5/-0.3",
+   "desk": "yes"
+  },
+  "g68": {
+   "stage": "h:8114dc02",
+   "emblem": "签",
+   "shape": "6px 6px 26px 26px",
+   "tab": "diamond",
+   "motion": "sway/4.0/-1.6",
+   "desk": "yes"
+  },
+  "g69": {
+   "stage": "h:af061103",
+   "emblem": "幕",
+   "shape": "2px 18px 2px 18px",
+   "tab": "dot2",
+   "motion": "sway/4.7/-2.9",
+   "desk": "yes"
+  },
+  "g70": {
+   "stage": "h:2888d509",
+   "emblem": "炊",
+   "shape": "4px 4px 34px 34px",
+   "tab": "wave",
+   "motion": "sway/5.4/-0.2",
+   "desk": "yes"
+  },
+  "g71": {
+   "stage": "h:b5092bed",
+   "emblem": "罐",
+   "shape": "10px 10px 30px 30px",
+   "tab": "moon",
+   "motion": "sway/3.9/-1.5",
+   "desk": "yes"
+  },
+  "g72": {
+   "stage": "h:2feaa966",
+   "emblem": "书",
+   "shape": "2px 2px 2px 16px",
+   "tab": "ring",
+   "motion": "sway/4.6/-2.8",
+   "desk": "yes"
+  },
+  "g73": {
+   "stage": "h:716525a7",
+   "emblem": "井",
+   "shape": "6px 24px 6px 24px",
+   "tab": "bar",
+   "motion": "sway/5.3/-0.1",
+   "desk": "yes"
+  },
+  "g74": {
+   "stage": "h:3b32a3ba",
+   "emblem": "果",
+   "shape": "14px 14px 30px 30px",
+   "tab": "notch",
+   "motion": "sway/3.8/-1.4",
+   "desk": "yes"
+  },
+  "g75": {
+   "stage": "h:8e4a4438",
+   "emblem": "冰",
+   "shape": "4px 4px 20px 20px",
+   "tab": "diamond",
+   "motion": "sway/4.5/-2.7",
+   "desk": "yes"
+  },
+  "g76": {
+   "stage": "h:6b4bf76b",
+   "emblem": "唱",
+   "shape": "6px 6px 24px 24px",
+   "tab": "dot2",
+   "motion": "flare/5.2/0.0",
+   "desk": "yes"
+  },
+  "g77": {
+   "stage": "h:aca397ad",
+   "emblem": "车",
+   "shape": "18px 2px 18px 2px",
+   "tab": "wave",
+   "motion": "flare/3.7/-1.3",
+   "desk": "yes"
+  },
+  "g78": {
+   "stage": "h:7a61a7af",
+   "emblem": "鸢",
+   "shape": "4px 24px 4px 24px",
+   "tab": "moon",
+   "motion": "flare/4.4/-2.6",
+   "desk": "yes"
+  },
+  "g79": {
+   "stage": "h:e8627667",
+   "emblem": "马",
+   "shape": "30px 30px 8px 8px",
+   "tab": "ring",
+   "motion": "flare/5.1/-3.9",
+   "desk": "yes"
+  },
+  "g80": {
+   "stage": "h:6110d0b4",
+   "emblem": "织",
+   "shape": "2px 16px 16px 2px",
+   "tab": "bar",
+   "motion": "flare/3.6/-1.2",
+   "desk": "yes"
+  },
+  "g81": {
+   "stage": "h:e82e57f0",
+   "emblem": "螺",
+   "shape": "40% 40% 8px 8px",
+   "tab": "notch",
+   "motion": "flare/4.3/-2.5",
+   "desk": "yes"
+  },
+  "g82": {
+   "stage": "h:b3a43daa",
+   "emblem": "音",
+   "shape": "16px 16px 4px 16px",
+   "tab": "diamond",
+   "motion": "flare/5.0/-3.8",
+   "desk": "yes"
+  },
+  "g83": {
+   "stage": "h:30dd7920",
+   "emblem": "程",
+   "shape": "3px 3px 20px 20px",
+   "tab": "dot2",
+   "motion": "flare/5.7/-1.1",
+   "desk": "yes"
+  },
+  "g84": {
+   "stage": "h:77c67830",
+   "emblem": "扇",
+   "shape": "4px 4px 4px 26px",
+   "tab": "wave",
+   "motion": "flare/4.2/-2.4",
+   "desk": "yes"
+  },
+  "g85": {
+   "stage": "h:d4bb5e76",
+   "emblem": "晷",
+   "shape": "2px 2px 40% 40%",
+   "tab": "moon",
+   "motion": "flare/4.9/-3.7",
+   "desk": "yes"
+  },
+  "g26": {
+   "stage": "h:0da06976",
+   "emblem": "撕",
+   "shape": "4px 14px 4px 14px",
+   "tab": "moon",
+   "motion": "sway/4.0/0.0",
+   "desk": "180px"
+  },
+  "g27": {
+   "stage": "h:0a994fc7",
+   "emblem": "药",
+   "shape": "3px 3px 12px 3px",
+   "tab": "ring",
+   "motion": "drift/5.1/-1.9",
+   "desk": "168px"
+  },
+  "g28": {
+   "stage": "h:876baabc",
+   "emblem": "带",
+   "shape": "2px 16px 16px 2px",
+   "tab": "bar",
+   "motion": "pulse/4.2/-0.2",
+   "desk": "152px"
+  },
+  "g29": {
+   "stage": "h:3f66b798",
+   "emblem": "码",
+   "shape": "2px 2px 2px 14px",
+   "tab": "notch",
+   "motion": "sheen/5.3/-2.1",
+   "desk": "144px"
+  },
+  "g30": {
+   "stage": "h:7ae2256a",
+   "emblem": "折",
+   "shape": "2px 20px 2px 20px",
+   "tab": "diamond",
+   "motion": "flare/4.4/-0.4",
+   "desk": "160px"
+  },
+  "g31": {
+   "stage": "h:242f164a",
+   "emblem": "瓶",
+   "shape": "6px 6px 24px 24px",
+   "tab": "dot2",
+   "motion": "sway/5.5/-2.3",
+   "desk": "172px"
+  },
+  "g32": {
+   "stage": "h:3d4f81dc",
+   "emblem": "印",
+   "shape": "3px",
+   "tab": "wave",
+   "motion": "drift/4.6/-0.6",
+   "desk": "148px"
+  },
+  "g33": {
+   "stage": "h:2d9b7263",
+   "emblem": "线",
+   "shape": "4px 4px 4px 16px",
+   "tab": "moon",
+   "motion": "pulse/5.7/-2.5",
+   "desk": "168px"
+  },
+  "g34": {
+   "stage": "h:72b6ec9d",
+   "emblem": "钱",
+   "shape": "10px 10px 30px 30px",
+   "tab": "ring",
+   "motion": "sheen/4.8/-0.8",
+   "desk": "184px"
+  },
+  "g35": {
+   "stage": "h:f819dfba",
+   "emblem": "贴",
+   "shape": "2px 2px 18px 18px",
+   "tab": "bar",
+   "motion": "flare/5.9/-2.7",
+   "desk": "176px"
+  }
+ },
+ "debts": {},
+ "clones": [],
+ "nearDupes": [
+  [
+   "g01",
+   "a-sakura",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g03",
+   "g18",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g03",
+   "a-galaxy",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g03",
+   "a-polar",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g03",
+   "g38",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g04",
+   "a-chart",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g06",
+   "g09",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g06",
+   "a-neon",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g06",
+   "a-radio",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g09",
+   "a-neon",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g09",
+   "a-radio",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g16",
+   "a-wuxia",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g18",
+   "a-galaxy",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g18",
+   "a-polar",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g18",
+   "g38",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g20",
+   "g75",
+   [
+    "emblem",
+    "tab"
+   ]
+  ],
+  [
+   "g21",
+   "g52",
+   [
+    "emblem",
+    "tab"
+   ]
+  ],
+  [
+   "a-galaxy",
+   "a-polar",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "a-galaxy",
+   "g38",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "a-neon",
+   "a-radio",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "a-polar",
+   "g38",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "a-type",
+   "g57",
+   [
+    "emblem",
+    "shape"
+   ]
+  ],
+  [
+   "g76",
+   "g31",
+   [
+    "shape",
+    "tab"
+   ]
+  ],
+  [
+   "g80",
+   "g28",
+   [
+    "shape",
+    "tab"
+   ]
+  ]
+ ],
+ "stats": {
+  "emblemUnique": false,
+  "clonePairs": 0,
+  "nearPairs": 24,
+  "debts": 0
+ }
+}

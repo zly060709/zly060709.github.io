@@ -151,13 +151,20 @@ import re as _re
 bad_hex = [s['id'] for s in SPEC for k, v in s['anchors'].items()
            if not _re.fullmatch(r'#[0-9a-fA-F]{6}', str(v))]
 check('SPEC anchors hex6', not bad_hex, str(bad_hex[:5]))
-EMB = getattr(sys.modules['skin_spec_v7'], 'IDENT', None)
+import ident_tables as _idt
+EMB = getattr(_idt, 'IDENT7', None)
 if EMB and isinstance(EMB, dict):
     emb_chars = [v[0] for v in EMB.values() if isinstance(v, (tuple, list)) and v]
     check('v7 徽记 50 套齐备且唯一', len(EMB) == 50 and len(set(emb_chars)) == 50,
           '%d/%d' % (len(EMB), len(set(emb_chars))))
+    # 全池 100 套徽记唯一（含 gen_m.M 40 + IDENT6 10）
+    from gen_m import M as _M
+    all_emb = [r[1] for r in _M] + emb_chars + [v[0] for v in getattr(_idt, 'IDENT6').values()]
+    check('全池 100 徽记唯一', len(all_emb) == 100 and len(set(all_emb)) == 100,
+          '%d/%d dup=%s' % (len(set(all_emb)), len(all_emb),
+                            [c for c, n in __import__('collections').Counter(all_emb).items() if n > 1][:5]))
 else:
-    check('v7 徽记 50 套齐备且唯一', False, 'skin_spec_v7.IDENT 缺失（A 交付）')
+    check('v7 徽记 50 套齐备且唯一', False, 'ident_tables.IDENT7 缺失（A 交付）')
 
 # ---------- 6) v8-harness 全池覆盖 ----------
 h8path = 'tools/v8-harness.html'
