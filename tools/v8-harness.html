@@ -180,11 +180,19 @@ async function batchList(ids,theme){
       familyOk=!v7attr&&!v6attr;
       stageOk=!!(a&&a.stage&&!a.stage.mounted);
     }
-    /* v6.0 新增断言：全池 175 身份都必须有页头徽记 + tabbar 指示形状（≥4px） */
-    const badge=getBadge(W2);
-    const badgeOk=badge!=='(none)'&&badge!=='(no-title)'&&badge.length>=3;
-    const tabW=getTabIndicator(W2);
-    const tabOk=tabW>=4;
+    /* v6.0 新增断言：全池 175 身份都必须有页头徽记 + tabbar 指示形状（≥4px）
+       v6.0 修复（验证3）：app 视图 innerHTML 换装窗口期会瞬时查不到 page-title/tabbar.on
+       ——单次探测会把时序 flake 误判为缺陷，这里给一次 420ms 宽限重测。 */
+    let badge=getBadge(W2);
+    let tabW=getTabIndicator(W2);
+    let badgeOk=badge!=='(none)'&&badge!=='(no-title)'&&badge.length>=3;
+    let tabOk=tabW>=4;
+    if(!badgeOk||!tabOk){
+      await new Promise(z=>setTimeout(z,420));
+      badge=getBadge(W2); tabW=getTabIndicator(W2);
+      badgeOk=badge!=='(none)'&&badge!=='(no-title)'&&badge.length>=3;
+      tabOk=tabW>=4;
+    }
     const errOk=errs.length===0;
     const rec={id,theme,skin:X.getAttribute('data-skin'),eng:a&&a.eng,badge,tabW:Math.round(tabW),
                stageH:a&&a.stage.h,dom:a&&a.stage.children,overflow:overflowX,errs:errs.slice(0,2)};

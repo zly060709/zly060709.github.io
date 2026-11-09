@@ -23,7 +23,7 @@ html[data-skin] .card { transition: border-radius .2s ease; }
 html[data-skin="g01"] .app-main::before {
   background: radial-gradient(16% 42% at 28% 86%, rgba(255,255,255,.5), transparent 72%),radial-gradient(14% 36% at 48% 92%, rgba(255,255,255,.42), transparent 72%),radial-gradient(18% 44% at 68% 84%, rgba(255,255,255,.46), transparent 72%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 78%),linear-gradient(180deg, transparent 80%, rgba(255,255,255,.38) 80%, transparent 100%);
 }
-html[data-skin="g01"] .page-head .page-title::after { content: "汤"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g01"][data-skin][data-theme] .page-head .page-title::after { content: "汤"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g01"] .card { border-radius: 4px 18px 4px 18px; }
 html[data-skin="g01"] .tabbar button.on::before { width:8px;height:8px;border-radius:8px 8px 0 0;transform:translateX(-50%); opacity: .95; }
 
@@ -31,7 +31,7 @@ html[data-skin="g01"] .tabbar button.on::before { width:8px;height:8px;border-ra
 html[data-skin="g02"] .app-main::before {
   background: repeating-linear-gradient(115deg, rgba(255,255,255,.07) 0 8px, transparent 8px 30px),radial-gradient(circle 4px at 22% 78%, rgba(255,255,255,.4) 96%, transparent),radial-gradient(circle 3px at 30% 64%, rgba(255,255,255,.3) 96%, transparent),radial-gradient(circle 5px at 38% 82%, rgba(255,255,255,.28) 96%, transparent),radial-gradient(circle 3px at 70% 58%, rgba(255,255,255,.3) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 46%),linear-gradient(180deg, transparent 55%, rgba(20,50,48,.22) 100%);
 }
-html[data-skin="g02"] .page-head .page-title::after { content: "鲸"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g02"][data-skin][data-theme] .page-head .page-title::after { content: "鲸"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g02"] .card { border-radius: 18px 18px 4px 18px; }
 html[data-skin="g02"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -39,7 +39,7 @@ html[data-skin="g02"] .tabbar button.on::before { width:3px;height:12px;border-r
 html[data-skin="g03"] .app-main::before {
   background: linear-gradient(180deg, transparent 18%, rgba(255,255,255,.8) 26%, rgba(255,255,255,.4) 34%, transparent 46%),repeating-linear-gradient(90deg, rgba(60,70,80,.10) 0 16px, transparent 16px 28px),linear-gradient(180deg, var(--paper-deep) 0%, transparent 80%),linear-gradient(180deg, transparent 82%, rgba(90,100,110,.16) 84%, transparent 96%);
 }
-html[data-skin="g03"] .page-head .page-title::after { content: "云"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g03"][data-skin][data-theme] .page-head .page-title::after { content: "云"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g03"] .card { border-radius: 3px; }
 html[data-skin="g03"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -47,7 +47,7 @@ html[data-skin="g03"] .tabbar button.on::before { width:3px;height:12px;border-r
 html[data-skin="g04"] .app-main::before {
   background: radial-gradient(circle 42px at 78% 34%, rgba(255,176,88,.42), rgba(255,176,88,.10) 62%, transparent 70%),repeating-linear-gradient(0deg, rgba(120,80,40,.05) 0 2px, transparent 2px 7px),linear-gradient(180deg, var(--paper-deep) 0%, transparent 86%),linear-gradient(180deg, transparent 72%, rgba(140,80,30,.16) 100%);
 }
-html[data-skin="g04"] .page-head .page-title::after { content: "昏"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g04"][data-skin][data-theme] .page-head .page-title::after { content: "昏"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g04"] .card { border-radius: 3px 14px 14px 14px; }
 html[data-skin="g04"] .tabbar button.on::before { width:6px;height:6px;border-radius:1px;transform:translateX(-50%) rotate(45deg); opacity: .95; }
 
@@ -55,7 +55,7 @@ html[data-skin="g04"] .tabbar button.on::before { width:6px;height:6px;border-ra
 html[data-skin="g05"] .app-main::before {
   background: repeating-linear-gradient(90deg, transparent 0 34px, rgba(96,120,74,.18) 34px 38px, transparent 38px 76px),repeating-linear-gradient(78deg, rgba(255,255,255,.12) 0 1px, transparent 1px 15px),linear-gradient(180deg, var(--paper-deep) 0%, transparent 84%);
 }
-html[data-skin="g05"] .page-head .page-title::after { content: "竹"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g05"][data-skin][data-theme] .page-head .page-title::after { content: "竹"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g05"] .card { border-radius: 2px 16px 2px 16px; }
 html[data-skin="g05"] .tabbar button.on::before { width:14px;height:4px;border-radius:3px;background:linear-gradient(90deg,var(--green) 0 4px,transparent 4px 10px,var(--green) 10px); opacity: .95; }
 
@@ -63,7 +63,7 @@ html[data-skin="g05"] .tabbar button.on::before { width:14px;height:4px;border-r
 html[data-skin="g06"] .app-main::before {
   background: radial-gradient(52% 62% at 50% -12%, rgba(255,206,138,.30), transparent 72%),repeating-linear-gradient(0deg, transparent 0 26px, rgba(64,44,34,.15) 26px 28px),linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%);
 }
-html[data-skin="g06"] .page-head .page-title::after { content: "读"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g06"][data-skin][data-theme] .page-head .page-title::after { content: "读"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g06"] .card { border-radius: 4px; }
 html[data-skin="g06"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -71,7 +71,7 @@ html[data-skin="g06"] .tabbar button.on::before { width:3px;height:12px;border-r
 html[data-skin="g07"] .app-main::before {
   background: linear-gradient(100deg, transparent 8%, rgba(120,220,170,.20) 28%, rgba(140,190,255,.16) 48%, rgba(190,150,255,.12) 64%, transparent 82%),radial-gradient(circle 2px at 18% 30%, rgba(255,255,255,.8) 96%, transparent),radial-gradient(circle 2px at 64% 22%, rgba(255,255,255,.7) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="g07"] .page-head .page-title::after { content: "光"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g07"][data-skin][data-theme] .page-head .page-title::after { content: "光"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g07"] .card { border-radius: 16px 16px 4px 4px; }
 html[data-skin="g07"] .tabbar button.on::before { width:6px;height:6px;border-radius:1px;transform:translateX(-50%) rotate(45deg); opacity: .95; }
 
@@ -79,7 +79,7 @@ html[data-skin="g07"] .tabbar button.on::before { width:6px;height:6px;border-ra
 html[data-skin="g08"] .app-main::before {
   background: linear-gradient(180deg, transparent 24%, rgba(166,58,43,.30) 24% 29%, transparent 29%),radial-gradient(circle 6px at 24% 44%, rgba(214,120,60,.4) 96%, transparent),radial-gradient(circle 6px at 76% 44%, rgba(214,120,60,.4) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 86%);
 }
-html[data-skin="g08"] .page-head .page-title::after { content: "庭"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g08"][data-skin][data-theme] .page-head .page-title::after { content: "庭"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g08"] .card { border-radius: 4px 4px 14px 14px; }
 html[data-skin="g08"] .tabbar button.on::before { width:8px;height:8px;border-radius:8px 8px 0 0;transform:translateX(-50%); opacity: .95; }
 
@@ -87,7 +87,7 @@ html[data-skin="g08"] .tabbar button.on::before { width:8px;height:8px;border-ra
 html[data-skin="g09"] .app-main::before {
   background: repeating-linear-gradient(0deg, rgba(80,110,190,.07) 0 1px, transparent 1px 22px),repeating-linear-gradient(90deg, rgba(80,110,190,.07) 0 1px, transparent 1px 22px),radial-gradient(circle 3px at 30% 40%, rgba(120,220,255,.5) 96%, transparent),radial-gradient(circle 3px at 62% 28%, rgba(120,220,255,.45) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 84%);
 }
-html[data-skin="g09"] .page-head .page-title::after { content: "森"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g09"][data-skin][data-theme] .page-head .page-title::after { content: "森"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g09"] .card { border-radius: 4px; }
 html[data-skin="g09"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -95,7 +95,7 @@ html[data-skin="g09"] .tabbar button.on::before { width:3px;height:12px;border-r
 html[data-skin="g10"] .app-main::before {
   background: radial-gradient(130% 44% at 50% 108%, rgba(150,110,60,.30), transparent 70%),radial-gradient(circle 2px at 26% 26%, rgba(255,255,240,.9) 96%, transparent),radial-gradient(circle 2px at 44% 18%, rgba(255,255,240,.8) 96%, transparent),radial-gradient(circle 2px at 82% 30%, rgba(255,255,240,.85) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%);
 }
-html[data-skin="g10"] .page-head .page-title::after { content: "漠"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g10"][data-skin][data-theme] .page-head .page-title::after { content: "漠"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g10"] .card { border-radius: 2px 18px 18px 18px; }
 html[data-skin="g10"] .tabbar button.on::before { width:6px;height:6px;border-radius:1px;transform:translateX(-50%) rotate(45deg); opacity: .95; }
 
@@ -103,7 +103,7 @@ html[data-skin="g10"] .tabbar button.on::before { width:6px;height:6px;border-ra
 html[data-skin="g11"] .app-main::before {
   background: repeating-linear-gradient(96deg, rgba(120,130,150,.16) 0 1px, transparent 1px 11px),radial-gradient(46% 52% at 82% 18%, rgba(220,160,90,.28), transparent 72%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="g11"] .page-head .page-title::after { content: "咖"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g11"][data-skin][data-theme] .page-head .page-title::after { content: "咖"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g11"] .card { border-radius: 14px 4px 14px 14px; }
 html[data-skin="g11"] .tabbar button.on::before { width:8px;height:8px;border-radius:8px 8px 0 0;transform:translateX(-50%); opacity: .95; }
 
@@ -111,7 +111,7 @@ html[data-skin="g11"] .tabbar button.on::before { width:8px;height:8px;border-ra
 html[data-skin="g12"] .app-main::before {
   background: linear-gradient(180deg, transparent 26%, rgba(166,58,43,.34) 26% 31%, transparent 31%),repeating-linear-gradient(90deg, transparent 0 44%, rgba(166,58,43,.26) 44% 47%, transparent 47% 53%, rgba(166,58,43,.26) 53% 56%, transparent 56%),radial-gradient(circle 2px at 20% 60%, rgba(255,255,255,.9) 96%, transparent),radial-gradient(circle 2px at 58% 50%, rgba(255,255,255,.85) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="g12"] .page-head .page-title::after { content: "初"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g12"][data-skin][data-theme] .page-head .page-title::after { content: "初"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g12"] .card { border-radius: 4px 4px 16px 4px; }
 html[data-skin="g12"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -119,7 +119,7 @@ html[data-skin="g12"] .tabbar button.on::before { width:3px;height:12px;border-r
 html[data-skin="g13"] .app-main::before {
   background: repeating-linear-gradient(90deg, rgba(150,190,170,.14) 0 2px, transparent 2px 44px),repeating-linear-gradient(0deg, rgba(150,190,170,.10) 0 2px, transparent 2px 36px),radial-gradient(circle 3px at 30% 74%, rgba(255,255,255,.5) 96%, transparent),radial-gradient(circle 2px at 66% 82%, rgba(255,255,255,.45) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%);
 }
-html[data-skin="g13"] .page-head .page-title::after { content: "玻"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g13"][data-skin][data-theme] .page-head .page-title::after { content: "玻"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g13"] .card { border-radius: 12px; }
 html[data-skin="g13"] .tabbar button.on::before { width:9px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--green) 0 3.5px,transparent 3.5px 5.5px,var(--green) 5.5px); opacity: .95; }
 
@@ -127,7 +127,7 @@ html[data-skin="g13"] .tabbar button.on::before { width:9px;height:4px;border-ra
 html[data-skin="g14"] .app-main::before {
   background: radial-gradient(circle 38px at 50% 58%, rgba(255,170,130,.42), rgba(255,170,130,.08) 64%, transparent 72%),repeating-conic-gradient(from -80deg at 50% 58%, rgba(255,190,150,.14) 0 3deg, transparent 3deg 14deg),linear-gradient(180deg, var(--paper-deep) 0%, transparent 92%);
 }
-html[data-skin="g14"] .page-head .page-title::after { content: "晓"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g14"][data-skin][data-theme] .page-head .page-title::after { content: "晓"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g14"] .card { border-radius: 18px 4px 18px 4px; }
 html[data-skin="g14"] .tabbar button.on::before { width:6px;height:6px;border-radius:1px;transform:translateX(-50%) rotate(45deg); opacity: .95; }
 
@@ -135,7 +135,7 @@ html[data-skin="g14"] .tabbar button.on::before { width:6px;height:6px;border-ra
 html[data-skin="g15"] .app-main::before {
   background: conic-gradient(from 200deg at 72% 16%, rgba(255,224,150,.30) 0 14deg, transparent 16deg),radial-gradient(circle 7px at 72% 16%, rgba(255,232,170,.9) 60%, transparent 72%),linear-gradient(180deg, transparent 58%, rgba(70,110,150,.18) 58%, transparent 92%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 60%);
 }
-html[data-skin="g15"] .page-head .page-title::after { content: "灯"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g15"][data-skin][data-theme] .page-head .page-title::after { content: "灯"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g15"] .card { border-radius: 4px 18px 18px 18px; }
 html[data-skin="g15"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -143,7 +143,7 @@ html[data-skin="g15"] .tabbar button.on::before { width:3px;height:12px;border-r
 html[data-skin="g16"] .app-main::before {
   background: linear-gradient(180deg, transparent 34%, rgba(240,236,226,.65) 44%, rgba(240,236,226,.3) 56%, transparent 66%),repeating-linear-gradient(90deg, rgba(160,120,60,.12) 0 2px, transparent 2px 30px),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="g16"] .page-head .page-title::after { content: "茶"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g16"][data-skin][data-theme] .page-head .page-title::after { content: "茶"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g16"] .card { border-radius: 2px 14px 2px 14px; }
 html[data-skin="g16"] .tabbar button.on::before { width:14px;height:4px;border-radius:3px;background:linear-gradient(90deg,var(--green) 0 4px,transparent 4px 10px,var(--green) 10px); opacity: .95; }
 
@@ -151,7 +151,7 @@ html[data-skin="g16"] .tabbar button.on::before { width:14px;height:4px;border-r
 html[data-skin="g17"] .app-main::before {
   background: radial-gradient(circle 4px at 22% 40%, rgba(196,90,48,.55) 96%, transparent),radial-gradient(circle 3px at 38% 26%, rgba(196,90,48,.45) 96%, transparent),radial-gradient(circle 5px at 58% 48%, rgba(214,120,60,.5) 96%, transparent),radial-gradient(circle 3px at 78% 30%, rgba(196,90,48,.42) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 84%);
 }
-html[data-skin="g17"] .page-head .page-title::after { content: "枫"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g17"][data-skin][data-theme] .page-head .page-title::after { content: "枫"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g17"] .card { border-radius: 4px 16px 4px 16px; }
 html[data-skin="g17"] .tabbar button.on::before { width:6px;height:6px;border-radius:1px;transform:translateX(-50%) rotate(45deg); opacity: .95; }
 
@@ -159,7 +159,7 @@ html[data-skin="g17"] .tabbar button.on::before { width:6px;height:6px;border-ra
 html[data-skin="g18"] .app-main::before {
   background: radial-gradient(circle 26px at 24% 34%, transparent 52%, rgba(120,110,100,.28) 54% 62%, transparent 66%),radial-gradient(circle 18px at 64% 26%, transparent 52%, rgba(120,110,100,.24) 54% 62%, transparent 66%),radial-gradient(30% 40% at 44% 84%, rgba(255,255,255,.4), transparent 74%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="g18"] .page-head .page-title::after { content: "工"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g18"][data-skin][data-theme] .page-head .page-title::after { content: "工"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g18"] .card { border-radius: 3px; }
 html[data-skin="g18"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -167,7 +167,7 @@ html[data-skin="g18"] .tabbar button.on::before { width:3px;height:12px;border-r
 html[data-skin="g19"] .app-main::before {
   background: linear-gradient(90deg, transparent 30%, rgba(210,230,226,.5) 34% 42%, rgba(210,230,226,.2) 46%, transparent 54%),repeating-linear-gradient(0deg, rgba(255,255,255,.16) 0 3px, transparent 3px 12px),radial-gradient(40% 26% at 38% 92%, rgba(230,240,238,.6), transparent 72%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 84%);
 }
-html[data-skin="g19"] .page-head .page-title::after { content: "瀑"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g19"][data-skin][data-theme] .page-head .page-title::after { content: "瀑"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g19"] .card { border-radius: 16px 16px 4px 16px; }
 html[data-skin="g19"] .tabbar button.on::before { width:14px;height:4px;border-radius:3px;background:linear-gradient(90deg,var(--green) 0 4px,transparent 4px 10px,var(--green) 10px); opacity: .95; }
 
@@ -175,7 +175,7 @@ html[data-skin="g19"] .tabbar button.on::before { width:14px;height:4px;border-r
 html[data-skin="g20"] .app-main::before {
   background: linear-gradient(102deg, transparent 12%, rgba(140,220,200,.16) 30%, rgba(170,190,255,.14) 52%, transparent 72%),repeating-linear-gradient(64deg, transparent 0 40px, rgba(200,230,240,.35) 40px 41px, transparent 41px 90px),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="g20"] .page-head .page-title::after { content: "冰"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g20"][data-skin][data-theme] .page-head .page-title::after { content: "冰"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g20"] .card { border-radius: 14px 4px 4px 14px; }
 html[data-skin="g20"] .tabbar button.on::before { width:6px;height:6px;border-radius:1px;transform:translateX(-50%) rotate(45deg); opacity: .95; }
 
@@ -183,7 +183,7 @@ html[data-skin="g20"] .tabbar button.on::before { width:6px;height:6px;border-ra
 html[data-skin="g21"] .app-main::before {
   background: radial-gradient(circle 40px at 50% 40%, transparent 56%, rgba(120,130,90,.30) 58% 64%, transparent 68%),repeating-conic-gradient(from -10deg at 50% 40%, rgba(120,130,90,.22) 0 1.5deg, transparent 1.5deg 30deg),linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%);
 }
-html[data-skin="g21"] .page-head .page-title::after { content: "钟"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g21"][data-skin][data-theme] .page-head .page-title::after { content: "钟"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g21"] .card { border-radius: 4px 4px 4px 18px; }
 html[data-skin="g21"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -191,7 +191,7 @@ html[data-skin="g21"] .tabbar button.on::before { width:3px;height:12px;border-r
 html[data-skin="g22"] .app-main::before {
   background: radial-gradient(circle 7px at 18% 46%, rgba(255,196,110,.85) 58%, transparent 74%),radial-gradient(circle 7px at 34% 42%, rgba(255,196,110,.8) 58%, transparent 74%),radial-gradient(circle 7px at 50% 47%, rgba(255,196,110,.85) 58%, transparent 74%),radial-gradient(circle 7px at 66% 41%, rgba(255,196,110,.8) 58%, transparent 74%),radial-gradient(circle 7px at 82% 45%, rgba(255,196,110,.85) 58%, transparent 74%),linear-gradient(180deg, transparent 62%, rgba(40,70,120,.22) 62%, transparent 96%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 64%);
 }
-html[data-skin="g22"] .page-head .page-title::after { content: "畔"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g22"][data-skin][data-theme] .page-head .page-title::after { content: "畔"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g22"] .card { border-radius: 4px; }
 html[data-skin="g22"] .tabbar button.on::before { width:9px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--green) 0 3.5px,transparent 3.5px 5.5px,var(--green) 5.5px); opacity: .95; }
 
@@ -199,7 +199,7 @@ html[data-skin="g22"] .tabbar button.on::before { width:9px;height:4px;border-ra
 html[data-skin="g23"] .app-main::before {
   background: linear-gradient(180deg, transparent 46%, rgba(120,150,170,.22) 46%, transparent 78%),radial-gradient(circle 4px at 26% 56%, rgba(255,214,130,.85) 96%, transparent),radial-gradient(circle 4px at 40% 56%, rgba(255,214,130,.75) 96%, transparent),radial-gradient(circle 4px at 54% 56%, rgba(255,214,130,.8) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 50%),linear-gradient(180deg, transparent 80%, rgba(110,140,160,.18) 100%);
 }
-html[data-skin="g23"] .page-head .page-title::after { content: "电"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g23"][data-skin][data-theme] .page-head .page-title::after { content: "电"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g23"] .card { border-radius: 14px 4px 4px 14px; }
 html[data-skin="g23"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -207,7 +207,7 @@ html[data-skin="g23"] .tabbar button.on::before { width:3px;height:12px;border-r
 html[data-skin="g24"] .app-main::before {
   background: linear-gradient(180deg, rgba(20,60,80,.16) 0%, transparent 40%),radial-gradient(circle 4px at 24% 44%, rgba(200,240,240,.5) 96%, transparent),radial-gradient(circle 3px at 44% 34%, rgba(200,240,240,.4) 96%, transparent),radial-gradient(circle 4px at 68% 48%, rgba(200,240,240,.45) 96%, transparent),linear-gradient(180deg, var(--paper-deep) 0%, transparent 80%),linear-gradient(180deg, transparent 84%, rgba(30,70,90,.28) 84%, rgba(30,70,90,.1) 100%);
 }
-html[data-skin="g24"] .page-head .page-title::after { content: "底"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g24"][data-skin][data-theme] .page-head .page-title::after { content: "底"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g24"] .card { border-radius: 18px 4px 18px 4px; }
 html[data-skin="g24"] .tabbar button.on::before { width:14px;height:4px;border-radius:3px;background:linear-gradient(90deg,var(--green) 0 4px,transparent 4px 10px,var(--green) 10px); opacity: .95; }
 
@@ -215,7 +215,7 @@ html[data-skin="g24"] .tabbar button.on::before { width:14px;height:4px;border-r
 html[data-skin="g25"] .app-main::before {
   background: repeating-radial-gradient(circle at 50% 128%, transparent 0 30px, rgba(180,90,60,.14) 30px 33px),radial-gradient(circle 34px at 74% 22%, rgba(255,180,90,.35), transparent 68%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%);
 }
-html[data-skin="g25"] .page-head .page-title::after { content: "操"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="g25"][data-skin][data-theme] .page-head .page-title::after { content: "操"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="g25"] .card { border-radius: 3px 3px 16px 16px; }
 html[data-skin="g25"] .tabbar button.on::before { width:6px;height:6px;border-radius:1px;transform:translateX(-50%) rotate(45deg); opacity: .95; }
 
@@ -223,7 +223,7 @@ html[data-skin="g25"] .tabbar button.on::before { width:6px;height:6px;border-ra
 html[data-skin="a-sakura"] .app-main::before {
   background: radial-gradient(circle 4px at 22% 66%, rgba(240,170,190,.5) 96%, transparent),radial-gradient(circle 3px at 56% 40%, rgba(240,170,190,.45) 96%, transparent),radial-gradient(circle 4px at 78% 70%, rgba(240,170,190,.5) 96%, transparent);
 }
-html[data-skin="a-sakura"] .page-head .page-title::after { content: "樱"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-sakura"][data-skin][data-theme] .page-head .page-title::after { content: "樱"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-sakura"] .card { border-radius: 4px 18px 4px 18px; }
 html[data-skin="a-sakura"] .tabbar button.on::before { width:8px;height:8px;border-radius:8px 8px 0 0;transform:translateX(-50%); opacity: .95; }
 
@@ -231,7 +231,7 @@ html[data-skin="a-sakura"] .tabbar button.on::before { width:8px;height:8px;bord
 html[data-skin="a-galaxy"] .app-main::before {
   background: radial-gradient(circle 2px at 24% 40%, rgba(255,255,255,.85) 96%, transparent),radial-gradient(circle 2px at 52% 58%, rgba(255,255,255,.7) 96%, transparent),radial-gradient(circle 2px at 74% 34%, rgba(255,255,255,.8) 96%, transparent);
 }
-html[data-skin="a-galaxy"] .page-head .page-title::after { content: "星"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-galaxy"][data-skin][data-theme] .page-head .page-title::after { content: "星"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-galaxy"] .card { border-radius: 3px; }
 html[data-skin="a-galaxy"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -239,7 +239,7 @@ html[data-skin="a-galaxy"] .tabbar button.on::before { width:3px;height:12px;bor
 html[data-skin="a-neon"] .app-main::before {
   background: repeating-linear-gradient(100deg, rgba(140,240,220,.10) 0 1px, transparent 1px 12px),linear-gradient(90deg, transparent 30%, rgba(230,80,170,.14) 42% 58%, transparent 70%);
 }
-html[data-skin="a-neon"] .page-head .page-title::after { content: "雨"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-neon"][data-skin][data-theme] .page-head .page-title::after { content: "雨"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-neon"] .card { border-radius: 4px; }
 html[data-skin="a-neon"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -247,7 +247,7 @@ html[data-skin="a-neon"] .tabbar button.on::before { width:3px;height:12px;borde
 html[data-skin="a-wuxia"] .app-main::before {
   background: linear-gradient(180deg, transparent 30%, rgba(40,40,36,.10) 42%, transparent 56%),radial-gradient(60% 40% at 30% 90%, rgba(40,40,36,.14), transparent 74%);
 }
-html[data-skin="a-wuxia"] .page-head .page-title::after { content: "侠"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-wuxia"][data-skin][data-theme] .page-head .page-title::after { content: "侠"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-wuxia"] .card { border-radius: 2px 14px 2px 14px; }
 html[data-skin="a-wuxia"] .tabbar button.on::before { width:14px;height:4px;border-radius:3px;background:linear-gradient(90deg,var(--green) 0 4px,transparent 4px 10px,var(--green) 10px); opacity: .95; }
 
@@ -255,7 +255,7 @@ html[data-skin="a-wuxia"] .tabbar button.on::before { width:14px;height:4px;bord
 html[data-skin="a-fireworks"] .app-main::before {
   background: radial-gradient(circle 2px at 30% 30%, rgba(255,214,140,.85) 96%, transparent),radial-gradient(circle 2px at 58% 22%, rgba(255,214,140,.8) 96%, transparent),radial-gradient(circle 2px at 72% 44%, rgba(255,214,140,.85) 96%, transparent),radial-gradient(circle 2px at 44% 52%, rgba(255,214,140,.7) 96%, transparent);
 }
-html[data-skin="a-fireworks"] .page-head .page-title::after { content: "祭"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-fireworks"][data-skin][data-theme] .page-head .page-title::after { content: "祭"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-fireworks"] .card { border-radius: 16px 16px 4px 16px; }
 html[data-skin="a-fireworks"] .tabbar button.on::before { width:9px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--green) 0 3.5px,transparent 3.5px 5.5px,var(--green) 5.5px); opacity: .95; }
 
@@ -263,7 +263,7 @@ html[data-skin="a-fireworks"] .tabbar button.on::before { width:9px;height:4px;b
 html[data-skin="a-tidal"] .app-main::before {
   background: repeating-linear-gradient(0deg, transparent 0 14px, rgba(90,150,180,.10) 14px 16px, transparent 16px 30px),linear-gradient(180deg, var(--paper-deep) 0%, transparent 86%);
 }
-html[data-skin="a-tidal"] .page-head .page-title::after { content: "潮"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-tidal"][data-skin][data-theme] .page-head .page-title::after { content: "潮"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-tidal"] .card { border-radius: 12px; }
 html[data-skin="a-tidal"] .tabbar button.on::before { width:14px;height:4px;border-radius:3px;background:linear-gradient(90deg,var(--green) 0 4px,transparent 4px 10px,var(--green) 10px); opacity: .95; }
 
@@ -271,7 +271,7 @@ html[data-skin="a-tidal"] .tabbar button.on::before { width:14px;height:4px;bord
 html[data-skin="a-aurora"] .app-main::before {
   background: linear-gradient(98deg, transparent 10%, rgba(108,229,177,.18) 30%, rgba(120,180,255,.14) 52%, transparent 76%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="a-aurora"] .page-head .page-title::after { content: "极"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-aurora"][data-skin][data-theme] .page-head .page-title::after { content: "极"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-aurora"] .card { border-radius: 14px 4px 14px 14px; }
 html[data-skin="a-aurora"] .tabbar button.on::before { width:6px;height:6px;border-radius:1px;transform:translateX(-50%) rotate(45deg); opacity: .95; }
 
@@ -279,7 +279,7 @@ html[data-skin="a-aurora"] .tabbar button.on::before { width:6px;height:6px;bord
 html[data-skin="a-radio"] .app-main::before {
   background: repeating-linear-gradient(90deg, rgba(110,120,100,.2) 0 1px, transparent 1px 16px),radial-gradient(circle 5px at 50% 34%, rgba(180,200,150,.35), transparent 70%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="a-radio"] .page-head .page-title::after { content: "台"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-radio"][data-skin][data-theme] .page-head .page-title::after { content: "台"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-radio"] .card { border-radius: 4px; }
 html[data-skin="a-radio"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -287,7 +287,7 @@ html[data-skin="a-radio"] .tabbar button.on::before { width:3px;height:12px;bord
 html[data-skin="a-culture"] .app-main::before {
   background: radial-gradient(circle 10px at 26% 62%, rgba(150,170,120,.16) 80%, transparent 90%),radial-gradient(circle 6px at 58% 44%, rgba(150,170,120,.14) 80%, transparent 90%),radial-gradient(circle 12px at 78% 70%, rgba(150,170,120,.12) 80%, transparent 90%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%);
 }
-html[data-skin="a-culture"] .page-head .page-title::after { content: "菌"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-culture"][data-skin][data-theme] .page-head .page-title::after { content: "菌"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-culture"] .card { border-radius: 18px 18px 4px 4px; }
 html[data-skin="a-culture"] .tabbar button.on::before { width:9px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--green) 0 3.5px,transparent 3.5px 5.5px,var(--green) 5.5px); opacity: .95; }
 
@@ -295,7 +295,7 @@ html[data-skin="a-culture"] .tabbar button.on::before { width:9px;height:4px;bor
 html[data-skin="a-glass"] .app-main::before {
   background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.30) 46%, transparent 52%),linear-gradient(180deg, transparent 62%, rgba(140,180,190,.14) 62%, transparent 90%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 84%);
 }
-html[data-skin="a-glass"] .page-head .page-title::after { content: "皿"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-glass"][data-skin][data-theme] .page-head .page-title::after { content: "皿"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-glass"] .card { border-radius: 4px 16px 16px 16px; }
 html[data-skin="a-glass"] .tabbar button.on::before { width:8px;height:8px;border-radius:8px 8px 0 0;transform:translateX(-50%); opacity: .95; }
 
@@ -303,7 +303,7 @@ html[data-skin="a-glass"] .tabbar button.on::before { width:8px;height:8px;borde
 html[data-skin="a-polar"] .app-main::before {
   background: linear-gradient(180deg, var(--paper-deep) 0%, transparent 48%),linear-gradient(180deg, transparent 50%, rgba(255,255,255,.18) 50%, transparent 88%);
 }
-html[data-skin="a-polar"] .page-head .page-title::after { content: "昼"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-polar"][data-skin][data-theme] .page-head .page-title::after { content: "昼"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-polar"] .card { border-radius: 3px; }
 html[data-skin="a-polar"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }
 
@@ -311,7 +311,7 @@ html[data-skin="a-polar"] .tabbar button.on::before { width:3px;height:12px;bord
 html[data-skin="a-type"] .app-main::before {
   background: repeating-linear-gradient(90deg, rgba(110,110,100,.10) 0 1px, transparent 1px 26px),repeating-linear-gradient(0deg, rgba(110,110,100,.10) 0 1px, transparent 1px 26px),linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%);
 }
-html[data-skin="a-type"] .page-head .page-title::after { content: "字"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-type"][data-skin][data-theme] .page-head .page-title::after { content: "字"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-type"] .card { border-radius: 2px; }
 html[data-skin="a-type"] .tabbar button.on::before { width:9px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--green) 0 3.5px,transparent 3.5px 5.5px,var(--green) 5.5px); opacity: .95; }
 
@@ -319,7 +319,7 @@ html[data-skin="a-type"] .tabbar button.on::before { width:9px;height:4px;border
 html[data-skin="a-pulse"] .app-main::before {
   background: linear-gradient(180deg, transparent 52%, rgba(90,200,160,.16) 52% 56%, transparent 60%),linear-gradient(90deg, transparent 34%, rgba(90,200,160,.30) 40% 44%, transparent 50%, rgba(90,200,160,.3) 56% 60%, transparent 66%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="a-pulse"] .page-head .page-title::after { content: "搏"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-pulse"][data-skin][data-theme] .page-head .page-title::after { content: "搏"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-pulse"] .card { border-radius: 12px 12px 3px 3px; }
 html[data-skin="a-pulse"] .tabbar button.on::before { width:14px;height:4px;border-radius:3px;background:linear-gradient(90deg,var(--green) 0 4px,transparent 4px 10px,var(--green) 10px); opacity: .95; }
 
@@ -327,7 +327,7 @@ html[data-skin="a-pulse"] .tabbar button.on::before { width:14px;height:4px;bord
 html[data-skin="a-chart"] .app-main::before {
   background: radial-gradient(circle 2px at 30% 44%, rgba(140,160,220,.8) 96%, transparent),radial-gradient(circle 2px at 52% 30%, rgba(140,160,220,.7) 96%, transparent),radial-gradient(circle 2px at 70% 54%, rgba(140,160,220,.75) 96%, transparent),linear-gradient(64deg, transparent 20%, rgba(140,160,220,.12) 40% 60%, transparent 80%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 88%);
 }
-html[data-skin="a-chart"] .page-head .page-title::after { content: "图"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-chart"][data-skin][data-theme] .page-head .page-title::after { content: "图"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-chart"] .card { border-radius: 3px 14px 14px 14px; }
 html[data-skin="a-chart"] .tabbar button.on::before { width:6px;height:6px;border-radius:1px;transform:translateX(-50%) rotate(45deg); opacity: .95; }
 
@@ -335,6 +335,6 @@ html[data-skin="a-chart"] .tabbar button.on::before { width:6px;height:6px;borde
 html[data-skin="a-chrome"] .app-main::before {
   background: linear-gradient(100deg, transparent 30%, rgba(220,230,240,.22) 44%, rgba(120,140,160,.18) 52%, transparent 66%),linear-gradient(180deg, var(--paper-deep) 0%, transparent 86%);
 }
-html[data-skin="a-chrome"] .page-head .page-title::after { content: "液"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
+html[data-skin="a-chrome"][data-skin][data-theme] .page-head .page-title::after { content: "液"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }
 html[data-skin="a-chrome"] .card { border-radius: 16px 4px 16px 16px; }
 html[data-skin="a-chrome"] .tabbar button.on::before { width:3px;height:12px;border-radius:2px; opacity: .95; }

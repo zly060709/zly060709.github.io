@@ -594,7 +594,7 @@
       var text = '今日 ' + d.count + ' 笔 · ' + d.kcal + ' kcal';
       var chars = '';
       for (i = 0; i < text.length; i++) chars += '<span style="animation-delay:' + (i * 70) + 'ms">' + esc(text[i]) + '</span>';
-      html += '<div class="ty-paper"></div><div class="ty-line">' + chars + '</div><div class="ty-carriage"></div><div class="ty-ribbon"></div>';
+      html += '<button type="button" class="gu ty-paper" data-i="0" data-tip="长按重打 · 今日 ' + d.count + ' 笔" style="left:50%;top:22px;width:74%;height:88px;margin-left:-37%"><i></i></button><div class="ty-line">' + chars + '</div><div class="ty-carriage"></div><div class="ty-ribbon"></div>';
       read = '色带 · 就位';
     } else if (mech === 'stubs') {
       var src = d.recentMiss.slice(-14); while (src.length < 14) src.unshift(0);
@@ -646,6 +646,10 @@
       html += '<button type="button" class="gu" data-i="0" data-tip="' + esc(String(d.count) + ' 笔 · 点划码') + '" style="left:0;top:30%;width:100%"><i></i>' + marks + '</button>';
       read = '译码 · 今日 ' + d.count + ' 笔';
       empty = '记一笔，电键起声';
+    }
+    if (mech === 'typewriter' && !reduced) {
+      var tp = box.querySelector('.ty-paper');
+      if (tp) tp.addEventListener('click', function () { renderStage(active(), state.lastData || {}, true); });
     }
     html += '</div><div class="dk-read">' + esc(read) + '</div>' +
       (read ? '' : '<div class="dk-empty">' + esc(empty) + '</div>');
@@ -715,7 +719,8 @@
       var sh = { dawn: 0.4, noon: 0.18, dusk: 0.85, night: 1 }[d.dayphase] || 0.5;
       box.style.setProperty('--sx', sx + '%');
       box.style.setProperty('--sh', String(sh));
-      html += '<div class="tm-shadow"></div><div class="tm-post"></div>';
+      html += '<div class="tm-shadow"></div><div class="tm-post"></div>' +
+        '<button type="button" class="gu tm-hit" data-i="0" data-tip="' + esc(phName + ' · 影长 ' + Math.round(sh * 100) + '%') + '" style="left:' + sx + '%;top:24%"><i></i></button>';
       read = phName;
     }
     html += '</div><div class="tm-read">' + esc(read) + '</div>' +

@@ -43,6 +43,13 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
       .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      /* v6.0 修复（验证5）：一次性清理历史 version.json 垃圾键（只保留规范键） */
+      .then(() => caches.open(CACHE))
+      .then(c => c.keys()
+        .then(reqs => Promise.all(reqs
+          .filter(r => r.url.indexOf('version.json?') >= 0)
+          .map(r => c.delete(r))))
+        .catch(() => {}))
       .then(() => self.clients.claim())
   );
 });
@@ -56,16 +63,19 @@ self.addEventListener('fetch', event => {
 
   // 版本公告：先走网络，失败回退缓存（断网不报错）
   if (url.pathname.endsWith('/version.json')) {
+    /* v6.0 修复（验证5）：此前按完整 URL（含 cache-busting 查询串）put，缓存键随每次打开
+       无界增长（实测单设备 463 条垃圾键）；改为固定键 './version.json' 覆盖式更新，
+       回退匹配 ignoreSearch 不变。 */
     event.respondWith(
       fetch(req)
         .then(res => {
           if (res && res.ok) {
             const copy = res.clone();
-            caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
+            caches.open(CACHE).then(c => c.put('./version.json', copy)).catch(() => {});
           }
           return res;
         })
-        .catch(() => caches.match(req, { ignoreSearch: true }))
+        .catch(() => caches.match('./version.json').then(hit => hit || caches.match(req, { ignoreSearch: true })))
     );
     return;
   }

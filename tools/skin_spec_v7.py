@@ -736,7 +736,7 @@ dict(id='g109', name='打字·色带', tag='墨黑色带红', eng='desk', mech='
     anchors=dict(bg='#2A2A2C', card='#353538', ink='#ECE8E0', a1='#C45C50', a2='#9C9890'),
     dark=dict(always=True, dbg='#222224', dcard='#2D2D30', dink='#E8E4DC'),
     stage='repeating-linear-gradient(0deg, rgba(156,152,144,.05) 0 1px, transparent 1px 20px), radial-gradient(48% 38% at 50% 0%, rgba(196,92,80,.12), transparent 70%), linear-gradient(180deg, var(--paper-deep) 0%, transparent 92%)',
-    comp="""html[data-skin="g109"] #skinStage .ty-paper{position:absolute;left:50%;top:22px;width:74%;height:88px;margin-left:-37%;background:linear-gradient(175deg,#F4F1E8,#EAE5D6);border-radius:3px;box-shadow:0 6px 14px rgba(0,0,0,.35), inset 0 0 0 1px rgba(0,0,0,.06)}
+    comp="""html[data-skin="g109"] #skinStage .ty-paper{position:absolute;left:50%;top:22px;width:74%;height:88px;margin-left:-37%;border:0;padding:0;cursor:pointer;background:linear-gradient(175deg,#F4F1E8,#EAE5D6);border-radius:3px;box-shadow:0 6px 14px rgba(0,0,0,.35), inset 0 0 0 1px rgba(0,0,0,.06)}
 html[data-skin="g109"] #skinStage .ty-line{position:absolute;left:12%;right:12%;top:44%;font:600 15px/1.4 ui-monospace,Consolas,monospace;color:#2E2C28;white-space:nowrap;overflow:hidden}
 html[data-skin="g109"] #skinStage .ty-line span{opacity:0;animation:sk109-type .06s steps(1) forwards}
 @keyframes sk109-type{to{opacity:1}}
@@ -906,7 +906,8 @@ dict(id='g125', name='日暮·长影', tag='斜阳影灰', eng='time', mech='sun
     stage='radial-gradient(56% 44% at 20% 8%, rgba(196,120,56,.18), transparent 72%), linear-gradient(180deg, transparent 62%, rgba(140,132,120,.14) 62%), linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%)',
     comp="""html[data-skin="g125"] #skinStage .sk-decor.d-g125::before{content:"";position:absolute;left:var(--sx,20%);top:30%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:radial-gradient(62% 62% at 44% 40%,#F6D9A0,var(--a1-2, var(--amber)) 66%,rgba(196,120,56,.4));box-shadow:0 0 24px rgba(196,120,56,.45);transition:left .8s ease}
 html[data-skin="g125"] #skinStage .sk-decor.d-g125::after{content:"";position:absolute;left:0;right:0;bottom:30px;height:2px;background:var(--line)}
-html[data-skin="g125"] #skinStage .tm-shadow{position:absolute;left:var(--sx,20%);bottom:32px;width:120px;height:7px;margin-left:26px;border-radius:4px;background:linear-gradient(90deg,rgba(60,48,32,.40),transparent);transform-origin:0 50%;transform:scaleX(var(--sh,.6));transition:left .8s ease,transform .8s ease}
+html[data-skin="g125"] #skinStage .tm-shadow{position:absolute;left:var(--sx,20%);bottom:32px;width:min(120px,calc(92% - var(--sx,20%)));height:7px;margin-left:26px;border-radius:4px;background:linear-gradient(90deg,rgba(60,48,32,.40),transparent);transform-origin:0 50%;transform:scaleX(var(--sh,.6));transition:left .8s ease,transform .8s ease}
+html[data-skin="g125"] #skinStage .tm-hit{background:none;border:0}
 html[data-skin="g125"] #skinStage .tm-post{position:absolute;left:var(--sx,20%);bottom:32px;width:6px;height:34px;margin-left:-3px;border-radius:3px;background:linear-gradient(180deg,var(--surface-2),var(--line-2));transition:left .8s ease}""",
     cfg=dict(tip='{v}'), badge='夕', ),
 # ################ v6.0 · E-J 收藏·陈列（shelf） g126–g135 ################

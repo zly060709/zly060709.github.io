@@ -298,7 +298,7 @@ def build():
         out.append('html[data-skin="%s"] .app-main::before {' % sid)
         out.append('  background: %s;' % scene)
         out.append('}')
-        out.append('html[data-skin="%s"] .page-head .page-title::after { content: "%s"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }' % (sid, ch))
+        out.append('html[data-skin="%s"][data-skin][data-theme] .page-head .page-title::after { content: "%s"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }' % (sid, ch))
         out.append('html[data-skin="%s"] .card { border-radius: %s; }' % (sid, radius))
         out.append('html[data-skin="%s"] .tabbar button.on::before { %s opacity: .95; }' % (sid, TAB_SHAPES[tab]))
     css = '\n'.join(out) + '\n'
@@ -413,7 +413,7 @@ html[data-skin] .page-head .page-title::after { display: none; }
         out.append('html[data-skin="%s"] .app-main::before {' % sid)
         out.append('  background: %s;' % scene)
         out.append('}')
-        out.append('html[data-skin="%s"] .page-head .page-title::after { content: "%s"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }' % (sid, ch))
+        out.append('html[data-skin="%s"][data-skin][data-theme] .page-head .page-title::after { content: "%s"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }' % (sid, ch))
         out.append('html[data-skin="%s"] .card { border-radius: %s; }' % (sid, radius))
         out.append('html[data-skin="%s"] .tabbar button.on::before { %s opacity: .95; }' % (sid, TAB_SHAPES[tab]))
     css = '\n'.join(out) + '\n'
