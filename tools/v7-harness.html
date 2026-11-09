@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>能量账本 v5.5 · 皮肤系统 390×844 测试台（开发工具，不影响线上）</title>
+<style>
+  body{margin:0;font:13px/1.6 system-ui,sans-serif;background:#1c1f22;color:#dfe5e8;display:flex;gap:14px;padding:14px}
+  #phone{width:390px;height:844px;border:0;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.5);background:#fff;flex:0 0 auto}
+  .side{flex:1;min-width:0}
+  button{margin:2px;padding:4px 10px;background:#2d3338;color:#dfe5e8;border:1px solid #454c52;border-radius:6px;cursor:pointer;font-size:12px}
+  button.on{background:#2C6B51;border-color:#3d8a6b}
+  #out{white-space:pre-wrap;font:11px/1.5 Consolas,monospace;background:#111417;border:1px solid #333;padding:10px;height:62vh;overflow:auto;border-radius:8px}
+  h3{margin:8px 0 4px;font-size:13px}
+  .row{max-height:150px;overflow:auto}
+</style>
+</head>
+<body>
+<iframe id="phone" src="../index.html"></iframe>
+<div class="side">
+  <h3>批量审计（390×844 真实视口）</h3>
+  <button onclick="batchAll()">全池 100 套批量审计</button>
+  <button onclick="batchV7()">仅 v7 50 套</button>
+  <button onclick="stopBatch()">停止</button>
+  <h3>单套操作</h3>
+  <div class="row" id="skinBtns"></div>
+  <h3>操作</h3>
+  <button onclick="act('reload')">重载</button>
+  <button onclick="act('addentry')">记一笔(+5天历史)</button>
+  <button onclick="act('clear')">清空记录</button>
+  <button onclick="act('dark')">明/暗</button>
+  <button onclick="act('over')">造超支(大餐)</button>
+  <h3>交互探针</h3>
+  <button onclick="probe('tap')">tap 单元</button>
+  <button onclick="probe('swipe')">swipe 翻视图</button>
+  <button onclick="probe('flick')">flick 冲量</button>
+  <button onclick="probe('open')">open 容器</button>
+  <h3>输出</h3>
+  <div id="out">ready</div>
+</div>
+<script>
+const V7=['g36','g37','g38','g39','g40','g41','g42','g43','g44','g45','g46','g47','g48','g49','g50','g51','g52','g53','g54','g55','g56','g57','g58','g59','g60','g61','g62','g63','g64','g65','g66','g67','g68','g69','g70','g71','g72','g73','g74','g75','g76','g77','g78','g79','g80','g81','g82','g83','g84','g85'];
+const V6=['g26','g27','g28','g29','g30','g31','g32','g33','g34','g35'];
+const GEN=['g01','g05','g12','g21','g23'];
+const ART=['a-sakura','a-galaxy','a-neon','a-wuxia','a-fireworks','a-aurora','a-chart','a-chrome','a-culture','a-glass','a-polar','a-pulse','a-radio','a-tidal','a-type'];
+const ALL=V7.concat(V6,GEN,ART,['paper']);
+const btns=document.getElementById('skinBtns');
+ALL.forEach(id=>{const b=document.createElement('button');b.textContent=id;b.dataset.id=id;b.onclick=()=>setSkin(id);btns.appendChild(b);});
+const frame=document.getElementById('phone');
+const out=(...a)=>{const o=document.getElementById('out');o.textContent+='\n'+a.join(' ');o.scrollTop=o.scrollHeight;};
+const W=()=>frame.contentWindow;
+function mark(id){btns.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.id===id));}
+function db(){try{return JSON.parse(W().localStorage.getItem('energy-ledger.v2')||'{}')}catch(e){return {}}}
+function saveDb(d){W().localStorage.setItem('energy-ledger.v2',JSON.stringify(d))}
+function setSkin(id){
+  const d=db();
+  d.settings=Object.assign({theme:'auto',fx:true,powerSave:false,mode:'full'},d.settings||{},{mode:'full'});
+  d.skins=Object.assign({},d.skins,{active:id,unlocked:ALL.slice()});
+  d.profile=d.profile||{sex:'male',age:30,height:172,weight:65,targetWeight:60,activity:'moderate',goal:'lose',rate:.5,proteinFactor:1.6,createdAt:Date.now()};
+  d.weights=d.weights&&d.weights.length?d.weights:[{date:todayKey(),kg:65}];
+  d.onboarded=true;
+  saveDb(d);mark(id);
+  frame.src='../index.html?skin='+id+'&t='+Date.now();
+}
+function todayKey(){const t=new Date();const p=n=>String(n).padStart(2,'0');return t.getFullYear()+'-'+p(t.getMonth()+1)+'-'+p(t.getDate());}
+function dstr(off){const x=new Date();x.setDate(x.getDate()-off);const p=n=>String(n).padStart(2,'0');return x.getFullYear()+'-'+p(x.getMonth()+1)+'-'+p(x.getDate());}
+function addEntry(kcal,name,over){
+  const d=db();d.entries=d.entries||[];
+  for(let i=1;i<=6;i++){
+    if(!d.entries.some(e=>e.date===dstr(i)&&e.id==='h'+i))
+      d.entries.push({id:'h'+i,date:dstr(i),meal:'lunch',name:'历史'+i,grams:100,per100:{kcal:120,p:6,c:15,f:4,fib:1},cat:'测试',kcal:380+i,p:8,c:30,f:8,fib:1,conf:'high',source:'manual',createdAt:Date.now()-i*864e5});
+  }
+  d.entries.push({id:'t'+Date.now()+Math.random().toString(36).slice(2,6),date:todayKey(),meal:'lunch',name:name||'测试餐',grams:200,per100:{kcal:150,p:8,c:20,f:5,fib:1},cat:'测试',kcal:kcal||(over?2200:480),p:16,c:40,f:10,fib:2,conf:'high',source:'manual',createdAt:Date.now()});
+  saveDb(d);
+}
+window.act=async function(op){
+  if(op==='reload'){frame.src=frame.src;return;}
+  if(op==='addentry'){addEntry();frame.src=frame.src;out('[i] 已记一笔+6天历史');return;}
+  if(op==='over'){addEntry(2200,'超支大餐');frame.src=frame.src;out('[i] 已造超支');return;}
+  if(op==='clear'){const d=db();d.entries=[];saveDb(d);frame.src=frame.src;out('[i] 已清空');return;}
+  if(op==='dark'){const d=db();d.settings.theme=(d.settings.theme==='dark'?'light':'dark');saveDb(d);frame.src=frame.src;out('[i] 主题',d.settings.theme);return;}
+};
+window.probe=async function(op){
+  const W2=W(),D=W2.document;
+  const box=D.getElementById('skinStage');if(!box){out('[probe] no stage');return;}
+  const r=box.getBoundingClientRect();
+  const mk=(type,x,y)=>new W2.PointerEvent(type,{bubbles:true,clientX:x,clientY:y,pointerId:7,isPrimary:true});
+  if(op==='tap'){
+    const t=box.querySelector('.gu, .vs-it, .ty-cell, .mt-wrap');
+    if(!t){out('[tap] no target');return;}
+    const tr=t.getBoundingClientRect();
+    t.dispatchEvent(mk('pointerdown',tr.left+10,tr.top+10));
+    t.dispatchEvent(mk('pointerup',tr.left+10,tr.top+10));
+    t.click&&t.click();
+    out('[tap] target=',t.className,'| tip=',(box.querySelector('.gv-tip')||box.querySelector('.mt-badge')||{}).textContent||'(none)');
+  } else if(op==='swipe'){
+    box.dispatchEvent(mk('pointerdown',r.left+r.width/2,r.top+40));
+    box.dispatchEvent(mk('pointerup',r.left+r.width/2-90,r.top+40));
+    out('[swipe] dots=',[...box.querySelectorAll('.pl-dots i')].map(i=>i.className).join(','),'| state=',JSON.stringify(W2.SkinV7&&W2.SkinV7.state()));
+  } else if(op==='flick'){
+    box.dispatchEvent(mk('pointerdown',r.left+60,r.top+40));
+    box.dispatchEvent(mk('pointerup',r.left+160,r.top+40));
+    out('[flick] class=',box.className);
+    setTimeout(()=>out('[flick] after2.4s class=',box.className),2500);
+  } else if(op==='open'){
+    box.dispatchEvent(mk('pointerdown',r.left+r.width/2,r.top+60));
+    box.dispatchEvent(mk('pointerup',r.left+r.width/2,r.top+60));
+    box.click&&box.click();   /* 合成 pointer 事件不产生 click，显式补一次 */
+    out('[open] class=',box.className);
+  }
+};
+/* ---------- 批量审计 ---------- */
+let batchStop=false;
+function stopBatch(){batchStop=true;out('[batch] 停止标记');}
+async function batchList(ids){
+  batchStop=false;
+  const pass=[],fail=[];
+  for(const id of ids){
+    if(batchStop){out('[batch] 手动停止 @',id);break;}
+    /* v5.5 修复：批量审计必须走 setSkin（写 localStorage 再导航），否则一直停留在
+       上一套皮肤上；此前 31 个"通过"是不校验 skin===id 的虚报。 */
+    await new Promise(res=>{frame.onload=res;setSkin(id);});
+    /* v5.5 修复：固定 420ms 在冷启动时会误报（首帧解析 776KB app.js 不止 420ms）。
+       改为就绪探测：轮询 data-skin 稳定为当前 id（或确认回退）再审计，上限 2.4s。 */
+    await new Promise(async r=>{
+      const t0=Date.now();
+      const mech=V7.indexOf(id)>=0||V6.indexOf(id)>=0;
+      while(Date.now()-t0<2600){
+        await new Promise(z=>setTimeout(z,90));
+        try{
+          const W2=frame.contentWindow,X=W2.document.documentElement;
+          const sk=X.getAttribute('data-skin');
+          const box=W2.document.getElementById('skinStage');
+          const mounted=!!box&&box.offsetHeight>0;
+          if(sk===id&&(!mech||mounted))break;     /* 属性 + 舞台都就位 */
+          if(sk==='paper'&&Date.now()-t0>1200)break;  /* 确认回退 */
+        }catch(e){}
+      }
+      r();
+    });
+    const W2=W(),X=W2.document.documentElement;
+    const errs=(W2.__v7Errors||[]);
+    let a=null,gen=null;
+    try{a=W2.SkinV7?W2.SkinV7.audit():null;}catch(e){errs.push('audit:'+e);}
+    try{gen=W2.SkinGen?W2.SkinGen.audit():null;}catch(e){}
+    const doc=W2.document;
+    /* v5.5 修复：scrollWidth 在加载瞬态会虚高（实测 33 套误报）；改为沉降后逐元素扫描 */
+    await new Promise(z=>setTimeout(z,250));
+    const vw=W2.innerWidth;
+    const overflowX=[...doc.querySelectorAll('body *')].some(el=>{
+      const st=W2.getComputedStyle(el);
+      if(st.position==='fixed'||st.display==='none'||st.visibility==='hidden')return false;
+      const r2=el.getBoundingClientRect();
+      if(r2.width<=0&&r2.height<=0)return false;
+      return r2.right>vw+1||r2.left<-1;
+    });
+    /* v5.5 修复：skin===id 是硬性判定——任何回退/粘滞都是失败 */
+    const skinOk=X.getAttribute('data-skin')===id;
+    /* v5.5 修复：判定矩阵按引擎族分层——
+       v7：v7 属性 + 引擎匹配 + DOM 舞台挂载
+       v6：v6 属性 + DOM 舞台挂载（CSS 异步注入，就绪探测要等舞台可见）
+       gen/art/paper：无 v6/v7 属性 + 舞台按设计隐藏（挂载反而是 bug） */
+    const v7attr=X.getAttribute('data-skin-v7');
+    const v6attr=X.getAttribute('data-skin-v6');
+    let stageOk=false, v7ok=false;
+    if(V7.indexOf(id)>=0){
+      v7ok=v7attr==='1'&&a&&!!a.eng;
+      stageOk=!!(a&&a.stage&&a.stage.mounted&&a.stage.h>0);
+    }else if(V6.indexOf(id)>=0){
+      /* v6 家族里 g30 折纸设计上无 DOM 舞台（--sk-stage-dom:0），不硬性要求挂载 */
+      v7ok=!v7attr&&v6attr==='1';
+      stageOk=true;
+    }else{
+      v7ok=!v7attr&&!v6attr;
+      stageOk=!!(a&&a.stage&&!a.stage.mounted);
+    }
+    const errOk=errs.length===0;
+    const rec={id,skin:X.getAttribute('data-skin'),v7:!!v7attr,eng:a&&a.eng,stageH:a&&a.stage.h,overflow:overflowX,errs:errs.slice(0,2)};
+    if(skinOk&&stageOk&&v7ok&&!overflowX&&errOk)pass.push(id);else{fail.push(rec);out('FAIL',JSON.stringify(rec));}
+  }
+  out('== 批量审计完成 ==','通过',pass.length,'失败',fail.length);
+  if(fail.length)out('失败清单:',JSON.stringify(fail));
+  window.__batchResult={pass,fail};
+}
+window.batchAll=()=>{out('[batch] 开始 100 套…');batchList(ALL);};
+window.batchV7=()=>{out('[batch] 开始 v7 50 套…');batchList(V7);};
+frame.addEventListener('load',()=>{
+  const W2=W();
+  if(!W2.__v7Hooked){
+    W2.__v7Errors=W2.__v7Errors||[];
+    W2.addEventListener('error',e=>{W2.__v7Errors.push(String(e.message||e));});
+    W2.addEventListener('unhandledrejection',e=>{W2.__v7Errors.push('rej:'+String(e.reason||e));});
+    W2.__v7Hooked=true;
+  }
+  mark(new URLSearchParams(frame.src.split('?')[1]||'').get('skin')||'');
+});
+</script>
+</body>
+</html>
