@@ -4241,7 +4241,9 @@
     for (const [rx, css] of SKIN_FAMILY_CSS) { if (rx.test(id)) { want = css; break; } }
     const cur = document.getElementById('skinsGenCss');
     if (!want) {
-      /* v6/立绘/a-*/paper：样式全在静态层；清掉预绘可能留下的 gen/v7 注入表 */
+      /* v6、立绘、a系、paper：样式全在静态层；清掉预绘可能留下的 gen/v7 注入表
+         （注意：注释里不能出现「星号+斜杠」序列——v5.6 R2 曾因 a-*后跟/ 提前闭合注释，
+          导致 app.js 全文语法错误、应用白屏，教训见 VALIDATION-v5.6.md） */
       if (cur && /skins-(gen|v7)\.css/.test(cur.getAttribute('href') || '')) cur.remove();
       return;
     }
