@@ -1,35 +1,36 @@
-﻿/* 能量账本 · 离线缓存（v5.2.1 多文件版）
+/* 能量账本 · 离线缓存（v5.2.1 多文件版）
    安装时只预缓存入口与 JS/CSS；30 套皮肤包一律按需缓存，启动不预取未解锁素材。
    页面/静态资源网络优先，断网回退缓存；version.json 网络优先、缓存兜底。 */
-const CACHE = 'energy-ledger-v5.5.5';
+const CACHE = 'energy-ledger-v6.0.0';
 const PRECACHE = [
   './',
   './index.html',
   './version.json',
   './icon.svg',
   './manifest.webmanifest',
-  './assets/app.css?v=5.5.5',
-  './assets/skins-v43.css?v=5.5.5',
-  './assets/skins-v5.css?v=5.5.5',
-  './assets/skins-v6.css?v=5.5.5',
-  './assets/skins-v6.js?v=5.5.5',
-  './assets/skins-v7.css?v=5.5.5',
-  './assets/skins-v7.js?v=5.5.5',
-  './assets/skins-m.css?v=5.5.5',
-  './assets/data.js?v=5.5.5',
-  './assets/engine.js?v=5.5.5',
-  './assets/wellness.js?v=5.5.5',
-  './assets/gender.js?v=5.5.5',
-  './assets/extras.js?v=5.5.5',
-  './assets/foodlib.js?v=5.5.5',
-  './assets/foodlib-data.js?v=5.5.5',
-  './assets/skin-fx.js?v=5.5.5',
-  './assets/codes.js?v=5.5.5',
-  './assets/announce.js?v=5.5.5',
-  './assets/trip.js?v=5.5.5',
-  './assets/app.js?v=5.5.5',
-  './assets/maint-credential.js?v=5.5.5',
-  './assets/maint.js?v=5.5.5'
+  './assets/app.css?v=6.0.0',
+  './assets/skins-v43.css?v=6.0.0',
+  './assets/skins-v5.css?v=6.0.0',
+  './assets/skins-v6.css?v=6.0.0',
+  './assets/skins-v6.js?v=6.0.0',
+  './assets/skins-v7.css?v=6.0.0',
+  './assets/skins-v7.js?v=6.0.0',
+  './assets/skins-m.css?v=6.0.0',
+  './assets/skins-l.css?v=6.0.0',
+  './assets/data.js?v=6.0.0',
+  './assets/engine.js?v=6.0.0',
+  './assets/wellness.js?v=6.0.0',
+  './assets/gender.js?v=6.0.0',
+  './assets/extras.js?v=6.0.0',
+  './assets/foodlib.js?v=6.0.0',
+  './assets/foodlib-data.js?v=6.0.0',
+  './assets/skin-fx.js?v=6.0.0',
+  './assets/codes.js?v=6.0.0',
+  './assets/announce.js?v=6.0.0',
+  './assets/trip.js?v=6.0.0',
+  './assets/app.js?v=6.0.0',
+  './assets/maint-credential.js?v=6.0.0',
+  './assets/maint.js?v=6.0.0'
 ];
 
 self.addEventListener('install', event => {

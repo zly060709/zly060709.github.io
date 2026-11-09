@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""v5.5 皮肤生成器主程序：g36–g85（50 套机制型皮肤）
+"""v6.0 皮肤生成器主程序：g36–g135（100 套机制型皮肤 = v5.5 五十连发 + v6.0 新五十连发）
 
 输出：
-  assets/skins-v7.css        全局通道 + 5 引擎核心 + 50 套皮肤块
-  assets/skins-v7.js         5 台引擎渲染器 + 运行时（sync/audit）
-  assets/skins/index.json    追加 50 条扭蛋清单条目（幂等）
+  assets/skins-v7.css        全局通道 + 10 引擎核心 + 100 套皮肤块 + 识别三件套（徽记/边语言/指示形状）
+  assets/skins-v7.js         10 台引擎渲染器 + 运行时（sync/audit）
+  assets/skins/index.json    追加 100 条扭蛋清单条目（幂等）
 构建约束：任何正文字色对 < 4.5:1 → 抛 ContrastError 中止。
 运行：python tools/gen_v7.py   （在仓库根目录执行）
 """
@@ -20,8 +20,33 @@ from skin_spec_v7 import SPEC
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-ENGINES = ('grow', 'meter', 'plate', 'vessel', 'motion')
+ENGINES = ('grow', 'meter', 'plate', 'vessel', 'motion',
+           'orbit', 'light', 'desk', 'time', 'shelf')
 ALWAYS_DARK_DASH = []  # 运行时填充：暗色皮肤 id 列表（tabbar 边线规则用）
+
+# v6.0 全员识别 3.0：引擎默认徽记/边语言/tabbar 指示（spec 显式字段优先）
+ENGINE_BADGE = {'grow': '芽', 'meter': '度', 'plate': '牌', 'vessel': '纳',
+                'motion': '转', 'orbit': '轨', 'light': '影', 'desk': '账',
+                'time': '时', 'shelf': '藏'}
+ENGINE_EDGE = {'grow': '17px 5px 17px 5px', 'meter': '4px', 'plate': '2px 14px 2px 14px',
+               'vessel': '18px 18px 6px 6px', 'motion': '14px', 'orbit': '6px 18px 18px 6px',
+               'light': '20px 8px 20px 8px', 'desk': '3px 12px 3px 12px',
+               'time': '16px 4px 4px 16px', 'shelf': '8px 20px 8px 20px'}
+ENGINE_TAB = {'grow': 'triangle', 'meter': 'bar', 'plate': 'bracket', 'vessel': 'seal',
+              'motion': 'ring', 'orbit': 'starb', 'light': 'moon', 'desk': 'ticket',
+              'time': 'gear', 'shelf': 'diamond'}
+
+
+OLD_BADGE = {'g36': '窗', 'g37': '市', 'g38': '蜂', 'g39': '集', 'g40': '育', 'g41': '檐', 'g42': '归', 'g43': '龙', 'g44': '钨', 'g45': '石', 'g46': '寒', 'g47': '黄', 'g48': '药', 'g49': '量', 'g50': '象', 'g51': '子', 'g52': '座', 'g53': '沙', 'g54': '滴', 'g55': '盘', 'g56': '翻', 'g57': '活', 'g58': '算', 'g59': '闸', 'g60': '梯', 'g61': '漆', 'g62': '黑', 'g63': '箱', 'g64': '头', 'g65': '砝', 'g66': '信', 'g67': '蒸', 'g68': '签', 'g69': '幕', 'g70': '炊', 'g71': '陶', 'g72': '书', 'g73': '井', 'g74': '果', 'g75': '鉴', 'g76': '唱', 'g77': '水', 'g78': '纸', 'g79': '走', 'g80': '机', 'g81': '陀', 'g82': '八', 'g83': '计', 'g84': '轴', 'g85': '日'}
+
+
+def skin_identity(sp):
+    """返回 (徽记字, 边语言圆角, tab 形状键)——spec 字段优先，引擎默认兜底。"""
+    eng = sp['eng']
+    badge = sp.get('badge') or OLD_BADGE.get(sp['id']) or ENGINE_BADGE.get(eng, '签')
+    edge = sp.get('edge') or ENGINE_EDGE.get(eng, '14px')
+    tab = sp.get('tabshape') or ENGINE_TAB.get(eng, 'bar')
+    return badge, edge, tab
 
 
 # ---------------- 色板派生 ----------------
@@ -119,15 +144,16 @@ def tokens_line(p):
 
 # ---------------- CSS 组装 ----------------
 GLOBAL_CSS = """/* ============================================================================
-   skins-v7.css · v5.5 五十连发（g36–g85）· 五台机制引擎
+   skins-v7.css · v6.0 全代（g36–g135）· 十台机制引擎
    ----------------------------------------------------------------------------
    由 tools/gen_v7.py 生成——手改会被覆盖；要改规格请改 tools/skin_spec_v7.py。
+   v6.0：新五引擎（orbit/light/desk/time/shelf）+ 全员识别三件套（§8）。
    构建契约（gen_v7.py 强制）：
    · 正文对比度 ink/ink2/ink3 × 各承载面 ≥ 4.5:1（亮暗两套分别校验）
    · 零图片零 canvas 零额外请求；组件 = DOM + CSS + 内联变形
    · 390px 无横向溢出；触控目标 ≥ 44px（引擎交互区统一 44px 最小命中）
    · prefers-reduced-motion 下保留静态形状锚点
-   引擎：grow 生长聚合 / meter 表计指针 / plate 铭牌文字 / vessel 容器堆积 / motion 动态往复
+   引擎：grow/meter/plate/vessel/motion（v5.5）+ orbit 轨道连络 / light 光影剧场 / desk 账房文书 / time 时序节气 / shelf 收藏陈列（v6.0）
    ============================================================================ */
 
 /* ============================================================
@@ -275,14 +301,60 @@ html[data-skin-v7="1"] .page { padding-bottom: calc(96px + env(safe-area-inset-b
 #skinStage .mo-empty { position: absolute; left: 12px; bottom: 8px; font-size: 11px; color: var(--ink-3); }
 
 /* ============================================================
+   §6b 引擎核心 · E-F orbit（轨道·连络）· v6.0 新增
+   ============================================================ */
+#skinStage .or-track { position: absolute; inset: 0; }
+#skinStage .or-ring { position: absolute; border-radius: 50%; border: 1.5px dashed var(--line-2); opacity: .55; pointer-events: none; }
+#skinStage .or-read { position: absolute; right: 12px; bottom: 8px; z-index: 2; font-size: 11px; color: var(--ink-3); }
+#skinStage .or-empty { position: absolute; left: 12px; bottom: 8px; z-index: 2; font-size: 11px; color: var(--ink-3); }
+
+/* ============================================================
+   §6c 引擎核心 · E-G light（光影·剧场）· v6.0 新增
+   ============================================================ */
+#skinStage .lt-stage { position: absolute; inset: 0; overflow: hidden; }
+#skinStage .lt-read { position: absolute; right: 12px; bottom: 8px; z-index: 3; font-size: 11px; color: var(--ink-3); }
+#skinStage .lt-empty { position: absolute; left: 12px; bottom: 8px; z-index: 3; font-size: 11px; color: var(--ink-3); }
+#skinStage .lt-beam { position: absolute; transform-origin: 50% 100%; transition: transform .8s ease; pointer-events: none; }
+#skinStage .lt-glow { animation: skv7-flicker 3.2s ease-in-out infinite; }
+@keyframes skv7-flicker { 0%, 100% { opacity: .85; } 45% { opacity: 1; } 62% { opacity: .74; } }
+
+/* ============================================================
+   §6d 引擎核心 · E-H desk（账房·文书）· v6.0 新增
+   ============================================================ */
+#skinStage .dk-desk { position: absolute; inset: 0; }
+#skinStage .dk-read { position: absolute; right: 12px; bottom: 8px; z-index: 2; font-size: 11px; color: var(--ink-3); }
+#skinStage .dk-empty { position: absolute; left: 12px; bottom: 8px; z-index: 2; font-size: 11px; color: var(--ink-3); }
+
+/* ============================================================
+   §6e 引擎核心 · E-I time（时序·节气）· v6.0 新增
+   ============================================================ */
+#skinStage .tm-dial { position: absolute; inset: 0; }
+#skinStage .tm-read { position: absolute; right: 12px; bottom: 8px; z-index: 2; font-size: 11px; color: var(--ink-3); }
+#skinStage .tm-empty { position: absolute; left: 12px; bottom: 8px; z-index: 2; font-size: 11px; color: var(--ink-3); }
+
+/* ============================================================
+   §6f 引擎核心 · E-J shelf（收藏·陈列）· v6.0 新增
+   ============================================================ */
+#skinStage .sf-shelf { position: absolute; inset: 0; }
+#skinStage .sf-board { position: absolute; left: 8%; right: 8%; bottom: 28px; height: 5px; border-radius: 3px; background: var(--line-2); opacity: .7; pointer-events: none; }
+#skinStage .sf-read { position: absolute; right: 12px; bottom: 8px; z-index: 2; font-size: 11px; color: var(--ink-3); }
+#skinStage .sf-empty { position: absolute; left: 12px; bottom: 8px; z-index: 2; font-size: 11px; color: var(--ink-3); }
+
+/* ============================================================
    §7 reduced-motion · 省电档静态姿态（形状锚点保留）
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   #skinStage .gu.pop, #skinStage .gv-tip, #skinStage .mt-badge,
-  #skinStage .mo-run .mo-rotor, #skinStage .mo-boost .mo-rotor { animation: none; }
+  #skinStage .mo-run .mo-rotor, #skinStage .mo-boost .mo-rotor,
+  #skinStage .lt-glow, #skinStage .tm-smoke, #skinStage .gu.flip,
+  #skinStage .dk-mark.pop, #skinStage .gu::before,
+  #skinStage .ty-line span { animation: none; }
   #skinStage .mt-needle, #skinStage .mt-needle-x, #skinStage .mt-beam,
-  #skinStage .mt-col { transition: none; }
+  #skinStage .mt-col, #skinStage .tm-fill, #skinStage .tm-arrow,
+  #skinStage .tm-needle, #skinStage .tm-shadow, #skinStage .tm-post,
+  #skinStage .sk-decor.d-g125::before, #skinStage .sk-decor.d-g130 { transition: none; }
   #skinStage .mo-run .mo-rotor { transform: rotate(24deg); }
+  #skinStage .ty-line span { opacity: 1; }
 }
 """
 
@@ -320,8 +392,8 @@ def emit_skin_css(sp, light, dark, always):
 
 
 # ---------------- JS 组装 ----------------
-JS_HEAD = """/* skins-v7.js · v5.5 五十连发运行时（g36–g85）
-   五台机制引擎：grow / meter / plate / vessel / motion。
+JS_HEAD = """/* skins-v7.js · v6.0 全代运行时（g36–g135）
+   十台机制引擎：grow / meter / plate / vessel / motion / orbit / light / desk / time / shelf。
    职责（与 v5.4 的 skins-v6.js 同纪律）：不改业务逻辑；数据只读 fxDataContext 快照；
    reduced-motion 只关动效不关形状；组件失败不影响账本（try/catch 包裹渲染）。 */
 (function () {
@@ -342,6 +414,29 @@ JS_HEAD = """/* skins-v7.js · v5.5 五十连发运行时（g36–g85）
   function active() { return root.getAttribute('data-skin') || ''; }
   function isV7(id) { return V7.indexOf(id) >= 0; }
   function el(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
+
+  /* v6.0 派生锚点：date/totalRecords 直通 + month/term 纯派生（不读 DB） */
+  var TERMS = ['小寒', '大寒', '立春', '雨水', '惊蛰', '春分', '清明', '谷雨',
+               '立夏', '小满', '芒种', '夏至', '小暑', '大暑', '立秋', '处暑',
+               '白露', '秋分', '寒露', '霜降', '立冬', '小雪', '大雪', '冬至'];
+  function monthOf(ds) {
+    var p = String(ds || '').split('-');
+    if (p.length > 1 && Number(p[1])) return Number(p[1]);
+    try { return new Date().getMonth() + 1; } catch (e) { return 1; }
+  }
+  function termOf(ds) {
+    var p = String(ds || '').split('-');
+    if (p.length < 3 || !Number(p[0]) || !Number(p[1]) || !Number(p[2])) return 0;
+    try {
+      var dt = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+      if (isNaN(dt.getTime())) return 0;
+      var start = new Date(dt.getFullYear(), 0, 0);
+      var dy = Math.floor((dt - start) / 864e5);
+      var idx = Math.floor((dy - 6) / 15.218);
+      if (idx < 0) idx += 24;
+      return idx % 24;
+    } catch (e) { return 0; }
+  }
 
   /* ---------------- 数据写入（与 v6 同一数据面） ---------------- */
   function writeData(d) {
@@ -365,7 +460,12 @@ JS_HEAD = """/* skins-v7.js · v5.5 五十连发运行时（g36–g85）
              items: d.items || [], recorded: count > 0,
              over: left != null && left < 0,
              recentMiss: d.recentMiss || [], recentDates: d.recentDates || [],
-             dayphase: root.getAttribute('data-dayphase') || 'noon' };
+             dayphase: root.getAttribute('data-dayphase') || 'noon',
+             total: Math.max(0, Number(d.totalRecords) || 0),
+             date: String(d.date || ''),
+             month: monthOf(d.date),
+             term: termOf(d.date),
+             weekday: weekCh(d.date) };
   }
 
   /* ---------------- 布局坐标（E-A） ---------------- */
@@ -389,6 +489,19 @@ JS_HEAD = """/* skins-v7.js · v5.5 五十连发运行时（g36–g85）
       return WEEK_CH[dt.getDay()] || '';
     } catch (e) { return ''; }
   }
+  /* v6.0 · E-F orbit 轨道布局坐标（% 坐标系，390×180 舞台） */
+  var ORB = {
+    planets: function (n) { var a = [], i; for (i = 0; i < n; i++) { var t = Math.PI * (0.94 - (n > 1 ? i / (n - 1) : 0.5) * 1.88); a.push({ x: 50 + 38 * Math.cos(t), y: 50 - 30 * Math.sin(t) }); } return a; },
+    subway: function (n) { var a = [], i; for (i = 0; i < n; i++) { var t = n > 1 ? i / (n - 1) : 0.5; a.push({ x: 8 + t * 84, y: 50 + Math.sin(t * Math.PI * 2.2) * 13 }); } return a; },
+    stars: function (n) { var base = [[18, 28], [31, 16], [45, 26], [58, 13], [72, 24], [83, 38], [64, 44], [40, 46], [25, 54]]; return base.slice(0, Math.max(1, n)); },
+    gears: function (n) { var a = [], i; for (i = 0; i < n; i++) a.push({ x: 18 + i * 22, y: i % 2 ? 62 : 34 }); return a; },
+    ferris: function (n) { var a = [], i; for (i = 0; i < n; i++) { var t = Math.PI * 2 * i / Math.max(1, n) + Math.PI / 2; a.push({ x: 50 + 30 * Math.cos(t), y: 44 + 30 * Math.sin(t) }); } return a; },
+    cable: function (n) { var a = [], i; for (i = 0; i < n; i++) { var t = n > 1 ? i / (n - 1) : 0.5; a.push({ x: 14 + t * 70, y: 62 - t * 34 }); } return a; },
+    satellites: function (n) { var a = [], i; for (i = 0; i < n; i++) { var t = n > 1 ? i / (n - 1) : 0.5; a.push({ x: 7 + t * 86, y: 30 + Math.sin(t * Math.PI) * 15 }); } return a; },
+    helix: function (n) { var a = [], i; for (i = 0; i < n; i++) a.push({ x: 22 + (i % 2) * 46, y: 20 + Math.floor(i / 2) * 20 }); return a; },
+    maze: function (n) { var a = [], i; for (i = 0; i < n; i++) { var row = Math.floor(i / 5), col = row % 2 ? 4 - (i % 5) : i % 5; a.push({ x: 16 + col * 17, y: 22 + row * 22 }); } return a; },
+    tram: function (n) { var a = [], i; for (i = 0; i < n; i++) { var t = n > 1 ? i / (n - 1) : 0.5; a.push({ x: 10 + t * 80, y: 54 }); } return a; }
+  };
 """
 
 JS_BODY = """
@@ -698,6 +811,403 @@ JS_BODY = """
       (!d.recorded ? '<div class="mo-empty">' + esc(cfg.tip0 || '记下第一笔，机构开始运转') + '</div>' : '');
   }
 
+  /* ---------------- E-F orbit 渲染器（v6.0 新增） ---------------- */
+  function orbitRead(d, cfg) {
+    var bind = cfg.bind;
+    if (bind === 'streak') return '连续 ' + d.streak + ' 天';
+    if (bind === 'count') return '今日 ' + d.count + ' 笔';
+    if (bind === 'miss14') return '近 14 天 ' + d.recentMiss.filter(Boolean).length + ' 记';
+    if (bind === 'meals') {
+      var mm = d.meals || {};
+      var n = ['breakfast', 'lunch', 'dinner', 'snack', 'exercise'].filter(function (k) { return (Number(mm[k]) || 0) > 0; }).length;
+      return '五餐亮 ' + n + '/5';
+    }
+    if (bind === 'macro') return '宏量 ' + (Number((d.macros || {}).kcal) || 0) + ' kcal';
+    if (bind === 'progress') return Math.round(d.progress * 100) + '% · ' + (d.left != null ? d.left : d.kcal) + ' kcal';
+    return '';
+  }
+  function renderOrbit(box, d, cfg, id) {
+    var bind = cfg.bind, N = cfg.max || 8, on = [], labels = [], i;
+    if (bind === 'streak') { for (i = 0; i < N; i++) on.push(i < Math.min(d.streak, N)); }
+    else if (bind === 'count') { for (i = 0; i < N; i++) on.push(i < Math.min(d.count, N)); }
+    else if (bind === 'miss14') {
+      N = 14; var src = d.recentMiss.slice(-14); while (src.length < 14) src.unshift(0);
+      on = src.map(function (x) { return !!x; });
+      labels = d.recentDates.slice(-14).map(function (dt) { return weekCh(dt); });
+      while (labels.length < 14) labels.unshift('');
+    } else if (bind === 'meals') {
+      N = 5; var mm = d.meals || {}, mkeys = ['breakfast', 'lunch', 'dinner', 'snack', 'exercise'], mnames = ['早', '午', '晚', '点', '动'];
+      on = mkeys.map(function (k) { return (Number(mm[k]) || 0) > 0; });
+      labels = mkeys.map(function (k, j) { return mnames[j] + ' ' + Math.round(Number(mm[k]) || 0) + ' kcal'; });
+    } else if (bind === 'macro') {
+      N = 6; var mc = d.macros || {}, mv = [Number(mc.p) || 0, Number(mc.c) || 0, Number(mc.f) || 0];
+      on = [mv[0] > 0, mv[1] > 0, mv[2] > 0, mv[0] > 0, mv[1] > 0, mv[2] > 0];
+      labels = ['蛋白 ' + mv[0] + 'g', '碳水 ' + mv[1] + 'g', '脂肪 ' + mv[2] + 'g',
+                '蛋白 ' + mv[0] + 'g', '碳水 ' + mv[1] + 'g', '脂肪 ' + mv[2] + 'g'];
+    } else if (bind === 'progress') {
+      N = cfg.max || 4;
+      for (i = 0; i < N; i++) on.push(i < Math.round(d.progress * N));
+    }
+    var pos = (ORB[cfg.mech] || ORB.planets)(N);
+    var units = '';
+    for (i = 0; i < N; i++) {
+      var tip = bind === 'streak' ? '第' + (i + 1) + '天'
+        : bind === 'count' ? (i + 1) + ' 笔'
+        : bind === 'progress' ? Math.round(d.progress * 100) + '%'
+        : (labels[i] || '') + (bind === 'miss14' ? (on[i] ? '·已记' : '·未记') : '');
+      units += '<button type="button" class="gu' + (on[i] ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + esc(tip) + '" style="left:' + pos[i].x + '%;top:' + pos[i].y + '%"><i></i></button>';
+    }
+    if (cfg.mech === 'gears') box.style.setProperty('--or-ang', (d.progress * 270).toFixed(1) + 'deg');
+    var any = on.some(Boolean);
+    box.innerHTML = '<div class="sk-decor d-' + id + '"></div><div class="or-track">' + units + '</div>' +
+      '<div class="or-read">' + esc(orbitRead(d, cfg)) + '</div>' +
+      (any ? '' : '<div class="or-empty">' + esc(cfg.tip0 || '记下第一笔，轨道开始点亮') + '</div>');
+  }
+
+  /* ---------------- E-G light 渲染器（v6.0 新增） ---------------- */
+  function renderLight(box, d, cfg, id) {
+    var mech = cfg.mech, html = '<div class="sk-decor d-' + id + '"></div><div class="lt-stage">', read = '', empty = '', i;
+    if (mech === 'moon') {
+      var src = d.recentMiss.slice(-14); while (src.length < 14) src.unshift(0);
+      var labels = d.recentDates.slice(-14).map(function (dt) { return weekCh(dt); });
+      while (labels.length < 14) labels.unshift('');
+      var cells = '';
+      for (i = 0; i < 14; i++) {
+        var ph = (i + 1) / 14;
+        cells += '<button type="button" class="gu' + (src[i] ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + esc(labels[i] || '') + (src[i] ? '·已记' : '·未记') + '" style="left:' + (7 + i * 6.2) + '%;top:' + (44 - Math.sin(ph * Math.PI) * 16) + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '月相历 · 近 14 天 ' + src.filter(Boolean).length + ' 记';
+    } else if (mech === 'lighthouse') {
+      var beam = { dawn: -34, noon: -8, dusk: 18, night: 44 }[d.dayphase] || -8;
+      box.style.setProperty('--beam', beam + 'deg');
+      box.classList.toggle('alarm', !!d.over);
+      html += '<div class="lt-beam"></div><div class="lt-lamp"></div>';
+      read = (d.over ? '警示 · ' : '守夜 · ') + (d.left != null ? d.left : d.kcal) + ' kcal';
+    } else if (mech === 'film') {
+      var items = d.items.slice(-6);
+      var frames = items.map(function (x, j) {
+        return '<button type="button" class="gu on" data-i="' + j + '" data-tip="' + esc(String(x.name || '一餐')) + ' ' + Math.round(x.kcal || 0) + '" style="left:calc(50% + ' + ((j - (items.length - 1) / 2) * 17 - 8.5) + '%);top:36%"><i></i></button>';
+      }).join('');
+      html += frames;
+      read = items.length ? items.length + ' 帧今日影像' : '';
+      empty = '放映机待片 · 记一笔开机';
+    } else if (mech === 'papercut') {
+      var N1 = cfg.max || 7, cells = '';
+      for (i = 0; i < N1; i++) {
+        cells += '<button type="button" class="gu' + (i < Math.min(d.streak, N1) ? ' on' : ' off') + '" data-i="' + i + '" data-tip="第' + (i + 1) + '天" style="left:' + (12 + i * 11.5) + '%;top:' + (32 + (i % 2) * 14) + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '窗花 ' + Math.min(d.streak, N1) + '/' + N1;
+    } else if (mech === 'skyline') {
+      var N2 = 12, spots = [[20, 52], [26, 40], [33, 58], [44, 30], [52, 46], [62, 22], [70, 40], [80, 48], [87, 34], [35, 44], [57, 34], [74, 56]];
+      var cells = '';
+      for (i = 0; i < N2; i++) {
+        cells += '<button type="button" class="gu' + (i < Math.round(d.progress * N2) ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + Math.round(d.progress * 100) + '%" style="left:' + spots[i][0] + '%;top:' + spots[i][1] + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '亮窗 ' + Math.round(d.progress * 100) + '%';
+    } else if (mech === 'spotlight') {
+      var sp = { dawn: -26, noon: 0, dusk: 26, night: 40 }[d.dayphase] || 0;
+      box.style.setProperty('--spot', sp + 'deg');
+      var meals = d.meals || {}, mkeys = ['breakfast', 'lunch', 'dinner', 'snack', 'exercise'], mnames = ['早', '午', '晚', '点', '动'];
+      var chips = '';
+      for (i = 0; i < 5; i++) {
+        var kcal = Math.round(Number(meals[mkeys[i]]) || 0);
+        chips += '<button type="button" class="gu' + (kcal > 0 ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + mnames[i] + ' ' + kcal + ' kcal" style="left:' + (14 + i * 15) + '%;top:' + (56 + (i % 2) * 12) + '%"><b>' + mnames[i] + '</b></button>';
+      }
+      html += chips;
+      read = { dawn: '晨场', noon: '日场', dusk: '暮场', night: '夜场' }[d.dayphase] || '剧场';
+    } else if (mech === 'projection') {
+      var N3 = cfg.max || 9, pts = [[22, 34], [34, 22], [46, 40], [58, 18], [70, 32], [80, 44], [28, 48], [52, 52], [64, 46]];
+      var cells = '';
+      for (i = 0; i < N3; i++) {
+        cells += '<button type="button" class="gu' + (i < Math.min(d.count, N3) ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + (i + 1) + ' 笔" style="left:' + pts[i][0] + '%;top:' + pts[i][1] + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '投影 ' + Math.min(d.count, N3) + '/' + N3 + ' 星';
+    } else if (mech === 'candles') {
+      var N4 = cfg.max || 7, cells = '';
+      for (i = 0; i < N4; i++) {
+        cells += '<button type="button" class="gu' + (i < Math.min(d.streak, N4) ? ' on' : ' off') + '" data-i="' + i + '" data-tip="第' + (i + 1) + '天" style="left:' + (14 + i * 10.5) + '%;top:32%"><i></i></button>';
+      }
+      html += cells;
+      read = '烛光 ' + Math.min(d.streak, N4) + '/' + N4;
+    } else if (mech === 'eclipse') {
+      box.style.setProperty('--ec', (104 * d.leftRatio).toFixed(1) + 'px');
+      html += '<button type="button" class="gu lt-lamp" data-i="0" data-tip="食分 ' + Math.round((1 - d.leftRatio) * 100) + '%"><i></i></button>';
+      read = '食分 ' + Math.round((1 - d.leftRatio) * 100) + '% · ' + (d.left != null ? d.left : '--') + ' kcal';
+    } else { /* shadow */
+      var items = d.items.slice(-6);
+      var figs = items.map(function (x, j) {
+        return '<button type="button" class="gu on c' + (j % 6) + '" data-i="' + j + '" data-tip="' + esc(String(x.name || '一餐')) + '" style="left:' + (10 + j * 14) + '%;top:' + (30 + (j % 3) * 13) + '%"><i></i></button>';
+      }).join('');
+      html += figs;
+      read = items.length ? '手影戏 · ' + items.length + ' 味登场' : '';
+      empty = '记一笔，影人登台';
+    }
+    html += '</div><div class="lt-read">' + esc(read) + '</div>' +
+      (read ? '' : '<div class="lt-empty">' + esc(empty) + '</div>');
+    box.innerHTML = html;
+  }
+
+  /* ---------------- E-H desk 渲染器（v6.0 新增） ---------------- */
+  var MORSE = { '0': '.-', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+                '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.' };
+  function renderDesk(box, d, cfg, id) {
+    var mech = cfg.mech, html = '<div class="sk-decor d-' + id + '"></div><div class="dk-desk">', read = '', empty = '', i;
+    if (mech === 'abacus') {
+      var mc = d.macros || {}, caps = [80, 220, 66], names = ['蛋白', '碳水', '脂肪'];
+      var vals = [Number(mc.p) || 0, Number(mc.c) || 0, Number(mc.f) || 0];
+      var rods = '', beads = '';
+      for (i = 0; i < 3; i++) {
+        var r = clamp(vals[i] / caps[i], 0, 1);
+        rods += '<div class="dk-rod" style="left:' + (24 + i * 24) + '%"></div>';
+        var by = 24 + (1 - r) * 34;
+        beads += '<button type="button" class="gu' + (vals[i] > 0 ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + names[i] + ' ' + vals[i] + 'g" style="left:' + (24 + i * 24) + '%;top:' + by + '%"><i></i></button>';
+      }
+      html += rods + beads;
+      read = '宏量 ' + (Number(mc.kcal) || 0) + ' kcal';
+      empty = '记一笔，算珠落位';
+    } else if (mech === 'ledger') {
+      var items = d.items.slice(-6), rows = '';
+      for (i = 0; i < 6; i++) {
+        var it = items[i];
+        rows += '<button type="button" class="gu' + (it ? ' on' : ' off') + '" data-i="' + i + '" data-txt="' + esc(it ? String(it.name || '一餐').slice(0, 8) : '') + '" data-tip="' + esc(it ? (String(it.name || '一餐') + ' ' + Math.round(it.kcal || 0) + ' kcal') : '待记') + '" style="left:8%;top:' + (16 + i * 12) + '%"><i></i></button>';
+      }
+      html += rows;
+      read = items.length ? '流水 ' + items.length + ' 行 · 今日' : '';
+      empty = '翻开新账页，记第一行';
+    } else if (mech === 'passbook') {
+      var NP = cfg.max || 9, got = Math.min(d.total, NP), lines = '';
+      for (i = 0; i < NP; i++) {
+        lines += '<button type="button" class="gu' + (i < got ? ' on' : ' off') + '" data-i="' + i + '" data-txt="' + (i < got ? '第 ' + (i + 1) + ' 笔 · 记录' : '') + '" data-tip="' + (i < got ? '第 ' + (i + 1) + ' 笔' : '待打印') + '" style="left:14%;top:' + (18 + i * 8.6) + '%"><i></i></button>';
+      }
+      html += lines;
+      read = '累计 ' + d.total + ' 笔';
+      empty = '第一笔，存折开印';
+    } else if (mech === 'typewriter') {
+      var text = '今日 ' + d.count + ' 笔 · ' + d.kcal + ' kcal';
+      var chars = '';
+      for (i = 0; i < text.length; i++) chars += '<span style="animation-delay:' + (i * 70) + 'ms">' + esc(text[i]) + '</span>';
+      html += '<div class="ty-paper"></div><div class="ty-line">' + chars + '</div><div class="ty-carriage"></div><div class="ty-ribbon"></div>';
+      read = '色带 · 就位';
+    } else if (mech === 'stubs') {
+      var src = d.recentMiss.slice(-14); while (src.length < 14) src.unshift(0);
+      var labels = d.recentDates.slice(-14).map(function (dt) { return weekCh(dt); });
+      while (labels.length < 14) labels.unshift('');
+      var stubs = '';
+      for (i = 0; i < 14; i++) {
+        stubs += '<button type="button" class="gu' + (src[i] ? ' on' : ' off') + '" data-i="' + i + '" data-txt="' + esc(labels[i]) + '" data-tip="' + esc(labels[i] || '') + (src[i] ? '·已记' : '·未记') + '" style="left:' + (8 + i * 6.1) + '%;top:' + (28 + (i % 2) * 10) + '%"><i></i></button>';
+      }
+      html += stubs;
+      read = '存根 ' + src.filter(Boolean).length + '/14 联';
+    } else if (mech === 'pawn') {
+      var NW = cfg.max || 8, got2 = Math.min(d.total, NW), tags = '';
+      for (i = 0; i < NW; i++) {
+        tags += '<button type="button" class="gu' + (i < got2 ? ' on' : ' off') + '" data-i="' + i + '" data-txt="' + (i < got2 ? String(i + 1) : '') + '" data-tip="' + (i < got2 ? '第 ' + (i + 1) + ' 典' : '待典') + '" style="left:' + (24 + i * 6.8) + '%;top:' + (24 + (i % 2) * 16) + '%"><i></i></button>';
+      }
+      html += tags;
+      read = '在柜 ' + d.total + ' 件';
+      empty = '第一笔，挂牌入柜';
+    } else if (mech === 'folders') {
+      var meals = d.meals || {}, mkeys = ['breakfast', 'lunch', 'dinner', 'snack', 'exercise'], mnames = ['早', '午', '晚', '点', '动'];
+      var tcolors = ['var(--a1-2, var(--green))', 'var(--a2-2, var(--amber))', 'var(--red)', 'var(--green-line)', 'var(--line-2)'];
+      var fl = '';
+      for (i = 0; i < 5; i++) {
+        var kcal = Math.round(Number(meals[mkeys[i]]) || 0);
+        fl += '<button type="button" class="gu' + (kcal > 0 ? ' on' : ' off') + '" data-i="' + i + '" data-txt="' + mnames[i] + '" data-tip="' + mnames[i] + ' ' + kcal + ' kcal" style="left:' + (12 + i * 15.5) + '%;top:28%;--tab:' + tcolors[i] + '"><i></i></button>';
+      }
+      html += fl;
+      read = '卷宗 · 五餐归档';
+    } else if (mech === 'inkstone') {
+      box.style.setProperty('--v', clamp(d.kcal / 2200, 0.08, 1).toFixed(3));
+      html += '<div class="dk-stick"></div>';
+      read = '墨色 · ' + d.kcal + ' kcal';
+      empty = '记一笔，墨池渐深';
+    } else if (mech === 'sealmark') {
+      html += '<button type="button" class="gu dk-mark' + (d.recorded ? '' : ' empty') + '" data-i="0" data-tip="' + (d.recorded ? '今日已画押' : '记一笔落印') + '">记</button>';
+      read = d.recorded ? '画押 · 今日已记' : '待押 · 今日未记';
+    } else { /* telegram */
+      var s = String(Math.min(d.count, 99)), marks = '', idx = 0;
+      var digits = s.split('');
+      for (var gi = 0; gi < digits.length; gi++) {
+        var code = MORSE[digits[gi]] || '';
+        for (var cj = 0; cj < code.length; cj++) {
+          marks += '<i class="' + (code[cj] === '-' ? 'dt' : '') + '" style="left:' + (6 + idx * 4.4) + '%"></i>';
+          idx++;
+        }
+        idx += 0.5;
+      }
+      html += '<button type="button" class="gu" data-i="0" data-tip="' + esc(String(d.count) + ' 笔 · 点划码') + '" style="left:0;top:30%;width:100%"><i></i>' + marks + '</button>';
+      read = '译码 · 今日 ' + d.count + ' 笔';
+      empty = '记一笔，电键起声';
+    }
+    html += '</div><div class="dk-read">' + esc(read) + '</div>' +
+      (read ? '' : '<div class="dk-empty">' + esc(empty) + '</div>');
+    box.innerHTML = html;
+  }
+
+  /* ---------------- E-I time 渲染器（v6.0 新增） ---------------- */
+  function renderTime(box, d, cfg, id) {
+    var mech = cfg.mech, html = '<div class="sk-decor d-' + id + '"></div><div class="tm-dial">', read = '', empty = '', i;
+    var ph = { dawn: 0.25, noon: 0.5, dusk: 0.75, night: 0.95 }[d.dayphase] || 0.5;
+    var phName = { dawn: '晨 · 卯时', noon: '午 · 午时', dusk: '暮 · 酉时', night: '夜 · 子时' }[d.dayphase] || '日中';
+    if (mech === 'waterclock') {
+      box.style.setProperty('--v', ph.toFixed(3));
+      html += '<div class="tm-fill"></div><div class="tm-arrow"></div>';
+      read = phName;
+    } else if (mech === 'termdial') {
+      box.style.setProperty('--ang', (-(d.term / 24) * 360).toFixed(1) + 'deg');
+      html += '<button type="button" class="gu tm-core" data-i="0" data-tip="' + esc(TERMS[d.term] || '') + ' · ' + esc(d.date || '今日') + '">' + esc(TERMS[d.term] || '—') + '</button>';
+      read = (TERMS[d.term] || '') + ' · ' + d.month + ' 月';
+    } else if (mech === 'watchdrum') {
+      var idx = { dawn: 0, noon: 1, dusk: 2, night: 3 }[d.dayphase] || 1;
+      var wnames = ['一更', '三更', '五更', '守夜'];
+      var lamps = '';
+      for (i = 0; i < 4; i++) {
+        lamps += '<button type="button" class="gu' + (i === idx ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + wnames[i] + '" style="left:' + (20 + i * 15) + '%;top:52%"><i></i></button>';
+      }
+      html += lamps;
+      read = wnames[idx] + ' · ' + d.count + ' 笔';
+    } else if (mech === 'season') {
+      var m = d.month || 1;
+      var season = (m >= 3 && m <= 5) ? 0 : (m >= 6 && m <= 8) ? 1 : (m >= 9 && m <= 11) ? 2 : 3;
+      var snames = ['春', '夏', '秋', '冬'];
+      var panels = '';
+      for (i = 0; i < 4; i++) {
+        panels += '<button type="button" class="gu' + (i === season ? ' on' : ' off') + '" data-i="' + i + '" data-txt="' + snames[i] + '" data-tip="' + snames[i] + ' · ' + m + ' 月" style="left:' + (14 + i * 17) + '%;top:20%"><i></i></button>';
+      }
+      html += panels;
+      read = snames[season] + '季 · ' + m + ' 月';
+    } else if (mech === 'startrails') {
+      box.style.setProperty('--v', ph.toFixed(3));
+      html += '<div class="tm-ground"></div><div class="tm-hill"></div>';
+      read = '曝光 ' + Math.round(ph * 100) + '% · ' + d.count + ' 笔';
+    } else if (mech === 'almanac') {
+      html += '<button type="button" class="gu" data-i="0" data-txt="' + esc(String(d.date || '').slice(5)) + '" data-tip="宜记账 · 点按翻页" style="left:50%;top:38%;margin-left:-55px"><i></i></button>';
+      read = (d.weekday ? '周' + d.weekday + ' · ' : '') + (TERMS[d.term] || '');
+    } else if (mech === 'contour') {
+      box.style.setProperty('--v', d.leftRatio.toFixed(3));
+      html += '<div class="tm-fill"></div><div class="tm-line"></div><div class="tm-line l2"></div><div class="tm-line l3"></div>';
+      read = '水位 ' + Math.round(d.leftRatio * 100) + '% · ' + (d.left != null ? d.left : '--') + ' kcal';
+    } else if (mech === 'compass') {
+      var cang = { dawn: -90, noon: 0, dusk: 90, night: 180 }[d.dayphase] || 0;
+      box.style.setProperty('--ang', cang + 'deg');
+      html += '<div class="tm-needle"></div><div class="tm-core"></div>';
+      var dirs = ['北', '东', '南', '西'];
+      read = dirs[((cang + 90) / 90) % 4] + '向 · ' + phName;
+    } else if (mech === 'yearrings') {
+      var NY = cfg.max || 9, rings = '';
+      for (i = 0; i < NY; i++) {
+        var size = 44 + i * 16;
+        rings += '<button type="button" class="gu' + (i < Math.min(d.total, NY) ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + (i < Math.min(d.total, NY) ? '第 ' + (i + 1) + ' 圈' : '待生长') + '" style="left:50%;top:44%;width:' + size + 'px;height:' + size + 'px;margin:' + (-size / 2) + 'px 0 0 ' + (-size / 2) + 'px"><i></i></button>';
+      }
+      html += rings;
+      read = '年轮 ' + Math.min(d.total, NY) + ' 圈 · 累计 ' + d.total + ' 笔';
+      empty = '第一笔，种下年轮';
+    } else { /* sunset */
+      var sx = { dawn: 14, noon: 50, dusk: 80, night: 90 }[d.dayphase] || 50;
+      var sh = { dawn: 0.4, noon: 0.18, dusk: 0.85, night: 1 }[d.dayphase] || 0.5;
+      box.style.setProperty('--sx', sx + '%');
+      box.style.setProperty('--sh', String(sh));
+      html += '<div class="tm-shadow"></div><div class="tm-post"></div>';
+      read = phName;
+    }
+    html += '</div><div class="tm-read">' + esc(read) + '</div>' +
+      (read ? '' : '<div class="tm-empty">' + esc(empty) + '</div>');
+    box.innerHTML = html;
+  }
+
+  /* ---------------- E-J shelf 渲染器（v6.0 新增） ---------------- */
+  function renderShelf(box, d, cfg, id) {
+    var mech = cfg.mech, html = '<div class="sk-decor d-' + id + '"></div><div class="sf-shelf">', read = '', empty = '', i;
+    if (mech === 'specimens') {
+      var NS = cfg.max || 12, got = Math.min(d.total, NS), cells = '';
+      for (i = 0; i < NS; i++) {
+        var col = i % 4, row = Math.floor(i / 4);
+        cells += '<button type="button" class="gu' + (i < got ? ' on' : ' off') + '" data-i="' + i + '" data-txt="' + (i < got ? String(i + 1) : '') + '" data-tip="' + (i < got ? '第 ' + (i + 1) + ' 号标本' : '待采集') + '" style="left:' + (10 + col * 20) + '%;top:' + (16 + row * 26) + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '标本 ' + d.total + ' 份';
+      empty = '记一笔，采集第一份标本';
+    } else if (mech === 'minerals') {
+      var src = d.recentMiss.slice(-14); while (src.length < 14) src.unshift(0);
+      var labels = d.recentDates.slice(-14).map(function (dt) { return weekCh(dt); });
+      while (labels.length < 14) labels.unshift('');
+      var cells = '';
+      for (i = 0; i < 14; i++) {
+        var col = i % 7, row = Math.floor(i / 7);
+        cells += '<button type="button" class="gu' + (src[i] ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + esc(labels[i] || '') + (src[i] ? '·已记' : '·未记') + '" style="left:' + (7 + col * 12.6) + '%;top:' + (20 + row * 30) + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '矿石 ' + src.filter(Boolean).length + '/14';
+    } else if (mech === 'badges' || mech === 'trophies') {
+      var th = [7, 14, 21, 30], tnames = ['7天', '14天', '21天', '30天'];
+      var cells = '';
+      for (i = 0; i < 4; i++) {
+        var got2 = d.streak >= th[i];
+        cells += '<button type="button" class="gu' + (got2 ? ' on' : ' off') + '" data-i="' + i + '" data-txt="' + tnames[i] + '" data-tip="' + (got2 ? tnames[i] + ' 里程碑达成' : '连续 ' + th[i] + ' 天可得') + '" style="left:' + (14 + i * 19) + '%;top:24%"><i></i></button>';
+      }
+      html += cells;
+      read = '里程碑 ' + th.filter(function (t) { return d.streak >= t; }).length + '/4 · 连续 ' + d.streak + ' 天';
+      empty = '连续记账 7 天，第一枚入柜';
+    } else if (mech === 'caps') {
+      var NC = cfg.max || 12, got3 = Math.min(d.count, NC), cells = '';
+      for (i = 0; i < NC; i++) {
+        var col = i % 4, row = Math.floor(i / 4);
+        cells += '<button type="button" class="gu' + (i < got3 ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + (i < got3 ? (i + 1) + ' 笔' : '待收藏') + '" style="left:' + (10 + col * 20) + '%;top:' + (18 + row * 24) + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '收藏 ' + got3 + '/' + NC;
+      empty = '记一笔，第一枚瓶盖上墙';
+    } else if (mech === 'train') {
+      box.style.setProperty('--tx', d.recorded ? '18%' : '0%');
+      html += '<div class="tm-wheels"><i></i><i></i><i></i><i></i></div><button type="button" class="gu" data-i="0" data-tip="' + (d.recorded ? '呜——今日已发车' : '记一笔发车') + '" style="left:6%;top:14%"><b>鸣笛</b></button>';
+      read = d.recorded ? '已进站 · 今日 ' + d.count + ' 笔' : '待发 · 记一笔发车';
+    } else if (mech === 'tickets') {
+      var NT = cfg.max || 7, got4 = Math.min(d.streak, NT), cells = '';
+      for (i = 0; i < NT; i++) {
+        cells += '<button type="button" class="gu' + (i < got4 ? ' on' : ' off') + '" data-i="' + i + '" data-txt="' + (i < got4 ? String(i + 1) : '') + '" data-tip="' + (i < got4 ? '第 ' + (i + 1) + ' 天旅程' : '待集') + '" style="left:' + (10 + i * 11.5) + '%;top:' + (22 + (i % 2) * 10) + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '门票 ' + got4 + '/' + NT;
+      empty = '连续 1 天，收第一张门票';
+    } else if (mech === 'capsules') {
+      var src = d.recentMiss.slice(-14); while (src.length < 14) src.unshift(0);
+      var labels = d.recentDates.slice(-14).map(function (dt) { return weekCh(dt); });
+      while (labels.length < 14) labels.unshift('');
+      var cells = '';
+      for (i = 0; i < 14; i++) {
+        var col = i % 5, row = Math.floor(i / 5);
+        cells += '<button type="button" class="gu' + (src[i] ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + esc(labels[i] || '') + (src[i] ? '·有记' : '·空') + '" style="left:' + (9 + col * 17) + '%;top:' + (12 + row * 24) + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '蛋壳 ' + src.filter(Boolean).length + '/14 枚';
+    } else if (mech === 'matches') {
+      var src = d.recentMiss.slice(-14); while (src.length < 14) src.unshift(0);
+      var labels = d.recentDates.slice(-14).map(function (dt) { return weekCh(dt); });
+      while (labels.length < 14) labels.unshift('');
+      var cells = '';
+      for (i = 0; i < 14; i++) {
+        cells += '<button type="button" class="gu' + (src[i] ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + esc(labels[i] || '') + (src[i] ? '·划亮' : '·未划') + '" style="left:' + (7 + i * 6.2) + '%;top:28%;transform:rotate(' + ((i % 2 ? 1 : -1) * 3) + 'deg)"><i></i></button>';
+      }
+      html += cells;
+      read = '火花 ' + src.filter(Boolean).length + '/14';
+    } else { /* postcards */
+      var NP2 = cfg.max || 7, got5 = Math.min(d.streak, NP2), cells = '';
+      for (i = 0; i < NP2; i++) {
+        cells += '<button type="button" class="gu' + (i < got5 ? ' on' : ' off') + '" data-i="' + i + '" data-tip="' + (i < got5 ? '第 ' + (i + 1) + ' 天寄语' : '待寄') + '" style="left:' + (8 + i * 12) + '%;top:' + (18 + (i % 2) * 12) + '%"><i></i></button>';
+      }
+      html += cells;
+      read = '明信片 ' + got5 + '/' + NP2;
+      empty = '记一笔，寄出第一张明信片';
+    }
+    html += '<div class="sf-board"></div></div><div class="sf-read">' + esc(read) + '</div>' +
+      (read ? '' : '<div class="sf-empty">' + esc(empty) + '</div>');
+    box.innerHTML = html;
+  }
+
   /* ---------------- 交互 ---------------- */
   function bindTap(box) {
     if (box.dataset.tapBound) return;
@@ -781,7 +1291,8 @@ JS_BODY = """
   }
 
   /* ---------------- 渲染编排 ---------------- */
-  var RENDER = { grow: renderGrow, meter: renderMeter, plate: renderPlate, vessel: renderVessel, motion: renderMotion };
+  var RENDER = { grow: renderGrow, meter: renderMeter, plate: renderPlate, vessel: renderVessel, motion: renderMotion,
+                 orbit: renderOrbit, light: renderLight, desk: renderDesk, time: renderTime, shelf: renderShelf };
   function renderStage(id, d, force) {
     var cfg = CFG[id];
     var box = document.getElementById('skinStage');
@@ -796,6 +1307,8 @@ JS_BODY = """
     if (cfg.eng === 'vessel') { bindTap(box); bindVesselOpen(box); }
     if (cfg.eng === 'plate') bindSwipe(box);
     if (cfg.eng === 'motion') bindFlick(box);
+    /* v6.0：新五引擎全部走「点按单元 → 浮标签」签名（各套另有专属变体） */
+    if (cfg.eng === 'orbit' || cfg.eng === 'light' || cfg.eng === 'desk' || cfg.eng === 'time' || cfg.eng === 'shelf') bindTap(box);
   }
 
   /* ---------------- 动态 manifest（对齐 v6） ---------------- */
@@ -917,7 +1430,44 @@ def build_css():
         verify_palette(light, sp['id'] + ' light')
         verify_palette(dark, sp['id'] + ' dark')
         parts.append(emit_skin_css(sp, light, dark, always))
+    parts.append(emit_identity_css())
     return '\n'.join(parts) + '\n'
+
+
+def emit_identity_css():
+    """v6.0 全员识别 3.0：100 套 v7 皮肤的页头徽记 + 卡片边语言 + tabbar 指示形状。
+    徽记逐套发射（每套独字）；边语言与指示形状按值分组发射（省体积）。
+    形状库与 skins-m/l.css 共用 gen_m.TAB_SHAPES 单一来源。"""
+    from gen_m import TAB_SHAPES
+    out = ['''
+/* ============================================================
+   §8 全员识别 3.0 · v7 皮肤页头徽记 / 形状语言 / tabbar 指示（v6.0 新增）
+   纪律：徽记复用 .page-title::after（skins-m.css 默认隐藏，此处逐套显式开启）；
+   边语言只动 border-radius（CLS 契约）；指示形状复用 TAB_SHAPES 12 种库。
+   ============================================================ */''']
+    # 徽记：逐套
+    for sp in SPEC:
+        badge, _, _ = skin_identity(sp)
+        out.append('html[data-skin="%s"] .page-head .page-title::after { content: "%s"; display: inline-grid; vertical-align: 2px; margin-left: 9px; width: 22px; height: 22px; place-items: center; font-size: 12px; font-weight: 600; font-family: var(--serif, serif); border: 1px solid var(--line-2); border-radius: 6px; color: var(--green); background: var(--green-soft); opacity: .92; pointer-events: none; }' % (sp['id'], badge))
+    # 边语言：按值分组
+    edge_groups = {}
+    for sp in SPEC:
+        _, edge, _ = skin_identity(sp)
+        edge_groups.setdefault(edge, []).append(sp['id'])
+    out.append('')
+    for edge, ids in edge_groups.items():
+        sel = ', '.join('html[data-skin="%s"] .card' % i for i in ids)
+        out.append('%s { border-radius: %s; }' % (sel, edge))
+    # tabbar 指示：按形状分组
+    tab_groups = {}
+    for sp in SPEC:
+        _, _, tab = skin_identity(sp)
+        tab_groups.setdefault(tab, []).append(sp['id'])
+    out.append('')
+    for tab, ids in tab_groups.items():
+        sel = ', '.join('html[data-skin="%s"] .tabbar button.on::before' % i for i in ids)
+        out.append('%s { %s opacity: .95; }' % (sel, TAB_SHAPES[tab]))
+    return '\n'.join(out) + '\n'
 
 
 def build_js():
@@ -941,8 +1491,8 @@ def build_manifest():
             'accent': p['green'], 'pending': False
         })
     data['items'] = items + new_items
-    data['version'] = 'v5.5'
-    data['note'] = 'v5.5：+50 套机制型皮肤 (g36-g85，五台引擎×10)，扭蛋池 50→100；由 tools/gen_v7.py 生成'
+    data['version'] = 'v6.0'
+    data['note'] = 'v6.0：+50 套机制型皮肤 (g86-g135，新五台引擎×10)，扭蛋池 100→150；v7 全代 g36-g135 补齐页头徽记/形状语言/tabbar 指示；由 tools/gen_v7.py 生成'
     with io.open(path, 'w', encoding='utf-8', newline='\n') as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
     return len(data['items'])
