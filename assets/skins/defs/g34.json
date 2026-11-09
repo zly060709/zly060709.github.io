@@ -1,0 +1,107 @@
+{
+  "id": "g34",
+  "name": "存钱罐·玻璃",
+  "group": "material",
+  "tier": "top",
+  "art": "",
+  "fg": "",
+  "tag": "豆子储蓄",
+  "palette": {
+    "light": {
+      "paper": "#E7F0E9",
+      "paperDeep": "#D9E6DD",
+      "surface": "#F3F8F4",
+      "surface2": "#ECF2ED",
+      "field": "#EFF5F0",
+      "ink": "#24362B",
+      "ink2": "#425648",
+      "ink3": "#556A5C",
+      "line": "#C6D6CA",
+      "line2": "#B2C5B8",
+      "green": "#2C6B51",
+      "greenDeep": "#235A43",
+      "greenSoft": "#DDEBE0",
+      "greenLine": "#7CA98E",
+      "amber": "#8F6A25",
+      "amberSoft": "#EDE3C8",
+      "red": "#A64438",
+      "redSoft": "#E8D8D3",
+      "seal": "#2C6B51"
+    },
+    "dark": {
+      "paper": "#101814",
+      "paperDeep": "#0C1210",
+      "surface": "#192420",
+      "surface2": "#1F2B26",
+      "field": "#1C2723",
+      "ink": "#D5E5DA",
+      "ink2": "#A9C0B1",
+      "ink3": "#93A99B",
+      "line": "#24352C",
+      "line2": "#2F4238",
+      "green": "#7FCFA4",
+      "greenDeep": "#7FCFA4",
+      "greenSoft": "#1C2C23",
+      "greenLine": "#4A7A5E",
+      "amber": "#E0B86A",
+      "amberSoft": "#2E2814",
+      "red": "#DB8375",
+      "redSoft": "#2E2220",
+      "seal": "#7FCFA4"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "glass",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 18,
+    "cardAlpha": 0.96
+  },
+  "component": {
+    "surface": "glass",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "jarlid"
+  },
+  "motion": {
+    "engine": "none",
+    "intensity": 0.4,
+    "signature": "drop",
+    "signatureCss": "sk-drop 200ms cubic-bezier(.3,1.5,.5,1)"
+  },
+  "structure": {
+    "archetype": "jar",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.96,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#EAF1EE",
+    "bright": "#E0AF55",
+    "lum": 0.866
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "形状锚点 玻璃罐+豆堆；数据 连续天数 → 豆量豆色",
+    "纯 CSS（豆为 radial-gradient 圆点）；签名 drop 独占"
+  ],
+  "mobile": {
+    "stage": "玻璃罐：豆子=连续天数，豆色由浅转深，落豆回弹",
+    "shapeAnchor": "jarlid",
+    "dataAnchor": "数据 连续天数 → 豆量豆色",
+    "touchAnchor": "pointerdown 压按回弹 + 皮肤专属触感"
+  }
+}

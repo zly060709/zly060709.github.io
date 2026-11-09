@@ -9,10 +9,11 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232F6B4F'/%3E%3Cpath d='M11 8v13.2c0 .9.8 1.5 1.8 1.5H22' fill='none' stroke='%23EFECE2' stroke-width='2'/%3E%3Cpath d='M15 12h5' stroke='%23EFECE2' stroke-width='2'/%3E%3C/svg%3E" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
 <script>/* 版本号唯一来源：build.py 会把这里与所有 ?v= 同步为 version.json 里的版本 */
-window.__EL_VER = '5.3.0';</script>
-<link rel="stylesheet" href="assets/app.css?v=5.3.0">
-<link rel="stylesheet" href="assets/skins-v43.css?v=5.3.0">
-<link rel="stylesheet" href="assets/skins-v5.css?v=5.3.0">
+window.__EL_VER = '5.4.0';</script>
+<link rel="stylesheet" href="assets/app.css?v=5.4.0">
+<link rel="stylesheet" href="assets/skins-v43.css?v=5.4.0">
+<link rel="stylesheet" href="assets/skins-v5.css?v=5.4.0">
+<link rel="stylesheet" href="assets/skins-v6.css?v=5.4.0">
 <script>/* 已选强化皮肤时：先把皮肤样式表与 data-skin/主题写进首屏，再让第一屏渲染。
    原因：等 app.js 再挂属性，标题字体会在首屏骨架之后才换，实测造成 0.001~0.002 的 CLS；
    样式表后到还会改动卡片内距与底栏按钮宽度（0.036）。默认纸面皮肤不触发，首屏零皮肤请求。 */
@@ -20,7 +21,9 @@ window.__EL_VER = '5.3.0';</script>
   try {
     var s = JSON.parse(localStorage.getItem('energy-ledger.v2') || '{}');
     var id = (s.skins && s.skins.active) || 'paper';
-    if (!/^(a-(sakura|galaxy|neon|wuxia|fireworks)|g\d\d)$/.test(id)) return;
+    var OLDGEN = /^(a-(sakura|galaxy|neon|wuxia|fireworks)|g0\d|g1\d|g2[0-5])$/;
+    var V6SKIN = /^g(2[6-9]|3[0-5])$/;
+    if (!OLDGEN.test(id) && !V6SKIN.test(id)) return;
     var th = (s.settings && s.settings.theme) || 'auto';
     if (th === 'auto') th = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     var r = document.documentElement;
@@ -28,9 +31,10 @@ window.__EL_VER = '5.3.0';</script>
     r.setAttribute('data-theme', th);
     r.setAttribute('data-skin-gen', '1');
     r.classList.add('skinned');
+    if (V6SKIN.test(id)) r.setAttribute('data-skin-v6', '1');  /* 首帧就位：舞台容器不等 JS */
     var l = document.createElement('link');
     l.rel = 'stylesheet'; l.id = 'skinsGenCss';
-    l.href = 'assets/skins-gen.css?v=5.3.0';
+    l.href = V6SKIN.test(id) ? 'assets/skins-v6.css?v=5.4.0' : 'assets/skins-gen.css?v=5.4.0';
     document.head.appendChild(l);
   } catch (e) {}
 })();</script>
@@ -127,6 +131,9 @@ window.__EL_VER = '5.3.0';</script>
     </header>
 
     <div class="page">
+      <!-- v5.4 机制型皮肤舞台（g26-g35）：预置于 HTML，避免 JS 注入造成 CLS；
+           非 v6 皮肤与无 JS 环境下由 CSS 保持 display:none -->
+      <div id="skinStage" aria-hidden="true"></div>
       <section id="view-today" class="view" data-view="today">
         <!-- 静态首屏骨架：无 JS / 弱网 / 爬虫可见；JS 就绪后 renderToday 接管替换 -->
         <div class="today-static">
@@ -179,15 +186,16 @@ window.__EL_VER = '5.3.0';</script>
 <input type="file" id="wearableFile" accept=".xml,.csv,text/xml,text/csv,application/xml" hidden>
 
 <script>document.documentElement.classList.add('js');</script>
-<script src="assets/data.js?v=5.3.0" defer></script>
-<script src="assets/engine.js?v=5.3.0" defer></script>
-<script src="assets/wellness.js?v=5.3.0" defer></script>
-<script src="assets/gender.js?v=5.3.0" defer></script>
-<script src="assets/extras.js?v=5.3.0" defer></script>
-<script src="assets/foodlib.js?v=5.3.0" defer></script>
-<script src="assets/skin-fx.js?v=5.3.0" defer></script>
-<script src="assets/skins-gen.js?v=5.3.0" defer></script>
-<script src="assets/app.js?v=5.3.0" defer></script>
+<script src="assets/data.js?v=5.4.0" defer></script>
+<script src="assets/engine.js?v=5.4.0" defer></script>
+<script src="assets/wellness.js?v=5.4.0" defer></script>
+<script src="assets/gender.js?v=5.4.0" defer></script>
+<script src="assets/extras.js?v=5.4.0" defer></script>
+<script src="assets/foodlib.js?v=5.4.0" defer></script>
+<script src="assets/skin-fx.js?v=5.4.0" defer></script>
+<script src="assets/skins-gen.js?v=5.4.0" defer></script>
+<script src="assets/skins-v6.js?v=5.4.0" defer></script>
+<script src="assets/app.js?v=5.4.0" defer></script>
 <!-- 兑换码 / 版本公告 / 维护模块：已移出关键路径，由 app.js 的 ensureScript 按需拉起 -->
 </body>
 </html>

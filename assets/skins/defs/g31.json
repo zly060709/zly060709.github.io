@@ -1,0 +1,107 @@
+{
+  "id": "g31",
+  "name": "天气瓶·风暴",
+  "group": "material",
+  "tier": "top",
+  "art": "",
+  "fg": "",
+  "tag": "玻璃晶体",
+  "palette": {
+    "light": {
+      "paper": "#E1EBEE",
+      "paperDeep": "#D3E0E4",
+      "surface": "#EFF5F6",
+      "surface2": "#E8F0F1",
+      "field": "#EBF2F3",
+      "ink": "#16323F",
+      "ink2": "#33505D",
+      "ink3": "#476472",
+      "line": "#C2D4D9",
+      "line2": "#AFC3CA",
+      "green": "#28465A",
+      "greenDeep": "#213C4E",
+      "greenSoft": "#DCE8EC",
+      "greenLine": "#7597A8",
+      "amber": "#7A5A28",
+      "amberSoft": "#E6E6D4",
+      "red": "#A64438",
+      "redSoft": "#E8D8D3",
+      "seal": "#28465A"
+    },
+    "dark": {
+      "paper": "#0E181E",
+      "paperDeep": "#0A1216",
+      "surface": "#16242C",
+      "surface2": "#1C2B34",
+      "field": "#19272F",
+      "ink": "#CFE3EA",
+      "ink2": "#A3BFC9",
+      "ink3": "#8CA9B4",
+      "line": "#243640",
+      "line2": "#2F4450",
+      "green": "#6FB3CE",
+      "greenDeep": "#6FB3CE",
+      "greenSoft": "#1B2A32",
+      "greenLine": "#45707F",
+      "amber": "#D0B072",
+      "amberSoft": "#2B2818",
+      "red": "#DB8375",
+      "redSoft": "#2F2220",
+      "seal": "#6FB3CE"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "glass",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 18,
+    "cardAlpha": 0.96
+  },
+  "component": {
+    "surface": "glass",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "bottle"
+  },
+  "motion": {
+    "engine": "none",
+    "intensity": 0.4,
+    "signature": "crystallize",
+    "signatureCss": "sk-crystal 2.4s ease-in-out infinite"
+  },
+  "structure": {
+    "archetype": "flask",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.96,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#DCE8EA",
+    "bright": "#28465A",
+    "lum": 0.789
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "形状锚点 圆瓶轮廓+晶体；数据 余量/记录数 → 液面/结晶",
+    "纯 CSS ≤14 颗静态晶体（无 canvas）；夜间液色加深"
+  ],
+  "mobile": {
+    "stage": "玻璃瓶：液面=预算余量，晶体数=今日记录完整度",
+    "shapeAnchor": "bottle",
+    "dataAnchor": "数据 余量/记录数 → 液面/结晶",
+    "touchAnchor": "pointerdown 压按回弹 + 皮肤专属触感"
+  }
+}

@@ -10,14 +10,14 @@
   --field: #F6F3EA;
   --ink: #1D2A23;
   --ink-2: #55645A;
-  --ink-3: #8A948B;
+  --ink-3: #6B746E;  /* v5.4: 2.98→4.58 对比度达标（faint 小字可读性） */
   --line: #E2DDCE;
   --line-2: #CFC8B5;
   --green: #2C6B51;
   --green-deep: #204E3C;
   --green-soft: #E4EDE4;
   --green-line: #BCD3C2;
-  --amber: #B1773B;
+  --amber: #8F5D28;  /* v5.4: 3.58→5.30 */
   --amber-soft: #F6EBDD;
   --red: #A64A3C;
   --red-soft: #F5E3DE;
@@ -38,7 +38,7 @@
   --field: #232A24;
   --ink: #ECE8DB;
   --ink-2: #A9B4A9;
-  --ink-3: #78857C;
+  --ink-3: #84928A;  /* v5.4: 4.34→5.15 */
   --line: #2C352E;
   --line-2: #3B463D;
   --green: #7FB79A;
@@ -2012,11 +2012,11 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 [data-skin="paper"] {
   --paper: #EFECE2; --paper-deep: #E7E3D7;
   --surface: #FBF9F2; --surface-2: #F4F1E7; --field: #F6F3EA;
-  --ink: #1D2A23; --ink-2: #55645A; --ink-3: #8A948B;
+  --ink: #1D2A23; --ink-2: #55645A; --ink-3: #6B746E;  /* v5.4: 2.98→4.58 */
   --line: #E2DDCE; --line-2: #CFC8B5;
   --green: #2C6B51; --green-deep: #204E3C;
   --green-soft: #E4EDE4; --green-line: #BCD3C2;
-  --amber: #B1773B; --amber-soft: #F6EBDD;
+  --amber: #8F5D28;  /* v5.4: 3.58→5.30 */ --amber-soft: #F6EBDD;
   --red: #A64A3C; --red-soft: #F5E3DE;
   --seal: #A63C2E;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Songti SC", "Noto Serif SC", serif;
@@ -2032,11 +2032,11 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 [data-theme="dark"][data-skin="paper"] {
   --paper: #121714; --paper-deep: #0D1210;
   --surface: #191F1B; --surface-2: #202720; --field: #232A24;
-  --ink: #ECE8DB; --ink-2: #A9B4A9; --ink-3: #78857C;
+  --ink: #ECE8DB; --ink-2: #A9B4A9; --ink-3: #84928A;  /* v5.4: 4.34→5.15 */
   --line: #2C352E; --line-2: #3B463D;
   --green: #7FB79A; --green-deep: #A6D2BA; --green-soft: #22322A; --green-line: #3C5B4A;
   --amber: #D6A36B; --amber-soft: #33291F; --red: #D98878; --red-soft: #35241F;
-  --seal: #C8695A;
+  --seal: #D07E6B;  /* v5.4: 4.49→5.49 */
 }
 
 /* 2 牛皮纸 · 老账房 */

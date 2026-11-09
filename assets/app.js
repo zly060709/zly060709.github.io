@@ -4174,6 +4174,10 @@
       deficitRatio: deficitRatio,
       meals: meals,
       macros: { p: sum.p, c: sum.c, f: sum.f, kcal: sum.kcal },
+      budget: t && t.budgetPrior ? Math.round(t.budgetPrior) : 0,
+      left: t && t.budgetPrior ? Math.round(t.budgetPrior - sum.kcal) : null,
+      items: DB.entries.filter(e => e.date === today).slice(-6)
+        .map(e => ({ id: e.id, name: e.name, kcal: e.kcal, meal: e.meal })),
       streak: E.streak(DB.entries, today),
       totalRecords: DB.entries.length,
       lastAddAt: lastAddAt,
@@ -4244,13 +4248,15 @@
       const se = document.getElementById('ledgerSignature');
       if (se) se.remove();
       if (window.SkinGen) SkinGen.sync('paper');
+      if (window.SkinV6) SkinV6.sync('paper', null);
       refreshSkinFx();
       return;
     }
     /* 清单（skins/index.json）是异步加载的：没加载完时 skinById() 还查不到 g01~g25，
        旧逻辑会先退回 paper 再在清单到位后切回来，实测闪一次纸面并产生 0.003 的 CLS。
        这里把 SkinGen 认识的 id 也当成"已知"，CSS 早已按 data-skin 备好，不必等清单。 */
-    const knownSkin = !!skinById(s.active) || !!(window.SkinGen && SkinGen.ids.indexOf(s.active) >= 0);
+    const knownSkin = !!skinById(s.active) || !!(window.SkinGen && SkinGen.ids.indexOf(s.active) >= 0)
+      || !!(window.SkinV6 && SkinV6.ids.indexOf(s.active) >= 0);   /* v5.4：机制型皮肤不依赖 manifest 也能认出，避免闪回 paper */
     const id = knownSkin && skinUnlocked(s.active) ? s.active : 'paper';
     root.setAttribute('data-skin', id);
     root.setAttribute('data-skin-cover', s.cover || 'default');
@@ -4273,6 +4279,8 @@
     if (id === 'a-glass' || id === 'a-chrome') bindFxPointer();
     applySkinThemeColor();
     if (window.SkinGen) SkinGen.sync(id);
+    /* v5.4：机制型皮肤的数据联动 + 舞台渲染（无 window.SkinV6 时零开销） */
+    if (window.SkinV6) SkinV6.sync(id, typeof fxDataContext === 'function' ? fxDataContext() : null);
     const sig = (SIGNATURES.find(x => x.id === s.signature) || null);
     let se = document.getElementById('ledgerSignature');
     if (sig) {

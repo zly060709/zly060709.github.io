@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>能量账本 v5.4 · 皮肤系统 390×844 测试台（开发工具，不影响线上）</title>
+<style>
+  body{margin:0;font:13px/1.6 system-ui,sans-serif;background:#1c1f22;color:#dfe5e8;display:flex;gap:14px;padding:14px}
+  #phone{width:390px;height:844px;border:0;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.5);background:#fff;flex:0 0 auto}
+  .side{flex:1;min-width:0}
+  button{margin:2px;padding:4px 10px;background:#2d3338;color:#dfe5e8;border:1px solid #454c52;border-radius:6px;cursor:pointer;font-size:12px}
+  button.on{background:#2C6B51;border-color:#3d8a6b}
+  #out{white-space:pre-wrap;font:11px/1.5 Consolas,monospace;background:#111417;border:1px solid #333;padding:10px;height:70vh;overflow:auto;border-radius:8px}
+  h3{margin:8px 0 4px;font-size:13px}
+</style>
+</head>
+<body>
+<iframe id="phone" src="../index.html"></iframe>
+<div class="side">
+  <h3>皮肤切换（390×844 真实视口）</h3>
+  <div id="skinBtns"></div>
+  <h3>操作</h3>
+  <button onclick="act('reload')">重载</button>
+  <button onclick="act('audit')">audit 全量</button>
+  <button onclick="act('addentry')">记一笔</button>
+  <button onclick="act('clear')">清空记录</button>
+  <button onclick="act('dark')">明/暗</button>
+  <button onclick="act('g28flip')">g28 翻面</button>
+  <button onclick="act('g27open')">g27 开抽屉</button>
+  <button onclick="act('g35drag')">g35 拖拽</button>
+  <h3>输出</h3>
+  <div id="out">ready</div>
+</div>
+<script>
+const V6=['g26','g27','g28','g29','g30','g31','g32','g33','g34','g35'];
+const OLD=['a-sakura','a-galaxy','a-neon','a-wuxia','a-fireworks','g01','g05','g12','g21','g23'];
+const ALL=V6.concat(OLD,['paper']);
+const W=document.getElementById('phone').contentWindow;
+const frame=document.getElementById('phone');
+const out=(...a)=>{document.getElementById('out').textContent+='\n'+a.join(' ');};
+const btns=document.getElementById('skinBtns');
+ALL.forEach(id=>{
+  const b=document.createElement('button');b.textContent=id;b.dataset.id=id;
+  b.onclick=()=>setSkin(id);btns.appendChild(b);
+});
+function mark(id){btns.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.id===id));}
+function db(){try{return JSON.parse(W.localStorage.getItem('energy-ledger.v2')||'{}')}catch(e){return {}}}
+function saveDb(d){W.localStorage.setItem('energy-ledger.v2',JSON.stringify(d))}
+function setSkin(id){
+  const d=db();
+  d.settings=Object.assign({theme:'auto',fx:true,powerSave:false,mode:'full'},d.settings||{},{mode:'full'});
+  d.skins=Object.assign({},d.skins,{active:id,unlocked:ALL.slice()});
+  d.profile=d.profile||{sex:'male',age:30,height:172,weight:65,targetWeight:60,activity:'moderate',goal:'lose',rate:.5,proteinFactor:1.6,createdAt:Date.now()};
+  d.weights=d.weights&&d.weights.length?d.weights:[{date:W.__EL_TODAY||(new Date().toISOString().slice(0,10)),kg:65}];
+  d.onboarded=true;
+  saveDb(d);
+  mark(id);
+  frame.src='../index.html?skin='+id+'&t='+Date.now();
+}
+function todayKey(){const t=new Date();const p=n=>String(n).padStart(2,'0');return t.getFullYear()+'-'+p(t.getMonth()+1)+'-'+p(t.getDate());}
+function addEntry(kcal,name){
+  const d=db();d.entries=d.entries||[];
+  d.entries.push({id:'t'+Date.now()+Math.random().toString(36).slice(2,6),date:todayKey(),meal:'lunch',name:name||'测试餐',grams:200,per100:{kcal:150,p:8,c:20,f:5,fib:1},cat:'测试',kcal:kcal||480,p:16,c:40,f:10,fib:2,conf:'high',source:'manual',createdAt:Date.now()});
+  /* 造 5 天连续历史（喂 streak 类皮肤） */
+  for(let i=1;i<=5;i++){const dt=new Date();dt.setDate(dt.getDate()-i);const k=todayKey().replace(/\\d+$/,String(dt.getDate()).padStart(2,'0'));
+    const dk=todayKey();const dk2=(()=>{const x=new Date();x.setDate(x.getDate()-i);const p=n=>String(n).padStart(2,'0');return x.getFullYear()+'-'+p(x.getMonth()+1)+'-'+p(x.getDate());})();
+    d.entries.push({id:'h'+i,date:dk2,meal:'lunch',name:'历史'+i,grams:100,per100:{kcal:120,p:6,c:15,f:4,fib:1},cat:'测试',kcal:380+i,p:8,c:30,f:8,fib:1,conf:'high',source:'manual',createdAt:Date.now()-i*864e5});
+  }
+  saveDb(d);
+}
+window.act=async function(op){
+  const W2=frame.contentWindow;
+  if(op==='reload'){frame.src=frame.src;return;}
+  if(op==='addentry'){addEntry();frame.src=frame.src;out('[i] 已记一笔+5天历史，重载中');return;}
+  if(op==='clear'){const d=db();d.entries=[];saveDb(d);frame.src=frame.src;out('[i] 已清空记录');return;}
+  if(op==='dark'){const d=db();d.settings.theme=(d.settings.theme==='dark'?'light':'dark');saveDb(d);frame.src=frame.src;out('[i] 主题切换为',d.settings.theme);return;}
+  if(op==='audit'){
+    const D=W2.document,X=D.documentElement;
+    const r={skin:X.getAttribute('data-skin'),v6:X.getAttribute('data-skin-v6'),theme:X.getAttribute('data-theme'),dayphase:X.getAttribute('data-dayphase')};
+    try{r.v6=W2.SkinV6?W2.SkinV6.audit():null;}catch(e){r.v6err=String(e);}
+    try{r.gen=W2.SkinGen?W2.SkinGen.audit():null;}catch(e){r.generr=String(e);}
+    r.errors=W2.__v6Errors||[];
+    out('[audit '+r.skin+']',JSON.stringify({skin:r.skin,v6:r.v6,overflow:r.gen&&r.gen.overflowX,minRatio:r.gen&&r.gen.minRatio,errs:r.errors.length}));
+    window.__lastAudit=r;return;
+  }
+  const D=W2.document;
+  if(op==='g28flip'){
+    const box=D.getElementById('skinStage');if(!box){out('no stage');return;}
+    const r=box.getBoundingClientRect();
+    const o={bubbles:true,clientX:r.left+r.width/2,clientY:r.top+40,pointerId:9};
+    box.dispatchEvent(new W2.PointerEvent('pointerdown',o));
+    box.dispatchEvent(new W2.PointerEvent('pointerup',Object.assign({},o,{clientX:o.clientX-80})));
+    out('[g28] side =>',box.getAttribute('data-side'),'label:',(box.querySelector('.cas-lab b')||{}).textContent);
+    return;
+  }
+  if(op==='g27open'){
+    const cab=D.querySelector('#skinStage .cab.on')||D.querySelector('#skinStage .cab');
+    if(!cab){out('no cab');return;}
+    cab.dispatchEvent(new W2.MouseEvent('click',{bubbles:true}));
+    out('[g27] open class =>',cab.className,'| 显示:',(cab.querySelector('::before')?'css':'data-label='+cab.dataset.label));
+    return;
+  }
+  if(op==='g35drag'){
+    const m=D.querySelector('#skinStage .magnet');
+    if(!m){out('no magnet');return;}
+    const r=m.getBoundingClientRect();
+    const mk=(type,x,y)=>new W2.PointerEvent(type,{bubbles:true,clientX:x,clientY:y,pointerId:7,isPrimary:true});
+    m.dispatchEvent(mk('pointerdown',r.left+20,r.top+20));
+    m.dispatchEvent(mk('pointermove',r.left+80,r.top+60));
+    m.dispatchEvent(mk('pointerup',r.left+80,r.top+60));
+    const mx=m.style.getPropertyValue('--mx'),my=m.style.getPropertyValue('--my');
+    const saved=JSON.parse(W2.localStorage.getItem('energy-ledger.v2/skin.g35.magnets')||'{}');
+    out('[g35] --mx/--my =>',mx,my,'| saved:',JSON.stringify(saved));
+    return;
+  }
+};
+/* 抓取 iframe 里的运行时错误 */
+frame.addEventListener('load',()=>{
+  const W2=frame.contentWindow;
+  if(!W2.__v6Hooked){
+    W2.__v6Errors=W2.__v6Errors||[];
+    W2.addEventListener('error',e=>{W2.__v6Errors.push(String(e.message||e));});
+    W2.__v6Hooked=true;
+  }
+  mark(new URLSearchParams(frame.src.split('?')[1]||'').get('skin')||'');
+});
+</script>
+</body>
+</html>

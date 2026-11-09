@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "30 套定义；字段见 docs/skin-schema.md",
+  "note": "v5.4：30 套强化皮肤 + 10 套机制型皮肤 (g26-g35，mobile-first，零图片零 canvas)",
   "items": [
     {
       "id": "a-sakura",
@@ -360,6 +360,126 @@
       "scrimDark": 0.57,
       "cardAlpha": 0.97,
       "artAvg": "#A38C7B",
+      "alwaysDark": false
+    },
+    {
+      "id": "g26",
+      "group": "material",
+      "file": "g26.json",
+      "scrim": 0.55,
+      "kernel": "paper",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#F2E6C8",
+      "alwaysDark": false
+    },
+    {
+      "id": "g27",
+      "group": "material",
+      "file": "g27.json",
+      "scrim": 0.55,
+      "kernel": "wood",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#4A3527",
+      "alwaysDark": false
+    },
+    {
+      "id": "g28",
+      "group": "material",
+      "file": "g28.json",
+      "scrim": 0.55,
+      "kernel": "metal",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#2B2E33",
+      "alwaysDark": false
+    },
+    {
+      "id": "g29",
+      "group": "material",
+      "file": "g29.json",
+      "scrim": 0.55,
+      "kernel": "metal",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#0E2A22",
+      "alwaysDark": false
+    },
+    {
+      "id": "g30",
+      "group": "material",
+      "file": "g30.json",
+      "scrim": 0.55,
+      "kernel": "paper",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#F7F3E9",
+      "alwaysDark": false
+    },
+    {
+      "id": "g31",
+      "group": "material",
+      "file": "g31.json",
+      "scrim": 0.55,
+      "kernel": "glass",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#DCE8EA",
+      "alwaysDark": false
+    },
+    {
+      "id": "g32",
+      "group": "material",
+      "file": "g32.json",
+      "scrim": 0.55,
+      "kernel": "paper",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#F6F0DF",
+      "alwaysDark": false
+    },
+    {
+      "id": "g33",
+      "group": "material",
+      "file": "g33.json",
+      "scrim": 0.55,
+      "kernel": "metal",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#EEF1F2",
+      "alwaysDark": false
+    },
+    {
+      "id": "g34",
+      "group": "material",
+      "file": "g34.json",
+      "scrim": 0.55,
+      "kernel": "glass",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#EAF1EE",
+      "alwaysDark": false
+    },
+    {
+      "id": "g35",
+      "group": "material",
+      "file": "g35.json",
+      "scrim": 0.55,
+      "kernel": "metal",
+      "scrimLight": 0.55,
+      "scrimDark": 0.56,
+      "cardAlpha": 0.96,
+      "artAvg": "#DCE7E6",
       "alwaysDark": false
     }
   ]

@@ -1,0 +1,107 @@
+{
+  "id": "g27",
+  "name": "药柜·百子格",
+  "group": "material",
+  "tier": "top",
+  "art": "",
+  "fg": "",
+  "tag": "抽屉木柜",
+  "palette": {
+    "light": {
+      "paper": "#EFE2CA",
+      "paperDeep": "#E4D3B4",
+      "surface": "#F8F0DC",
+      "surface2": "#F2E9D2",
+      "field": "#F5EDD8",
+      "ink": "#33261A",
+      "ink2": "#57432F",
+      "ink3": "#6B5741",
+      "line": "#D6C4A0",
+      "line2": "#C4B08A",
+      "green": "#4E5E33",
+      "greenDeep": "#3F4C29",
+      "greenSoft": "#E4E8D2",
+      "greenLine": "#8B9870",
+      "amber": "#8A5A22",
+      "amberSoft": "#EDDFC0",
+      "red": "#8E3B2E",
+      "redSoft": "#EBD6CC",
+      "seal": "#8E3B2E"
+    },
+    "dark": {
+      "paper": "#1C1510",
+      "paperDeep": "#16100C",
+      "surface": "#2A2018",
+      "surface2": "#32271D",
+      "field": "#2D231A",
+      "ink": "#EBDCC0",
+      "ink2": "#C9B895",
+      "ink3": "#B3A480",
+      "line": "#3E3324",
+      "line2": "#4E402E",
+      "green": "#A8BC7E",
+      "greenDeep": "#A8BC7E",
+      "greenSoft": "#2A3122",
+      "greenLine": "#5E6C48",
+      "amber": "#D9A860",
+      "amberSoft": "#2E2718",
+      "red": "#D08573",
+      "redSoft": "#33221E",
+      "seal": "#CF7A64"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "wood",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 18,
+    "cardAlpha": 0.96
+  },
+  "component": {
+    "surface": "wood",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "brasspull"
+  },
+  "motion": {
+    "engine": "none",
+    "intensity": 0.4,
+    "signature": "drawer",
+    "signatureCss": "sk-drawer 280ms cubic-bezier(.2,.8,.3,1)"
+  },
+  "structure": {
+    "archetype": "drawer",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.96,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#4A3527",
+    "bright": "#B08D57",
+    "lum": 0.041
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "形状锚点 抽屉铜环阵列；数据 连续天数 → 点亮格数",
+    "木纹 CSS 渐变零图片；签名 drawer 独占（点按抽屉滑出 4px）"
+  ],
+  "mobile": {
+    "stage": "中药柜立面：深木色 + 12 格铜拉手（点亮=连续天数）",
+    "shapeAnchor": "brasspull",
+    "dataAnchor": "数据 连续天数 → 点亮格数",
+    "touchAnchor": "pointerdown 压按回弹 + 皮肤专属触感"
+  }
+}

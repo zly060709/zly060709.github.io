@@ -1,0 +1,107 @@
+{
+  "id": "g30",
+  "name": "折纸·餐盘",
+  "group": "material",
+  "tier": "top",
+  "art": "",
+  "fg": "",
+  "tag": "手折信笺",
+  "palette": {
+    "light": {
+      "paper": "#ECEEE9",
+      "paperDeep": "#DFE2DB",
+      "surface": "#F9F8F3",
+      "surface2": "#F1F2EC",
+      "field": "#F4F5EF",
+      "ink": "#24363E",
+      "ink2": "#43555E",
+      "ink3": "#566871",
+      "line": "#CBD1CA",
+      "line2": "#B9C1BA",
+      "green": "#2F5D7C",
+      "greenDeep": "#27506C",
+      "greenSoft": "#DEE8EC",
+      "greenLine": "#7C9DB2",
+      "amber": "#7A5A28",
+      "amberSoft": "#E9E5D4",
+      "red": "#A64438",
+      "redSoft": "#E9D8D3",
+      "seal": "#2F5D7C"
+    },
+    "dark": {
+      "paper": "#10171A",
+      "paperDeep": "#0C1214",
+      "surface": "#1A2428",
+      "surface2": "#202B30",
+      "field": "#1D272B",
+      "ink": "#D9E4E6",
+      "ink2": "#AEBFC4",
+      "ink3": "#98A9AE",
+      "line": "#2A363B",
+      "line2": "#35434A",
+      "green": "#7FB3D5",
+      "greenDeep": "#7FB3D5",
+      "greenSoft": "#1E2A31",
+      "greenLine": "#46687E",
+      "amber": "#D0B072",
+      "amberSoft": "#2B2718",
+      "red": "#DB8375",
+      "redSoft": "#302220",
+      "seal": "#7FB3D5"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "paper",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 18,
+    "cardAlpha": 0.96
+  },
+  "component": {
+    "surface": "paper",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "foldcorner"
+  },
+  "motion": {
+    "engine": "none",
+    "intensity": 0.4,
+    "signature": "unfold",
+    "signatureCss": "sk-unfold 320ms cubic-bezier(.25,.9,.3,1)"
+  },
+  "structure": {
+    "archetype": "fold",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.96,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#F7F3E9",
+    "bright": "#2F4858",
+    "lum": 0.898
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "形状锚点 三角折角（clip-path 交替方向）；状态 是否记录 → 折/展",
+    "全站首套零图片零canvas零请求皮肤；省电档直接展开态"
+  ],
+  "mobile": {
+    "stage": "素折纸台：斜切折角卡片，未记录时是折着的",
+    "shapeAnchor": "foldcorner",
+    "dataAnchor": "状态 是否记录 → 折/展",
+    "touchAnchor": "pointerdown 压按回弹 + 皮肤专属触感"
+  }
+}

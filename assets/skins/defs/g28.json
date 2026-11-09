@@ -1,0 +1,107 @@
+{
+  "id": "g28",
+  "name": "磁带·饭单",
+  "group": "material",
+  "tier": "top",
+  "art": "",
+  "fg": "",
+  "tag": "走带机械",
+  "palette": {
+    "light": {
+      "paper": "#E8E5DE",
+      "paperDeep": "#DCD8CF",
+      "surface": "#F2F0EA",
+      "surface2": "#EBE8E0",
+      "field": "#EEEBE4",
+      "ink": "#2B2E33",
+      "ink2": "#4A4E55",
+      "ink3": "#5D6169",
+      "line": "#CCC9C0",
+      "line2": "#BBB8AE",
+      "green": "#47605A",
+      "greenDeep": "#3B504B",
+      "greenSoft": "#E2E7E4",
+      "greenLine": "#93A5A0",
+      "amber": "#9C4A1D",
+      "amberSoft": "#F0E0CE",
+      "red": "#A63A2B",
+      "redSoft": "#EED8CF",
+      "seal": "#5A6873"
+    },
+    "dark": {
+      "paper": "#17191D",
+      "paperDeep": "#121417",
+      "surface": "#22252A",
+      "surface2": "#292D33",
+      "field": "#24272C",
+      "ink": "#F0EEE7",
+      "ink2": "#C6C4BC",
+      "ink3": "#ABAAA1",
+      "line": "#383C43",
+      "line2": "#454A52",
+      "green": "#E8814E",
+      "greenDeep": "#E8814E",
+      "greenSoft": "#2E241E",
+      "greenLine": "#7A5540",
+      "amber": "#E8A33B",
+      "amberSoft": "#2E2618",
+      "red": "#E87A6A",
+      "redSoft": "#33211E",
+      "seal": "#9AA7B0"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "metal",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 18,
+    "cardAlpha": 0.96
+  },
+  "component": {
+    "surface": "metal",
+    "edge": "soft",
+    "divider": "line",
+    "number": "mono",
+    "display": "mono",
+    "ornament": "reels"
+  },
+  "motion": {
+    "engine": "none",
+    "intensity": 0.4,
+    "signature": "reel",
+    "signatureCss": "sk-reel 1.6s linear infinite"
+  },
+  "structure": {
+    "archetype": "cassette",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.96,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#2B2E33",
+    "bright": "#E8713A",
+    "lum": 0.027
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "形状锚点 双卷轴+REC点；数据 kcal/预算 → 卷轴旋转",
+    "纯 CSS 零 canvas；左右滑动翻面（触屏等价 hover）"
+  ],
+  "mobile": {
+    "stage": "磁带仓：A面今日/B面昨日，卷轴角度=预算消耗",
+    "shapeAnchor": "reels",
+    "dataAnchor": "数据 kcal/预算 → 卷轴旋转",
+    "touchAnchor": "pointerdown 压按回弹 + 皮肤专属触感"
+  }
+}

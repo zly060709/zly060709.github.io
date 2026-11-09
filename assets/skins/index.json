@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "v5.3 真实素材 30 套 + 数据/材质皮肤 10 套（a-tidal/a-aurora/a-radio/a-culture/a-glass/a-polar/a-type/a-pulse/a-chart/a-chrome）；字段契约不变。",
+  "note": "v5.4 真实素材 30 套 + 数据/材质皮肤 10 套 + 机制型皮肤 10 套(g26-g35：撕页/药柜/磁带/数码/折纸/天气瓶/印章/线路/存钱罐/冰箱贴)；字段契约不变。",
   "fields": [
     "id",
     "name",
@@ -815,6 +815,116 @@
         "speed": 0
       },
       "accent": "#B9F0E4",
+      "pending": false
+    },
+    {
+      "id": "g26",
+      "name": "饭票·撕页",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F2E6C8",
+      "ink": "#3B2F1B",
+      "tag": "粮票旧纸",
+      "accent": "#A63A2B",
+      "pending": false
+    },
+    {
+      "id": "g27",
+      "name": "药柜·百子格",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#4A3527",
+      "ink": "#EBDCC0",
+      "tag": "抽屉木柜",
+      "accent": "#B08D57",
+      "pending": false
+    },
+    {
+      "id": "g28",
+      "name": "磁带·饭单",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#2B2E33",
+      "ink": "#F0EEE7",
+      "tag": "走带机械",
+      "accent": "#E8713A",
+      "pending": false
+    },
+    {
+      "id": "g29",
+      "name": "数码·体重秤",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#0E2A22",
+      "ink": "#8FF0B0",
+      "tag": "七段液晶",
+      "accent": "#8FF0B0",
+      "pending": false
+    },
+    {
+      "id": "g30",
+      "name": "折纸·餐盘",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F7F3E9",
+      "ink": "#24363E",
+      "tag": "手折信笺",
+      "accent": "#2F4858",
+      "pending": false
+    },
+    {
+      "id": "g31",
+      "name": "天气瓶·风暴",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#DCE8EA",
+      "ink": "#16323F",
+      "tag": "玻璃晶体",
+      "accent": "#28465A",
+      "pending": false
+    },
+    {
+      "id": "g32",
+      "name": "印章·打卡",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#F6F0DF",
+      "ink": "#33291C",
+      "tag": "朱砂印阵",
+      "accent": "#B23A2E",
+      "pending": false
+    },
+    {
+      "id": "g33",
+      "name": "线路·环游",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#EEF1F2",
+      "ink": "#22303A",
+      "tag": "站点 meals",
+      "accent": "#D64545",
+      "pending": false
+    },
+    {
+      "id": "g34",
+      "name": "存钱罐·玻璃",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#EAF1EE",
+      "ink": "#24362B",
+      "tag": "豆子储蓄",
+      "accent": "#E0AF55",
+      "pending": false
+    },
+    {
+      "id": "g35",
+      "name": "冰箱贴·便签",
+      "tier": "top",
+      "src": "扭蛋限定",
+      "swatch": "#DCE7E6",
+      "ink": "#243A37",
+      "tag": "磁贴门板",
+      "accent": "#F6D873",
       "pending": false
     }
   ]

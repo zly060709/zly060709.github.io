@@ -1,0 +1,107 @@
+{
+  "id": "g32",
+  "name": "印章·打卡",
+  "group": "material",
+  "tier": "top",
+  "art": "",
+  "fg": "",
+  "tag": "朱砂印阵",
+  "palette": {
+    "light": {
+      "paper": "#F4EDDA",
+      "paperDeep": "#EBE2C9",
+      "surface": "#FBF6E7",
+      "surface2": "#F5EFDC",
+      "field": "#F8F2E1",
+      "ink": "#33291C",
+      "ink2": "#564833",
+      "ink3": "#6A5C45",
+      "line": "#D9CDA8",
+      "line2": "#C8BB94",
+      "green": "#A63A2B",
+      "greenDeep": "#8C2F23",
+      "greenSoft": "#F0E0D2",
+      "greenLine": "#C98D7E",
+      "amber": "#8A5A22",
+      "amberSoft": "#EFDFC0",
+      "red": "#A63A2B",
+      "redSoft": "#F0DCD2",
+      "seal": "#B23A2E"
+    },
+    "dark": {
+      "paper": "#1B1511",
+      "paperDeep": "#151009",
+      "surface": "#261F17",
+      "surface2": "#2D251B",
+      "field": "#292117",
+      "ink": "#ECDCBE",
+      "ink2": "#C8B894",
+      "ink3": "#B1A27E",
+      "line": "#3C3222",
+      "line2": "#4C402C",
+      "green": "#E07B62",
+      "greenDeep": "#E07B62",
+      "greenSoft": "#31241E",
+      "greenLine": "#7C4C3E",
+      "amber": "#D9A860",
+      "amberSoft": "#2E2718",
+      "red": "#E07B62",
+      "redSoft": "#33211C",
+      "seal": "#E07B62"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "paper",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 18,
+    "cardAlpha": 0.96
+  },
+  "component": {
+    "surface": "paper",
+    "edge": "soft",
+    "divider": "line",
+    "number": "serif",
+    "display": "serif",
+    "ornament": "sealring"
+  },
+  "motion": {
+    "engine": "none",
+    "intensity": 0.4,
+    "signature": "press",
+    "signatureCss": "sk-press 200ms cubic-bezier(.3,1.4,.5,1)"
+  },
+  "structure": {
+    "archetype": "stampgrid",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.96,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#F6F0DF",
+    "bright": "#B23A2E",
+    "lum": 0.872
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "形状锚点 朱红章阵+空圈；数据 连续天数 → 盖章数",
+    "复用印章配件视觉语言；盖章下压 200ms（省电档静态章面）"
+  ],
+  "mobile": {
+    "stage": "打卡纸：14 格朱印（连续天数），断签留空圈",
+    "shapeAnchor": "sealring",
+    "dataAnchor": "数据 连续天数 → 盖章数",
+    "touchAnchor": "pointerdown 压按回弹 + 皮肤专属触感"
+  }
+}

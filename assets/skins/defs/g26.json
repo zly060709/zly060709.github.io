@@ -1,0 +1,107 @@
+{
+  "id": "g26",
+  "name": "饭票·撕页",
+  "group": "material",
+  "tier": "top",
+  "art": "",
+  "fg": "",
+  "tag": "粮票旧纸",
+  "palette": {
+    "light": {
+      "paper": "#F1E7CF",
+      "paperDeep": "#E7DAB9",
+      "surface": "#FAF3E1",
+      "surface2": "#F5EDD7",
+      "field": "#F7F0DE",
+      "ink": "#3B2F1B",
+      "ink2": "#5C4C2F",
+      "ink3": "#6E5D3C",
+      "line": "#DACBA4",
+      "line2": "#C9B88F",
+      "green": "#2C6B51",
+      "greenDeep": "#22553E",
+      "greenSoft": "#E2EBDD",
+      "greenLine": "#7FA08C",
+      "amber": "#8A5A22",
+      "amberSoft": "#EFE0C4",
+      "red": "#A63A2B",
+      "redSoft": "#EED8CF",
+      "seal": "#A63A2B"
+    },
+    "dark": {
+      "paper": "#191410",
+      "paperDeep": "#131009",
+      "surface": "#241D14",
+      "surface2": "#2B2318",
+      "field": "#261F16",
+      "ink": "#EFDFC0",
+      "ink2": "#CDBB97",
+      "ink3": "#B8A884",
+      "line": "#3A3122",
+      "line2": "#4A3F2C",
+      "green": "#7FBF9E",
+      "greenDeep": "#7FBF9E",
+      "greenSoft": "#233024",
+      "greenLine": "#4C6B58",
+      "amber": "#D9A860",
+      "amberSoft": "#2E2718",
+      "red": "#D97F6F",
+      "redSoft": "#32201C",
+      "seal": "#D96C58"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "paper",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 18,
+    "cardAlpha": 0.96
+  },
+  "component": {
+    "surface": "paper",
+    "edge": "soft",
+    "divider": "line",
+    "number": "mono",
+    "display": "serif",
+    "ornament": "perfprint"
+  },
+  "motion": {
+    "engine": "none",
+    "intensity": 0.4,
+    "signature": "tearoff",
+    "signatureCss": "sk-tear 240ms cubic-bezier(.3,.7,.3,1)"
+  },
+  "structure": {
+    "archetype": "ticket",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.96,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#F2E6C8",
+    "bright": "#A63A2B",
+    "lum": 0.796
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "形状锚点 撕齿上沿+票根串；数据 今日记录数 → 票根数",
+    "纯 CSS 零图片零 canvas；签名 tearoff 独占（省电档为静态锯齿）"
+  ],
+  "mobile": {
+    "stage": "旧粮票纸底：米黄纸纹 + 骑缝红印",
+    "shapeAnchor": "perfprint",
+    "dataAnchor": "数据 今日记录数 → 票根数",
+    "touchAnchor": "pointerdown 压按回弹 + 皮肤专属触感"
+  }
+}

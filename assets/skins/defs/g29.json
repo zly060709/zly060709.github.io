@@ -1,0 +1,107 @@
+{
+  "id": "g29",
+  "name": "数码·体重秤",
+  "group": "material",
+  "tier": "top",
+  "art": "",
+  "fg": "",
+  "tag": "七段液晶",
+  "palette": {
+    "light": {
+      "paper": "#DCE5DD",
+      "paperDeep": "#CFDAD2",
+      "surface": "#E9F0E9",
+      "surface2": "#E2EBE3",
+      "field": "#E5EDE6",
+      "ink": "#143329",
+      "ink2": "#33504A",
+      "ink3": "#47635C",
+      "line": "#B9CCC0",
+      "line2": "#A5BBB0",
+      "green": "#0E7A54",
+      "greenDeep": "#0B6646",
+      "greenSoft": "#D6E8DC",
+      "greenLine": "#6FA98D",
+      "amber": "#7A5A1E",
+      "amberSoft": "#E3E4CE",
+      "red": "#B04038",
+      "redSoft": "#E5D5D2",
+      "seal": "#2F6653"
+    },
+    "dark": {
+      "paper": "#0C1512",
+      "paperDeep": "#080F0C",
+      "surface": "#14211B",
+      "surface2": "#1A2822",
+      "field": "#17241E",
+      "ink": "#C6EBD6",
+      "ink2": "#9DC4AF",
+      "ink3": "#86AE9A",
+      "line": "#22332B",
+      "line2": "#2C4136",
+      "green": "#8FF0B0",
+      "greenDeep": "#8FF0B0",
+      "greenSoft": "#16281F",
+      "greenLine": "#3E6B52",
+      "amber": "#D9C36A",
+      "amberSoft": "#2B2818",
+      "red": "#E08078",
+      "redSoft": "#2E201E",
+      "seal": "#6FBF98"
+    }
+  },
+  "themeMode": "auto",
+  "material": {
+    "kernel": "metal",
+    "grain": 0.0,
+    "sheen": 0.0,
+    "edge": "soft",
+    "radius": 18,
+    "cardAlpha": 0.96
+  },
+  "component": {
+    "surface": "metal",
+    "edge": "soft",
+    "divider": "line",
+    "number": "mono",
+    "display": "mono",
+    "ornament": "lcdglass"
+  },
+  "motion": {
+    "engine": "none",
+    "intensity": 0.4,
+    "signature": "flip",
+    "signatureCss": "sk-flip 300ms ease-out"
+  },
+  "structure": {
+    "archetype": "lcd",
+    "density": "normal"
+  },
+  "scrim": {
+    "light": 0.55,
+    "dark": 0.56,
+    "railAlpha": 0.86,
+    "cardAlpha": 0.96,
+    "paperAlpha": 1.0
+  },
+  "artColor": {
+    "avg": "#0E2A22",
+    "bright": "#8FF0B0",
+    "lum": 0.019
+  },
+  "a11y": {
+    "minContrast": 4.5,
+    "focusRing": "auto",
+    "checkedPairs": 60
+  },
+  "tech": [
+    "形状锚点 LCD 屏框+扫描线；数据 今日结余 → 七段数字",
+    "JS 七段渲染器零请求；夜间 data-dayphase=night 降亮度"
+  ],
+  "mobile": {
+    "stage": "整屏 LCD：七段字形大数字，夜间自动降背光",
+    "shapeAnchor": "lcdglass",
+    "dataAnchor": "数据 今日结余 → 七段数字",
+    "touchAnchor": "pointerdown 压按回弹 + 皮肤专属触感"
+  }
+}
