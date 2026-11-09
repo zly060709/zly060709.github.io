@@ -24,23 +24,26 @@ window.__EL_VER = '6.0.0';</script>
     var s = JSON.parse(localStorage.getItem('energy-ledger.v2') || '{}');
     var id = (s.skins && s.skins.active) || 'paper';
     var OLDGEN = /^(a-(sakura|galaxy|neon|wuxia|fireworks)|g0\d|g1\d|g2[0-5])$/;
+    var A10GEN = /^a-(aurora|chart|chrome|culture|glass|polar|pulse|radio|tidal|type)$/;  /* v5.6：十套 a-* 数据/材质皮肤补首帧（样式在 v43/v5 静态层，无需注入） */
     var V6SKIN = /^g(2[6-9]|3[0-5])$/;
-    var V7SKIN = /^g(3[6-9]|[4-8][0-9]|9[0-9]|1[0-2][0-9]|13[0-5])$/;  /* v6.0：精确覆盖 g36–g135（验证1修复：旧写法 1[0-3][0-9] 会让假 id g136–g139 误入预绘注入） */
-    if (!OLDGEN.test(id) && !V6SKIN.test(id) && !V7SKIN.test(id)) return;
+    var V7SKIN = /^g(3[6-9]|[4-8][0-9]|9[0-9]|1[0-2][0-9]|13[0-5])$/;  /* v6.0：精确覆盖 g36–g135（验证1修复：旧写法 1[0-3][0-9] 会让假 id g136–g139 误入预绘注入）；v6.1：并入 v5.6 的 A10GEN 分支 */
+    if (!OLDGEN.test(id) && !A10GEN.test(id) && !V6SKIN.test(id) && !V7SKIN.test(id)) return;
     var th = (s.settings && s.settings.theme) || 'auto';
     if (th === 'auto') th = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     var r = document.documentElement;
     r.setAttribute('data-skin', id);
     r.setAttribute('data-theme', th);
-    r.setAttribute('data-skin-gen', '1');
+    if (!A10GEN.test(id)) r.setAttribute('data-skin-gen', '1');
     r.classList.add('skinned');
     if (V6SKIN.test(id)) r.setAttribute('data-skin-v6', '1');  /* 首帧就位：舞台容器不等 JS */
     if (V7SKIN.test(id)) r.setAttribute('data-skin-v7', '1');  /* v5.5：机制舞台首帧就位 */
-    var l = document.createElement('link');
-    l.rel = 'stylesheet'; l.id = 'skinsGenCss';
-    l.href = V7SKIN.test(id) ? 'assets/skins-v7.css?v=6.0.0'
-      : V6SKIN.test(id) ? 'assets/skins-v6.css?v=6.0.0' : 'assets/skins-gen.css?v=6.0.0';
-    document.head.appendChild(l);
+    if (!A10GEN.test(id)) {  /* v6.1：a-* 十套不注入 gen.css（v43/v5 静态已含，省 30KB 无谓请求） */
+      var l = document.createElement('link');
+      l.rel = 'stylesheet'; l.id = 'skinsGenCss';
+      l.href = V7SKIN.test(id) ? 'assets/skins-v7.css?v=6.0.0'
+        : V6SKIN.test(id) ? 'assets/skins-v6.css?v=6.0.0' : 'assets/skins-gen.css?v=6.0.0';
+      document.head.appendChild(l);
+    }
   } catch (e) {}
 })();</script>
 <style>

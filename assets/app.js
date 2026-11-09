@@ -4227,6 +4227,34 @@
     refreshSkinFx();
   }
 
+  /* v5.6 修复（验证1/5）：实时换肤的家族样式表保障。
+     skins-gen.css / skins-v7.css 由 index.html 预绘脚本按「页面加载时的激活皮肤」注入；
+     但图鉴是实时切换（applySkin → applySkins，不刷新页面）：此前从 paper/其他家族现场
+     切到 g01–g25 / g36–g85 时无人补注入对应样式表，引擎样式缺失、舞台裸奔直到下次刷新。
+     v5/v43/v6/m 均为静态 <link> 无需处理。复用预绘的 skinsGenCss id，跨家族切换改 href。 */
+  const SKIN_FAMILY_CSS = [
+    [/^g(3[6-9]|[4-8][0-9])$/, 'assets/skins-v7.css'],
+    [/^(a-(sakura|galaxy|neon|wuxia|fireworks)|g0\d|g1\d|g2[0-5])$/, 'assets/skins-gen.css'],
+  ];
+  function ensureSkinFamilyCss(id) {
+    let want = '';
+    for (const [rx, css] of SKIN_FAMILY_CSS) { if (rx.test(id)) { want = css; break; } }
+    const cur = document.getElementById('skinsGenCss');
+    if (!want) {
+      /* v6/立绘/a-*/paper：样式全在静态层；清掉预绘可能留下的 gen/v7 注入表 */
+      if (cur && /skins-(gen|v7)\.css/.test(cur.getAttribute('href') || '')) cur.remove();
+      return;
+    }
+    const url = want + '?v=' + (window.__EL_VER || APP_VERSION);
+    if (cur) {
+      if ((cur.getAttribute('href') || '') !== url) cur.setAttribute('href', url);
+      return;
+    }
+    const l = document.createElement('link');
+    l.rel = 'stylesheet'; l.id = 'skinsGenCss'; l.href = url;
+    document.head.appendChild(l);
+  }
+
   function applySkins() {
     const s = DB.skins || {};
     const root = document.documentElement;
@@ -4250,6 +4278,7 @@
       if (window.SkinGen) SkinGen.sync('paper');
       if (window.SkinV6) SkinV6.sync('paper', null);
       if (window.SkinV7) SkinV7.sync('paper', null);   /* v5.5：v7 通道同步清理 */
+      ensureSkinFamilyCss('paper');                    /* v5.6：清掉跨家族残留的注入表 */
       refreshSkinFx();
       return;
     }
@@ -4270,6 +4299,7 @@
     root.setAttribute('data-skin-font', s.font || 'default');
     root.setAttribute('data-skin-scratch', s.scratchArt || 'cloth');
     root.setAttribute('data-skin-fx', s.fxTheme || 'default');
+    ensureSkinFamilyCss(id);   /* v5.6：实时换肤补注入 gen/v7 家族样式表（验证1/5 #1） */
     /* v5.3：纯 CSS 材质皮肤（无 canvas）不铺占位剪影——背景由皮肤自己的 CSS 画 */
     const CSS_MATERIAL_SKINS = ['a-glass', 'a-polar', 'a-type', 'a-chrome'];
     const art = skinArtUrl(id) || (packTheme(id) && CSS_MATERIAL_SKINS.indexOf(id) < 0 ? PACK_PLACEHOLDER : '');
