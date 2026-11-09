@@ -360,7 +360,7 @@ html[data-skin="g26"] #skinStage .stub i {
 html[data-skin="g26"] #skinStage .stub i:nth-child(2) { width: 62%; }
 html[data-skin="g26"] #skinStage .stub b {
   position: absolute; right: 4px; bottom: 3px;
-  font: 700 8px/1 ui-monospace, monospace; color: var(--seal); letter-spacing: .06em;
+  font: 700 10px/1 ui-monospace, monospace; color: var(--seal); letter-spacing: .06em;
 }
 html[data-skin="g26"] #skinStage .stub-count {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
@@ -418,7 +418,7 @@ html[data-skin="g27"] #skinStage .cab::after {  /* 铜拉手 */
 }
 html[data-skin="g27"] #skinStage .cab b {  /* 药签（竖排字） */
   position: absolute; left: 6px; top: 6px;
-  writing-mode: vertical-rl; font: 600 9px/1 var(--serif, serif);
+  writing-mode: vertical-rl; font: 600 10px/1 var(--serif, serif);
   color: rgba(240,225,196,.4); letter-spacing: .2em;
 }
 html[data-skin="g27"] #skinStage .cab.on {
@@ -462,7 +462,7 @@ html[data-skin="g28"] {
 html[data-skin="g28"] .card { border-radius: 8px; }
 html[data-skin="g28"] .view > .card:first-of-type::after {
   content: "SIDE A · 90min"; position: absolute; top: 10px; right: 14px;
-  font: 700 9px/1 ui-monospace, monospace; letter-spacing: .14em; color: var(--ink-3);
+  font: 700 10px/1 ui-monospace, monospace; letter-spacing: .14em; color: var(--ink-3);
 }
 /* DOM 舞台：磁带仓 */
 html[data-skin="g28"] #skinStage {
@@ -479,7 +479,7 @@ html[data-skin="g28"] #skinStage .cas-lab b {
   color: #F0EEE7; letter-spacing: .1em;
 }
 html[data-skin="g28"] #skinStage .cas-lab span {
-  font: 600 9px/1 ui-monospace, monospace; color: #8D9198; letter-spacing: .16em;
+  font: 600 10px/1 ui-monospace, monospace; color: #8D9198; letter-spacing: .16em;
   padding-right: 16px;  /* 给 REC 红点让位，避免压字 */
 }
 html[data-skin="g28"] #skinStage .rec {
@@ -514,7 +514,7 @@ html[data-skin="g28"] #skinStage .tape-foot {
   display: flex; justify-content: space-between; align-items: center;
 }
 html[data-skin="g28"] #skinStage .tape-foot b {
-  font: 600 9px/1 ui-monospace, monospace; color: #8D9198; letter-spacing: .12em;
+  font: 600 10px/1 ui-monospace, monospace; color: #8D9198; letter-spacing: .12em;
 }
 html[data-skin="g28"] #skinStage .flip-hint {
   font: 600 10px/1 ui-monospace, monospace; color: #E8814E; letter-spacing: .1em;
@@ -563,7 +563,7 @@ html[data-skin="g29"] #skinStage::after {  /* LCD 扫描纹 */
 html[data-skin="g29"] #skinStage .lcd-head {
   position: absolute; left: 14px; right: 14px; top: 10px;
   display: flex; justify-content: space-between;
-  font: 600 9px/1.6 ui-monospace, monospace; letter-spacing: .18em; color: #6FB892;
+  font: 600 10px/1.6 ui-monospace, monospace; letter-spacing: .18em; color: #6FB892;
 }
 html[data-skin="g29"] #skinStage .lcd-svg { position: absolute; inset: 26px 10px 10px; width: calc(100% - 20px); height: calc(100% - 36px); }
 html[data-skin="g29"] #skinStage .lcd-svg polygon { fill: #9CF5B8; }
@@ -571,7 +571,7 @@ html[data-skin="g29"] #skinStage .lcd-svg .seg-off { fill: rgba(156,245,184,.08)
 html[data-skin="g29"] #skinStage .lcd-foot {
   position: absolute; left: 14px; right: 14px; bottom: 8px;
   display: flex; justify-content: space-between;
-  font: 600 8.5px/1 ui-monospace, monospace; letter-spacing: .16em; color: #4E8A6C;
+  font: 600 10px/1 ui-monospace, monospace; letter-spacing: .16em; color: #4E8A6C;
 }
 /* 夜间降背光；超支整屏红一下 */
 html[data-dayphase="night"] html[data-skin="g29"] #skinStage,
@@ -778,10 +778,10 @@ html[data-skin="g33"] #skinStage .station circle { fill: var(--surface); stroke:
 html[data-skin="g33"] #skinStage .station.hit circle { stroke: var(--green); }
 html[data-skin="g33"] #skinStage .station.terminal circle { stroke: var(--amber); }
 html[data-skin="g33"] #skinStage .station text {
-  fill: var(--ink-2); font: 600 9.5px var(--sans, sans-serif);
+  fill: var(--ink-2); font: 600 10px var(--sans, sans-serif);
 }
 html[data-skin="g33"] #skinStage .train circle.body { fill: var(--red); }
-html[data-skin="g33"] #skinStage .train text { fill: var(--surface); font: 700 8px var(--sans, sans-serif); }
+html[data-skin="g33"] #skinStage .train text { fill: var(--surface); font: 700 10px var(--sans, sans-serif); }
 html[data-skin="g33"][data-sk-over="1"] #skinStage .train circle.body { fill: var(--ink-3); }
 @keyframes sk-transit { 0% { transform: translateY(var(--y, 0)); } 100% { transform: translateY(var(--ty, 0)); } }
 
@@ -897,7 +897,7 @@ html[data-skin="g35"] #skinStage .magnet.pinned { animation: sk-pin .18s ease-ou
 @media (prefers-reduced-motion: reduce) { html[data-skin="g35"] #skinStage .magnet.pinned { animation: none; } }
 html[data-skin="g35"] #skinStage .magnet-hint {
   position: absolute; left: 12px; bottom: 8px;
-  font: 500 9.5px/1.6 var(--sans, sans-serif); color: rgba(0,0,0,.34); letter-spacing: .06em;
+  font: 500 10px/1.6 var(--sans, sans-serif); color: rgba(0,0,0,.34); letter-spacing: .06em;
 }
 [data-theme="dark"][data-skin="g35"] #skinStage .magnet-hint { color: rgba(255,255,255,.3); }
 

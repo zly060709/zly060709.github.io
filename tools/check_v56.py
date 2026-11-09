@@ -197,6 +197,20 @@ if os.path.exists(drpath):
 else:
     check('distinct-report 存在', False, 'A 交付未完成')
 
+# ---------- 8) 页头徽记槽位冲突扫描（R3 教训：gen.css 水墨线吃掉 a-wuxia 徽记） ----------
+# .page-title::after 是徽记专用槽位：仅允许 skins-m.css（40 套存量）、skins-v6.css §9（g26–g35）、
+# skins-v7.css（g36–g85）三处声明；其余文件出现即为槽位抢占。
+slot_conflicts = []
+for p, owner_ok in (('assets/skins-gen.css', False), ('assets/skins-v43.css', False),
+                    ('assets/skins-v5.css', False), ('assets/app.css', False)):
+    if not os.path.exists(p):
+        continue
+    s2 = read(p)
+    if 'page-title::after' in s2:
+        for m2 in re.finditer(r'[^{}]*\.page-title::after', s2):
+            slot_conflicts.append(p + ' :: ' + m2.group(0).strip()[-70:])
+check('徽记槽位无跨文件抢占', not slot_conflicts, str(slot_conflicts[:3]))
+
 fails = [x for x in OK if not x[1]]
 print('\n== 验证1/5 代码审查: %d checks, %d fail ==' % (len(OK), len(fails)))
 for name, _, detail in fails:

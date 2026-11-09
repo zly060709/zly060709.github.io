@@ -50,7 +50,7 @@ dict(id='g39', name='集邮·册页', tag='靛青米白', eng='grow', mech='stam
 html[data-skin="g39"] #skinStage .gu::before{content:"";position:absolute;inset:3px;background:linear-gradient(150deg,var(--green-soft),var(--green-line));opacity:.8}
 html[data-skin="g39"] #skinStage .gu.off{border-style:solid;border-color:var(--line);background:var(--field)}
 html[data-skin="g39"] #skinStage .gu.off::before{opacity:.25}
-html[data-skin="g39"] #skinStage .gu b{position:relative;z-index:1;font-size:9px;color:var(--green-deep)}""",
+html[data-skin="g39"] #skinStage .gu b{position:relative;z-index:1;font-size:10px;color:var(--green-deep)}""",
     cfg=dict(tip='{d}'), ),
 dict(id='g40', name='育苗·苗盘', tag='苗木土褐', eng='grow', mech='tray', bind='miss12', max=12, h=170,
     anchors=dict(bg='#E7E2D3', card='#F1ECDf', ink='#3A3421', a1='#6E8F4D', a2='#7C5E35'),
@@ -247,7 +247,7 @@ dict(id='g60', name='电梯·楼层', tag='井道轿厢金', eng='plate', mech='
     stage='repeating-linear-gradient(0deg, rgba(78,94,108,.05) 0 2px, transparent 2px 20px), radial-gradient(46% 40% at 86% 2%, rgba(176,144,64,.10), transparent 70%), linear-gradient(180deg, var(--paper-deep) 0%, transparent 90%)',
     comp="""html[data-skin="g60"] #skinStage .fl-rail{position:absolute;left:14px;top:10px;bottom:10px;width:8px;border-radius:5px;background:repeating-linear-gradient(180deg,var(--field) 0 16px,var(--line-2) 16px 17px);box-shadow:inset 0 0 0 1px var(--line-2)}
 html[data-skin="g60"] #skinStage .fl-cab{position:absolute;left:6px;width:24px;height:30px;border-radius:5px;background:linear-gradient(160deg,var(--a1-2, var(--amber)),var(--amber-soft));box-shadow:0 3px 10px rgba(39,42,46,.25);transition:top .45s cubic-bezier(.3,1.2,.4,1)}
-html[data-skin="g60"] #skinStage .fl-cab::before{content:"▲";position:absolute;left:50%;top:3px;transform:translateX(-50%);font-size:8px;color:rgba(255,255,255,.8)}
+html[data-skin="g60"] #skinStage .fl-cab::before{content:"▲";position:absolute;left:50%;top:3px;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.8)}
 html[data-skin="g60"] #skinStage .fl-num{position:absolute;right:16px;font:700 40px/1 ui-monospace,Consolas,monospace;color:var(--ink)}""",
     cfg=dict(), ),
 dict(id='g61', name='火漆·封缄', tag='绛红羊皮', eng='plate', mech='seal', bind='recorded', max=6, h=188,
@@ -296,7 +296,7 @@ dict(id='g65', name='砝码·天平盘', tag='铜绿呢绒', eng='plate', mech='
 html[data-skin="g65"] #skinStage .wt-chip{width:56px;height:56px;border-radius:50% 50% 46% 46%;background:linear-gradient(155deg,var(--a2-2, var(--amber)),var(--amber-soft));box-shadow:0 5px 10px rgba(38,48,43,.18), inset 0 2px 0 rgba(255,255,255,.4), inset 0 -3px 0 rgba(0,0,0,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
 html[data-skin="g65"] #skinStage .wt-chip::before{content:"";position:absolute;top:8px;left:50%;width:16px;height:5px;margin-left:-8px;border-radius:3px;background:var(--field);box-shadow:inset 0 1px 2px rgba(0,0,0,.25)}
 html[data-skin="g65"] #skinStage .wt-chip b{font-size:12px;color:var(--ink)}
-html[data-skin="g65"] #skinStage .wt-chip i{font-style:normal;font-size:9px;color:var(--ink-2)}""",
+html[data-skin="g65"] #skinStage .wt-chip i{font-style:normal;font-size:10px;color:var(--ink-2)}""",
     cfg=dict(), ),
 # ================= E-D 容器·堆积（vessel） =================
 dict(id='g66', name='信匣·信件', tag='牛皮火漆红', eng='vessel', mech='rack', bind='items', max=6, h=190,
@@ -307,7 +307,7 @@ dict(id='g66', name='信匣·信件', tag='牛皮火漆红', eng='vessel', mech=
 html[data-skin="g66"] #skinStage .vs-it{width:64px;height:44px;border-radius:4px;background:linear-gradient(155deg,#F4ECD8,#E2D5B8);box-shadow:0 3px 7px rgba(58,46,30,.22);position:relative;overflow:hidden}
 html[data-skin="g66"] #skinStage .vs-it::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 0 48%,rgba(166,88,50,.5) 49% 51%,transparent 52%)}
 html[data-skin="g66"] #skinStage .vs-it::after{content:"";position:absolute;left:50%;top:0;width:14px;height:10px;margin-left:-7px;background:radial-gradient(60% 100% at 50% 0,#C4483C 55%,#A6322A)}
-html[data-skin="g66"] #skinStage .vs-it b{position:absolute;left:4px;bottom:2px;right:4px;font-size:9px;color:#5C4A2E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}""",
+html[data-skin="g66"] #skinStage .vs-it b{position:absolute;left:4px;bottom:2px;right:4px;font-size:10px;color:#5C4A2E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}""",
     cfg=dict(), ),
 dict(id='g67', name='蒸笼·竹屉', tag='竹黄蒸汽白', eng='vessel', mech='stack', bind='count', max=4, h=198,
     anchors=dict(bg='#E7DFC8', card='#F1E9D2', ink='#3C3322', a1='#B08A3E', a2='#8C9C6E'),
@@ -326,7 +326,7 @@ dict(id='g68', name='签筒·灯谜', tag='朱漆签纸黄', eng='vessel', mech=
     comp="""html[data-skin="g68"] #skinStage .vs-body{width:92px;height:104px;border-radius:10px 10px 26px 26px;background:linear-gradient(160deg,#B4483A,#8E2E24);box-shadow:inset 0 0 0 2px rgba(62,42,30,.3), inset 0 -8px 14px rgba(90,20,16,.4), 0 8px 16px rgba(62,42,30,.2);position:relative}
 html[data-skin="g68"] #skinStage .vs-body::before{content:"签";position:absolute;left:50%;top:34%;transform:translate(-50%,-50%);font-size:26px;color:#F2E0C0;font-weight:700}
 html[data-skin="g68"] #skinStage .st-stick{width:12px;height:78px;border-radius:4px;background:linear-gradient(180deg,#F2E5C8,#E0CD9E);box-shadow:0 2px 5px rgba(62,42,30,.2);transform-origin:50% 100%}
-html[data-skin="g68"] #skinStage .st-stick b{position:absolute;left:50%;top:6px;transform:translateX(-50%) rotate(90deg);transform-origin:0 50%;font-size:9px;color:#6E4A2E;white-space:nowrap}""",
+html[data-skin="g68"] #skinStage .st-stick b{position:absolute;left:50%;top:6px;transform:translateX(-50%) rotate(90deg);transform-origin:0 50%;font-size:10px;color:#6E4A2E;white-space:nowrap}""",
     cfg=dict(), ),
 dict(id='g69', name='幕布·皮影', tag='幕布米影墨', eng='vessel', mech='puppet', bind='items', max=6, h=196,
     anchors=dict(bg='#E5DCCB', card='#F0E8D6', ink='#3A3028', a1='#B8863E', a2='#54483C'),
