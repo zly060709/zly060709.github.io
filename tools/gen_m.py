@@ -34,10 +34,11 @@ M = [
  'linear-gradient(180deg, transparent 55%, rgba(20,50,48,.22) 100%)',
  '18px 18px 4px 18px', 'bar'),
 ('g03', '云',
- 'linear-gradient(180deg, transparent 18%, rgba(255,255,255,.8) 26%, rgba(255,255,255,.4) 34%, transparent 46%),'
- 'repeating-linear-gradient(90deg, rgba(60,70,80,.10) 0 16px, transparent 16px 28px),'
+ 'linear-gradient(180deg, transparent 16%, rgba(255,255,255,.92) 25%, rgba(255,255,255,.5) 34%, transparent 48%),'
+ 'repeating-linear-gradient(90deg, rgba(60,70,80,.17) 0 16px, transparent 16px 28px),'
+ 'radial-gradient(120% 38% at 50% 100%, rgba(140,160,180,.24), transparent 72%),'
  'linear-gradient(180deg, var(--paper-deep) 0%, transparent 80%),'
- 'linear-gradient(180deg, transparent 82%, rgba(90,100,110,.16) 84%, transparent 96%)',
+ 'linear-gradient(180deg, transparent 82%, rgba(90,100,110,.24) 84%, transparent 96%)',
  '3px', 'bar'),
 ('g04', '昏',
  'radial-gradient(circle 42px at 78% 34%, rgba(255,176,88,.42), rgba(255,176,88,.10) 62%, transparent 70%),'
