@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#EFECE2">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<title>这一页没有记在账上 · 能量账本</title>
+<style>
+  :root { --paper:#EFECE2; --ink:#1E3A2C; --ink-2:#55685C; --ink-3:#7C8B80; --green:#2C6B51; --line:rgba(44,107,81,.18); }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    display: grid; place-items: center; padding: 32px;
+    background-image: repeating-linear-gradient(0deg, rgba(44,107,81,.035) 0 1px, transparent 1px 30px);
+  }
+  main { width: 100%; max-width: 440px; text-align: center; }
+  img { width: 64px; height: 64px; border-radius: 16px; box-shadow: 0 10px 26px rgba(30,58,44,.14); }
+  .code {
+    font-family: "Songti SC", "SimSun", serif; font-size: 96px; line-height: 1;
+    letter-spacing: .04em; color: var(--green); margin: 26px 0 10px;
+  }
+  h1 { font-family: "Songti SC", "SimSun", serif; font-size: 26px; font-weight: 500; margin: 0 0 12px; }
+  p { font-size: 14px; line-height: 1.8; color: var(--ink-2); margin: 0 0 28px; }
+  a {
+    display: inline-block; padding: 12px 26px; border-radius: 999px;
+    background: var(--green); color: #F7F4E9; text-decoration: none; font-size: 14px;
+    border: 1px solid var(--green);
+  }
+  a:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+  .hint { margin-top: 18px; font-size: 12px; color: var(--ink-3); }
+</style>
+</head>
+<body>
+  <main>
+    <img src="/icon.svg" alt="">
+    <div class="code">404</div>
+    <h1>这一页没有记在账上</h1>
+    <p>链接可能过期了，或者地址打错了一个字。<br>数据都还在，回今日继续记就好。</p>
+    <a href="/">回到今日</a>
+    <div class="hint">能量账本 · 本地优先，数据不离开这台设备</div>
+  </main>
+</body>
+</html>

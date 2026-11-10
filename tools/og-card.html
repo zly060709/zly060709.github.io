@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background:
+      radial-gradient(720px 420px at 88% 8%, rgba(44,107,81,.10), transparent 68%),
+      radial-gradient(520px 360px at 6% 100%, rgba(192,138,78,.10), transparent 70%),
+      repeating-linear-gradient(0deg, rgba(44,107,81,.035) 0 1px, transparent 1px 30px),
+      #EFECE2;
+    color: #1E3A2C;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    padding: 58px 72px 54px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .top { display: flex; align-items: center; gap: 18px; }
+  .top img { width: 62px; height: 62px; border-radius: 15px; box-shadow: 0 8px 22px rgba(30,58,44,.16); }
+  .brand { font-family: "Songti SC", "SimSun", serif; font-size: 34px; letter-spacing: .04em; }
+  .brand small { display: block; margin-top: 3px; font-family: "Microsoft YaHei", sans-serif; font-size: 11px; letter-spacing: .34em; color: #6B7C70; }
+  .main { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; }
+  .copy { width: 660px; padding-bottom: 4px; }
+  h1 {
+    margin: 0 0 22px; font-family: "Songti SC", "SimSun", "STSong", serif;
+    font-size: 82px; line-height: 1.16; font-weight: 500; letter-spacing: .01em;
+  }
+  h1 em { font-style: normal; color: #2C6B51; }
+  .sub { margin: 0 0 26px; font-size: 27px; line-height: 1.6; color: #55685C; letter-spacing: .01em; }
+  .pills { display: flex; gap: 12px; }
+  .pills span {
+    display: inline-block; padding: 9px 18px; border: 1px solid rgba(44,107,81,.26);
+    border-radius: 999px; font-size: 16px; color: #3D5A4A; background: rgba(251,249,242,.6);
+  }
+  .card {
+    width: 384px; padding: 28px 30px 24px; border-radius: 22px;
+    background: #FBF9F2; border: 1px solid rgba(44,107,81,.16);
+    box-shadow: 0 22px 54px rgba(30,58,44,.13);
+  }
+  .card-head { display: flex; align-items: center; justify-content: space-between; }
+  .card-head b { font-size: 14px; font-weight: 600; letter-spacing: .08em; color: #6B7C70; }
+  .card-head i { font-style: normal; font-size: 11px; padding: 4px 10px; border-radius: 999px; background: #E7F0EA; color: #2C6B51; }
+  .big { margin-top: 10px; display: flex; align-items: baseline; gap: 8px; }
+  .big b { font-family: "Times New Roman", Georgia, serif; font-size: 64px; font-weight: 500; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
+  .big span { font-size: 15px; color: #6B7C70; }
+  .bar { margin: 18px 0 20px; height: 7px; border-radius: 4px; background: #E6E1D2; overflow: hidden; }
+  .bar i { display: block; width: 62%; height: 100%; background: #2C6B51; border-radius: 4px; }
+  .rows { display: flex; flex-direction: column; gap: 13px; }
+  .row { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: #55685C; }
+  .row span { display: flex; align-items: center; gap: 8px; }
+  .row span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #C08A4E; }
+  .row b { font-weight: 600; color: #1E3A2C; font-variant-numeric: tabular-nums; }
+  .foot { margin-top: 22px; padding-top: 16px; border-top: 1px dashed rgba(44,107,81,.22); font-size: 12.5px; color: #6B7C70; display: flex; justify-content: space-between; }
+  .foot b { color: #2C6B51; font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <img src="../icon.svg" alt="">
+    <div class="brand">能量账本<small>ENERGY LEDGER</small></div>
+  </div>
+
+  <div class="main">
+    <div class="copy">
+      <h1>记录得更少，<br><em>知道得更多。</em></h1>
+      <p class="sub">一本会自我校准的私人饮食账本。<br>数据只留在这台设备，没有账号，没有云端。</p>
+      <div class="pills"><span>本地优先</span><span>离线可用</span><span>无需注册</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>今日余额</b><i>本地</i></div>
+      <div class="big"><b>1,448</b><span>kcal</span></div>
+      <div class="bar"><i></i></div>
+      <div class="rows">
+        <div class="row"><span>蛋白质</span><b>96 / 120 g</b></div>
+        <div class="row"><span>脂肪</span><b>48 / 60 g</b></div>
+        <div class="row"><span>碳水</span><b>152 / 180 g</b></div>
+      </div>
+      <div class="foot"><span>已连续达标 <b>3 天</b></span><span>21:40 结账</span></div>
+    </div>
+  </div>
+</body>
+</html>
