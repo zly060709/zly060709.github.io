@@ -4231,14 +4231,17 @@
      skins-gen.css / skins-v7.css 由 index.html 预绘脚本按「页面加载时的激活皮肤」注入；
      但图鉴是实时切换（applySkin → applySkins，不刷新页面）：此前从 paper/其他家族现场
      切到 g01–g25 / g36–g85 时无人补注入对应样式表，引擎样式缺失、舞台裸奔直到下次刷新。
-     v5/v43/v6/m 均为静态 <link> 无需处理。复用预绘的 skinsGenCss id，跨家族切换改 href。 */
-  const SKIN_FAMILY_CSS = [
-    [/^g(3[6-9]|[4-8][0-9])$/, 'assets/skins-v7.css'],
-    [/^(a-(sakura|galaxy|neon|wuxia|fireworks)|g0\d|g1\d|g2[0-5])$/, 'assets/skins-gen.css'],
-  ];
+     v5/v43/v6/m 均为静态 <link> 无需处理。复用预绘的 skinsGenCss id，跨家族切换改 href。
+     v6.1（整合轮修复）：v7 家族判定改为读 SkinV7.ids 动态名单——旧写法把 g86–g135 判成
+     「非 v7 家族」，现场切到新五十连发时会误删预绘注入的 v7.css，徽记/引擎样式全灭。 */
+  function skinFamilyCssOf(id) {
+    if (window.SkinV7 && SkinV7.ids.indexOf(id) >= 0) return 'assets/skins-v7.css';
+    if (/^(a-(sakura|galaxy|neon|wuxia|fireworks)|g0\d|g1\d|g2[0-5])$/.test(id)) return 'assets/skins-gen.css';
+    if (window.SkinGen && SkinGen.ids && SkinGen.ids.indexOf(id) >= 0) return 'assets/skins-gen.css';
+    return '';
+  }
   function ensureSkinFamilyCss(id) {
-    let want = '';
-    for (const [rx, css] of SKIN_FAMILY_CSS) { if (rx.test(id)) { want = css; break; } }
+    let want = skinFamilyCssOf(id);
     const cur = document.getElementById('skinsGenCss');
     if (!want) {
       /* v6、立绘、a系、paper：样式全在静态层；清掉预绘可能留下的 gen/v7 注入表

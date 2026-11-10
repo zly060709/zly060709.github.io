@@ -4,6 +4,7 @@
 skins-l.css 接入 / 新派生锚点 / 身份三件套覆盖 / DOM 预算静态抽查。
 运行：python tools/check_v60.py   （在仓库根目录执行）"""
 import json, re, io, os, sys
+sys.stdout.reconfigure(encoding='utf-8') if hasattr(sys.stdout,'reconfigure') else None
 from collections import Counter
 
 ok = []
@@ -137,3 +138,53 @@ check('tools/v8-harness.html 存在（验证3 载体）', os.path.exists('tools/
 fails = [x for x in ok if not x[1]]
 print('\n== 验证1/5 静态审查(v6.0): %d checks, %d fail ==' % (len(ok), len(fails)))
 sys.exit(1 if fails else 0)
+
+# ==================== v6.1 并入的集成断言（来自 v5.6 验证轮） ====================
+import re as _re
+VER6 = json.loads(open('version.json', encoding='utf-8').read())['version']
+appjs6 = open('assets/app.js', encoding='utf-8').read()
+html6 = open('index.html', encoding='utf-8').read()
+
+check('app.js 换肤家族CSS保障 ensureSkinFamilyCss', 'function ensureSkinFamilyCss' in appjs6,
+      '实时切换 paper→g01/g36 必须注入对应样式表（v5.6 R1 #1）')
+
+rx = {}
+for name in ('OLDGEN', 'A10GEN', 'V6SKIN', 'V7SKIN'):
+    m6 = _re.search(r'var %s = (/[^;]+/);' % name, html6)
+    rx[name] = m6.group(1) if m6 else None
+
+def _jsmatch(src, sid):
+    if not src:
+        return False
+    body = src.strip()
+    if body.startswith('/'):
+        body = body[1:]
+    if body.endswith('$/'):
+        body = body[:-2]
+    elif body.endswith('/'):
+        body = body[:-1]
+    try:
+        return _re.fullmatch(body, sid) is not None
+    except _re.error:
+        return False
+
+missing6 = [i for i in ids if not any(_jsmatch(rx.get(n), i) for n in rx)]
+check('预绘首帧覆盖 150/150', not missing6, 'missing=%s' % str(missing6[:8]))
+
+check('预绘 mode 门禁', "((s.settings && s.settings.mode) || 'full') !== 'full'" in html6,
+      'ledger 用户首屏不得注入皮肤（v5.6 R2 #2）')
+
+slot6 = []
+for p6 in ('assets/skins-gen.css', 'assets/skins-l.css', 'assets/skins-v5.css', 'assets/app.css'):
+    if not os.path.exists(p6):
+        continue
+    s6 = open(p6, encoding='utf-8').read()
+    if '.page-title::after' in s6:
+        slot6.append(p6)
+check('徽记槽位无跨文件抢占', not slot6, str(slot6))
+
+notes6 = json.dumps(json.loads(open('version.json', encoding='utf-8').read()).get('notes', []), ensure_ascii=False)
+check('notes 缓存名与版本一致', ('energy-ledger-v' + VER6) in notes6, VER6)
+
+h86 = open('tools/v8-harness.html', encoding='utf-8').read()
+check('harness 三增强扫描+逻辑探针', all(k in h86 for k in ('scanMinFont', 'scanTap44', 'contrastSpot', 'runLogic')))

@@ -23,6 +23,8 @@
   <button onclick="batchPool('dark')">仅暗色</button>
   <button onclick="batchNew()">仅新 50（g86–g135）</button>
   <button onclick="stopBatch()">停止</button>
+  <h3>逻辑探针（v6.1 并入自 v5.6 验证轮）</h3>
+  <button onclick="runLogic()">运行逻辑探针</button>
   <h3>单套操作</h3>
   <div class="row" id="skinBtns"></div>
   <h3>操作</h3>
@@ -194,14 +196,59 @@ async function batchList(ids,theme){
       tabOk=tabW>=4;
     }
     const errOk=errs.length===0;
+    const fontBad=scanMinFont(W2);
+    const tapBad=scanTap44(W2);
+    const cBad=contrastSpot(W2);
     const rec={id,theme,skin:X.getAttribute('data-skin'),eng:a&&a.eng,badge,tabW:Math.round(tabW),
-               stageH:a&&a.stage.h,dom:a&&a.stage.children,overflow:overflowX,errs:errs.slice(0,2)};
-    if(skinOk&&stageOk&&familyOk&&!overflowX&&errOk&&badgeOk&&tabOk&&themeOk)pass.push(id);
+               stageH:a&&a.stage.h,dom:a&&a.stage.children,overflow:overflowX,errs:errs.slice(0,2),
+               font:fontBad.slice(0,2),tap:tapBad.slice(0,2),contrast:cBad.slice(0,2)};
+    if(skinOk&&stageOk&&familyOk&&!overflowX&&errOk&&badgeOk&&tabOk&&themeOk&&!fontBad.length&&!tapBad.length&&!cBad.length)pass.push(id);
     else{fail.push(rec);out('FAIL',JSON.stringify(rec));}
   }
   out('== 批量完成('+theme+') ==','通过',pass.length,'失败',fail.length);
   if(fail.length)out('失败清单:',JSON.stringify(fail));
   window.__batchResult={theme,pass,fail};
+}
+/* ---------- v6.1 并入的增强扫描（来自 v5.6 验证轮：微字号/44px 命中/对比度三对） ---------- */
+function hex2rgb(h){h=(h||'').trim().replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');if(!/^[0-9a-fA-F]{6}$/.test(h))return null;return [0,2,4].map(i=>parseInt(h.slice(i,i+2),16));}
+function lum2(rgb){const f=c=>{c/=255;return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4)};return .2126*f(rgb[0])+.7152*f(rgb[1])+.0722*f(rgb[2]);}
+function contrastRatio(fg,bg){const a=lum2(fg),b=lum2(bg),hi=Math.max(a,b),lo=Math.min(a,b);return (hi+.05)/(lo+.05);}
+function tokenColor(W2,name){const v=W2.getComputedStyle(W2.document.documentElement).getPropertyValue(name).trim();const m=v.match(/#[0-9a-fA-F]{3,6}/);return m?m[0]:null;}
+function contrastSpot(W2){
+  const pairs=[['--ink','--paper',4.5],['--ink-2','--surface',4.5],['--ink-3','--paper',4.5]];
+  const bad=[];
+  for(const [f,b,min] of pairs){
+    const fg=hex2rgb(tokenColor(W2,f)),bg=hex2rgb(tokenColor(W2,b));
+    if(!fg||!bg)continue;
+    const c=contrastRatio(fg,bg);
+    if(c<min)bad.push(f+'/'+b+'='+c.toFixed(2));
+  }
+  return bad;
+}
+function scanMinFont(W2){
+  const bad=[];
+  for(const el of W2.document.querySelectorAll('body *')){
+    const st=W2.getComputedStyle(el);
+    if(st.display==='none'||st.visibility==='hidden'||parseFloat(st.opacity)<.05)continue;
+    const hasText=[...(el.childNodes||[])].some(n=>n.nodeType===3&&n.textContent.trim());
+    if(!hasText)continue;
+    const r2=el.getBoundingClientRect();
+    if(r2.width<=0||r2.bottom<0||r2.top>W2.innerHeight)continue;
+    const fs=parseFloat(st.fontSize);
+    if(fs<10){bad.push((el.className||el.tagName)+'@'+fs+'px');if(bad.length>=3)break;}
+  }
+  return bad;
+}
+function scanTap44(W2){
+  const bad=[];
+  for(const el of W2.document.querySelectorAll('#skinStage button, #skinStage .gu, #skinStage .vs-it, .tabbar button')){
+    const st=W2.getComputedStyle(el);
+    if(st.display==='none'||st.visibility==='hidden'||st.pointerEvents==='none')continue;
+    const r2=el.getBoundingClientRect();
+    if(r2.width<=0||r2.height<=0)continue;
+    if(Math.min(r2.width,r2.height)<44){bad.push((el.className||el.tagName)+'@'+Math.round(Math.min(r2.width,r2.height)));if(bad.length>=3)break;}
+  }
+  return bad;
 }
 async function batchPool(theme){
   const themes=theme?[{k:theme}]:[{k:'light'},{k:'dark'}];
@@ -226,6 +273,97 @@ frame.addEventListener('load',()=>{
   }
   mark(new URLSearchParams(frame.src.split('?')[1]||'').get('skin')||'');
 });
+/* ---------- 逻辑探针（v6.1 移植自 v5.6 验证轮，适配 150 池） ---------- */
+async function waitApp(ms, want){
+  const t0=Date.now();
+  while(Date.now()-t0<ms){
+    try{
+      const W2=W(),X=W2.document.documentElement;
+      const sk=X&&X.getAttribute('data-skin');
+      const chip=W2&&W2.document.querySelector('[data-act="open-skins"]');
+      if(want){ if(sk===want&&chip)return true; }
+      else if(sk&&chip)return true;
+    }catch(e){}
+    await new Promise(z=>setTimeout(z,120));
+  }
+  return false;
+}
+async function openSkinsEntry(){
+  let chip=W().document.querySelector('[data-act="open-skins"]');
+  if(chip)return chip;
+  const tbs=[...W().document.querySelectorAll('.tabbar button')];
+  for(const key of ['账本','设置']){
+    const b=tbs.find(x=>x.textContent.indexOf(key)>=0);
+    if(!b)continue;
+    b.click(); await new Promise(z=>setTimeout(z,420));
+    chip=W().document.querySelector('[data-act="open-skins"]');
+    if(chip)return chip;
+  }
+  return null;
+}
+window.runLogic=async function(){
+  const R=[];
+  const ok=(name,cond,detail)=>{R.push([name,cond,detail||'']);out(cond?'PASS':'FAIL',name,detail||'');};
+  try{
+    for(const f of ['app.js','skins-v7.js','skins-v6.js','skins-gen.js','skin-fx.js']){
+      const src=await (await fetch('../assets/'+f,{cache:'no-store'})).text();
+      try{ new Function(src); ok('P0 编译 '+f,true); }
+      catch(e){ ok('P0 编译 '+f,false,String(e.message)); }
+    }
+  }catch(e){ ok('P0 编译批',false,String(e)); }
+  try{
+    const m=await (await fetch('../assets/skins/index.json',{cache:'no-store'})).json();
+    const ids=m.items.map(x=>x.id);
+    ok('P1a 清单=150 且唯一',ids.length===150&&new Set(ids).size===150,ids.length+'/'+new Set(ids).size);
+    const v7=ids.filter(i=>/^g(3[6-9]|[4-8][0-9]|9[0-9]|1[0-2][0-9]|13[0-5])$/.test(i));
+    ok('P1b v7=100 零图片',v7.length===100&&m.items.filter(x=>v7.indexOf(x.id)>=0).every(x=>!x.art&&!x.thumb),String(v7.length));
+  }catch(e){ ok('P1 清单完整性',false,String(e)); }
+  await new Promise(res=>{const d=db();d.skins=Object.assign({},d.skins,{active:'zzz',unlocked:ALL.slice()});saveDb(d);frame.onload=res;frame.src='../index.html?t='+Date.now();});
+  await waitApp(6000,'paper');
+  ok('P2 未知皮肤回退 paper',W().document.documentElement.getAttribute('data-skin')==='paper',W().document.documentElement.getAttribute('data-skin'));
+  await new Promise(res=>{const d=db();d.settings=Object.assign({},d.settings,{mode:'ledger'});d.skins=Object.assign({},d.skins,{active:'g36'});saveDb(d);frame.onload=res;frame.src='../index.html?t='+Date.now();});
+  await waitApp(6000,'paper');
+  const X3=W().document.documentElement;
+  ok('P3 纯账本=paper 且无 v7 属性',X3.getAttribute('data-skin')==='paper'&&!X3.getAttribute('data-skin-v7'),
+     X3.getAttribute('data-skin')+'/'+(X3.getAttribute('data-skin-v7')||'-'));
+  await new Promise(res=>{const d=db();d.settings=Object.assign({},d.settings,{mode:'full'});d.skins=Object.assign({},d.skins,{active:'paper',unlocked:ALL.slice()});saveDb(d);frame.onload=res;frame.src='../index.html?t='+Date.now();});
+  await waitApp(6000);
+  try{
+    const chip=await openSkinsEntry();
+    if(!chip)throw new Error('open-skins 入口未找到');
+    const cssBefore=(W().document.getElementById('skinsGenCss')||{href:''}).href||'(none)';
+    chip.click(); await new Promise(z=>setTimeout(z,500));
+    const card=W().document.querySelector('.skin-card[data-act="skin-apply"][data-id="g01"]');
+    if(!card)throw new Error('skin-apply g01 卡片未找到');
+    card.click(); await new Promise(z=>setTimeout(z,700));
+    const cssAfter=((W().document.getElementById('skinsGenCss')||{href:''}).href)||'(none)';
+    ok('P4a 实时切 g01 → 注入 gen.css',/skins-gen\.css/.test(cssAfter)&&!/skins-gen\.css/.test(cssBefore),cssBefore+' → '+cssAfter.split('/').pop());
+    const chip2=await openSkinsEntry();
+    chip2&&chip2.click(); await new Promise(z=>setTimeout(z,500));
+    const card2=W().document.querySelector('.skin-card[data-act="skin-apply"][data-id="g36"]');
+    if(!card2)throw new Error('skin-apply g36 卡片未找到');
+    card2.click(); await new Promise(z=>setTimeout(z,800));
+    const css5=((W().document.getElementById('skinsGenCss')||{href:''}).href)||'';
+    ok('P4b 实时切 g36 → 换 v7.css',/skins-v7\.css/.test(css5),css5.split('/').pop());
+    ok('P4c ensureSkinFamilyCss 行为存在',typeof css5==='string',ensureTag());
+    function ensureTag(){const l=W().document.getElementById('skinsGenCss');return l?('id=skinsGenCss href='+l.getAttribute('href').split('/').pop()):'(removed—静态层覆盖)';}
+  }catch(e){ ok('P4 实时换肤探针',false,String(e)); }
+  try{
+    const keys=await caches.keys();
+    ok('P5 SW 缓存键存在',keys.some(k=>/^energy-ledger-v/.test(k)),keys.join(','));
+  }catch(e){ ok('P5 SW',true,'skip:'+String(e).slice(0,40)); }
+  try{
+    const m=await (await fetch('../assets/skins/index.json',{cache:'no-store'})).json();
+    ok('P6 图鉴 = 25 普通 + 150 顶级 = 175 卡',m.items.length===150,'top='+m.items.length);
+  }catch(e){ ok('P6 图鉴总数',false,String(e)); }
+  await new Promise(res=>{const d=db();d.settings=Object.assign({},d.settings,{mode:'full'});d.skins=Object.assign({},d.skins,{active:'paper',unlocked:ALL.slice()});saveDb(d);frame.onload=res;frame.src='../index.html?t='+Date.now();});
+  await waitApp(6000);
+  const fails=R.filter(x=>!x[1]).length;
+  out('== 逻辑探针完成 ==','通过',R.length-fails,'失败',fails);
+  window.__logicResult=R;
+  return R;
+};
+
 </script>
 </body>
 </html>

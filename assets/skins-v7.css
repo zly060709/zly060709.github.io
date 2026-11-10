@@ -318,7 +318,7 @@ html[data-skin="g39"] #skinStage .gu{width:30px;height:36px;background:var(--sur
 html[data-skin="g39"] #skinStage .gu::before{content:"";position:absolute;inset:3px;background:linear-gradient(150deg,var(--green-soft),var(--green-line));opacity:.8}
 html[data-skin="g39"] #skinStage .gu.off{border-style:solid;border-color:var(--line);background:var(--field)}
 html[data-skin="g39"] #skinStage .gu.off::before{opacity:.25}
-html[data-skin="g39"] #skinStage .gu b{position:relative;z-index:1;font-size:9px;color:var(--green-deep)}
+html[data-skin="g39"] #skinStage .gu b{position:relative;z-index:1;font-size:10px;color:var(--green-deep)}
 
 /* ============ g40 育苗·苗盘 · E-G grow · miss12 ============ */
 html[data-skin="g40"] {
@@ -744,7 +744,7 @@ html[data-skin="g60"] {
 }
 html[data-skin="g60"] #skinStage .fl-rail{position:absolute;left:14px;top:10px;bottom:10px;width:8px;border-radius:5px;background:repeating-linear-gradient(180deg,var(--field) 0 16px,var(--line-2) 16px 17px);box-shadow:inset 0 0 0 1px var(--line-2)}
 html[data-skin="g60"] #skinStage .fl-cab{position:absolute;left:6px;width:24px;height:30px;border-radius:5px;background:linear-gradient(160deg,var(--a1-2, var(--amber)),var(--amber-soft));box-shadow:0 3px 10px rgba(39,42,46,.25);transition:top .45s cubic-bezier(.3,1.2,.4,1)}
-html[data-skin="g60"] #skinStage .fl-cab::before{content:"▲";position:absolute;left:50%;top:3px;transform:translateX(-50%);font-size:8px;color:rgba(255,255,255,.8)}
+html[data-skin="g60"] #skinStage .fl-cab::before{content:"▲";position:absolute;left:50%;top:3px;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.8)}
 html[data-skin="g60"] #skinStage .fl-num{position:absolute;right:16px;font:700 40px/1 ui-monospace,Consolas,monospace;color:var(--ink)}
 
 /* ============ g61 火漆·封缄 · E-P plate · recorded ============ */
@@ -848,7 +848,7 @@ html[data-skin="g65"] #skinStage .wt-row{gap:12px;flex-wrap:wrap;justify-content
 html[data-skin="g65"] #skinStage .wt-chip{width:56px;height:56px;border-radius:50% 50% 46% 46%;background:linear-gradient(155deg,var(--a2-2, var(--amber)),var(--amber-soft));box-shadow:0 5px 10px rgba(38,48,43,.18), inset 0 2px 0 rgba(255,255,255,.4), inset 0 -3px 0 rgba(0,0,0,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
 html[data-skin="g65"] #skinStage .wt-chip::before{content:"";position:absolute;top:8px;left:50%;width:16px;height:5px;margin-left:-8px;border-radius:3px;background:var(--field);box-shadow:inset 0 1px 2px rgba(0,0,0,.25)}
 html[data-skin="g65"] #skinStage .wt-chip b{font-size:12px;color:var(--ink)}
-html[data-skin="g65"] #skinStage .wt-chip i{font-style:normal;font-size:9px;color:var(--ink-2)}
+html[data-skin="g65"] #skinStage .wt-chip i{font-style:normal;font-size:10px;color:var(--ink-2)}
 
 /* ============ g66 信匣·信件 · E-V vessel · items ============ */
 html[data-skin="g66"] {
@@ -869,7 +869,7 @@ html[data-skin="g66"] #skinStage .vs-body{background:linear-gradient(160deg,#8A6
 html[data-skin="g66"] #skinStage .vs-it{width:64px;height:44px;border-radius:4px;background:linear-gradient(155deg,#F4ECD8,#E2D5B8);box-shadow:0 3px 7px rgba(58,46,30,.22);position:relative;overflow:hidden}
 html[data-skin="g66"] #skinStage .vs-it::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 0 48%,rgba(166,88,50,.5) 49% 51%,transparent 52%)}
 html[data-skin="g66"] #skinStage .vs-it::after{content:"";position:absolute;left:50%;top:0;width:14px;height:10px;margin-left:-7px;background:radial-gradient(60% 100% at 50% 0,#C4483C 55%,#A6322A)}
-html[data-skin="g66"] #skinStage .vs-it b{position:absolute;left:4px;bottom:2px;right:4px;font-size:9px;color:#5C4A2E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html[data-skin="g66"] #skinStage .vs-it b{position:absolute;left:4px;bottom:2px;right:4px;font-size:10px;color:#5C4A2E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* ============ g67 蒸笼·竹屉 · E-V vessel · count ============ */
 html[data-skin="g67"] {
@@ -910,7 +910,7 @@ html[data-skin="g68"] {
 html[data-skin="g68"] #skinStage .vs-body{width:92px;height:104px;border-radius:10px 10px 26px 26px;background:linear-gradient(160deg,#B4483A,#8E2E24);box-shadow:inset 0 0 0 2px rgba(62,42,30,.3), inset 0 -8px 14px rgba(90,20,16,.4), 0 8px 16px rgba(62,42,30,.2);position:relative}
 html[data-skin="g68"] #skinStage .vs-body::before{content:"签";position:absolute;left:50%;top:34%;transform:translate(-50%,-50%);font-size:26px;color:#F2E0C0;font-weight:700}
 html[data-skin="g68"] #skinStage .st-stick{width:12px;height:78px;border-radius:4px;background:linear-gradient(180deg,#F2E5C8,#E0CD9E);box-shadow:0 2px 5px rgba(62,42,30,.2);transform-origin:50% 100%}
-html[data-skin="g68"] #skinStage .st-stick b{position:absolute;left:50%;top:6px;transform:translateX(-50%) rotate(90deg);transform-origin:0 50%;font-size:9px;color:#6E4A2E;white-space:nowrap}
+html[data-skin="g68"] #skinStage .st-stick b{position:absolute;left:50%;top:6px;transform:translateX(-50%) rotate(90deg);transform-origin:0 50%;font-size:10px;color:#6E4A2E;white-space:nowrap}
 
 /* ============ g69 幕布·皮影 · E-V vessel · items ============ */
 html[data-skin="g69"] {
