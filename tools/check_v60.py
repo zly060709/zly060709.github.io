@@ -67,7 +67,7 @@ for key in ('totalRecords', 'term', 'weekday', 'monthOf', 'solarTerm' if False e
     check('v7js 派生锚点含 %s' % key, key in js)
 
 VER = json.load(open('version.json', encoding='utf-8'))['version']
-check('version = 6.0.0', VER == '6.0.0', VER)
+check('version = 6.1.x（验证期/整合期推进）', re.match(r'^6\.1\.\d+$', VER) is not None, VER)
 appjs = open('assets/app.js', encoding='utf-8').read()
 check('app.js SkinV7.sync x2', appjs.count('SkinV7.sync') == 2, str(appjs.count('SkinV7.sync')))
 check('app.js knownSkin SkinV7', 'SkinV7 && SkinV7.ids' in appjs)

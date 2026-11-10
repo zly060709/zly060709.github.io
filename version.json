@@ -1,14 +1,8 @@
 {
-  "version": "6.1.0",
-  "released": "2026-11-10",
-  "notes": [
-    "整合轮（v6.0.0 + v5.6 本地轮变基合并）：150 套池全量回归通过——check_v60 57 项 + v8-harness 双主题 350 跑次 + 逻辑探针 14 项全部全绿",
-    "P1 修复（跨版本回归）：ensureSkinFamilyCss 的 v7 家族判定改为 SkinV7.ids 动态名单——旧硬编码 g36–g85 导致现场切到 g86–g135 时误删预绘注入的 v7.css，新五十连发徽记/引擎样式全灭（合并树 350 跑次审计抓出并修复）",
-    "生成物同步：skins-v7.css 重跑并入 spec 的 10px 微字号修复（g66 信匣/g68 签筒标签 9px→10px）",
-    "v8-harness 并入三增强扫描（微字号/44px 命中/对比度三对）+ 逻辑探针 14 项（编译/清单/回退/纯账本/实时换肤/SW/图鉴），与 v6.0 的 175×2 主题身份矩阵叠加",
-    "check_v60 并入集成断言 7 项：预绘首帧覆盖 150/150、mode 门禁、徽记槽位跨文件抢占扫描、ensureSkinFamilyCss 在位、notes 缓存名一致性",
-    "遗留 v5.6 修复已全部并入：实时换肤家族 CSS 保障（P1）、预绘 A10GEN + mode 门禁、存量层对比度硬化 51 处、微字号治理、a-wuxia 徽记槽位修复",
-    "SW 缓存名 energy-ledger-v6.1.0"
-  ],
-  "minClient": "5.0.0"
+ "version": "6.1.1",
+ "released": "2026-11-11",
+ "notes": [
+  "独立审计整合（外部并行实现对照）：扭蛋页零图片皮肤 pending 灰态修复（packReady 对无包皮肤恒 false，已获得被误显示为待下载）；check_v60 版本断言解冻（6.0.0 写死→6.1.x 模式）；新增 SKIN-CATALOG-v6.md 150 套辨识特征一览；新增 VALIDATION-INDEPENDENT-v6.1.md（独立五轮口径审计：上游烟测 8/8、453 项对照矩阵、12 项问题清单与可移植项）。SW 缓存名 energy-ledger-v6.1.1"
+ ],
+ "minClient": "5.0.0"
 }

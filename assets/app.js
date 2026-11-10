@@ -5196,7 +5196,9 @@
           '<span class="gs-q">…</span><span class="gs-tag">即将上架</span></div>';
       }
       const bg = own && ready ? ' style="background-image:url(&quot;' + skinArtThumb(s.id).replace(/"/g, '&quot;') + '&quot;)"' : '';
-      return '<div class="gacha-slot' + (own ? ' own' : '') + (own && !ready ? ' pending' : '') + '"' + bg + ' title="' + esc(s.name) + '">' +
+      /* v6.1.1 移植（独立审计 #5）：零图片机制皮肤没有可下载包，packReady 恒 false，
+       已获得皮肤被误标 pending 灰态——只有真实带 art 包的皮肤才可能 pending。 */
+      return '<div class="gacha-slot' + (own ? ' own' : '') + (own && !ready && s.art ? ' pending' : '') + '"' + bg + ' title="' + esc(s.name) + '">' +
         (own ? '<span class="gs-name">' + esc(s.name.split('·')[0]) + '</span>' + (ready ? '' : '<span class="gs-tag">' + (s.art ? '待下载' : '已获得') + '</span>') : '<span class="gs-q">?</span><span class="gs-tag">未获得</span>') +
         '</div>';
     }).join('');

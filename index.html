@@ -9,13 +9,13 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232F6B4F'/%3E%3Cpath d='M11 8v13.2c0 .9.8 1.5 1.8 1.5H22' fill='none' stroke='%23EFECE2' stroke-width='2'/%3E%3Cpath d='M15 12h5' stroke='%23EFECE2' stroke-width='2'/%3E%3C/svg%3E" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
 <script>/* 版本号唯一来源：build.py 会把这里与所有 ?v= 同步为 version.json 里的版本 */
-window.__EL_VER = '6.1.0';</script>
-<link rel="stylesheet" href="assets/app.css?v=6.1.0">
-<link rel="stylesheet" href="assets/skins-v43.css?v=6.1.0">
-<link rel="stylesheet" href="assets/skins-v5.css?v=6.1.0">
-<link rel="stylesheet" href="assets/skins-v6.css?v=6.1.0">
-<link rel="stylesheet" href="assets/skins-m.css?v=6.1.0">
-<link rel="stylesheet" href="assets/skins-l.css?v=6.1.0">
+window.__EL_VER = '6.1.1';</script>
+<link rel="stylesheet" href="assets/app.css?v=6.1.1">
+<link rel="stylesheet" href="assets/skins-v43.css?v=6.1.1">
+<link rel="stylesheet" href="assets/skins-v5.css?v=6.1.1">
+<link rel="stylesheet" href="assets/skins-v6.css?v=6.1.1">
+<link rel="stylesheet" href="assets/skins-m.css?v=6.1.1">
+<link rel="stylesheet" href="assets/skins-l.css?v=6.1.1">
 <script>/* 已选强化皮肤时：先把皮肤样式表与 data-skin/主题写进首屏，再让第一屏渲染。
    原因：等 app.js 再挂属性，标题字体会在首屏骨架之后才换，实测造成 0.001~0.002 的 CLS；
    样式表后到还会改动卡片内距与底栏按钮宽度（0.036）。默认纸面皮肤不触发，首屏零皮肤请求。 */
@@ -43,8 +43,8 @@ window.__EL_VER = '6.1.0';</script>
     if (!A10GEN.test(id)) {  /* v6.1：a-* 十套不注入 gen.css（v43/v5 静态已含，省 30KB 无谓请求） */
       var l = document.createElement('link');
       l.rel = 'stylesheet'; l.id = 'skinsGenCss';
-      l.href = V7SKIN.test(id) ? 'assets/skins-v7.css?v=6.1.0'
-        : V6SKIN.test(id) ? 'assets/skins-v6.css?v=6.1.0' : 'assets/skins-gen.css?v=6.1.0';
+      l.href = V7SKIN.test(id) ? 'assets/skins-v7.css?v=6.1.1'
+        : V6SKIN.test(id) ? 'assets/skins-v6.css?v=6.1.1' : 'assets/skins-gen.css?v=6.1.1';
       document.head.appendChild(l);
     }
   } catch (e) {}
@@ -197,17 +197,17 @@ window.__EL_VER = '6.1.0';</script>
 <input type="file" id="wearableFile" accept=".xml,.csv,text/xml,text/csv,application/xml" hidden>
 
 <script>document.documentElement.classList.add('js');</script>
-<script src="assets/data.js?v=6.1.0" defer></script>
-<script src="assets/engine.js?v=6.1.0" defer></script>
-<script src="assets/wellness.js?v=6.1.0" defer></script>
-<script src="assets/gender.js?v=6.1.0" defer></script>
-<script src="assets/extras.js?v=6.1.0" defer></script>
-<script src="assets/foodlib.js?v=6.1.0" defer></script>
-<script src="assets/skin-fx.js?v=6.1.0" defer></script>
-<script src="assets/skins-gen.js?v=6.1.0" defer></script>
-<script src="assets/skins-v6.js?v=6.1.0" defer></script>
-<script src="assets/skins-v7.js?v=6.1.0" defer></script>
-<script src="assets/app.js?v=6.1.0" defer></script>
+<script src="assets/data.js?v=6.1.1" defer></script>
+<script src="assets/engine.js?v=6.1.1" defer></script>
+<script src="assets/wellness.js?v=6.1.1" defer></script>
+<script src="assets/gender.js?v=6.1.1" defer></script>
+<script src="assets/extras.js?v=6.1.1" defer></script>
+<script src="assets/foodlib.js?v=6.1.1" defer></script>
+<script src="assets/skin-fx.js?v=6.1.1" defer></script>
+<script src="assets/skins-gen.js?v=6.1.1" defer></script>
+<script src="assets/skins-v6.js?v=6.1.1" defer></script>
+<script src="assets/skins-v7.js?v=6.1.1" defer></script>
+<script src="assets/app.js?v=6.1.1" defer></script>
 <!-- 兑换码 / 版本公告 / 维护模块：已移出关键路径，由 app.js 的 ensureScript 按需拉起 -->
 </body>
 </html>
