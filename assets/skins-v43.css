@@ -696,8 +696,9 @@
 .gc-soon { position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); font-size: 10px; line-height: 1.4; padding: 1px 6px; border-radius: 99px; background: rgba(20,22,20,.66); color: #F7F5EC; white-space: nowrap; }
 .gacha-slot.soon { opacity: .66; border-style: dashed; }
 
-/* v5.2.1 可读性：正文说明统一 ≥4.5，标题衬底用主题表面色（含旧皮肤） */
-[data-skin] .page-title, [data-skin] .page-sub { background: var(--surface); }
+/* v6.1.2 修复：此处原有 [data-skin] .page-title/.page-sub { background: var(--surface) }，
+   未限皮肤也没给 padding/圆角，会把所有皮肤（包括默认 paper）的标题套成硬边白块，
+   并覆盖上面 g 系已经写好的半透明衬底。标题衬底只保留按皮肤限定的规则。 */
 .page-sub { color: var(--ink-2); }
 .gal-head .tiny, .gal-info .tiny, .notebox, .rw-note, .rw-code-head em, .sheet-sub .tiny { color: var(--ink-2); }
 .gp-paper span { color: var(--ink); }

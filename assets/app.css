@@ -844,7 +844,9 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
   .report-bar-actions { width: 100%; justify-content: flex-end; }
 }
 @media (max-width: 420px) {
-  .form-grid-3 { grid-template-columns: 1fr 1fr; }
+  /* v6.1.3：三格表单一律保持三列。改成两列会让第三格单独占半行（引导页“体重”即如此）。 */
+  .form-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  .form-grid-3 .input { padding-left: 5px; padding-right: 5px; font-size: 16px; }
   .cycle-phase-label { font-size: 23px; }
   .cycle-day .n { font-size: 26px; }
   .checkin-summary > div { padding: 7px 9px; }
@@ -916,6 +918,14 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .t-t b { font-size: 11.5px; }
 .t-t em { font-size:11px; color: var(--ink-3); font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .t-a { font-size:11px; color: var(--ink-3); }
+/* v6.1.3：≤460px 时箭头没有信息量，却吃掉 19px，导致一半工具卡副标题被截成省略号。 */
+@media (max-width: 460px) {
+  .tool-tile { gap: 6px; padding: 8px 9px; }
+  .tool-tile .t-a { display: none; }
+  .tool-tile .t-ic { width: 26px; height: 26px; }
+  .tool-tile .t-t b { font-size: 11px; }
+  .tool-tile .t-t em { font-size: 10.5px; }
+}
 
 /* ---------- 一日三餐 / 配餐 ---------- */
 .planner-hero, .plan-hero { padding: 14px 16px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-2); }
@@ -1114,6 +1124,18 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .decomp-item .v { font-family: var(--serif); font-size: 18px; margin-top: 2px; }
 .decomp-item .v small { font-size:11px; color: var(--ink-3); }
 .decomp-item .s { font-size:11px; color: var(--ink-3); margin-top: 3px; line-height: 1.4; }
+/* v6.1.2 修复：390px 下三列各只有 ~70px 内容宽，"最近一次变化" 会断成
+   "最近一次变/化"，"-0.1 kg" 也会把 kg 挤到下一行。窄屏改为单列行式。 */
+@media (max-width: 460px) {
+  .decomp-grid { grid-template-columns: 1fr; gap: 8px; }
+  .decomp-item {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline; column-gap: 10px; padding: 9px 12px;
+  }
+  .decomp-item .k { grid-column: 1; }
+  .decomp-item .v { grid-column: 2; margin-top: 0; text-align: right; white-space: nowrap; }
+  .decomp-item .s { grid-column: 1 / -1; margin-top: 2px; }
+}
 .decomp-note {
   margin-top: 12px; padding: 9px 12px; border-radius: 10px;
   background: var(--amber-soft); color: var(--amber); font-size: 11.5px; line-height: 1.6;
@@ -1493,7 +1515,14 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .ld-w { font-family: "Kaiti SC", KaiTi, "STKaiti", serif; font-size: 12px; color: var(--ink-2); }
 .ledger-id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .li-k { font-family: "Kaiti SC", KaiTi, "STKaiti", "Songti SC", serif; font-size: 16px; color: var(--ink); }
-.li-s { font-size:11px; color: var(--ink-3); letter-spacing: .04em; }
+.li-s { font-size:11px; color: var(--ink-3); letter-spacing: .04em; display: flex; flex-wrap: wrap; column-gap: 4px; }
+/* v6.1.2 修复：390px 下「NO. … · 连续达标 3 天」会在“3 天”前断行，留下孤字。
+   拆成不可再分的片段，只在片段之间换行。 */
+.li-s > span { white-space: nowrap; }
+/* 320px（iPhone SE 一代等）可用宽度只剩 ~69px，降一级字号与字距避免顶出容器 */
+@media (max-width: 340px) {
+  .li-s { font-size: 10px; letter-spacing: 0; }
+}
 
 .ledger-stamp {
   margin-left: auto; flex-shrink: 0;
@@ -1596,7 +1625,7 @@ h1.page-title { font-family: var(--serif); font-size: 30px; font-weight: 600; le
 .ms-n { font-family: var(--serif); font-size: 20px; }
 .ms-l { font-size:11px; color: var(--ink-3); }
 .month-cal {
-  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+  display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px;
   margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line);
 }
 .mc-w { text-align: center; font-size:11px; color: var(--ink-3); padding: 2px 0; }

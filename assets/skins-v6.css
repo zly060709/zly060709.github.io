@@ -84,9 +84,12 @@ html[data-skin] .app-main::before {
 }
 /* 页头与舞台融合：v5.3 的页头是 62% 实色渐变，会把舞台盖死 */
 @supports (background: color-mix(in srgb, red 50%, transparent)) {
+  /* v6.1.2 修复：原规则把页头做成 42% 透明渐变（前 30% 就透），任何页面滚到
+     标题下方时，正文会从吸顶栏里透出来，看起来像叠字/残影。改为实色主体 +
+     只在最底部 10px 柔化，既保留与舞台的衔接，又不会透字。 */
   html[data-skin] .mobile-top {
     background: linear-gradient(to bottom,
-      color-mix(in srgb, var(--paper) 42%, transparent) 30%, transparent 96%);
+      var(--paper) 0, var(--paper) calc(100% - 10px), transparent 100%);
   }
 }
 /* 桌面增强：宽屏有 rail 与横构图插画，舞台收窄成页头光晕，不与 key.webp 抢戏 */

@@ -2145,7 +2145,11 @@
       '<section class="hero ledger-paper">' +
         '<div class="ledger-head">' +
           '<div class="ledger-date"><span class="ld-day">' + dayNum + '</span><span class="ld-ym">' + dp[0] + '.' + dp[1] + '</span><span class="ld-w">周' + E.weekday(today) + '</span></div>' +
-          '<div class="ledger-id"><span class="li-k">今日账页</span><span class="li-s">NO. ' + today.replace(/-/g, '') + ' · ' + (streak > 0 ? '连续达标 ' + streak + ' 天' : '今天开始') + (DB.skins.active === 'almanac' ? ' · 农历 ' + lunarText(today) : '') + '</span></div>' +
+          '<div class="ledger-id"><span class="li-k">今日账页</span><span class="li-s">' +
+            '<span class="li-no">NO. ' + today.replace(/-/g, '') + '</span>' +
+            '<span class="li-streak">· ' + (streak > 0 ? '连续达标 ' + streak + ' 天' : '今天开始') + '</span>' +
+            (DB.skins.active === 'almanac' ? '<span class="li-lunar">· 农历 ' + lunarText(today) + '</span>' : '') +
+          '</span></div>' +
           stamp +
         '</div>' +
         (ci ? '<div class="cycle-line" data-act="open-cycle">周期第 ' + ci.day + ' 天 · ' + ci.phaseLabel + ' · 距下次约 ' + ci.daysToNext + ' 天</div>' : '') +

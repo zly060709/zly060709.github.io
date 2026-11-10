@@ -778,7 +778,9 @@ html[data-skin="a-galaxy"] .credit-strip.warn, html[data-skin="a-neon"] .credit-
 }
 /* 说明框是正文级信息：暗色下 ink-2 只有 4.50（临界），改用 ink 拉开余量 */
 .notebox { color: var(--ink); }
-[data-skin] .page-title, [data-skin] .page-sub { background: var(--surface); }
+/* v6.1.2 修复：这里曾重复声明 [data-skin] .page-title/.page-sub 的全局实底背景，
+   会把默认 paper 在内的所有皮肤标题套成硬边矩形。原规则在 skins-v43.css，
+   两处均已删除；立绘皮肤衬底由 skins-v43.css 的按皮肤规则负责。 */
 [data-skin] .gp-paper, [data-skin] .gp-paper b, [data-skin] .gp-paper span {
   background: var(--surface); color: var(--ink);
 }
